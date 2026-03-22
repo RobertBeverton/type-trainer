@@ -2825,7 +2825,8 @@ function createDefaultPlayer(ageBracket) {
       volume: 0.8,
       keyboardVisible: true,
       theme: defaultTheme,
-      muted: false
+      muted: false,
+      speedPreference: 1.0
     }
   };
 }
@@ -5715,7 +5716,7 @@ function updateItemPosition(item, h, deltaMs) {
   // Delta-time-based movement (normalised to 60fps)
   // Adaptive difficulty: multiply by rolling-accuracy speed adjustment
   const dtFactor = deltaMs / 16.67;
-  item.y += item.speed * speedMult * getSpeedMultiplier() * dtFactor;
+  item.y += item.speed * speedMult * getSpeedMultiplier() * (gameState.speedPreference || 1.0) * dtFactor;
 }
 
 
@@ -6578,6 +6579,58 @@ function showGameOverOverlay(stats) {
     overlay.appendChild(weakSection);
   }
 
+  // Speed suggestion — if player aced it, suggest bumping speed
+  const currentSpeed = gameState.speedPreference || 1.0;
+  const avgReactionMs = stats.totalCorrect > 0 && elapsedMs > 0
+    ? elapsedMs / stats.totalCorrect
+    : 9999;
+  // Suggest speed up if: accuracy > 90% AND average reaction < 1.5s AND not already maxed
+  if (accuracyPct >= 90 && avgReactionMs < 1500 && currentSpeed < 2.9) {
+    const suggested = Math.min(3.0, +(currentSpeed + 0.3).toFixed(1));
+    const suggestion = document.createElement('div');
+    suggestion.style.cssText = 'text-align: center; margin: 8px 0; padding: 8px 16px; border-radius: 8px; background: var(--surface, #f0f0f0); font-size: 13px;';
+    const suggText = document.createElement('span');
+    suggText.textContent = `⚡ You're fast! Try speed ${suggested.toFixed(1)}x? `;
+    const suggBtn = document.createElement('button');
+    suggBtn.className = 'btn btn-sm';
+    suggBtn.textContent = 'Yes!';
+    suggBtn.style.cssText = 'margin-left: 8px; padding: 4px 12px; font-size: 12px;';
+    suggBtn.addEventListener('click', () => {
+      gameState.speedPreference = suggested;
+      // Save to player data via callback
+      if (gameState.callbacks && gameState.callbacks.onSpeedChange) {
+        gameState.callbacks.onSpeedChange(suggested);
+      }
+      suggestion.textContent = `✓ Speed set to ${suggested.toFixed(1)}x`;
+      suggestion.style.color = 'var(--success-text, #059669)';
+    }, { once: true });
+    suggestion.appendChild(suggText);
+    suggestion.appendChild(suggBtn);
+    overlay.appendChild(suggestion);
+  } else if (accuracyPct < 50 && currentSpeed > 0.6) {
+    // Suggest slowing down if struggling
+    const suggested = Math.max(0.5, +(currentSpeed - 0.3).toFixed(1));
+    const suggestion = document.createElement('div');
+    suggestion.style.cssText = 'text-align: center; margin: 8px 0; padding: 8px 16px; border-radius: 8px; background: var(--surface, #f0f0f0); font-size: 13px;';
+    const suggText = document.createElement('span');
+    suggText.textContent = `Try speed ${suggested.toFixed(1)}x? It might help! `;
+    const suggBtn = document.createElement('button');
+    suggBtn.className = 'btn btn-sm';
+    suggBtn.textContent = 'OK';
+    suggBtn.style.cssText = 'margin-left: 8px; padding: 4px 12px; font-size: 12px;';
+    suggBtn.addEventListener('click', () => {
+      gameState.speedPreference = suggested;
+      if (gameState.callbacks && gameState.callbacks.onSpeedChange) {
+        gameState.callbacks.onSpeedChange(suggested);
+      }
+      suggestion.textContent = `✓ Speed set to ${suggested.toFixed(1)}x`;
+      suggestion.style.color = 'var(--success-text, #059669)';
+    }, { once: true });
+    suggestion.appendChild(suggText);
+    suggestion.appendChild(suggBtn);
+    overlay.appendChild(suggestion);
+  }
+
   // Play Again button
   const playAgainBtn = document.createElement('button');
   playAgainBtn.className = 'btn btn-primary btn-lg';
@@ -6971,6 +7024,7 @@ function startGame(bracket, stageList, callbacks) {
     tutorialPhase: 0,
     _tutorialDone: false,
     _lastHintKey: null,
+    speedPreference: (callbacks && callbacks.speedPreference) || 1.0,
     countingDown: true,
     countdownStart: 0, // set after loop starts
     _lastCountdownStep: -1,
@@ -7815,6 +7869,43 @@ function showModeSelect() {
 
   overlay.appendChild(ageBadge);
 
+  // Speed slider
+  const speedPref = (data.settings && data.settings.speedPreference) || 1.0;
+  const speedSection = document.createElement('div');
+  speedSection.style.cssText = 'display: flex; align-items: center; gap: 12px; margin: 8px 0 4px; width: 100%; max-width: 280px; justify-content: center;';
+  const speedLabel = document.createElement('label');
+  speedLabel.textContent = 'Speed';
+  speedLabel.style.cssText = 'font-size: 13px; font-weight: 600; color: var(--text-secondary); min-width: 44px;';
+  speedLabel.setAttribute('for', 'speed-slider');
+  const speedSlider = document.createElement('input');
+  speedSlider.type = 'range';
+  speedSlider.id = 'speed-slider';
+  speedSlider.min = '0.5';
+  speedSlider.max = '3.0';
+  speedSlider.step = '0.1';
+  speedSlider.value = String(speedPref);
+  speedSlider.style.cssText = 'flex: 1; accent-color: var(--btn-primary-bg);';
+  speedSlider.setAttribute('aria-label', 'Game speed');
+  const speedValue = document.createElement('span');
+  speedValue.style.cssText = 'font-size: 13px; font-weight: 700; color: var(--text-primary); min-width: 36px; text-align: right;';
+  speedValue.textContent = speedPref.toFixed(1) + 'x';
+  speedSlider.addEventListener('input', () => {
+    const val = parseFloat(speedSlider.value);
+    speedValue.textContent = val.toFixed(1) + 'x';
+    // Save immediately
+    const player = getPlayer(name);
+    if (player) {
+      if (!player.settings) player.settings = {};
+      player.settings.speedPreference = val;
+      savePlayer(name, player);
+      currentPlayer.data = player;
+    }
+  });
+  speedSection.appendChild(speedLabel);
+  speedSection.appendChild(speedSlider);
+  speedSection.appendChild(speedValue);
+  overlay.appendChild(speedSection);
+
   overlay.appendChild(el('p', null, 'What would you like to do?'));
 
   // Mode buttons container
@@ -7964,9 +8055,21 @@ function enterPlayMode() {
   const previousHighScore = (data && data.highScore) || 0;
 
   // Start game with callbacks — play.js never imports from main.js
+  const speedPref = (data.settings && data.settings.speedPreference) || 1.0;
   startGame(bracket, stages, {
     previousHighScore,
     totalGamesPlayed: currentPlayer.data.totalGamesPlayed || 0,
+    speedPreference: speedPref,
+    onSpeedChange: (newSpeed) => {
+      if (!currentPlayer) return;
+      const p = getPlayer(currentPlayer.name);
+      if (p) {
+        if (!p.settings) p.settings = {};
+        p.settings.speedPreference = newSpeed;
+        savePlayer(currentPlayer.name, p);
+        currentPlayer.data = p;
+      }
+    },
     onQuit: () => {
       showModeSelect();
     },

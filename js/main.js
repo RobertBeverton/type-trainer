@@ -720,6 +720,43 @@ function showModeSelect() {
 
   overlay.appendChild(ageBadge);
 
+  // Speed slider
+  const speedPref = (data.settings && data.settings.speedPreference) || 1.0;
+  const speedSection = document.createElement('div');
+  speedSection.style.cssText = 'display: flex; align-items: center; gap: 12px; margin: 8px 0 4px; width: 100%; max-width: 280px; justify-content: center;';
+  const speedLabel = document.createElement('label');
+  speedLabel.textContent = 'Speed';
+  speedLabel.style.cssText = 'font-size: 13px; font-weight: 600; color: var(--text-secondary); min-width: 44px;';
+  speedLabel.setAttribute('for', 'speed-slider');
+  const speedSlider = document.createElement('input');
+  speedSlider.type = 'range';
+  speedSlider.id = 'speed-slider';
+  speedSlider.min = '0.5';
+  speedSlider.max = '3.0';
+  speedSlider.step = '0.1';
+  speedSlider.value = String(speedPref);
+  speedSlider.style.cssText = 'flex: 1; accent-color: var(--btn-primary-bg);';
+  speedSlider.setAttribute('aria-label', 'Game speed');
+  const speedValue = document.createElement('span');
+  speedValue.style.cssText = 'font-size: 13px; font-weight: 700; color: var(--text-primary); min-width: 36px; text-align: right;';
+  speedValue.textContent = speedPref.toFixed(1) + 'x';
+  speedSlider.addEventListener('input', () => {
+    const val = parseFloat(speedSlider.value);
+    speedValue.textContent = val.toFixed(1) + 'x';
+    // Save immediately
+    const player = getPlayer(name);
+    if (player) {
+      if (!player.settings) player.settings = {};
+      player.settings.speedPreference = val;
+      savePlayer(name, player);
+      currentPlayer.data = player;
+    }
+  });
+  speedSection.appendChild(speedLabel);
+  speedSection.appendChild(speedSlider);
+  speedSection.appendChild(speedValue);
+  overlay.appendChild(speedSection);
+
   overlay.appendChild(el('p', null, 'What would you like to do?'));
 
   // Mode buttons container
@@ -869,9 +906,21 @@ function enterPlayMode() {
   const previousHighScore = (data && data.highScore) || 0;
 
   // Start game with callbacks — play.js never imports from main.js
+  const speedPref = (data.settings && data.settings.speedPreference) || 1.0;
   startPlayGame(bracket, stages, {
     previousHighScore,
     totalGamesPlayed: currentPlayer.data.totalGamesPlayed || 0,
+    speedPreference: speedPref,
+    onSpeedChange: (newSpeed) => {
+      if (!currentPlayer) return;
+      const p = getPlayer(currentPlayer.name);
+      if (p) {
+        if (!p.settings) p.settings = {};
+        p.settings.speedPreference = newSpeed;
+        savePlayer(currentPlayer.name, p);
+        currentPlayer.data = p;
+      }
+    },
     onQuit: () => {
       showModeSelect();
     },
