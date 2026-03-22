@@ -25,6 +25,20 @@ import { trapFocus, releaseFocus } from './utils.js';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// roundRect polyfill for Safari < 16, older Firefox (#8)
+if (typeof CanvasRenderingContext2D !== 'undefined' &&
+    !CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
+    const r = typeof radii === 'number' ? radii : (Array.isArray(radii) ? radii[0] : 0);
+    this.moveTo(x + r, y);
+    this.arcTo(x + w, y,     x + w, y + h, r);
+    this.arcTo(x + w, y + h, x,     y + h, r);
+    this.arcTo(x,     y + h, x,     y,     r);
+    this.arcTo(x,     y,     x + w, y,     r);
+    this.closePath();
+  };
+}
+
 
 // ═══════════════════════════════════════════════════════════════════
 // DOM references — initialised lazily (Fix C2)
