@@ -1,7 +1,7 @@
 // main.js — Entry point, game state machine
 // Implements: Player Selection (Task 4), Mode Selection (Task 5), Mobile Gate
 
-import { loadGameData, createPlayer, getPlayerList, getPlayer, deletePlayer, savePlayer, saveGameData, updatePlayerStats, updatePlayerBracket } from './storage.js';
+import { loadGameData, createPlayer, getPlayerList, getPlayer, deletePlayer, savePlayer, saveGameData, updatePlayerStats, updatePlayerBracket, exportData, importData } from './storage.js';
 import { initAudio, setupMuteButton, applyPlayerAudioSettings } from './audio.js';
 import { initKeyboard, highlightKey, clearHighlights, flashCorrect, flashWrong, toggleVisibilityMode } from './keyboard.js';
 import { getStagesForBracket } from './stages.js';
@@ -367,6 +367,47 @@ function showPlayerSelect() {
   feedbackLink.rel = 'noopener noreferrer';
   feedbackLink.textContent = 'Feedback & Ideas';
   footer.appendChild(feedbackLink);
+
+  // Data export/import links
+  footer.appendChild(document.createTextNode(' \u00B7 '));
+
+  const exportLink = document.createElement('a');
+  exportLink.href = '#';
+  exportLink.textContent = 'Export Data';
+  exportLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    exportData();
+  });
+  footer.appendChild(exportLink);
+
+  footer.appendChild(document.createTextNode(' \u00B7 '));
+
+  const importLink = document.createElement('a');
+  importLink.href = '#';
+  importLink.textContent = 'Import Data';
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.json';
+  fileInput.style.display = 'none';
+  fileInput.addEventListener('change', async () => {
+    if (!fileInput.files[0]) return;
+    const ok = confirm('This will replace all player data. Continue?');
+    if (!ok) { fileInput.value = ''; return; }
+    const success = await importData(fileInput.files[0]);
+    fileInput.value = '';
+    if (success) {
+      showPlayerSelect(); // Refresh to show imported data
+    } else {
+      alert('Import failed \u2014 the file does not appear to be a valid backup.');
+    }
+  });
+  importLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    fileInput.click();
+  });
+  footer.appendChild(importLink);
+  footer.appendChild(fileInput);
+
   overlay.appendChild(footer);
 
   requestAnimationFrame(() => {

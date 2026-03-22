@@ -278,3 +278,49 @@ export function getStorageUsage() {
 export function isStorageNearFull() {
   return getStorageUsage().percent > 80;
 }
+
+/**
+ * Export all game data as a JSON file download.
+ * Triggers a browser download of type-trainer-backup-YYYY-MM-DD.json.
+ */
+export function exportData() {
+  const data = loadGameData();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `type-trainer-backup-${today}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Import game data from a JSON file, replacing all current data.
+ * Returns true if import succeeded, false on validation failure.
+ * @param {File} file - JSON file from file input
+ * @returns {Promise<boolean>}
+ */
+export function importData(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        // Validate structure
+        if (!data || typeof data !== 'object' || !data.players || typeof data.players !== 'object') {
+          resolve(false);
+          return;
+        }
+        writeToStorage(data);
+        resolve(true);
+      } catch {
+        resolve(false);
+      }
+    };
+    reader.onerror = () => resolve(false);
+    reader.readAsText(file);
+  });
+}
