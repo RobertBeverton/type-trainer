@@ -206,6 +206,30 @@ const LESSON_GROUPS = [
       'Adult': '{key}',
     },
   },
+  {
+    id: 'spaceShift',
+    title: 'Space & Shift',
+    description: {
+      '4-5': "Let's learn the big bar and the Shift key!",
+      '6-8': 'Learn the Space bar and Shift key.',
+      '9-12': 'Space bar and Shift key drills.',
+      'Adult': 'Space and Shift key practice.',
+    },
+    keys: [],
+    introText: {
+      '4-5': "See the big long bar at the bottom? That's the Space bar! And the Shift keys on each side make BIG letters!",
+      '6-8': "The Space bar puts gaps between words. Shift makes capital letters. Let's practise both!",
+      '9-12': 'Space bar separates words. Shift produces uppercase. Both are essential for real typing.',
+      'Adult': 'Space and Shift key practice. Space bar with right thumb, Shift with opposite-hand pinky.',
+    },
+    prompts: {
+      '4-5': '{prompt}',
+      '6-8': '{prompt}',
+      '9-12': '{prompt}',
+      'Adult': '{prompt}',
+    },
+    repetitions: 1,
+  },
 ];
 
 /** Group-specific celebration text. */
@@ -240,6 +264,12 @@ const GROUP_CELEBRATION = {
     '9-12': "Full keyboard mastered. Let's play.",
     'Adult': 'Keyboard review complete.',
   },
+  spaceShift: {
+    '4-5': "You can use Space and Shift! You're ready to type real words!",
+    '6-8': 'Space and Shift mastered! You can type anything now!',
+    '9-12': 'Space and Shift complete. Ready for full sentences.',
+    'Adult': 'Space and Shift drills complete.',
+  },
 };
 
 /** Age-appropriate nudge text templates. */
@@ -251,7 +281,7 @@ const NUDGE_TEXT = {
 };
 
 /** Lesson group ordering for sequential unlock. */
-const GROUP_ORDER = ['homeRow', 'leftRight', 'topRow', 'bottomRow', 'combined'];
+const GROUP_ORDER = ['homeRow', 'leftRight', 'topRow', 'bottomRow', 'combined', 'spaceShift'];
 
 /** Lesson card visual state config. */
 const CARD_STATES = {
@@ -317,6 +347,14 @@ let _combinedCorrect = 0;
 
 /** @type {string[]} Last 5 keys shown, to avoid immediate repeats */
 let _combinedLastKeys = [];
+
+// -- Space & Shift (Group 6) specific state --
+
+/** @type {Array<{type: string, key?: string}>} Space/Shift drill sequence */
+let _spaceShiftQueue = [];
+
+/** @type {{type: string, key?: string}|null} Current space/shift drill item */
+let _spaceShiftCurrent = null;
 
 // -- DOM (lazy-init per Addendum 2 Fix C2) --
 
@@ -457,6 +495,55 @@ function pickRandomKey(allKeys, lastKeys) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+const SPACE_SHIFT_HOME_KEYS = ['A', 'S', 'D', 'F', 'J', 'K', 'L'];
+
+/**
+ * Build the drill queue for Space & Shift lesson.
+ * Phase 1: 5 letter-space-letter sequences (15 items).
+ * Phase 2: 8 Shift+letter drills.
+ * @returns {Array<{type: string, key?: string}>}
+ */
+function buildSpaceShiftQueue() {
+  const queue = [];
+  // Phase 1: Space drills — type letter, space, letter (×5)
+  for (let i = 0; i < 5; i++) {
+    const k1 = SPACE_SHIFT_HOME_KEYS[Math.floor(Math.random() * SPACE_SHIFT_HOME_KEYS.length)];
+    const k2 = SPACE_SHIFT_HOME_KEYS[Math.floor(Math.random() * SPACE_SHIFT_HOME_KEYS.length)];
+    queue.push({ type: 'letter', key: k1 });
+    queue.push({ type: 'space' });
+    queue.push({ type: 'letter', key: k2 });
+  }
+  // Phase 2: Shift drills — hold Shift + letter (×8)
+  const shuffled = shuffle([...SPACE_SHIFT_HOME_KEYS]);
+  for (let i = 0; i < 8; i++) {
+    queue.push({ type: 'shift', key: shuffled[i % shuffled.length] });
+  }
+  return queue;
+}
+
+/**
+ * Get the prompt text for a spaceShift drill item.
+ * @param {{type: string, key?: string}} item
+ * @returns {string}
+ */
+function getSpaceShiftPrompt(item) {
+  if (item.type === 'letter') {
+    if (_bracket === '4-5') return 'Press the ' + item.key + ' key!';
+    return 'Press ' + item.key;
+  }
+  if (item.type === 'space') {
+    if (_bracket === '4-5') return 'Now press the big bar at the bottom!';
+    if (_bracket === '6-8') return 'Press the Space bar!';
+    return 'Press Space';
+  }
+  if (item.type === 'shift') {
+    if (_bracket === '4-5') return 'Hold Shift and press ' + item.key + ' to make a BIG letter!';
+    if (_bracket === '6-8') return 'Hold Shift + ' + item.key + '!';
+    return 'Shift + ' + item.key;
+  }
+  return '';
+}
+
 /**
  * Get the completion threshold for Group 5 based on age bracket.
  *
@@ -589,8 +676,10 @@ function renderLessonSelect() {
     info.appendChild(mkEl('span', 'lesson-card__title', group.title));
     info.appendChild(mkEl('span', 'lesson-card__desc',
       group.description[_bracket] || group.description['Adult']));
-    info.appendChild(mkEl('span', 'lesson-card__keys',
-      group.keys.length + ' keys'));
+    const keyCountText = group.id === 'spaceShift'
+      ? '23 drills'
+      : group.keys.length + ' keys';
+    info.appendChild(mkEl('span', 'lesson-card__keys', keyCountText));
     card.appendChild(info);
 
     // Interactive handler
@@ -665,7 +754,12 @@ function startLessonGroup(groupIndex) {
   _combinedCorrect = 0;
   _combinedLastKeys = [];
 
-  if (group.id === 'combined') {
+  if (group.id === 'spaceShift') {
+    _spaceShiftQueue = buildSpaceShiftQueue();
+    _spaceShiftCurrent = null;
+    _keyQueue = [];
+    _totalKeys = _spaceShiftQueue.length;
+  } else if (group.id === 'combined') {
     _keyQueue = [];                       // combined uses random picks
     _totalKeys = getCombinedThreshold();
   } else {
@@ -772,7 +866,11 @@ function renderDrillView() {
     }
 
   } else if (_phase === 'drill') {
-    promptEl.textContent = buildPromptText(group, _targetKey);
+    if (group.id === 'spaceShift' && _spaceShiftCurrent) {
+      promptEl.textContent = getSpaceShiftPrompt(_spaceShiftCurrent);
+    } else {
+      promptEl.textContent = buildPromptText(group, _targetKey);
+    }
     promptArea.appendChild(promptEl);
     promptArea.appendChild(nudgeEl);
 
@@ -803,7 +901,7 @@ function renderDrillView() {
     // Navigation buttons (appear after 1.5s)
     const btnWrap = mkEl('div', 'learn-celebration-buttons');
 
-    if (group.id === 'combined') {
+    if (group.id === 'combined' || group.id === 'spaceShift') {
       // Last group: "Start Playing!" and "Play Again"
       const goLabel = _bracket === '4-5'
         ? "Let's play the game!"
@@ -892,6 +990,15 @@ function handleLearnKeyPress(e) {
   }
 
   if (_phase === 'drill') {
+    const group = LESSON_GROUPS[_currentGroupIndex];
+
+    // SpaceShift group: handle space, shift+letter, and regular letters
+    if (group && group.id === 'spaceShift' && _spaceShiftCurrent) {
+      e.preventDefault();
+      handleSpaceShiftDrillKey(e);
+      return;
+    }
+
     if (e.key.length !== 1) return;       // only printable characters
     e.preventDefault();
     handleDrillKey(e.key.toUpperCase());
@@ -909,7 +1016,10 @@ function transitionToDrill() {
   const group = LESSON_GROUPS[_currentGroupIndex];
   _phase = 'drill';
 
-  if (group.id === 'combined') {
+  if (group.id === 'spaceShift') {
+    _spaceShiftCurrent = _spaceShiftQueue.shift();
+    _targetKey = _spaceShiftCurrent ? (_spaceShiftCurrent.type === 'space' ? ' ' : _spaceShiftCurrent.key) : null;
+  } else if (group.id === 'combined') {
     _targetKey = pickRandomKey(group.keys, _combinedLastKeys);
     _combinedLastKeys.push(_targetKey);
     if (_combinedLastKeys.length > 5) _combinedLastKeys.shift();
@@ -921,6 +1031,18 @@ function transitionToDrill() {
   if (_targetKey) {
     highlightKey(_targetKey);
     if (group.id === 'leftRight') highlightFingerZone(_targetKey);
+  }
+
+  if (group.id === 'spaceShift' && _spaceShiftCurrent) {
+    clearHighlights();
+    if (_spaceShiftCurrent.type === 'space') {
+      highlightKey(' ');
+    } else if (_spaceShiftCurrent.type === 'shift') {
+      highlightKey('SHIFT');
+      highlightKey(_spaceShiftCurrent.key);
+    } else {
+      highlightKey(_spaceShiftCurrent.key);
+    }
   }
 
   renderDrillView();
@@ -943,6 +1065,92 @@ function handleDrillKey(pressed) {
   }
 }
 
+
+/**
+ * Handle a keypress during the spaceShift drill.
+ * @param {KeyboardEvent} e
+ */
+function handleSpaceShiftDrillKey(e) {
+  if (!_spaceShiftCurrent) return;
+
+  const item = _spaceShiftCurrent;
+  let isCorrect = false;
+
+  if (item.type === 'letter') {
+    isCorrect = e.key.toUpperCase() === item.key;
+  } else if (item.type === 'space') {
+    isCorrect = e.key === ' ';
+  } else if (item.type === 'shift') {
+    // Must press the correct letter with Shift held (produces uppercase)
+    isCorrect = e.key === item.key && e.shiftKey;
+  }
+
+  if (isCorrect) {
+    playSound('learnCorrect');
+    if (item.type === 'space') {
+      flashCorrect(' ');
+    } else {
+      flashCorrect(item.key);
+    }
+    hideNudge();
+    _completedKeys++;
+
+    if (_spaceShiftQueue.length === 0) {
+      completeLessonGroup();
+      return;
+    }
+
+    // Advance to next item
+    _spaceShiftCurrent = _spaceShiftQueue.shift();
+    _targetKey = _spaceShiftCurrent.type === 'space' ? ' ' : _spaceShiftCurrent.key;
+
+    clearHighlights();
+    if (_spaceShiftCurrent.type === 'space') {
+      highlightKey(' ');
+    } else if (_spaceShiftCurrent.type === 'shift') {
+      highlightKey('SHIFT');
+      highlightKey(_spaceShiftCurrent.key);
+    } else {
+      highlightKey(_spaceShiftCurrent.key);
+    }
+
+    updateDrillUI();
+  } else {
+    playSound('learnNudge');
+    // Show nudge with space/shift-specific text
+    const nudgeEl = document.getElementById('learn-nudge');
+    if (nudgeEl) {
+      if (item.type === 'space') {
+        nudgeEl.textContent = _bracket === '4-5'
+          ? 'Press the big bar at the bottom!'
+          : 'Press the Space bar!';
+      } else if (item.type === 'shift') {
+        nudgeEl.textContent = _bracket === '4-5'
+          ? 'Hold Shift and press ' + item.key + '!'
+          : 'Hold Shift + ' + item.key;
+      } else {
+        const template = NUDGE_TEXT[_bracket] || NUDGE_TEXT['Adult'];
+        nudgeEl.textContent = template
+          .replace('{pressed}', e.key.toUpperCase())
+          .replace('{target}', item.key);
+      }
+      nudgeEl.hidden = false;
+      if (_nudgeTimeout) clearTimeout(_nudgeTimeout);
+      _nudgeTimeout = setTimeout(hideNudge, 3000);
+    }
+
+    // Re-highlight correct target
+    clearHighlights();
+    if (item.type === 'space') {
+      highlightKey(' ');
+    } else if (item.type === 'shift') {
+      highlightKey('SHIFT');
+      highlightKey(item.key);
+    } else {
+      highlightKey(item.key);
+    }
+  }
+}
 
 // ── Correct / Wrong handlers ─────────────────────────────────────
 
@@ -1109,8 +1317,12 @@ function updateDrillUI() {
 
   // Prompt text
   const promptEl = document.getElementById('learn-prompt');
-  if (promptEl && _targetKey) {
-    promptEl.textContent = buildPromptText(group, _targetKey);
+  if (promptEl) {
+    if (group.id === 'spaceShift' && _spaceShiftCurrent) {
+      promptEl.textContent = getSpaceShiftPrompt(_spaceShiftCurrent);
+    } else if (_targetKey) {
+      promptEl.textContent = buildPromptText(group, _targetKey);
+    }
   }
 
   // Progress text + fill bar
@@ -1280,6 +1492,7 @@ export function startLearn(playerName, ageBracket) {
       topRow: 'locked',
       bottomRow: 'locked',
       combined: 'locked',
+      spaceShift: 'locked',
     };
     savePlayer(_playerName, _playerData);
   }

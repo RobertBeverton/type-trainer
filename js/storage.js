@@ -35,7 +35,8 @@ function createDefaultPlayer(ageBracket) {
       leftRight: 'locked',
       topRow: 'locked',
       bottomRow: 'locked',
-      combined: 'locked'
+      combined: 'locked',
+      spaceShift: 'locked',
     },
     highScore: 0,
     highestStage: 0,
@@ -250,7 +251,8 @@ export function updatePlayerBracket(name, newBracket) {
     leftRight: 'locked',
     topRow: 'locked',
     bottomRow: 'locked',
-    combined: 'locked'
+    combined: 'locked',
+    spaceShift: 'locked',
   };
 
   savePlayer(name, player);
