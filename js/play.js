@@ -151,6 +151,9 @@ function cacheThemeColours() {
 
   // Invalidate danger gradient
   cachedDangerGrad = null;
+
+  // Derive confetti colours from zone palette
+  confettiColours = Object.values(cachedZoneColours);
 }
 
 /** Get the resolved colour for a finger zone. */
@@ -214,13 +217,10 @@ function currentStage() {
 
 
 // ═══════════════════════════════════════════════════════════════════
-// Confetti colours for celebrations
+// Confetti colours — derived from theme's finger zone colours
 // ═══════════════════════════════════════════════════════════════════
 
-const CONFETTI_COLOURS = [
-  '#FF6B6B', '#4ECDC4', '#45B7D1', '#96E6A1',
-  '#DDA0DD', '#F7DC6F', '#FF8C42', '#98D8C8',
-];
+let confettiColours = [];
 
 
 // ═══════════════════════════════════════════════════════════════════
@@ -453,7 +453,7 @@ function spawnConfetti(count) {
       vx: (Math.random() - 0.5) * 4,
       vy: 1 + Math.random() * 3,
       life: 1.5,
-      colour: CONFETTI_COLOURS[i % CONFETTI_COLOURS.length],
+      colour: confettiColours[i % confettiColours.length] || '#FF6B6B',
       size: 4 + Math.random() * 4,
     });
   }
