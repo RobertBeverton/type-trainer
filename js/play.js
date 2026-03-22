@@ -780,38 +780,6 @@ function handleKey(e) {
   // Block input during countdown
   if (gameState.countingDown) return;
 
-  // Tutorial mode key handling
-  if (gameState.tutorialPhase > 0) {
-    if (e.key === 'Escape' && (gameState.bracket === '9-12' || gameState.bracket === 'Adult')) {
-      gameState.tutorialPhase = 0;
-      gameState.items = [];
-      clearHighlights();
-      return;
-    }
-    if (e.key.length !== 1) return;
-    e.preventDefault();
-    const ku = e.key.toUpperCase();
-    if (gameState.items.length > 0 && ku === gameState.items[0].text[0]) {
-      // Correct key
-      gameState.items.splice(0, 1);
-      clearHighlights();
-      playSound('correctKey', 0.5);
-      flashCorrect(ku);
-      spawnParticles(W() / 2, H() / 2, cachedColours.textPrimary || '#fff', 8);
-
-      if (gameState.tutorialPhase === 1) {
-        gameState.popTexts.push({ msg: 'Great!', x: W() / 2, y: H() / 2, startY: H() / 2, life: 1, colour: cachedColours.textPrimary || '#fff' });
-        gameState.tutorialPhase = 2;
-      } else if (gameState.tutorialPhase === 2) {
-        gameState.popTexts.push({ msg: "Let's play!", x: W() / 2, y: H() / 2, startY: H() / 2, life: 1.2, colour: cachedColours.textPrimary || '#fff' });
-        gameState.tutorialPhase = 0;
-        gameState.nextSpawn = performance.now() + 1000;
-      }
-    }
-    // Wrong keys are silently ignored during tutorial (no miss, no life loss, no sound)
-    return;
-  }
-
   // Escape toggles pause
   if (e.key === 'Escape') {
     e.preventDefault();
@@ -1431,81 +1399,6 @@ function loop(now) {
     return; // skip all game logic during countdown
   }
 
-  // Check if tutorial should start (first play for this player)
-  if (gameState.tutorialPhase === 0 && gameState.callbacks && gameState.callbacks.totalGamesPlayed === 0 && !gameState._tutorialDone) {
-    gameState.tutorialPhase = 1;
-    gameState._tutorialDone = true; // prevent re-triggering
-  }
-
-  if (gameState.tutorialPhase > 0) {
-    // During tutorial: only process tutorial items
-    if (gameState.items.length === 0 && gameState.tutorialPhase <= 2) {
-      // Spawn a tutorial letter
-      const stage = currentStage();
-      const letters = stage.letters ? stage.letters.split('') : ['A','S','D','F'];
-      const letter = letters[Math.min(gameState.tutorialPhase - 1, letters.length - 1)];
-      const ov = gameState.overrides;
-      const fontSize = ov.fontLetter;
-      ctx.font = `bold ${fontSize}px ${cachedColours.fontMono || 'Consolas, monospace'}`;
-      const tw = ctx.measureText(letter).width;
-      const speed = (stage.speed || 0.15) * (ov.speedMult || 1) * 0.5; // half speed
-      const zone = getFingerZone(letter);
-      const zoneColour = getResolvedZoneColour(zone);
-      gameState.items.push({
-        text: letter, x: W() / 2 - tw / 2, y: 15,
-        speed, fontSize, zoneColour, zone, typed: 0, tw, spawnTime: performance.now(),
-      });
-    }
-
-    // Draw tutorial items
-    for (let i = gameState.items.length - 1; i >= 0; i--) {
-      const item = gameState.items[i];
-      updateItemPosition(item, H(), 16.67);
-      if (item.y > H() + 20) {
-        // Respawn at top instead of losing a life
-        item.y = 15;
-      }
-      drawItem(item);
-    }
-
-    // Draw tutorial hint text
-    const hintText = gameState.bracket === '4-5' ? 'Press that letter!' : 'Type the falling letter!';
-    ctx.save();
-    ctx.font = `bold 20px ${cachedColours.fontMono || 'sans-serif'}`;
-    ctx.fillStyle = cachedColours.textMuted || '#aaa';
-    ctx.textAlign = 'center';
-    ctx.fillText(hintText, W() / 2, H() * 0.15);
-    ctx.restore();
-
-    // Show skip for 9-12 and Adult
-    if (gameState.bracket === '9-12' || gameState.bracket === 'Adult') {
-      ctx.save();
-      ctx.font = `14px ${cachedColours.fontMono || 'sans-serif'}`;
-      ctx.fillStyle = cachedColours.textMuted || '#888';
-      ctx.textAlign = 'right';
-      ctx.fillText('Press Esc to skip', W() - 20, H() - 20);
-      ctx.restore();
-    }
-
-    // Keyboard hint for young brackets
-    if (gameState.bracket === '4-5' || gameState.bracket === '6-8') {
-      const hintKey = gameState.items.length > 0 ? gameState.items[0].text[0] : null;
-      if (hintKey) {
-        clearHighlights();
-        highlightKey(hintKey);
-      }
-    }
-
-    // Update effects
-    updateParticles(16.67);
-    updatePopTexts(16.67);
-    drawParticles();
-    drawPopTexts();
-
-    raf = requestAnimationFrame(loop);
-    return;
-  }
-
   if (!gameState.paused) {
     // Spawn check — also spawn immediately if screen is empty
     if (!gameState.celebrating) {
@@ -1632,8 +1525,6 @@ export function startGame(bracket, stageList, callbacks) {
     lastFrameTime: 0,
     callbacks: callbacks || null,
     allStagesCleared: false,
-    tutorialPhase: 0,
-    _tutorialDone: false,
     _lastHintKey: null,
     speedPreference: (callbacks && callbacks.speedPreference) || 1.0,
     countingDown: true,
