@@ -68,7 +68,7 @@ function createDefaultPlayer(ageBracket) {
 function sanitiseName(name) {
   if (typeof name !== 'string') return '';
   return name
-    .replace(/[^a-zA-Z0-9 '\-]/g, '')
+    .replace(/[^\p{L}\p{N} '\-]/gu, '')
     .trim()
     .slice(0, MAX_NAME_LENGTH);
 }
