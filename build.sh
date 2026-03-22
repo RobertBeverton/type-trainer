@@ -251,5 +251,10 @@ if grep -q 'type="module"' "$OUTPUT"; then
   echo "  [WARN] Original <script type=\"module\"> still present in output"
 fi
 
+# --- Copy to docs/ for GitHub Pages ---
+mkdir -p docs
+cp "$OUTPUT" docs/index.html
+echo "  Copied to docs/index.html (GitHub Pages)"
+
 echo ""
 echo "Test by opening $OUTPUT in a browser."
