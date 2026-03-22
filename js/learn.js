@@ -1,5 +1,5 @@
 // learn.js — Learn mode: keyboard exploration and finger-position lessons
-// Tasks 11-14: State machine, drill engine, all 5 lesson groups, Lesson Select
+// Tasks 11-14: State machine, drill engine, all 6 lesson groups, Lesson Select
 //
 // Public API:
 //   startLearn(playerName, ageBracket) — enter Learn mode from main.js
@@ -81,7 +81,7 @@ function displayFinger(fingerName, bracket) {
   return fingerName;
 }
 
-/** All 5 lesson groups — authoritative content for Learn mode. */
+/** All 6 lesson groups — authoritative content for Learn mode. */
 const LESSON_GROUPS = [
   {
     id: 'homeRow',
@@ -608,7 +608,7 @@ function restorePlayUI() {
 // ══════════════════════════════════════════════════════════════════
 
 /**
- * Render the Lesson Select grid showing all 5 groups with
+ * Render the Lesson Select grid showing all 6 groups with
  * locked / in_progress / complete visual states.
  * Called on Learn mode entry and after completing a lesson.
  */
@@ -736,7 +736,7 @@ function renderLessonSelect() {
 /**
  * Start (or replay) a lesson group by index.
  * Validates the group is not locked, builds key queue, shows intro.
- * @param {number} groupIndex — 0-4
+ * @param {number} groupIndex — 0-5
  */
 function startLessonGroup(groupIndex) {
   const group = LESSON_GROUPS[groupIndex];
@@ -860,6 +860,10 @@ function renderDrillView() {
     if (group.id === 'homeRow') {
       highlightKey('F');
       highlightKey('J');
+    } else if (group.id === 'spaceShift') {
+      highlightKey(' ');
+      highlightKey('SHIFT');
+      highlightKey('SHIFTRIGHT');
     } else {
       // Highlight all group keys to give a visual preview
       group.keys.forEach(k => highlightKey(k));
@@ -901,7 +905,7 @@ function renderDrillView() {
     // Navigation buttons (appear after 1.5s)
     const btnWrap = mkEl('div', 'learn-celebration-buttons');
 
-    if (group.id === 'combined' || group.id === 'spaceShift') {
+    if (group.id === 'spaceShift') {
       // Last group: "Start Playing!" and "Play Again"
       const goLabel = _bracket === '4-5'
         ? "Let's play the game!"
@@ -1038,7 +1042,12 @@ function transitionToDrill() {
     if (_spaceShiftCurrent.type === 'space') {
       highlightKey(' ');
     } else if (_spaceShiftCurrent.type === 'shift') {
-      highlightKey('SHIFT');
+      const leftHandKeys = ['A', 'S', 'D', 'F'];
+      if (leftHandKeys.includes(_spaceShiftCurrent.key)) {
+        highlightKey('SHIFTRIGHT');
+      } else {
+        highlightKey('SHIFT');
+      }
       highlightKey(_spaceShiftCurrent.key);
     } else {
       highlightKey(_spaceShiftCurrent.key);
@@ -1108,7 +1117,12 @@ function handleSpaceShiftDrillKey(e) {
     if (_spaceShiftCurrent.type === 'space') {
       highlightKey(' ');
     } else if (_spaceShiftCurrent.type === 'shift') {
-      highlightKey('SHIFT');
+      const leftHandKeys = ['A', 'S', 'D', 'F'];
+      if (leftHandKeys.includes(_spaceShiftCurrent.key)) {
+        highlightKey('SHIFTRIGHT');
+      } else {
+        highlightKey('SHIFT');
+      }
       highlightKey(_spaceShiftCurrent.key);
     } else {
       highlightKey(_spaceShiftCurrent.key);
@@ -1144,7 +1158,12 @@ function handleSpaceShiftDrillKey(e) {
     if (item.type === 'space') {
       highlightKey(' ');
     } else if (item.type === 'shift') {
-      highlightKey('SHIFT');
+      const leftHandKeys = ['A', 'S', 'D', 'F'];
+      if (leftHandKeys.includes(item.key)) {
+        highlightKey('SHIFTRIGHT');
+      } else {
+        highlightKey('SHIFT');
+      }
       highlightKey(item.key);
     } else {
       highlightKey(item.key);
