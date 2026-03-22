@@ -10,7 +10,6 @@ import { startGame as startPlayGame, cleanupPlay } from './play.js';
 // play.js exports 'startGame', so the build will use that name directly.
 // main.js's local function is 'enterPlayMode' to avoid collision.
 import './adaptive.js';
-import { startLearn as startLearnMode, cleanupLearn } from './learn.js';
 import { trapFocus, releaseFocus } from './utils.js';
 
 // ---------------------------------------------------------------------------
@@ -20,7 +19,7 @@ import { trapFocus, releaseFocus } from './utils.js';
 /** @type {{ name: string, data: object } | null} */
 let currentPlayer = null;
 
-/** @type {'playerSelect' | 'modeSelect' | 'learn' | 'play'} */
+/** @type {'playerSelect' | 'modeSelect' | 'play'} */
 let appState = 'playerSelect';
 
 // ---------------------------------------------------------------------------
@@ -650,29 +649,9 @@ function selectPlayer(name) {
 // ---------------------------------------------------------------------------
 
 /**
- * Calculate learn progress from a player's learnProgress object.
- * Returns { completed, total } where completed is the number of lessons
- * with status 'complete' and total is the total number of lessons.
- * @param {object} learnProgress
- * @returns {{ completed: number, total: number }}
- */
-function getLearnProgressSummary(learnProgress) {
-  if (!learnProgress) return { completed: 0, total: 5 };
-  const lessons = ['homeRow', 'leftRight', 'topRow', 'bottomRow', 'combined'];
-  let completed = 0;
-  lessons.forEach(key => {
-    if (learnProgress[key] === 'complete') {
-      completed++;
-    }
-  });
-  return { completed, total: lessons.length };
-}
-
-/**
  * Render the mode selection screen into the overlay.
- * Shows Learn and Play buttons with age-adaptive prominence.
- * Learn button shows progress if any lessons completed (Fix W10).
- * Focus management: focuses the prominent button (Fix C2).
+ * Shows difficulty selection and Play button.
+ * Focus management: focuses the Play button (Fix C2).
  */
 function showModeSelect() {
   cleanupAll(); // Fix W4: clean up any active mode
@@ -688,7 +667,6 @@ function showModeSelect() {
   }
 
   const { name, data } = currentPlayer;
-  const bracket = data.ageBracket;
 
   // Greeting
   const heading = el('h2', null, `Hi, ${name}!`);
@@ -804,54 +782,9 @@ function showModeSelect() {
   // Mode buttons container
   const buttonsContainer = el('div', 'mode-select-buttons');
 
-  // --- Learn button ---
-  const learnBtn = document.createElement('button');
-  learnBtn.className = 'mode-btn';
-  learnBtn.setAttribute('type', 'button');
-
-  const learnTitle = el('span', 'mode-btn-title', 'Learn');
-  learnBtn.appendChild(learnTitle);
-
-  // Learn description with progress (Fix W10)
-  const learnProgress = getLearnProgressSummary(data.learnProgress);
-  let learnDescText = 'Explore the keyboard at your own pace';
-  const learnDesc = el('span', 'mode-btn-desc');
-
-  if (learnProgress.completed >= learnProgress.total) {
-    // All complete — show checkmark
-    learnDescText = 'Learn to type \u2714';
-  } else if (learnProgress.completed > 0) {
-    // Partial progress — show count
-    learnDescText = `Learn to type \u2014 ${learnProgress.completed}/${learnProgress.total} complete`;
-  }
-  learnDesc.textContent = learnDescText;
-
-  // Progress dots for partial completion (Fix W10)
-  if (learnProgress.completed > 0 && learnProgress.completed < learnProgress.total) {
-    const dotsContainer = el('span', 'mode-btn-dots');
-    dotsContainer.setAttribute('aria-hidden', 'true');
-    const lessons = ['homeRow', 'leftRight', 'topRow', 'bottomRow', 'combined'];
-    lessons.forEach(key => {
-      const dot = el('span', 'progress-dot');
-      if (data.learnProgress[key] === 'complete') {
-        dot.classList.add('filled');
-      }
-      dotsContainer.appendChild(dot);
-    });
-    learnBtn.appendChild(learnDesc);
-    learnBtn.appendChild(dotsContainer);
-  } else {
-    learnBtn.appendChild(learnDesc);
-  }
-
-  learnBtn.addEventListener('click', () => {
-    appState = 'learn';
-    enterLearnMode();
-  });
-
   // --- Play button ---
   const playBtn = document.createElement('button');
-  playBtn.className = 'mode-btn';
+  playBtn.className = 'mode-btn prominent';
   playBtn.setAttribute('type', 'button');
 
   const playTitle = el('span', 'mode-btn-title', 'Play');
@@ -865,27 +798,7 @@ function showModeSelect() {
     enterPlayMode();
   });
 
-  // --- Prominence logic based on age bracket ---
-  // 4-5 and 6-8: Learn prominent, Play subtle, Learn first
-  // 9-12 and Adult: Play prominent, Learn subtle, Play first
-  let prominentBtn, subtleBtn;
-
-  if (bracket === '4-5' || bracket === '6-8') {
-    learnBtn.classList.add('prominent');
-    playBtn.classList.add('subtle');
-    buttonsContainer.appendChild(learnBtn);
-    buttonsContainer.appendChild(playBtn);
-    prominentBtn = learnBtn;
-    subtleBtn = playBtn;
-  } else {
-    playBtn.classList.add('prominent');
-    learnBtn.classList.add('subtle');
-    buttonsContainer.appendChild(playBtn);
-    buttonsContainer.appendChild(learnBtn);
-    prominentBtn = playBtn;
-    subtleBtn = learnBtn;
-  }
-
+  buttonsContainer.appendChild(playBtn);
   overlay.appendChild(buttonsContainer);
 
   // Switch Player button
@@ -897,21 +810,10 @@ function showModeSelect() {
   });
   overlay.appendChild(switchBtn);
 
-  // Theme toggle button (standalone, for mode select screen)
-  // Focus management (Fix C2): focus the prominent mode button
+  // Focus management (Fix C2): focus the Play button
   requestAnimationFrame(() => {
-    focusElement(prominentBtn);
+    focusElement(playBtn);
   });
-}
-
-// ---------------------------------------------------------------------------
-// Placeholder mode starters (replaced in later tasks)
-// ---------------------------------------------------------------------------
-
-/** Learn mode entry point — delegates to learn.js. */
-function enterLearnMode() {
-  if (!currentPlayer) return;
-  startLearnMode(currentPlayer.name, currentPlayer.data.ageBracket);
 }
 
 /** Start Play mode — resolve stages for bracket, pass callbacks (Fix W10). */
@@ -1012,15 +914,13 @@ function enterPlayMode() {
 function cleanupAll() {
   // Clean up Play mode
   try { cleanupPlay(); } catch (_) { /* play.js may not be initialised */ }
-  // Clean up Learn mode
-  try { cleanupLearn(); } catch (_) { /* learn.js may not be initialised */ }
 }
 
 // ---------------------------------------------------------------------------
 // Expose for cross-module access
 // ---------------------------------------------------------------------------
 
-// Other modules (learn.js, play.js) will need to call back into main
+// play.js needs to call back into main
 // for screen transitions. Expose on window for now.
 window._main = {
   showPlayerSelect,
