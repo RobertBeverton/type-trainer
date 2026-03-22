@@ -25,19 +25,10 @@ function createDefaultData() {
  * For other brackets, homeRow stays "locked" (they skip to play).
  */
 function createDefaultPlayer(ageBracket) {
-  const homeRowStatus = ageBracket === '4-5' ? 'in_progress' : 'locked';
   const defaultTheme = (ageBracket === '4-5' || ageBracket === '6-8') ? 'light' : 'dark';
 
   return {
     ageBracket,
-    learnProgress: {
-      homeRow: homeRowStatus,
-      leftRight: 'locked',
-      topRow: 'locked',
-      bottomRow: 'locked',
-      combined: 'locked',
-      spaceShift: 'locked',
-    },
     highScore: 0,
     highestStage: 0,
     totalGamesPlayed: 0,
@@ -243,18 +234,6 @@ export function updatePlayerBracket(name, newBracket) {
   if (!player) return;
 
   player.ageBracket = newBracket;
-
-  // Reset learn progress to the default for the new bracket
-  const homeRowStatus = newBracket === '4-5' ? 'in_progress' : 'locked';
-  player.learnProgress = {
-    homeRow: homeRowStatus,
-    leftRight: 'locked',
-    topRow: 'locked',
-    bottomRow: 'locked',
-    combined: 'locked',
-    spaceShift: 'locked',
-  };
-
   savePlayer(name, player);
 }
 
