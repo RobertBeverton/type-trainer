@@ -1006,6 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── Global theme toggle (outside game frame) ──
+  updateThemeToggleIcons(document.documentElement.getAttribute('data-theme') || 'light');
   const globalThemeBtn = document.getElementById('global-theme-toggle');
   if (globalThemeBtn) {
     globalThemeBtn.addEventListener('click', toggleTheme);
