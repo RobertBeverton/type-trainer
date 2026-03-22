@@ -745,7 +745,7 @@ body {
   transition: border-color var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
   position: relative;
   overflow: hidden;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   text-align: center;
 }
 
@@ -786,6 +786,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  margin-bottom: 4px;
 }
 
 /* Coloured age bracket pill */

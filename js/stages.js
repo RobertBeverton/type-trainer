@@ -379,8 +379,8 @@ const BRACKET_STAGES = {
 
 const BRACKET_OVERRIDES = {
   "4-5": {
-    speedMult: 0.85,
-    spawnMult: 1.3,
+    speedMult: 1.4,
+    spawnMult: 1.0,
     maxItemsCap: 1,
     livesOverride: 5,
     fontLetter: 36,
