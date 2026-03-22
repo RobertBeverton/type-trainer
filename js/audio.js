@@ -311,7 +311,72 @@ export function playStreakMilestone() {
   });
 }
 
+// ── Countdown Sounds (Task T5) ──────────────────────────────────
+
+/**
+ * Short gentle "boop" — sine wave, 440 Hz, 100ms.
+ * Soft attack/release envelope for countdown ticks (3, 2, 1).
+ */
+export function playCountdownTick() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(440, now);
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.3, now + 0.01);        // 10ms attack to 0.3
+  gain.gain.linearRampToValueAtTime(0, now + 0.1);           // fade to 0 over 90ms
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 0.1);
+}
+
+/**
+ * Brighter, slightly higher "go" tone — sine wave, 660 Hz, 150ms.
+ * More energetic than the tick for the final "Go!" moment.
+ */
+export function playCountdownGo() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(660, now);
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.4, now + 0.01);        // 10ms attack to 0.4
+  gain.gain.linearRampToValueAtTime(0, now + 0.15);           // fade to 0 over 140ms
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 0.15);
+}
+
 // ── playSound Dispatcher (Addendum 2 Fix W9) ──────────────────
+
+/** @type {Object<string, Function>} Module-level sound lookup table */
+const soundMap = {
+  correctKey:      playCorrectKey,
+  wordComplete:    playWordComplete,
+  wrongKey:        playWrongKey,
+  stageClear:      playStageClear,
+  gameOver:        playGameOver,
+  lifeLost:        playLifeLost,
+  learnCorrect:    playLearnCorrect,
+  learnNudge:      playLearnNudge,
+  streakMilestone: playStreakMilestone,
+  countdownTick:   playCountdownTick,
+  countdownGo:     playCountdownGo,
+};
 
 /**
  * Dispatch a sound by name. Allows consumers to call either
@@ -322,18 +387,6 @@ export function playStreakMilestone() {
  * @returns {void}
  */
 export function playSound(name, ...args) {
-  const soundMap = {
-    correctKey:      playCorrectKey,
-    wordComplete:    playWordComplete,
-    wrongKey:        playWrongKey,
-    stageClear:      playStageClear,
-    gameOver:        playGameOver,
-    lifeLost:        playLifeLost,
-    learnCorrect:    playLearnCorrect,
-    learnNudge:      playLearnNudge,
-    streakMilestone: playStreakMilestone,
-  };
-
   const fn = soundMap[name];
   if (fn) {
     fn(...args);

@@ -41,12 +41,14 @@ const YOUNG_FILTER = new Set([
   "gibbet", "musket", "punish", "demise", "captain", "emperor", "fiction",
   "husband", "quantum", "company", "problem", "product", "program", "publish",
   "protect", "content", "subject",
+  "rob", "mob", "sob", "slug", "spit", "grim", "skull", "filth", "thrash",
 ]);
 
 // Extra simple words to add for 4-5 bracket replacements
 const YOUNG_EXTRAS = [
   "dog", "mum", "dad", "sun", "cup", "pig", "leg", "cat", "hat", "top",
   "pop", "hop", "got", "big", "hug", "fun", "bat",
+  "row", "map", "sun", "snug", "spin", "grin", "shell", "flour", "thread",
 ];
 
 // ── Shared Stage Pool ────────────────────────────────────────────
@@ -205,11 +207,11 @@ const STAGE_POOL = {
     words: [
       "stamp", "brand", "craft", "flick", "flint", "frost", "grunt", "plant", "print", "scalp",
       "shift", "shrub", "skunk", "slant", "smart", "spent", "stand", "stark", "stink", "stomp",
-      "stump", "swift", "swamp", "swept", "tramp", "trend", "trunk", "twist", "whisk", "blast",
+      "stump", "swift", "swamp", "swept", "trail", "trend", "trunk", "twist", "whisk", "blast",
       "clamp", "cramp", "draft", "drank", "dwelt", "flash", "flask", "grand", "grasp", "grind",
-      "plank", "plump", "quest", "shrug", "skimp", "skull", "slump", "smash", "snack", "spank",
+      "plank", "plump", "quest", "shrug", "skimp", "skull", "slump", "smash", "snack", "stamp",
       "spill", "split", "squat", "stalk", "sting", "stock", "strap", "strip", "strum", "swirl",
-      "think", "thump", "train", "trash", "trick", "truck", "trump", "blank", "blink", "block",
+      "think", "thump", "train", "trash", "trick", "truck", "trunk", "blank", "blink", "block",
       "blunt", "brisk", "chunk", "cleft", "cling", "cloth", "crust", "drift", "drink", "dwell",
       "filth", "flank", "flock", "flush", "graft", "grump", "hatch", "knelt", "match", "notch",
       "patch", "pinch", "pluck", "prank", "prowl", "punch", "sling", "spelt", "stack", "staff",
@@ -223,11 +225,11 @@ const STAGE_POOL = {
     words: [
       "stamp", "brand", "craft", "flick", "flint", "frost", "grunt", "plant", "print", "scalp",
       "shift", "shrub", "skunk", "slant", "smart", "spent", "stand", "stark", "stink", "stomp",
-      "stump", "swift", "swamp", "swept", "tramp", "trend", "trunk", "twist", "whisk", "blast",
+      "stump", "swift", "swamp", "swept", "trail", "trend", "trunk", "twist", "whisk", "blast",
       "clamp", "cramp", "draft", "drank", "dwelt", "flash", "flask", "grand", "grasp", "grind",
-      "plank", "plump", "quest", "shrug", "skimp", "skull", "slump", "smash", "snack", "spank",
+      "plank", "plump", "quest", "shrug", "skimp", "skull", "slump", "smash", "snack", "stamp",
       "spill", "split", "squat", "stalk", "sting", "stock", "strap", "strip", "strum", "swirl",
-      "think", "thump", "train", "trash", "trick", "truck", "trump", "blank", "blink", "block",
+      "think", "thump", "train", "trash", "trick", "truck", "trunk", "blank", "blink", "block",
       "blunt", "brisk", "chunk", "cleft", "cling", "cloth", "crust", "drift", "drink", "dwell",
       "filth", "flank", "flock", "flush", "graft", "grump", "hatch", "knelt", "match", "notch",
       "patch", "pinch", "pluck", "prank", "prowl", "punch", "sling", "spelt", "stack", "staff",

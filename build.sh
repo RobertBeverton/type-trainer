@@ -16,12 +16,13 @@ OUTPUT="$DIST_DIR/typing-game.html"
 
 # JS files in dependency order. Files with no dependencies on other app modules
 # come first. Files that import from earlier files come later.
-# Order: audio (standalone) -> storage (standalone) -> stages (standalone) ->
-#        adaptive (standalone) -> keyboard (standalone) ->
+# Order: utils (shared helpers) -> audio (standalone) -> storage (standalone) ->
+#        stages (standalone) -> adaptive (standalone) -> keyboard (standalone) ->
 #        learn (uses keyboard, audio, storage) ->
 #        play (uses keyboard, audio, stages, storage, adaptive) ->
 #        main (orchestrator, uses everything)
 JS_FILES=(
+  "js/utils.js"
   "js/audio.js"
   "js/storage.js"
   "js/stages.js"
@@ -130,10 +131,10 @@ echo "Fixing import aliases..."
 # Use sed to replace alias references in the concatenated JS
 # startPlayGame -> startGame (play.js exports startGame)
 # startLearnMode -> startLearn (learn.js exports startLearn)
-sed -i \
+sed -i.bak \
   -e 's/startPlayGame(/startGame(/g' \
   -e 's/startLearnMode(/startLearn(/g' \
-  "$JS_TEMP"
+  "$JS_TEMP" && rm -f "$JS_TEMP.bak"
 
 # Verify the aliases were replaced (only check non-comment lines)
 if grep -v '^\s*//' "$JS_TEMP" | grep -q 'startPlayGame('; then

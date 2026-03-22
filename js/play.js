@@ -21,6 +21,9 @@ import {
   recordInput, getSpeedMultiplier, getWeakKeys,
   biasPoolTowardWeakKeys, resetAdaptive,
 } from './adaptive.js';
+import { trapFocus, releaseFocus } from './utils.js';
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
 // ═══════════════════════════════════════════════════════════════════
@@ -35,6 +38,7 @@ let hudEls = {};
 
 let playDOMReady = false;
 let resizeObserver = null;
+let themeObserver = null;
 
 /** Initialise DOM references on first Play mode entry. */
 function initPlayDOM() {
@@ -61,7 +65,14 @@ function initPlayDOM() {
     hud:         document.getElementById('hud'),
     stageBar:    document.getElementById('stage-bar'),
     typedRow:    document.getElementById('typed-row'),
+    pauseBtn:    document.getElementById('pause-btn'),
   };
+
+  if (hudEls.pauseBtn) {
+    hudEls.pauseBtn.addEventListener('click', () => {
+      if (gameState.active && !gameState.paused && !gameState.countingDown) pauseGame();
+    });
+  }
 
   // Set up resize handling
   resizeObserver = new ResizeObserver(handleResize);
@@ -69,6 +80,11 @@ function initPlayDOM() {
 
   // Attach overlay button listeners ONCE (Fix C3)
   initOverlayListeners();
+
+  if (!themeObserver) {
+    themeObserver = new MutationObserver(() => cacheThemeColours());
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
 
   playDOMReady = true;
 }
@@ -256,17 +272,25 @@ function drawItem(item) {
   ctx.stroke();
   ctx.globalAlpha = 1.0;
 
+  // Text stroke for contrast (M8)
+  ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+  ctx.lineWidth = 3;
+  ctx.lineJoin = 'round';
+
   // Text rendering
   if (typed > 0) {
     // Typed portion: dimmed
     const done = text.slice(0, typed);
     const rest = text.slice(typed);
     const dw = ctx.measureText(done).width;
+    ctx.strokeText(done, x, y);
     ctx.fillStyle = 'rgba(255,255,255,0.35)';
     ctx.fillText(done, x, y);
+    ctx.strokeText(rest, x + dw, y);
     ctx.fillStyle = '#FFFFFF';
     ctx.fillText(rest, x + dw, y);
   } else {
+    ctx.strokeText(text, x, y);
     ctx.fillStyle = '#FFFFFF';
     ctx.fillText(text, x, y);
   }
@@ -389,6 +413,7 @@ function spawnItem(now) {
 // ═══════════════════════════════════════════════════════════════════
 
 function spawnParticles(cx, cy, colour, count) {
+  if (prefersReducedMotion) return;
   for (let i = 0; i < count; i++) {
     const angle = (Math.PI * 2 * i) / count + Math.random() * 0.4;
     const vel = 1.5 + Math.random() * 3;
@@ -405,6 +430,7 @@ function spawnParticles(cx, cy, colour, count) {
 }
 
 function spawnConfetti(count) {
+  if (prefersReducedMotion) return;
   const w = W();
   for (let i = 0; i < count; i++) {
     gameState.particles.push({
@@ -421,16 +447,14 @@ function spawnConfetti(count) {
 
 function updateParticles(deltaMs) {
   const dtFactor = deltaMs / 16.67;
-  for (let i = gameState.particles.length - 1; i >= 0; i--) {
+  for (let i = 0; i < gameState.particles.length; i++) {
     const p = gameState.particles[i];
     p.x += p.vx * dtFactor;
     p.y += p.vy * dtFactor;
     p.vy += 0.12 * dtFactor;  // gravity
     p.life -= 0.04 * dtFactor;
-    if (p.life <= 0) {
-      gameState.particles.splice(i, 1);
-    }
   }
+  gameState.particles = gameState.particles.filter(p => p.life > 0);
 }
 
 function drawParticles() {
@@ -457,14 +481,12 @@ function addPopText(msg, x, y, colour) {
 
 function updatePopTexts(deltaMs) {
   const dtFactor = deltaMs / 16.67;
-  for (let i = gameState.popTexts.length - 1; i >= 0; i--) {
+  for (let i = 0; i < gameState.popTexts.length; i++) {
     const pt = gameState.popTexts[i];
     pt.y -= 1.2 * dtFactor;
     pt.life -= 0.025 * dtFactor;
-    if (pt.life <= 0) {
-      gameState.popTexts.splice(i, 1);
-    }
   }
+  gameState.popTexts = gameState.popTexts.filter(p => p.life > 0);
 }
 
 function drawPopTexts() {
@@ -485,6 +507,7 @@ function drawPopTexts() {
 // ═══════════════════════════════════════════════════════════════════
 
 function drawWrongFlash(w, h) {
+  if (prefersReducedMotion) return;
   if (gameState.wrongFlash > 0) {
     ctx.fillStyle = `rgba(255, 50, 50, ${gameState.wrongFlash * 0.02})`;
     ctx.fillRect(0, 0, w, h);
@@ -669,9 +692,10 @@ function removeItem(idx, success) {
     gameState.wrongFlash = 8;
     playSound('lifeLost');
 
-    // "Almost!" feedback if 50%+ was typed
+    // "Almost!" / "So close!" feedback if 50%+ was typed (M9)
     if (item.typed > 0 && item.typed / item.text.length >= 0.5) {
-      addPopText('Almost!', item.x + item.tw / 2, item.y - 20, '#F59E0B');
+      const almostMsg = gameState.bracket === '4-5' ? 'So close!' : 'Almost!';
+      addPopText(almostMsg, item.x + item.tw / 2, item.y - 20, '#F59E0B');
     }
 
     // Keyboard adaptive fade — streak reset
@@ -735,6 +759,41 @@ function handleKey(e) {
 
   // O6: Ignore keys during stage celebrations
   if (gameState.celebrating) return;
+
+  // Block input during countdown
+  if (gameState.countingDown) return;
+
+  // Tutorial mode key handling
+  if (gameState.tutorialPhase > 0) {
+    if (e.key === 'Escape' && (gameState.bracket === '9-12' || gameState.bracket === 'Adult')) {
+      gameState.tutorialPhase = 0;
+      gameState.items = [];
+      clearHighlights();
+      return;
+    }
+    if (e.key.length !== 1) return;
+    e.preventDefault();
+    const ku = e.key.toUpperCase();
+    if (gameState.items.length > 0 && ku === gameState.items[0].text[0]) {
+      // Correct key
+      gameState.items.splice(0, 1);
+      clearHighlights();
+      playSound('correctKey', 0.5);
+      flashCorrect(ku);
+      spawnParticles(W() / 2, H() / 2, cachedColours.textPrimary || '#fff', 8);
+
+      if (gameState.tutorialPhase === 1) {
+        gameState.popTexts.push({ msg: 'Great!', x: W() / 2, y: H() / 2, startY: H() / 2, life: 1, colour: cachedColours.textPrimary || '#fff' });
+        gameState.tutorialPhase = 2;
+      } else if (gameState.tutorialPhase === 2) {
+        gameState.popTexts.push({ msg: "Let's play!", x: W() / 2, y: H() / 2, startY: H() / 2, life: 1.2, colour: cachedColours.textPrimary || '#fff' });
+        gameState.tutorialPhase = 0;
+        gameState.nextSpawn = performance.now() + 1000;
+      }
+    }
+    // Wrong keys are silently ignored during tutorial (no miss, no life loss, no sound)
+    return;
+  }
 
   // Escape toggles pause
   if (e.key === 'Escape') {
@@ -938,20 +997,24 @@ function showPauseOverlay() {
   h2.textContent = 'Paused';
   overlay.appendChild(h2);
 
-  const p = document.createElement('p');
-  p.textContent = 'Press Esc or tap Resume to continue';
-  overlay.appendChild(p);
+  const isYoung = gameState.bracket === '4-5';
+
+  if (gameState.bracket !== '4-5') {
+    const p = document.createElement('p');
+    p.textContent = 'Press Esc or tap Resume to continue';
+    overlay.appendChild(p);
+  }
 
   const resumeBtn = document.createElement('button');
   resumeBtn.className = 'btn btn-primary btn-lg';
-  resumeBtn.textContent = 'RESUME';
+  resumeBtn.textContent = isYoung ? '▶ Play' : 'Resume';
   resumeBtn.id = 'pause-resume-btn';
   resumeBtn.addEventListener('click', () => resumeGame(), { once: true });
   overlay.appendChild(resumeBtn);
 
   const quitBtn = document.createElement('button');
   quitBtn.className = 'btn btn-secondary btn-sm';
-  quitBtn.textContent = 'QUIT TO MENU';
+  quitBtn.textContent = isYoung ? 'Stop playing' : 'Back to Menu';
   quitBtn.addEventListener('click', () => quitToMenu(), { once: true });
   overlay.appendChild(quitBtn);
 
@@ -959,6 +1022,9 @@ function showPauseOverlay() {
   requestAnimationFrame(() => {
     resumeBtn.focus();
   });
+
+  // Trap focus within pause overlay
+  trapFocus(overlay);
 }
 
 function hidePauseOverlay() {
@@ -985,7 +1051,7 @@ function getGameOverTitle() {
   } else if (bracket === '6-8') {
     return cleared ? 'Brilliant!' : 'Well done!';
   } else if (bracket === '9-12') {
-    return cleared ? 'You did it!' : 'Game Over';
+    return cleared ? 'You did it!' : 'Good effort!';
   } else {
     return cleared ? 'Complete!' : 'Game Over';
   }
@@ -1023,24 +1089,62 @@ function showGameOverOverlay(stats) {
     overlay.appendChild(banner);
   }
 
-  // Stats container
+  // ── WPM calculation (AD6) ──
+  const elapsedMs = performance.now() - gameState.startTime;
+  const elapsedMin = elapsedMs / 60000;
+  const wpm = elapsedMin > 0 ? Math.round((sessionStats.totalCorrect / 5) / elapsedMin) : 0;
+
+  // ── Age-adapted stats (AD10) ──
+  const bracket = gameState.bracket;
   const statsDiv = document.createElement('div');
   statsDiv.className = 'gameover-stats';
   statsDiv.setAttribute('aria-live', 'polite');
 
-  const accuracy = Math.round(stats.accuracy * 100);
+  const accuracy = stats.totalKeysPressed > 0
+    ? stats.totalCorrect / stats.totalKeysPressed
+    : 0;
+  const accuracyPct = Math.round(accuracy * 100);
   const fastest = stats.fastestWord
     ? `${stats.fastestWord.word} (${(stats.fastestWord.ms / 1000).toFixed(1)}s)`
     : '--';
+  const stageName = currentStage() ? currentStage().label : '';
+
+  let lines = [];
+
+  if (bracket === '4-5') {
+    // 4-5: simplified, encouraging stats only
+    const starRow = document.createElement('div');
+    starRow.className = 'gameover-stat-row gameover-star';
+    starRow.textContent = '\u2605';
+    starRow.style.fontSize = '3rem';
+    starRow.style.textAlign = 'center';
+    statsDiv.appendChild(starRow);
+
+    lines = [
+      { label: 'You got', value: `${stats.totalCorrect} letters right!` },
+      { label: 'You reached', value: `Stage ${stats.stageReached} — ${stageName}` },
+    ];
+  } else if (bracket === '6-8') {
+    // 6-8: friendly phrasing, no weak keys
+    const outOfTen = Math.round(accuracy * 10);
+    lines = [
+      { label: 'Stage reached', value: `${stats.stageReached}/${gameState.stages.length}` },
+      { label: 'Accuracy', value: `You got ${outOfTen} out of every 10 right!` },
+      { label: 'Fastest word', value: fastest },
+      { label: 'Speed', value: `${wpm} words per minute` },
+    ];
+  } else {
+    // 9-12 / Adult: full stats
+    lines = [
+      { label: 'Stage reached', value: `${stats.stageReached}/${gameState.stages.length}` },
+      { label: 'Accuracy', value: `${accuracyPct}%` },
+      { label: 'Fastest word', value: fastest },
+      { label: 'Longest streak', value: `${stats.longestStreak}` },
+      { label: 'WPM', value: `${wpm}` },
+    ];
+  }
 
   // Use textContent for safety (Fix W1 from review 2)
-  const lines = [
-    { label: 'Stage reached', value: `${stats.stageReached}/${gameState.stages.length}` },
-    { label: 'Accuracy', value: `${accuracy}%` },
-    { label: 'Fastest word', value: fastest },
-    { label: 'Longest streak', value: `${stats.longestStreak}` },
-  ];
-
   for (const line of lines) {
     const row = document.createElement('div');
     row.className = 'gameover-stat-row';
@@ -1056,8 +1160,8 @@ function showGameOverOverlay(stats) {
 
   overlay.appendChild(statsDiv);
 
-  // Weak keys section — rendered as badge elements (Task 20)
-  if (stats.weakKeys.length > 0) {
+  // Weak keys section — only for 9-12 and Adult brackets (Task 20 / AD10)
+  if (bracket !== '4-5' && bracket !== '6-8' && stats.weakKeys.length > 0) {
     const weakSection = document.createElement('div');
     weakSection.className = 'stats-section weak-keys-section';
     const weakTitle = document.createElement('h3');
@@ -1079,8 +1183,9 @@ function showGameOverOverlay(stats) {
   // Play Again button
   const playAgainBtn = document.createElement('button');
   playAgainBtn.className = 'btn btn-primary btn-lg';
-  playAgainBtn.textContent = 'PLAY AGAIN';
+  playAgainBtn.textContent = 'Play Again';
   playAgainBtn.addEventListener('click', () => {
+    releaseFocus();
     hideGameOverOverlay();
     startGame(gameState.bracket, gameState.stages, gameState.callbacks);
   }, { once: true });
@@ -1089,8 +1194,9 @@ function showGameOverOverlay(stats) {
   // Back to Menu button
   const menuBtn = document.createElement('button');
   menuBtn.className = 'btn btn-secondary btn-sm';
-  menuBtn.textContent = 'BACK TO MENU';
+  menuBtn.textContent = 'Back to Menu';
   menuBtn.addEventListener('click', () => {
+    releaseFocus();
     hideGameOverOverlay();
     quitToMenu();
   }, { once: true });
@@ -1100,6 +1206,9 @@ function showGameOverOverlay(stats) {
   requestAnimationFrame(() => {
     playAgainBtn.focus();
   });
+
+  // Trap focus within game-over overlay
+  trapFocus(overlay);
 }
 
 function hideGameOverOverlay() {
@@ -1173,12 +1282,13 @@ function endGame() {
       drawPopTexts();
       frames++;
       if (frames < 90) { // ~1.5 seconds of confetti
-        requestAnimationFrame(victoryLoop);
+        victoryRaf = requestAnimationFrame(victoryLoop);
       } else {
+        victoryRaf = null;
         showGameOverOverlay(stats);
       }
     }
-    requestAnimationFrame(victoryLoop);
+    victoryRaf = requestAnimationFrame(victoryLoop);
   } else {
     showGameOverOverlay(stats);
   }
@@ -1190,6 +1300,7 @@ function endGame() {
 // ═══════════════════════════════════════════════════════════════════
 
 let raf = null;
+let victoryRaf = null;
 
 function loop(now) {
   if (!gameState.active) return;
@@ -1200,6 +1311,137 @@ function loop(now) {
 
   // Draw background
   drawBackground(w, h);
+
+  // Countdown phase — draw numerals, block spawning and input
+  if (gameState.countingDown) {
+    const elapsed = now - gameState.countdownStart;
+    const bracket = gameState.bracket;
+
+    // Bracket-specific timing (ms per step)
+    let stepMs, steps;
+    if (bracket === '4-5') {
+      stepMs = 1500; // 1.5s intervals
+      steps = ['3', '2', '1', '\u2605']; // star instead of GO
+    } else if (bracket === '6-8') {
+      stepMs = 1000;
+      steps = ['3', '2', '1', 'GO!'];
+    } else {
+      stepMs = 750;
+      steps = ['3', '2', '1', 'GO!'];
+    }
+
+    const totalDuration = stepMs * steps.length;
+    const currentStepIdx = Math.min(Math.floor(elapsed / stepMs), steps.length - 1);
+
+    // Play sound on step transitions
+    if (currentStepIdx !== gameState._lastCountdownStep) {
+      gameState._lastCountdownStep = currentStepIdx;
+      if (currentStepIdx < steps.length - 1) {
+        playSound('countdownTick');
+      } else {
+        playSound('countdownGo');
+      }
+    }
+
+    // Draw the current countdown symbol
+    if (elapsed < totalDuration + 500) { // show last symbol for 500ms extra
+      const symbol = steps[currentStepIdx];
+      const fontSize = bracket === '4-5' ? 96 : 72;
+      ctx.save();
+      ctx.font = `bold ${fontSize}px ${cachedColours.fontMono || 'Consolas, monospace'}`;
+      ctx.fillStyle = cachedColours.textPrimary || '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.globalAlpha = 1.0;
+      ctx.fillText(symbol, w / 2, h / 2);
+      ctx.restore();
+    }
+
+    // End countdown
+    if (elapsed >= totalDuration + 500) {
+      gameState.countingDown = false;
+      gameState.startTime = performance.now(); // for WPM
+      gameState.nextSpawn = performance.now() + 1500; // buffer before first item
+    }
+
+    raf = requestAnimationFrame(loop);
+    return; // skip all game logic during countdown
+  }
+
+  // Check if tutorial should start (first play for this player)
+  if (gameState.tutorialPhase === 0 && gameState.callbacks && gameState.callbacks.totalGamesPlayed === 0 && !gameState._tutorialDone) {
+    gameState.tutorialPhase = 1;
+    gameState._tutorialDone = true; // prevent re-triggering
+  }
+
+  if (gameState.tutorialPhase > 0) {
+    // During tutorial: only process tutorial items
+    if (gameState.items.length === 0 && gameState.tutorialPhase <= 2) {
+      // Spawn a tutorial letter
+      const stage = currentStage();
+      const letters = stage.letters ? stage.letters.split('') : ['A','S','D','F'];
+      const letter = letters[Math.min(gameState.tutorialPhase - 1, letters.length - 1)];
+      const ov = gameState.overrides;
+      const fontSize = ov.fontLetter;
+      ctx.font = `bold ${fontSize}px ${cachedColours.fontMono || 'Consolas, monospace'}`;
+      const tw = ctx.measureText(letter).width;
+      const speed = (stage.speed || 0.15) * (ov.speedMult || 1) * 0.5; // half speed
+      const zone = getFingerZone(letter);
+      const zoneColour = getResolvedZoneColour(zone);
+      gameState.items.push({
+        text: letter, x: W() / 2 - tw / 2, y: 15,
+        speed, fontSize, zoneColour, zone, typed: 0, tw, spawnTime: performance.now(),
+      });
+    }
+
+    // Draw tutorial items
+    for (let i = gameState.items.length - 1; i >= 0; i--) {
+      const item = gameState.items[i];
+      updateItemPosition(item, H(), 16.67);
+      if (item.y > H() + 20) {
+        // Respawn at top instead of losing a life
+        item.y = 15;
+      }
+      drawItem(item);
+    }
+
+    // Draw tutorial hint text
+    const hintText = gameState.bracket === '4-5' ? 'Press that letter!' : 'Type the falling letter!';
+    ctx.save();
+    ctx.font = `bold 20px ${cachedColours.fontMono || 'sans-serif'}`;
+    ctx.fillStyle = cachedColours.textMuted || '#aaa';
+    ctx.textAlign = 'center';
+    ctx.fillText(hintText, W() / 2, H() * 0.15);
+    ctx.restore();
+
+    // Show skip for 9-12 and Adult
+    if (gameState.bracket === '9-12' || gameState.bracket === 'Adult') {
+      ctx.save();
+      ctx.font = `14px ${cachedColours.fontMono || 'sans-serif'}`;
+      ctx.fillStyle = cachedColours.textMuted || '#888';
+      ctx.textAlign = 'right';
+      ctx.fillText('Press Esc to skip', W() - 20, H() - 20);
+      ctx.restore();
+    }
+
+    // Keyboard hint for young brackets
+    if (gameState.bracket === '4-5' || gameState.bracket === '6-8') {
+      const hintKey = gameState.items.length > 0 ? gameState.items[0].text[0] : null;
+      if (hintKey) {
+        clearHighlights();
+        highlightKey(hintKey);
+      }
+    }
+
+    // Update effects
+    updateParticles(16.67);
+    updatePopTexts(16.67);
+    drawParticles();
+    drawPopTexts();
+
+    raf = requestAnimationFrame(loop);
+    return;
+  }
 
   if (!gameState.paused) {
     // Spawn check — also spawn immediately if screen is empty
@@ -1268,10 +1510,12 @@ function resumeGame() {
   if (!gameState.paused) return;
   gameState.paused = false;
   gameState.lastFrameTime = performance.now(); // Prevent delta spike
+  releaseFocus();
   hidePauseOverlay();
 }
 
 function quitToMenu() {
+  releaseFocus();
   cleanupPlay();
   if (gameState.callbacks && gameState.callbacks.onQuit) {
     gameState.callbacks.onQuit();
@@ -1290,6 +1534,9 @@ function quitToMenu() {
  * @param {object} callbacks - { onQuit, getPlayerName, onGameOver }
  */
 export function startGame(bracket, stageList, callbacks) {
+  // Cancel any lingering victory confetti loop (Fix C2)
+  if (victoryRaf) { cancelAnimationFrame(victoryRaf); victoryRaf = null; }
+
   // Lazy DOM init (Fix C2)
   initPlayDOM();
 
@@ -1319,11 +1566,17 @@ export function startGame(bracket, stageList, callbacks) {
     stages: stageList,
     bracket,
     overrides,
-    nextSpawn: performance.now() + (bracket === '4-5' ? 800 : 2000),
+    nextSpawn: 0, // set properly when countdown ends
     lastFrameTime: 0,
     callbacks: callbacks || null,
     allStagesCleared: false,
+    tutorialPhase: 0,
+    _tutorialDone: false,
     _lastHintKey: null,
+    countingDown: true,
+    countdownStart: 0, // set after loop starts
+    _lastCountdownStep: -1,
+    startTime: 0, // for WPM tracking, set when countdown ends
   });
 
   // Reset session stats
@@ -1353,6 +1606,24 @@ export function startGame(bracket, stageList, callbacks) {
   // Spotlight mode for 4-5: dims all keys except the target
   setSpotlightMode(bracket === '4-5');
 
+  // Show and style pause button per bracket
+  if (hudEls.pauseBtn) {
+    hudEls.pauseBtn.style.display = '';
+    hudEls.pauseBtn.className = 'hud-btn'; // reset classes
+    hudEls.pauseBtn.textContent = '⏸';
+    if (bracket === '4-5') {
+      hudEls.pauseBtn.classList.add('pause-btn--large');
+    } else if (bracket === '6-8') {
+      hudEls.pauseBtn.classList.add('pause-btn--labelled');
+      hudEls.pauseBtn.textContent = '⏸ Pause';
+    }
+    // First-play pulse
+    if (callbacks && callbacks.totalGamesPlayed === 0) {
+      hudEls.pauseBtn.classList.add('pause-btn--pulse');
+      setTimeout(() => hudEls.pauseBtn.classList.remove('pause-btn--pulse'), 2000);
+    }
+  }
+
   // Resize canvas to current dimensions
   handleResize();
 
@@ -1366,6 +1637,7 @@ export function startGame(bracket, stageList, callbacks) {
   // Start the game loop
   if (raf) cancelAnimationFrame(raf);
   raf = requestAnimationFrame(loop);
+  gameState.countdownStart = performance.now();
 }
 
 /**
@@ -1373,6 +1645,8 @@ export function startGame(bracket, stageList, callbacks) {
  * Called by main.js during mode switches.
  */
 export function cleanupPlay() {
+  if (victoryRaf) { cancelAnimationFrame(victoryRaf); victoryRaf = null; }
+
   gameState.active = false;
   gameState.paused = false;
   gameState.celebrating = false;
@@ -1405,6 +1679,11 @@ export function cleanupPlay() {
   if (hudEls.typedDisplay) {
     hudEls.typedDisplay.textContent = '';
   }
+
+  // Hide pause button
+  if (hudEls.pauseBtn) hudEls.pauseBtn.style.display = 'none';
+
+  if (themeObserver) { themeObserver.disconnect(); themeObserver = null; }
 }
 
 /**

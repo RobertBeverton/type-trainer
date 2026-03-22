@@ -10,6 +10,7 @@ import {
   initKeyboard, highlightKey, clearHighlights, flashCorrect, showKeyboard,
 } from './keyboard.js';
 import { getPlayer, savePlayer } from './storage.js';
+import { trapFocus, releaseFocus } from './utils.js';
 
 
 // ══════════════════════════════════════════════════════════════════
@@ -405,9 +406,23 @@ function shuffle(arr) {
  */
 function buildKeyQueue(group) {
   const reps = group.repetitions || 2;
+
+  // AD8: For 4-5 bracket, filter keys to reduce lesson length
+  let keys = group.keys;
+  if (_bracket === '4-5') {
+    if (group.id === 'homeRow') {
+      // Remove semicolon — 7 keys × 3 reps = 21 presses
+      keys = keys.filter(k => k !== ';');
+    } else if (group.id === 'leftRight') {
+      // Keep home-row + top-row only (skip bottom-row keys)
+      const bottomRow = ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/'];
+      keys = keys.filter(k => !bottomRow.includes(k));
+    }
+  }
+
   let queue = [];
   for (let r = 0; r < reps; r++) {
-    queue = queue.concat(group.keys);
+    queue = queue.concat(keys);
   }
   shuffle(queue);
 
@@ -723,6 +738,7 @@ function renderDrillView() {
   const promptArea = mkEl('div', 'learn-prompt-area');
 
   const promptEl = mkEl('p', 'learn-prompt-text');
+  if (_bracket === '4-5') promptEl.classList.add('learn-prompt--young');
   promptEl.id = 'learn-prompt';
   promptEl.setAttribute('aria-live', 'polite');
 
@@ -739,7 +755,7 @@ function renderDrillView() {
 
     const subPrompt = mkEl('p', 'learn-sub-prompt');
     subPrompt.textContent = _bracket === '4-5'
-      ? 'Press anything to begin!'
+      ? 'Press any key on the keyboard to begin!'
       : 'Press any key to start';
 
     promptArea.appendChild(promptEl);
@@ -794,6 +810,7 @@ function renderDrillView() {
         : 'Start Playing!';
       const goBtn = mkEl('button', ['btn', 'btn-primary', 'btn-lg'], goLabel);
       goBtn.addEventListener('click', () => {
+        releaseFocus();
         cleanupLearn();
         if (window._main && window._main.showModeSelect) {
           window._main.showModeSelect();
@@ -802,16 +819,25 @@ function renderDrillView() {
       btnWrap.appendChild(goBtn);
 
       const replayBtn = mkEl('button', ['btn', 'btn-secondary'], 'Play Again');
-      replayBtn.addEventListener('click', () => startLessonGroup(_currentGroupIndex));
+      replayBtn.addEventListener('click', () => {
+        releaseFocus();
+        startLessonGroup(_currentGroupIndex);
+      });
       btnWrap.appendChild(replayBtn);
     } else {
       // Not last: "Continue" and "Replay"
       const contBtn = mkEl('button', ['btn', 'btn-primary', 'btn-lg'], 'Continue');
-      contBtn.addEventListener('click', () => renderLessonSelect());
+      contBtn.addEventListener('click', () => {
+        releaseFocus();
+        renderLessonSelect();
+      });
       btnWrap.appendChild(contBtn);
 
       const replayBtn = mkEl('button', ['btn', 'btn-secondary'], 'Replay');
-      replayBtn.addEventListener('click', () => startLessonGroup(_currentGroupIndex));
+      replayBtn.addEventListener('click', () => {
+        releaseFocus();
+        startLessonGroup(_currentGroupIndex);
+      });
       btnWrap.appendChild(replayBtn);
     }
 
@@ -819,10 +845,13 @@ function renderDrillView() {
     btnWrap.style.opacity = '0';
     promptArea.appendChild(btnWrap);
 
+    // M6: Spawn CSS confetti on celebration
+    requestAnimationFrame(() => spawnLearnConfetti(_learnArea));
+
     setTimeout(() => {
       btnWrap.style.transition = 'opacity 0.3s ease';
       btnWrap.style.opacity = '1';
-      focusEl(btnWrap.querySelector('.btn-primary'));
+      trapFocus(btnWrap);
     }, 1500);
   }
 
@@ -1115,6 +1144,58 @@ function updateDrillUI() {
 
 
 // ══════════════════════════════════════════════════════════════════
+// CONFETTI CELEBRATION  (M6)
+// ══════════════════════════════════════════════════════════════════
+
+/**
+ * Inject the confetti CSS keyframes once (idempotent).
+ */
+function ensureConfettiStyle() {
+  if (!document.getElementById('learn-confetti-style')) {
+    const style = document.createElement('style');
+    style.id = 'learn-confetti-style';
+    style.textContent = '@keyframes learnConfettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(400px) rotate(720deg); opacity: 0; } }';
+    document.head.appendChild(style);
+  }
+}
+
+/**
+ * Spawn CSS-only confetti pieces inside a container.
+ * Pieces animate downward and clean themselves up after 3 seconds.
+ * @param {HTMLElement} container — the element to place confetti over
+ */
+function spawnLearnConfetti(container) {
+  ensureConfettiStyle();
+
+  const colours = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+  const confettiContainer = document.createElement('div');
+  confettiContainer.style.cssText = 'position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; z-index: 100;';
+  container.style.position = 'relative';
+  container.appendChild(confettiContainer);
+
+  for (let i = 0; i < 25; i++) {
+    const piece = document.createElement('div');
+    const size = 6 + Math.random() * 8;
+    const colour = colours[Math.floor(Math.random() * colours.length)];
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.5;
+    const duration = 1.5 + Math.random() * 1;
+    piece.style.cssText = `
+      position: absolute; top: -10px; left: ${left}%;
+      width: ${size}px; height: ${size}px;
+      background: ${colour}; border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation: learnConfettiFall ${duration}s ease-in ${delay}s forwards;
+      opacity: 0;
+    `;
+    confettiContainer.appendChild(piece);
+  }
+
+  // Cleanup after animations complete
+  setTimeout(() => confettiContainer.remove(), 3000);
+}
+
+
+// ══════════════════════════════════════════════════════════════════
 // LESSON COMPLETION
 // ══════════════════════════════════════════════════════════════════
 
@@ -1232,6 +1313,9 @@ export function startLearn(playerName, ageBracket) {
  * Exported so main.js can call it during mode switches (Addendum 2 Fix W4).
  */
 export function cleanupLearn() {
+  // Release any active focus trap
+  releaseFocus();
+
   // Remove keydown listener
   if (_keydownHandler) {
     document.removeEventListener('keydown', _keydownHandler);

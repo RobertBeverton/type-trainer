@@ -1,7 +1,7 @@
 // main.js — Entry point, game state machine
 // Implements: Player Selection (Task 4), Mode Selection (Task 5), Mobile Gate
 
-import { loadGameData, createPlayer, getPlayerList, getPlayer, deletePlayer, savePlayer, saveGameData, updatePlayerStats } from './storage.js';
+import { loadGameData, createPlayer, getPlayerList, getPlayer, deletePlayer, savePlayer, saveGameData, updatePlayerStats, updatePlayerBracket } from './storage.js';
 import { initAudio, setupMuteButton, applyPlayerAudioSettings } from './audio.js';
 import { initKeyboard, highlightKey, clearHighlights, flashCorrect, flashWrong, toggleVisibilityMode } from './keyboard.js';
 import { getStagesForBracket } from './stages.js';
@@ -11,6 +11,7 @@ import { startGame as startPlayGame, cleanupPlay } from './play.js';
 // main.js's local function is 'enterPlayMode' to avoid collision.
 import './adaptive.js';
 import { startLearn as startLearnMode, cleanupLearn } from './learn.js';
+import { trapFocus, releaseFocus } from './utils.js';
 
 // ---------------------------------------------------------------------------
 // State
@@ -158,6 +159,58 @@ function toggleTheme() {
 }
 
 // ---------------------------------------------------------------------------
+// Reusable arrow-key navigation for radio groups (H11)
+// ---------------------------------------------------------------------------
+
+/**
+ * Add arrow-key, Home and End navigation to a radio group container.
+ * Works with any container whose children have role="radio".
+ * Uses the 'active' class that already exists on the radio buttons
+ * (either 'selected' for bracket-btn or 'mode-btn--active' for mode-btn).
+ * @param {HTMLElement} container - The [role="radiogroup"] container
+ */
+function setupRadioGroupKeys(container) {
+  container.addEventListener('keydown', (e) => {
+    const radios = Array.from(container.querySelectorAll('[role="radio"]'));
+    const currentIdx = radios.findIndex(r => r.getAttribute('aria-checked') === 'true');
+    if (currentIdx === -1) return;
+
+    let newIdx = currentIdx;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      newIdx = (currentIdx + 1) % radios.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      newIdx = (currentIdx - 1 + radios.length) % radios.length;
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      newIdx = 0;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      newIdx = radios.length - 1;
+    } else {
+      return;
+    }
+
+    // Update aria and tabindex
+    radios.forEach((r, i) => {
+      r.setAttribute('aria-checked', i === newIdx ? 'true' : 'false');
+      r.setAttribute('tabindex', i === newIdx ? '0' : '-1');
+      // Support both class conventions used in the codebase
+      if (i === newIdx) {
+        r.classList.add('mode-btn--active');
+        r.classList.add('selected');
+      } else {
+        r.classList.remove('mode-btn--active');
+        r.classList.remove('selected');
+      }
+    });
+    radios[newIdx].focus();
+    radios[newIdx].click(); // trigger the selection handler
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Age bracket labels
 // ---------------------------------------------------------------------------
 
@@ -226,7 +279,12 @@ function showPlayerSelect() {
 
     // Best score
     const scoreStatDiv = el('div', 'player-card-stat');
-    scoreStatDiv.appendChild(el('span', 'player-card-stat-value', highScore > 0 ? highScore.toLocaleString() : '\u2014'));
+    const scoreValueEl = el('span', 'player-card-stat-value', highScore > 0 ? `\uD83C\uDFC6 ${highScore.toLocaleString()}` : '\u2014');
+    if (highScore > 0) {
+      scoreValueEl.classList.add('player-card-stat-value--score');
+      scoreValueEl.style.cssText = 'font-size: 1.1em; font-weight: 700;';
+    }
+    scoreStatDiv.appendChild(scoreValueEl);
     scoreStatDiv.appendChild(el('span', 'player-card-stat-label', 'Best score'));
     statsDiv.appendChild(scoreStatDiv);
 
@@ -290,6 +348,21 @@ function showPlayerSelect() {
   });
   grid.appendChild(addCard);
 
+  // Top score banner (AD5): show when 2+ players exist and at least one has a score
+  if (players.length >= 2) {
+    const allPlayerData = players.map(name => ({ name, data: getPlayer(name) }));
+    const topPlayer = allPlayerData.reduce((best, p) =>
+      (p.data && p.data.highScore > (best.data ? best.data.highScore : 0)) ? p : best
+    , allPlayerData[0]);
+
+    if (topPlayer && topPlayer.data && topPlayer.data.highScore > 0) {
+      const banner = el('div', 'top-score-banner');
+      banner.style.cssText = 'text-align: center; padding: 12px; margin-bottom: 16px; border-radius: 8px; background: var(--surface); font-size: 16px;';
+      banner.textContent = `\uD83C\uDFC6 Top Score: ${topPlayer.name} \u2014 ${topPlayer.data.highScore.toLocaleString()}`;
+      overlay.appendChild(banner);
+    }
+  }
+
   overlay.appendChild(grid);
 
   // Footer credit
@@ -326,7 +399,7 @@ function showDeleteConfirmation(name) {
   confirmPanel.setAttribute('aria-label', `Confirm deletion of ${name}`);
 
   const confirmText = el('p', 'delete-confirm-text');
-  confirmText.textContent = `Delete ${name}?`;
+  confirmText.innerHTML = `Delete ${name}?<br>All progress will be lost.<br>This cannot be undone.`;
   confirmPanel.appendChild(confirmText);
 
   const btnRow = el('div', 'delete-confirm-buttons');
@@ -335,6 +408,7 @@ function showDeleteConfirmation(name) {
   const yesBtn = el('button', ['btn', 'btn-sm', 'btn-danger'], 'Yes, delete');
   yesBtn.setAttribute('aria-label', `Confirm delete ${name}`);
   yesBtn.addEventListener('click', () => {
+    releaseFocus();
     deletePlayer(name);
     // Clear last player reference if we just deleted them
     try {
@@ -350,12 +424,25 @@ function showDeleteConfirmation(name) {
   const noBtn = el('button', ['btn', 'btn-sm', 'btn-primary'], 'No, keep');
   noBtn.setAttribute('aria-label', `Cancel, keep ${name}`);
   noBtn.addEventListener('click', () => {
+    releaseFocus();
     confirmPanel.remove();
   });
   btnRow.appendChild(noBtn);
 
   confirmPanel.appendChild(btnRow);
   overlay.appendChild(confirmPanel);
+
+  // Escape key cancels the dialog (Fix C5)
+  confirmPanel.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      releaseFocus();
+      confirmPanel.remove();
+    }
+  });
+
+  // Trap focus within the confirmation dialog (Fix C5)
+  trapFocus(confirmPanel);
 
   // Focus the safe option (Fix C2 + Fix W3)
   requestAnimationFrame(() => {
@@ -393,7 +480,7 @@ function showAddPlayer() {
   overlay.appendChild(nameInput);
 
   // Age question
-  overlay.appendChild(el('p', null, 'How old are you?'));
+  overlay.appendChild(el('p', null, 'How old is the player?'));
 
   // Bracket picker
   const brackets = ['4-5', '6-8', '9-12', 'Adult'];
@@ -403,27 +490,30 @@ function showAddPlayer() {
 
   let selectedBracket = null;
 
-  brackets.forEach(bracket => {
+  brackets.forEach((bracket, idx) => {
     const btn = el('button', 'bracket-btn', bracket);
     btn.setAttribute('role', 'radio');
     btn.setAttribute('aria-checked', 'false');
+    btn.setAttribute('tabindex', idx === 0 ? '0' : '-1');
     btn.setAttribute('type', 'button');
     btn.addEventListener('click', () => {
       // Deselect siblings
       picker.querySelectorAll('.bracket-btn').forEach(b => {
         b.classList.remove('selected');
         b.setAttribute('aria-checked', 'false');
+        b.setAttribute('tabindex', '-1');
       });
       btn.classList.add('selected');
       btn.setAttribute('aria-checked', 'true');
+      btn.setAttribute('tabindex', '0');
       selectedBracket = bracket;
       updateStartBtn();
-      // Preview theme for the selected bracket
-      setTheme(getDefaultThemeForBracket(bracket));
+      // Theme is applied on submit (selectPlayer), not here (Fix M17)
     });
     picker.appendChild(btn);
   });
 
+  setupRadioGroupKeys(picker);
   overlay.appendChild(picker);
 
   // Error message container (hidden by default)
@@ -578,6 +668,58 @@ function showModeSelect() {
   heading.id = 'overlay-heading';
   overlay.appendChild(heading);
 
+  // Tappable age badge (T13 / AD4)
+  const ageBadge = document.createElement('button');
+  ageBadge.className = 'age-badge-btn';
+  ageBadge.textContent = `Ages ${currentPlayer.data.ageBracket} \u270F`;
+  ageBadge.setAttribute('aria-label', `Change age bracket, currently ${currentPlayer.data.ageBracket}`);
+  ageBadge.setAttribute('type', 'button');
+
+  ageBadge.addEventListener('click', () => {
+    // Toggle accordion
+    let accordion = document.getElementById('bracket-accordion');
+    if (accordion) {
+      accordion.remove();
+      return;
+    }
+    accordion = document.createElement('div');
+    accordion.id = 'bracket-accordion';
+    accordion.style.cssText = 'display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; justify-content: center;';
+
+    const brackets = ['4-5', '6-8', '9-12', 'Adult'];
+    accordion.setAttribute('role', 'radiogroup');
+    accordion.setAttribute('aria-label', 'Change age bracket');
+    brackets.forEach(b => {
+      const isActive = b === currentPlayer.data.ageBracket;
+      const btn = document.createElement('button');
+      btn.className = 'mode-btn' + (isActive ? ' mode-btn--active' : '');
+      btn.textContent = b;
+      btn.style.cssText = 'min-width: 60px; padding: 8px 16px;';
+      btn.setAttribute('role', 'radio');
+      btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+      btn.setAttribute('tabindex', isActive ? '0' : '-1');
+      btn.addEventListener('click', () => {
+        if (b === currentPlayer.data.ageBracket) return;
+        // Update bracket
+        updatePlayerBracket(currentPlayer.name, b);
+        currentPlayer.data = getPlayer(currentPlayer.name);
+        // Apply theme
+        const theme = (b === '4-5' || b === '6-8') ? 'light' : 'dark';
+        setTheme(theme);
+        // Refresh the mode select screen
+        showModeSelect();
+      });
+      accordion.appendChild(btn);
+    });
+
+    setupRadioGroupKeys(accordion);
+
+    // Insert after the badge
+    ageBadge.parentNode.insertBefore(accordion, ageBadge.nextSibling);
+  });
+
+  overlay.appendChild(ageBadge);
+
   overlay.appendChild(el('p', null, 'What would you like to do?'));
 
   // Mode buttons container
@@ -729,6 +871,7 @@ function enterPlayMode() {
   // Start game with callbacks — play.js never imports from main.js
   startPlayGame(bracket, stages, {
     previousHighScore,
+    totalGamesPlayed: currentPlayer.data.totalGamesPlayed || 0,
     onQuit: () => {
       showModeSelect();
     },

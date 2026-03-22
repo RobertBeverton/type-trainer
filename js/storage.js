@@ -228,3 +228,52 @@ export function updatePlayerStats(name, stats) {
 
   writeToStorage(data);
 }
+
+/**
+ * Update a player's age bracket and reset their learn progress
+ * to the default for the new bracket. All play stats, settings,
+ * and scores are preserved.
+ * @param {string} name - Player name
+ * @param {string} newBracket - New age bracket (e.g. '4-5', '6-8', '9-12')
+ */
+export function updatePlayerBracket(name, newBracket) {
+  const player = getPlayer(name);
+  if (!player) return;
+
+  player.ageBracket = newBracket;
+
+  // Reset learn progress to the default for the new bracket
+  const homeRowStatus = newBracket === '4-5' ? 'in_progress' : 'locked';
+  player.learnProgress = {
+    homeRow: homeRowStatus,
+    leftRight: 'locked',
+    topRow: 'locked',
+    bottomRow: 'locked',
+    combined: 'locked'
+  };
+
+  savePlayer(name, player);
+}
+
+/**
+ * Calculate current localStorage usage for the game data.
+ * @returns {{ used: number, limit: number, percent: number }}
+ */
+export function getStorageUsage() {
+  const str = JSON.stringify(loadGameData());
+  const used = str.length;
+  const limit = 5242880;
+  return {
+    used,
+    limit,
+    percent: Math.round((used / limit) * 100)
+  };
+}
+
+/**
+ * Check whether localStorage usage exceeds 80% of the 5 MB limit.
+ * @returns {boolean} true if usage is above 80%
+ */
+export function isStorageNearFull() {
+  return getStorageUsage().percent > 80;
+}
