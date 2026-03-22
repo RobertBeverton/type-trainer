@@ -53,6 +53,9 @@ let playDOMReady = false;
 let resizeObserver = null;
 let themeObserver = null;
 
+let _ariaTimer = null;
+let _ariaLiveEl = null;
+
 /** Initialise DOM references on first Play mode entry. */
 function initPlayDOM() {
   if (playDOMReady) return;
@@ -97,6 +100,15 @@ function initPlayDOM() {
   if (!themeObserver) {
     themeObserver = new MutationObserver(() => cacheThemeColours());
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
+  // Debounced aria-live region for screen reader updates (#3)
+  if (!_ariaLiveEl) {
+    _ariaLiveEl = document.createElement('div');
+    _ariaLiveEl.setAttribute('aria-live', 'polite');
+    _ariaLiveEl.setAttribute('aria-atomic', 'true');
+    _ariaLiveEl.className = 'sr-only';
+    document.getElementById('game-wrapper').appendChild(_ariaLiveEl);
   }
 
   playDOMReady = true;
@@ -1287,6 +1299,7 @@ function getSessionWeakKeys() {
 
 function endGame() {
   gameState.active = false;
+  if (_ariaTimer) { clearInterval(_ariaTimer); _ariaTimer = null; }
   if (raf) {
     cancelAnimationFrame(raf);
     raf = null;
@@ -1650,6 +1663,19 @@ export function startGame(bracket, stageList, callbacks) {
   updateHUD();
   updateTypedDisplay();
 
+  // Debounce aria-live: remove per-element live regions during gameplay
+  if (hudEls.score) hudEls.score.removeAttribute('aria-live');
+  if (hudEls.streak) hudEls.streak.removeAttribute('aria-live');
+
+  // Announce combined summary every 5 seconds
+  if (_ariaTimer) clearInterval(_ariaTimer);
+  _ariaTimer = setInterval(() => {
+    if (!gameState.active || gameState.paused) return;
+    if (_ariaLiveEl) {
+      _ariaLiveEl.textContent = `Score ${gameState.score}, Stage ${gameState.stageIdx + 1}, ${gameState.lives} lives`;
+    }
+  }, 5000);
+
   // Set keyboard visible
   setVisibilityMode('show');
 
@@ -1731,6 +1757,12 @@ export function cleanupPlay() {
 
   // Hide pause button
   if (hudEls.pauseBtn) hudEls.pauseBtn.style.display = 'none';
+
+  // Restore aria-live on HUD elements
+  if (hudEls.score) hudEls.score.setAttribute('aria-live', 'polite');
+  if (hudEls.streak) hudEls.streak.setAttribute('aria-live', 'polite');
+  if (_ariaTimer) { clearInterval(_ariaTimer); _ariaTimer = null; }
+  if (_ariaLiveEl) { _ariaLiveEl.textContent = ''; }
 
   if (themeObserver) { themeObserver.disconnect(); themeObserver = null; }
 }
