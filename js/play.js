@@ -1202,9 +1202,11 @@ function loop(now) {
   drawBackground(w, h);
 
   if (!gameState.paused) {
-    // Spawn check
-    if (now >= gameState.nextSpawn && !gameState.celebrating) {
-      spawnItem(now);
+    // Spawn check — also spawn immediately if screen is empty
+    if (!gameState.celebrating) {
+      if (gameState.items.length === 0 || now >= gameState.nextSpawn) {
+        spawnItem(now);
+      }
     }
 
     // Update and draw items (reverse iterate for safe removal)

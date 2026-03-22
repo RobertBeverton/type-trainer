@@ -1,0 +1,51 @@
+name: Bug Report
+description: Something isn't working right
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this! The more detail you can give, the easier it is to fix.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe what went wrong.
+      placeholder: "e.g. The game froze after I finished a round and I couldn't start a new one."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: "e.g. I expected the results screen to show and let me play again."
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Which browser were you using?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other (please mention in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: What device?
+      options:
+        - Desktop / Laptop
+        - Tablet
+        - Phone
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Screenshots, screen recordings, or any other context that might help.

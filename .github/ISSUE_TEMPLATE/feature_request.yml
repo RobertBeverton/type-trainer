@@ -1,0 +1,42 @@
+name: Idea or Suggestion
+description: Suggest a new feature or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got an idea to make Type Trainer better? We'd love to hear it!
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What's your idea?
+      description: Describe the feature or improvement you'd like to see.
+      placeholder: "e.g. It would be cool if there was a multiplayer mode where two kids could race."
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would this be useful?
+      description: Who would benefit and how?
+      placeholder: "e.g. My kids get competitive and it would keep them more engaged."
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: What area does this relate to?
+      options:
+        - Lessons & word lists
+        - Gameplay & scoring
+        - Visuals & themes
+        - Sound & audio
+        - Accessibility
+        - Other
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Mockups, examples from other apps, or any other context.
