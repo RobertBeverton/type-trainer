@@ -18,7 +18,6 @@ OUTPUT="$DIST_DIR/typing-game.html"
 # come first. Files that import from earlier files come later.
 # Order: utils (shared helpers) -> audio (standalone) -> storage (standalone) ->
 #        stages (standalone) -> adaptive (standalone) -> keyboard (standalone) ->
-#        learn (uses keyboard, audio, storage) ->
 #        play (uses keyboard, audio, stages, storage, adaptive) ->
 #        main (orchestrator, uses everything)
 JS_FILES=(
@@ -28,7 +27,6 @@ JS_FILES=(
   "js/stages.js"
   "js/adaptive.js"
   "js/keyboard.js"
-  "js/learn.js"
   "js/play.js"
   "js/main.js"
 )
