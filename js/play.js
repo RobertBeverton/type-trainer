@@ -1180,51 +1180,46 @@ function showGameOverOverlay(stats) {
     overlay.appendChild(weakSection);
   }
 
-  // Speed suggestion — if player aced it, suggest bumping speed
+  // Difficulty suggestion — suggest stepping up/down based on performance
+  const DIFFS = [
+    { label: 'Easy', speed: 1.0 },
+    { label: 'Normal', speed: 1.8 },
+    { label: 'Hard', speed: 2.3 },
+    { label: 'Extra Hard', speed: 3.0 },
+  ];
   const currentSpeed = gameState.speedPreference || 1.0;
+  const currentIdx = DIFFS.reduce((bestI, d, i) =>
+    Math.abs(d.speed - currentSpeed) < Math.abs(DIFFS[bestI].speed - currentSpeed) ? i : bestI
+  , 0);
   const avgReactionMs = stats.totalCorrect > 0 && elapsedMs > 0
-    ? elapsedMs / stats.totalCorrect
-    : 9999;
-  // Suggest speed up if: accuracy > 90% AND average reaction < 1.5s AND not already maxed
-  if (accuracyPct >= 90 && avgReactionMs < 1500 && currentSpeed < 2.9) {
-    const suggested = Math.min(3.0, +(currentSpeed + 0.3).toFixed(1));
+    ? elapsedMs / stats.totalCorrect : 9999;
+
+  let suggestedIdx = -1;
+  if (accuracyPct >= 90 && avgReactionMs < 1500 && currentIdx < DIFFS.length - 1) {
+    suggestedIdx = currentIdx + 1; // suggest harder
+  } else if (accuracyPct < 50 && currentIdx > 0) {
+    suggestedIdx = currentIdx - 1; // suggest easier
+  }
+
+  if (suggestedIdx >= 0) {
+    const nextDiff = DIFFS[suggestedIdx];
     const suggestion = document.createElement('div');
-    suggestion.style.cssText = 'text-align: center; margin: 8px 0; padding: 8px 16px; border-radius: 8px; background: var(--surface, #f0f0f0); font-size: 13px;';
+    suggestion.style.cssText = 'text-align: center; margin: 8px 0; padding: 8px 16px; border-radius: 8px; background: var(--bg-surface); font-size: 13px;';
+    const isHarder = suggestedIdx > currentIdx;
     const suggText = document.createElement('span');
-    suggText.textContent = `⚡ You're fast! Try speed ${suggested.toFixed(1)}x? `;
+    suggText.textContent = isHarder
+      ? `\u26A1 You're fast! Try ${nextDiff.label}? `
+      : `Try ${nextDiff.label}? It might help! `;
     const suggBtn = document.createElement('button');
     suggBtn.className = 'btn btn-sm';
-    suggBtn.textContent = 'Yes!';
+    suggBtn.textContent = isHarder ? 'Yes!' : 'OK';
     suggBtn.style.cssText = 'margin-left: 8px; padding: 4px 12px; font-size: 12px;';
     suggBtn.addEventListener('click', () => {
-      gameState.speedPreference = suggested;
-      // Save to player data via callback
+      gameState.speedPreference = nextDiff.speed;
       if (gameState.callbacks && gameState.callbacks.onSpeedChange) {
-        gameState.callbacks.onSpeedChange(suggested);
+        gameState.callbacks.onSpeedChange(nextDiff.speed);
       }
-      suggestion.textContent = `✓ Speed set to ${suggested.toFixed(1)}x`;
-      suggestion.style.color = 'var(--success-text, #059669)';
-    }, { once: true });
-    suggestion.appendChild(suggText);
-    suggestion.appendChild(suggBtn);
-    overlay.appendChild(suggestion);
-  } else if (accuracyPct < 50 && currentSpeed > 0.6) {
-    // Suggest slowing down if struggling
-    const suggested = Math.max(0.5, +(currentSpeed - 0.3).toFixed(1));
-    const suggestion = document.createElement('div');
-    suggestion.style.cssText = 'text-align: center; margin: 8px 0; padding: 8px 16px; border-radius: 8px; background: var(--surface, #f0f0f0); font-size: 13px;';
-    const suggText = document.createElement('span');
-    suggText.textContent = `Try speed ${suggested.toFixed(1)}x? It might help! `;
-    const suggBtn = document.createElement('button');
-    suggBtn.className = 'btn btn-sm';
-    suggBtn.textContent = 'OK';
-    suggBtn.style.cssText = 'margin-left: 8px; padding: 4px 12px; font-size: 12px;';
-    suggBtn.addEventListener('click', () => {
-      gameState.speedPreference = suggested;
-      if (gameState.callbacks && gameState.callbacks.onSpeedChange) {
-        gameState.callbacks.onSpeedChange(suggested);
-      }
-      suggestion.textContent = `✓ Speed set to ${suggested.toFixed(1)}x`;
+      suggestion.textContent = `\u2713 Difficulty set to ${nextDiff.label}`;
       suggestion.style.color = 'var(--success-text, #059669)';
     }, { once: true });
     suggestion.appendChild(suggText);

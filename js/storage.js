@@ -53,7 +53,7 @@ function createDefaultPlayer(ageBracket) {
       keyboardVisible: true,
       theme: defaultTheme,
       muted: false,
-      speedPreference: 1.0
+      speedPreference: 1.8
     }
   };
 }

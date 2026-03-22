@@ -184,6 +184,34 @@ body {
 
 
 /* ========================================
+   GLOBAL THEME TOGGLE (outside game frame)
+   ======================================== */
+
+.global-theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.global-theme-toggle:hover {
+  background: var(--btn-secondary-hover);
+  border-color: var(--btn-primary-bg);
+}
+
+/* ========================================
    GAME WRAPPER
    ======================================== */
 

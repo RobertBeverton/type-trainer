@@ -144,16 +144,8 @@ function toggleTheme() {
   const next = current === 'dark' ? 'light' : 'dark';
   setTheme(next);
 
-  // Save to current player's settings
-  if (currentPlayer) {
-    const playerData = getPlayer(currentPlayer.name);
-    if (playerData) {
-      playerData.settings = playerData.settings || {};
-      playerData.settings.theme = next;
-      savePlayer(currentPlayer.name, playerData);
-      currentPlayer.data = playerData;
-    }
-  }
+  // Save globally (not per-player)
+  try { localStorage.setItem('typingGame_theme', next); } catch (e) { /* ignore */ }
 
   return next;
 }
@@ -572,8 +564,6 @@ function showAddPlayer() {
   const backBtn = el('button', ['btn', 'btn-secondary', 'btn-sm'], 'Back');
   backBtn.setAttribute('type', 'button');
   backBtn.addEventListener('click', () => {
-    // Reset theme to light when going back (no player selected)
-    setTheme('light');
     showPlayerSelect();
   });
   overlay.appendChild(backBtn);
@@ -597,10 +587,6 @@ function selectPlayer(name) {
   if (!data) return;
 
   currentPlayer = { name, data };
-
-  // Apply saved theme preference, falling back to bracket default
-  const theme = (data.settings && data.settings.theme) || getDefaultThemeForBracket(data.ageBracket);
-  setTheme(theme);
 
   // Apply player's audio settings
   applyPlayerAudioSettings(data.settings);
@@ -720,42 +706,57 @@ function showModeSelect() {
 
   overlay.appendChild(ageBadge);
 
-  // Speed slider
-  const speedPref = (data.settings && data.settings.speedPreference) || 1.0;
-  const speedSection = document.createElement('div');
-  speedSection.style.cssText = 'display: flex; align-items: center; gap: 12px; margin: 8px 0 4px; width: 100%; max-width: 280px; justify-content: center;';
-  const speedLabel = document.createElement('label');
-  speedLabel.textContent = 'Speed';
-  speedLabel.style.cssText = 'font-size: 13px; font-weight: 600; color: var(--text-secondary); min-width: 44px;';
-  speedLabel.setAttribute('for', 'speed-slider');
-  const speedSlider = document.createElement('input');
-  speedSlider.type = 'range';
-  speedSlider.id = 'speed-slider';
-  speedSlider.min = '0.5';
-  speedSlider.max = '3.0';
-  speedSlider.step = '0.1';
-  speedSlider.value = String(speedPref);
-  speedSlider.style.cssText = 'flex: 1; accent-color: var(--btn-primary-bg);';
-  speedSlider.setAttribute('aria-label', 'Game speed');
-  const speedValue = document.createElement('span');
-  speedValue.style.cssText = 'font-size: 13px; font-weight: 700; color: var(--text-primary); min-width: 36px; text-align: right;';
-  speedValue.textContent = speedPref.toFixed(1) + 'x';
-  speedSlider.addEventListener('input', () => {
-    const val = parseFloat(speedSlider.value);
-    speedValue.textContent = val.toFixed(1) + 'x';
-    // Save immediately
-    const player = getPlayer(name);
-    if (player) {
-      if (!player.settings) player.settings = {};
-      player.settings.speedPreference = val;
-      savePlayer(name, player);
-      currentPlayer.data = player;
-    }
+  // Difficulty presets
+  const DIFFICULTIES = [
+    { label: 'Easy', speed: 1.0 },
+    { label: 'Normal', speed: 1.8 },
+    { label: 'Hard', speed: 2.3 },
+    { label: 'Extra Hard', speed: 3.0 },
+  ];
+  const savedSpeed = (data.settings && data.settings.speedPreference) || 1.0;
+  // Find closest matching difficulty
+  const closestDiff = DIFFICULTIES.reduce((best, d) =>
+    Math.abs(d.speed - savedSpeed) < Math.abs(best.speed - savedSpeed) ? d : best
+  , DIFFICULTIES[0]);
+
+  const diffSection = document.createElement('div');
+  diffSection.style.cssText = 'display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; justify-content: center;';
+  diffSection.setAttribute('role', 'radiogroup');
+  diffSection.setAttribute('aria-label', 'Difficulty');
+
+  DIFFICULTIES.forEach(d => {
+    const btn = document.createElement('button');
+    const isActive = d.label === closestDiff.label;
+    btn.className = 'mode-btn mode-btn--sm' + (isActive ? ' mode-btn--active' : '');
+    btn.textContent = d.label;
+    btn.style.cssText = 'padding: 6px 14px; font-size: 13px; min-width: auto;';
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    btn.setAttribute('tabindex', isActive ? '0' : '-1');
+    btn.addEventListener('click', () => {
+      // Update visual state
+      diffSection.querySelectorAll('[role="radio"]').forEach(r => {
+        r.classList.remove('mode-btn--active');
+        r.setAttribute('aria-checked', 'false');
+        r.setAttribute('tabindex', '-1');
+      });
+      btn.classList.add('mode-btn--active');
+      btn.setAttribute('aria-checked', 'true');
+      btn.setAttribute('tabindex', '0');
+      // Save
+      const player = getPlayer(name);
+      if (player) {
+        if (!player.settings) player.settings = {};
+        player.settings.speedPreference = d.speed;
+        savePlayer(name, player);
+        currentPlayer.data = player;
+      }
+    });
+    diffSection.appendChild(btn);
   });
-  speedSection.appendChild(speedLabel);
-  speedSection.appendChild(speedSlider);
-  speedSection.appendChild(speedValue);
-  overlay.appendChild(speedSection);
+
+  setupRadioGroupKeys(diffSection);
+  overlay.appendChild(diffSection);
 
   overlay.appendChild(el('p', null, 'What would you like to do?'));
 
@@ -851,30 +852,11 @@ function showModeSelect() {
   switchBtn.setAttribute('type', 'button');
   switchBtn.addEventListener('click', () => {
     currentPlayer = null;
-    // Reset to light theme for player select
-    setTheme('light');
     showPlayerSelect();
   });
   overlay.appendChild(switchBtn);
 
   // Theme toggle button (standalone, for mode select screen)
-  const themeBtn = document.createElement('button');
-  themeBtn.className = 'theme-toggle-standalone';
-  themeBtn.setAttribute('type', 'button');
-  themeBtn.setAttribute('aria-label', 'Toggle light/dark theme');
-  const themeBtnIcon = el('span', 'theme-icon');
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-  themeBtnIcon.textContent = currentTheme === 'dark' ? '\u2600' : '\uD83C\uDF19';
-  themeBtn.appendChild(themeBtnIcon);
-  const themeBtnLabel = el('span', null);
-  themeBtnLabel.textContent = currentTheme === 'dark' ? 'Light mode' : 'Dark mode';
-  themeBtn.appendChild(themeBtnLabel);
-  themeBtn.addEventListener('click', () => {
-    const newTheme = toggleTheme();
-    themeBtnLabel.textContent = newTheme === 'dark' ? 'Light mode' : 'Dark mode';
-  });
-  overlay.appendChild(themeBtn);
-
   // Focus management (Fix C2): focus the prominent mode button
   requestAnimationFrame(() => {
     focusElement(prominentBtn);
@@ -1013,20 +995,20 @@ document.addEventListener('DOMContentLoaded', () => {
   overlay = document.getElementById('overlay');
 
   // ── Early theme application ──
-  // Check for a previously selected player and apply their theme immediately
-  // to avoid the jarring light→dark flash when the page loads.
+  // Load globally saved theme preference (not per-player)
   try {
-    const lastName = localStorage.getItem('typingGame_lastPlayer');
-    if (lastName) {
-      const lastPlayer = getPlayer(lastName);
-      if (lastPlayer) {
-        const savedTheme = (lastPlayer.settings && lastPlayer.settings.theme)
-          || getDefaultThemeForBracket(lastPlayer.ageBracket);
-        setTheme(savedTheme);
-      }
+    const savedTheme = localStorage.getItem('typingGame_theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      setTheme(savedTheme);
     }
   } catch (_) {
     // localStorage unavailable — stay on default light theme
+  }
+
+  // ── Global theme toggle (outside game frame) ──
+  const globalThemeBtn = document.getElementById('global-theme-toggle');
+  if (globalThemeBtn) {
+    globalThemeBtn.addEventListener('click', toggleTheme);
   }
 
   // Initialise mobile/touch gate
