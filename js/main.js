@@ -367,7 +367,7 @@ function showPlayerSelect() {
 
   // Footer credit
   const footer = el('div', 'game-footer');
-  const credit = document.createTextNode('Created by Robert Beverton \u00B7 ');
+  const credit = document.createTextNode('Created by Robert Beverton \u00B7 v1.2.0 \u00B7 ');
   footer.appendChild(credit);
   const feedbackLink = document.createElement('a');
   feedbackLink.href = 'https://github.com/RobertBeverton/type-trainer/issues';
