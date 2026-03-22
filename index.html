@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Type Trainer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Mobile/tablet gate — shown when no physical keyboard is detected -->
+  <div id="mobile-gate" class="mobile-gate" role="alert" aria-live="assertive" hidden>
+    <div class="mobile-gate-content">
+      <div class="mobile-gate-icon" aria-hidden="true">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="44" width="64" height="28" rx="4" stroke="currentColor" stroke-width="3" fill="none"/>
+          <rect x="12" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="22" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="32" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="42" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="52" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="16" y="60" width="48" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <path d="M40 12 L40 36 M32 28 L40 36 L48 28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="mobile-gate-title">This game needs a keyboard!</h1>
+      <p class="mobile-gate-message">Plug in a keyboard or try on a laptop or desktop computer.</p>
+    </div>
+  </div>
+
+  <div id="game-wrapper">
+    <!-- HUD bar: score, stage, lives, streak, buttons -->
+    <div id="hud" class="hud" aria-label="Game status">
+      <div class="hud-item">Score: <span id="hud-score-value" aria-live="polite">0</span></div>
+      <div class="hud-item">Stage: <span id="hud-stage-current">1</span>/<span id="hud-stage-total">10</span></div>
+      <div class="hud-item" id="hud-lives">Lives: <span id="hud-lives-value" aria-live="polite">&#9829;&#9829;&#9829;</span></div>
+      <div class="hud-item hud-streak">Streak: <span id="hud-streak-value" aria-live="polite">0</span></div>
+      <button id="keyboard-toggle" class="hud-btn keyboard-toggle-btn" aria-label="Toggle on-screen keyboard" title="Toggle keyboard">
+        <span class="hud-btn__icon">&#9000;</span>
+        <span class="hud-btn__label">Keyboard</span>
+      </button>
+      <button id="theme-toggle" class="hud-btn theme-toggle-btn" aria-label="Toggle theme" title="Toggle light/dark theme">
+        <span class="theme-icon" aria-hidden="true"></span>
+      </button>
+      <button id="mute-btn" class="hud-btn mute-btn" aria-label="Mute audio" aria-pressed="false" title="Toggle sound">
+        <span class="mute-icon" aria-hidden="true">&#x1F50A;</span>
+      </button>
+    </div>
+
+    <!-- Stage progress bar -->
+    <div id="stage-bar" class="stage-bar">
+      <span id="play-stage-label" class="stage-label" aria-live="polite">Home row only</span>
+      <div class="stage-track">
+        <div id="play-prog-fill" class="stage-fill" style="width: 0%"></div>
+      </div>
+      <span id="play-prog-pct" class="stage-progress">0/10</span>
+    </div>
+
+    <!-- Play mode area -->
+    <div id="play-area" class="play-area" hidden>
+      <div id="play-canvas-wrap" class="canvas-wrap">
+        <canvas id="game-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Learn mode area -->
+    <div id="learn-area" class="learn-area" hidden>
+      <!-- Learn mode UI injected by js/learn.js -->
+    </div>
+
+    <!-- On-screen keyboard container -->
+    <div id="keyboard" class="keyboard-container" aria-hidden="true">
+      <!-- Keyboard rendered by js/keyboard.js -->
+    </div>
+
+    <!-- Typed buffer display (Play mode) -->
+    <div id="typed-row" class="typed-row">
+      <span id="typed-display" class="typed-display"></span>
+    </div>
+
+    <!-- Overlay container for modal screens -->
+    <div id="overlay" class="overlay">
+      <!-- Player select, mode select, pause, game over injected here -->
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Build output
+dist/
+
+# Claude Code session data
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.swp
+*.swo
