@@ -1036,12 +1036,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const label = toggleBtn.querySelector('.hud-btn__label');
       if (label) {
         switch (newMode) {
-          case 'adaptive':   label.textContent = 'Keyboard'; break;
-          case 'force-hide': label.textContent = 'Keyboard (off)'; break;
-          case 'force-show': label.textContent = 'Keyboard (on)'; break;
+          case 'show': label.textContent = 'Keyboard'; break;
+          case 'hide': label.textContent = 'Keyboard (off)'; break;
         }
       }
-      toggleBtn.classList.toggle('hud-btn--active', newMode === 'force-show');
+      toggleBtn.classList.toggle('hud-btn--active', newMode === 'show');
     });
   }
 

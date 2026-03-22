@@ -1,5 +1,5 @@
 // keyboard.js — On-screen keyboard rendering & highlighting
-// Tasks 6, 7, 8: Keyboard HTML/CSS rendering, interaction states, adaptive fade
+// Tasks 6, 7, 8: Keyboard HTML/CSS rendering, interaction states, visibility toggle
 
 // ── Layout Data ────────────────────────────────────────────────
 // Each row is an array of { key, zone, label? } objects.
@@ -209,7 +209,7 @@ export function flashWrong(wrongKey, correctKey) {
 
 /**
  * Set overall keyboard opacity (0-1).
- * Used by adaptive fade and manual toggle.
+ * Used by manual toggle.
  * @param {number} level - 0 to 1
  */
 export function setOpacity(level) {
@@ -265,127 +265,49 @@ export function getKeyPosition(key) {
 }
 
 
-// ── Task 8: Adaptive Fade + Toggle ─────────────────────────────
+// ── Visibility Toggle ────────────────────────────────────────
 //
-// INTEGRATION CONTRACT (for play.js):
-//
-// On every correct keypress:
-//   updateKeyboardAdaptive(currentStreak, 0);
-//   startHesitationTimer(currentStreak);
-//
-// On miss (wrong key or item hits bottom):
-//   updateKeyboardAdaptive(0, 0);   // streak resets to 0
-//   clearHesitationTimer();
-//
-// On game start:
-//   setVisibilityMode(playerSettings.keyboardVisible ? 'adaptive' : 'force-hide');
-//
-// On game pause/end:
-//   clearHesitationTimer();
-//
+// Two modes: 'show' and 'hide'. Default: 'show' (keyboard always visible).
+// Toggle button cycles: show → hide → show.
+// The old adaptive-fade behaviour (streak ≥5 dims keyboard) is removed —
+// the keyboard now stays at full opacity with target key glow always active.
 
-const FADE_OPACITY = 0.3;
-const FULL_OPACITY = 1.0;
-const HESITATION_MS = 2000;
-
-/** @type {'adaptive'|'force-show'|'force-hide'} */
-let visibilityMode = 'adaptive';
-
-/** @type {number|null} timer ID for hesitation check */
-let hesitationTimer = null;
-
-/**
- * Update keyboard opacity based on current streak and timing.
- * Called by the game loop after every keypress or on a timer.
- * In force-show or force-hide modes, this function does nothing.
- *
- * @param {number} streak - current consecutive-correct streak
- * @param {number} timeSinceLastKey - ms since last keypress (0 on keypress events)
- */
-export function updateKeyboardAdaptive(streak, timeSinceLastKey) {
-  if (visibilityMode !== 'adaptive') return;
-  if (!containerEl) return;
-
-  if (streak >= 5 && timeSinceLastKey < HESITATION_MS) {
-    // Fade out — player is on a roll
-    containerEl.style.opacity = String(FADE_OPACITY);
-  } else {
-    // Fade in — player missed or is hesitating
-    containerEl.style.opacity = String(FULL_OPACITY);
-  }
-}
-
-/**
- * Start a hesitation timer. If no key is pressed within HESITATION_MS,
- * the keyboard fades back to full opacity.
- * Call this after every correct keypress during Play mode.
- *
- * @param {number} currentStreak - the streak at time of keypress
- */
-export function startHesitationTimer(currentStreak) {
-  clearHesitationTimer();
-  if (visibilityMode !== 'adaptive') return;
-
-  hesitationTimer = window.setTimeout(() => {
-    updateKeyboardAdaptive(currentStreak, HESITATION_MS + 1);
-  }, HESITATION_MS);
-}
-
-/**
- * Clear any pending hesitation timer.
- */
-export function clearHesitationTimer() {
-  if (hesitationTimer !== null) {
-    clearTimeout(hesitationTimer);
-    hesitationTimer = null;
-  }
-}
+/** @type {'show'|'hide'} */
+let visibilityMode = 'show';
 
 /**
  * Toggle the keyboard visibility mode.
- * Cycles:  adaptive -> force-hide -> force-show -> adaptive
- * Returns the new mode string for the HUD button label.
- * @returns {'adaptive'|'force-show'|'force-hide'}
+ * Cycles: show → hide → show.
+ * @returns {'show'|'hide'}
  */
 export function toggleVisibilityMode() {
-  clearHesitationTimer();
-
-  if (visibilityMode === 'adaptive') {
-    visibilityMode = 'force-hide';
+  if (visibilityMode === 'show') {
+    visibilityMode = 'hide';
     hideKeyboard();
-  } else if (visibilityMode === 'force-hide') {
-    visibilityMode = 'force-show';
-    showKeyboard();
   } else {
-    visibilityMode = 'adaptive';
+    visibilityMode = 'show';
     showKeyboard();
-    if (containerEl) containerEl.style.opacity = String(FULL_OPACITY);
   }
-
   return visibilityMode;
 }
 
 /**
  * Get the current visibility mode.
- * @returns {'adaptive'|'force-show'|'force-hide'}
+ * @returns {'show'|'hide'}
  */
 export function getVisibilityMode() {
   return visibilityMode;
 }
 
 /**
- * Set visibility mode directly (e.g. from stored player settings or age bracket defaults).
- * @param {'adaptive'|'force-show'|'force-hide'} mode
+ * Set visibility mode directly.
+ * @param {'show'|'hide'} mode
  */
 export function setVisibilityMode(mode) {
   visibilityMode = mode;
-  clearHesitationTimer();
-  if (mode === 'force-hide') {
+  if (mode === 'hide') {
     hideKeyboard();
-  } else if (mode === 'force-show') {
-    showKeyboard();
   } else {
     showKeyboard();
-    if (containerEl) containerEl.style.opacity = String(FULL_OPACITY);
   }
 }

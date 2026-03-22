@@ -14,7 +14,6 @@ import { getFingerZone, getZoneCSSVar, getBracketOverrides } from './stages.js';
 import { playSound } from './audio.js';
 import {
   highlightKey, clearHighlights, flashCorrect, flashWrong,
-  updateKeyboardAdaptive, startHesitationTimer, clearHesitationTimer,
   setVisibilityMode, setSpotlightMode,
 } from './keyboard.js';
 import {
@@ -679,10 +678,6 @@ function removeItem(idx, success) {
       }
     }
 
-    // ── Keyboard adaptive fade ──
-    updateKeyboardAdaptive(gameState.streak, 0);
-    startHesitationTimer(gameState.streak);
-
     // ── Stage progression check ──
     const stage = currentStage();
     if (gameState.stageHits >= stage.needed) {
@@ -711,10 +706,6 @@ function removeItem(idx, success) {
       const almostMsg = gameState.bracket === '4-5' ? 'So close!' : 'Almost!';
       addPopText(almostMsg, item.x + item.tw / 2, item.y - 20, '#F59E0B');
     }
-
-    // Keyboard adaptive fade — streak reset
-    updateKeyboardAdaptive(0, 0);
-    clearHesitationTimer();
 
     updateHUD();
 
@@ -1301,8 +1292,6 @@ function endGame() {
     raf = null;
   }
 
-  clearHesitationTimer();
-
   // Play appropriate sound
   if (gameState.allStagesCleared) {
     playSound('stageClear'); // Victory arpeggio
@@ -1563,7 +1552,6 @@ function loop(now) {
 function pauseGame() {
   if (!gameState.active || gameState.paused) return;
   gameState.paused = true;
-  clearHesitationTimer();
   showPauseOverlay();
 }
 
@@ -1662,8 +1650,8 @@ export function startGame(bracket, stageList, callbacks) {
   updateHUD();
   updateTypedDisplay();
 
-  // Set keyboard adaptive mode
-  setVisibilityMode('adaptive');
+  // Set keyboard visible
+  setVisibilityMode('show');
 
   // Spotlight mode for 4-5: dims all keys except the target
   setSpotlightMode(bracket === '4-5');
@@ -1723,7 +1711,6 @@ export function cleanupPlay() {
     boundHandleKey = null;
   }
 
-  clearHesitationTimer();
   setSpotlightMode(false);
   clearHighlights();
 
