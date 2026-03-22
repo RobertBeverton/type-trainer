@@ -718,7 +718,7 @@ body {
   margin-top: auto;
   padding-top: var(--space-lg);
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: var(--font-sm);
   color: var(--text-muted);
   text-align: center;
   line-height: 1.6;
@@ -2093,6 +2093,20 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Screen-reader only — visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
   </style>
 </head>
 <body>
@@ -2849,7 +2863,8 @@ function createDefaultPlayer(ageBracket) {
       leftRight: 'locked',
       topRow: 'locked',
       bottomRow: 'locked',
-      combined: 'locked'
+      combined: 'locked',
+      spaceShift: 'locked',
     },
     highScore: 0,
     highestStage: 0,
@@ -2882,7 +2897,7 @@ function createDefaultPlayer(ageBracket) {
 function sanitiseName(name) {
   if (typeof name !== 'string') return '';
   return name
-    .replace(/[^a-zA-Z0-9 '\-]/g, '')
+    .replace(/[^\p{L}\p{N} '\-]/gu, '')
     .trim()
     .slice(0, MAX_NAME_LENGTH);
 }
@@ -3064,7 +3079,8 @@ function updatePlayerBracket(name, newBracket) {
     leftRight: 'locked',
     topRow: 'locked',
     bottomRow: 'locked',
-    combined: 'locked'
+    combined: 'locked',
+    spaceShift: 'locked',
   };
 
   savePlayer(name, player);
@@ -3091,6 +3107,52 @@ function getStorageUsage() {
  */
 function isStorageNearFull() {
   return getStorageUsage().percent > 80;
+}
+
+/**
+ * Export all game data as a JSON file download.
+ * Triggers a browser download of type-trainer-backup-YYYY-MM-DD.json.
+ */
+function exportData() {
+  const data = loadGameData();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `type-trainer-backup-${today}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Import game data from a JSON file, replacing all current data.
+ * Returns true if import succeeded, false on validation failure.
+ * @param {File} file - JSON file from file input
+ * @returns {Promise<boolean>}
+ */
+function importData(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        // Validate structure
+        if (!data || typeof data !== 'object' || !data.players || typeof data.players !== 'object') {
+          resolve(false);
+          return;
+        }
+        writeToStorage(data);
+        resolve(true);
+      } catch {
+        resolve(false);
+      }
+    };
+    reader.onerror = () => resolve(false);
+    reader.readAsText(file);
+  });
 }
 
 // --- stages.js ---
@@ -3714,7 +3776,7 @@ function resetAdaptive() {
 
 // --- keyboard.js ---
 // keyboard.js — On-screen keyboard rendering & highlighting
-// Tasks 6, 7, 8: Keyboard HTML/CSS rendering, interaction states, adaptive fade
+// Tasks 6, 7, 8: Keyboard HTML/CSS rendering, interaction states, visibility toggle
 
 // ── Layout Data ────────────────────────────────────────────────
 // Each row is an array of { key, zone, label? } objects.
@@ -3924,7 +3986,7 @@ function flashWrong(wrongKey, correctKey) {
 
 /**
  * Set overall keyboard opacity (0-1).
- * Used by adaptive fade and manual toggle.
+ * Used by manual toggle.
  * @param {number} level - 0 to 1
  */
 function setOpacity(level) {
@@ -3980,134 +4042,56 @@ function getKeyPosition(key) {
 }
 
 
-// ── Task 8: Adaptive Fade + Toggle ─────────────────────────────
+// ── Visibility Toggle ────────────────────────────────────────
 //
-// INTEGRATION CONTRACT (for play.js):
-//
-// On every correct keypress:
-//   updateKeyboardAdaptive(currentStreak, 0);
-//   startHesitationTimer(currentStreak);
-//
-// On miss (wrong key or item hits bottom):
-//   updateKeyboardAdaptive(0, 0);   // streak resets to 0
-//   clearHesitationTimer();
-//
-// On game start:
-//   setVisibilityMode(playerSettings.keyboardVisible ? 'adaptive' : 'force-hide');
-//
-// On game pause/end:
-//   clearHesitationTimer();
-//
+// Two modes: 'show' and 'hide'. Default: 'show' (keyboard always visible).
+// Toggle button cycles: show → hide → show.
+// The old adaptive-fade behaviour (streak ≥5 dims keyboard) is removed —
+// the keyboard now stays at full opacity with target key glow always active.
 
-const FADE_OPACITY = 0.3;
-const FULL_OPACITY = 1.0;
-const HESITATION_MS = 2000;
-
-/** @type {'adaptive'|'force-show'|'force-hide'} */
-let visibilityMode = 'adaptive';
-
-/** @type {number|null} timer ID for hesitation check */
-let hesitationTimer = null;
-
-/**
- * Update keyboard opacity based on current streak and timing.
- * Called by the game loop after every keypress or on a timer.
- * In force-show or force-hide modes, this function does nothing.
- *
- * @param {number} streak - current consecutive-correct streak
- * @param {number} timeSinceLastKey - ms since last keypress (0 on keypress events)
- */
-function updateKeyboardAdaptive(streak, timeSinceLastKey) {
-  if (visibilityMode !== 'adaptive') return;
-  if (!containerEl) return;
-
-  if (streak >= 5 && timeSinceLastKey < HESITATION_MS) {
-    // Fade out — player is on a roll
-    containerEl.style.opacity = String(FADE_OPACITY);
-  } else {
-    // Fade in — player missed or is hesitating
-    containerEl.style.opacity = String(FULL_OPACITY);
-  }
-}
-
-/**
- * Start a hesitation timer. If no key is pressed within HESITATION_MS,
- * the keyboard fades back to full opacity.
- * Call this after every correct keypress during Play mode.
- *
- * @param {number} currentStreak - the streak at time of keypress
- */
-function startHesitationTimer(currentStreak) {
-  clearHesitationTimer();
-  if (visibilityMode !== 'adaptive') return;
-
-  hesitationTimer = window.setTimeout(() => {
-    updateKeyboardAdaptive(currentStreak, HESITATION_MS + 1);
-  }, HESITATION_MS);
-}
-
-/**
- * Clear any pending hesitation timer.
- */
-function clearHesitationTimer() {
-  if (hesitationTimer !== null) {
-    clearTimeout(hesitationTimer);
-    hesitationTimer = null;
-  }
-}
+/** @type {'show'|'hide'} */
+let visibilityMode = 'show';
 
 /**
  * Toggle the keyboard visibility mode.
- * Cycles:  adaptive -> force-hide -> force-show -> adaptive
- * Returns the new mode string for the HUD button label.
- * @returns {'adaptive'|'force-show'|'force-hide'}
+ * Cycles: show → hide → show.
+ * @returns {'show'|'hide'}
  */
 function toggleVisibilityMode() {
-  clearHesitationTimer();
-
-  if (visibilityMode === 'adaptive') {
-    visibilityMode = 'force-hide';
+  if (visibilityMode === 'show') {
+    visibilityMode = 'hide';
     hideKeyboard();
-  } else if (visibilityMode === 'force-hide') {
-    visibilityMode = 'force-show';
-    showKeyboard();
   } else {
-    visibilityMode = 'adaptive';
+    visibilityMode = 'show';
     showKeyboard();
-    if (containerEl) containerEl.style.opacity = String(FULL_OPACITY);
   }
-
   return visibilityMode;
 }
 
 /**
  * Get the current visibility mode.
- * @returns {'adaptive'|'force-show'|'force-hide'}
+ * @returns {'show'|'hide'}
  */
 function getVisibilityMode() {
   return visibilityMode;
 }
 
 /**
- * Set visibility mode directly (e.g. from stored player settings or age bracket defaults).
- * @param {'adaptive'|'force-show'|'force-hide'} mode
+ * Set visibility mode directly.
+ * @param {'show'|'hide'} mode
  */
 function setVisibilityMode(mode) {
   visibilityMode = mode;
-  clearHesitationTimer();
-  if (mode === 'force-hide') {
+  if (mode === 'hide') {
     hideKeyboard();
-  } else if (mode === 'force-show') {
-    showKeyboard();
   } else {
     showKeyboard();
-    if (containerEl) containerEl.style.opacity = String(FULL_OPACITY);
   }
 }
 
 // --- learn.js ---
 // learn.js — Learn mode: keyboard exploration and finger-position lessons
-// Tasks 11-14: State machine, drill engine, all 5 lesson groups, Lesson Select
+// Tasks 11-14: State machine, drill engine, all 6 lesson groups, Lesson Select
 //
 // Public API:
 //   startLearn(playerName, ageBracket) — enter Learn mode from main.js
@@ -4183,7 +4167,7 @@ function displayFinger(fingerName, bracket) {
   return fingerName;
 }
 
-/** All 5 lesson groups — authoritative content for Learn mode. */
+/** All 6 lesson groups — authoritative content for Learn mode. */
 const LESSON_GROUPS = [
   {
     id: 'homeRow',
@@ -4308,6 +4292,30 @@ const LESSON_GROUPS = [
       'Adult': '{key}',
     },
   },
+  {
+    id: 'spaceShift',
+    title: 'Space & Shift',
+    description: {
+      '4-5': "Let's learn the big bar and the Shift key!",
+      '6-8': 'Learn the Space bar and Shift key.',
+      '9-12': 'Space bar and Shift key drills.',
+      'Adult': 'Space and Shift key practice.',
+    },
+    keys: [],
+    introText: {
+      '4-5': "See the big long bar at the bottom? That's the Space bar! And the Shift keys on each side make BIG letters!",
+      '6-8': "The Space bar puts gaps between words. Shift makes capital letters. Let's practise both!",
+      '9-12': 'Space bar separates words. Shift produces uppercase. Both are essential for real typing.',
+      'Adult': 'Space and Shift key practice. Space bar with right thumb, Shift with opposite-hand pinky.',
+    },
+    prompts: {
+      '4-5': '{prompt}',
+      '6-8': '{prompt}',
+      '9-12': '{prompt}',
+      'Adult': '{prompt}',
+    },
+    repetitions: 1,
+  },
 ];
 
 /** Group-specific celebration text. */
@@ -4342,6 +4350,12 @@ const GROUP_CELEBRATION = {
     '9-12': "Full keyboard mastered. Let's play.",
     'Adult': 'Keyboard review complete.',
   },
+  spaceShift: {
+    '4-5': "You can use Space and Shift! You're ready to type real words!",
+    '6-8': 'Space and Shift mastered! You can type anything now!',
+    '9-12': 'Space and Shift complete. Ready for full sentences.',
+    'Adult': 'Space and Shift drills complete.',
+  },
 };
 
 /** Age-appropriate nudge text templates. */
@@ -4353,7 +4367,7 @@ const NUDGE_TEXT = {
 };
 
 /** Lesson group ordering for sequential unlock. */
-const GROUP_ORDER = ['homeRow', 'leftRight', 'topRow', 'bottomRow', 'combined'];
+const GROUP_ORDER = ['homeRow', 'leftRight', 'topRow', 'bottomRow', 'combined', 'spaceShift'];
 
 /** Lesson card visual state config. */
 const CARD_STATES = {
@@ -4419,6 +4433,14 @@ let _combinedCorrect = 0;
 
 /** @type {string[]} Last 5 keys shown, to avoid immediate repeats */
 let _combinedLastKeys = [];
+
+// -- Space & Shift (Group 6) specific state --
+
+/** @type {Array<{type: string, key?: string}>} Space/Shift drill sequence */
+let _spaceShiftQueue = [];
+
+/** @type {{type: string, key?: string}|null} Current space/shift drill item */
+let _spaceShiftCurrent = null;
 
 // -- DOM (lazy-init per Addendum 2 Fix C2) --
 
@@ -4559,6 +4581,55 @@ function pickRandomKey(allKeys, lastKeys) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+const SPACE_SHIFT_HOME_KEYS = ['A', 'S', 'D', 'F', 'J', 'K', 'L'];
+
+/**
+ * Build the drill queue for Space & Shift lesson.
+ * Phase 1: 5 letter-space-letter sequences (15 items).
+ * Phase 2: 8 Shift+letter drills.
+ * @returns {Array<{type: string, key?: string}>}
+ */
+function buildSpaceShiftQueue() {
+  const queue = [];
+  // Phase 1: Space drills — type letter, space, letter (×5)
+  for (let i = 0; i < 5; i++) {
+    const k1 = SPACE_SHIFT_HOME_KEYS[Math.floor(Math.random() * SPACE_SHIFT_HOME_KEYS.length)];
+    const k2 = SPACE_SHIFT_HOME_KEYS[Math.floor(Math.random() * SPACE_SHIFT_HOME_KEYS.length)];
+    queue.push({ type: 'letter', key: k1 });
+    queue.push({ type: 'space' });
+    queue.push({ type: 'letter', key: k2 });
+  }
+  // Phase 2: Shift drills — hold Shift + letter (×8)
+  const shuffled = shuffle([...SPACE_SHIFT_HOME_KEYS]);
+  for (let i = 0; i < 8; i++) {
+    queue.push({ type: 'shift', key: shuffled[i % shuffled.length] });
+  }
+  return queue;
+}
+
+/**
+ * Get the prompt text for a spaceShift drill item.
+ * @param {{type: string, key?: string}} item
+ * @returns {string}
+ */
+function getSpaceShiftPrompt(item) {
+  if (item.type === 'letter') {
+    if (_bracket === '4-5') return 'Press the ' + item.key + ' key!';
+    return 'Press ' + item.key;
+  }
+  if (item.type === 'space') {
+    if (_bracket === '4-5') return 'Now press the big bar at the bottom!';
+    if (_bracket === '6-8') return 'Press the Space bar!';
+    return 'Press Space';
+  }
+  if (item.type === 'shift') {
+    if (_bracket === '4-5') return 'Hold Shift and press ' + item.key + ' to make a BIG letter!';
+    if (_bracket === '6-8') return 'Hold Shift + ' + item.key + '!';
+    return 'Shift + ' + item.key;
+  }
+  return '';
+}
+
 /**
  * Get the completion threshold for Group 5 based on age bracket.
  *
@@ -4623,7 +4694,7 @@ function restorePlayUI() {
 // ══════════════════════════════════════════════════════════════════
 
 /**
- * Render the Lesson Select grid showing all 5 groups with
+ * Render the Lesson Select grid showing all 6 groups with
  * locked / in_progress / complete visual states.
  * Called on Learn mode entry and after completing a lesson.
  */
@@ -4691,8 +4762,10 @@ function renderLessonSelect() {
     info.appendChild(mkEl('span', 'lesson-card__title', group.title));
     info.appendChild(mkEl('span', 'lesson-card__desc',
       group.description[_bracket] || group.description['Adult']));
-    info.appendChild(mkEl('span', 'lesson-card__keys',
-      group.keys.length + ' keys'));
+    const keyCountText = group.id === 'spaceShift'
+      ? '23 drills'
+      : group.keys.length + ' keys';
+    info.appendChild(mkEl('span', 'lesson-card__keys', keyCountText));
     card.appendChild(info);
 
     // Interactive handler
@@ -4749,7 +4822,7 @@ function renderLessonSelect() {
 /**
  * Start (or replay) a lesson group by index.
  * Validates the group is not locked, builds key queue, shows intro.
- * @param {number} groupIndex — 0-4
+ * @param {number} groupIndex — 0-5
  */
 function startLessonGroup(groupIndex) {
   const group = LESSON_GROUPS[groupIndex];
@@ -4767,7 +4840,12 @@ function startLessonGroup(groupIndex) {
   _combinedCorrect = 0;
   _combinedLastKeys = [];
 
-  if (group.id === 'combined') {
+  if (group.id === 'spaceShift') {
+    _spaceShiftQueue = buildSpaceShiftQueue();
+    _spaceShiftCurrent = null;
+    _keyQueue = [];
+    _totalKeys = _spaceShiftQueue.length;
+  } else if (group.id === 'combined') {
     _keyQueue = [];                       // combined uses random picks
     _totalKeys = getCombinedThreshold();
   } else {
@@ -4868,13 +4946,21 @@ function renderDrillView() {
     if (group.id === 'homeRow') {
       highlightKey('F');
       highlightKey('J');
+    } else if (group.id === 'spaceShift') {
+      highlightKey(' ');
+      highlightKey('SHIFT');
+      highlightKey('SHIFTRIGHT');
     } else {
       // Highlight all group keys to give a visual preview
       group.keys.forEach(k => highlightKey(k));
     }
 
   } else if (_phase === 'drill') {
-    promptEl.textContent = buildPromptText(group, _targetKey);
+    if (group.id === 'spaceShift' && _spaceShiftCurrent) {
+      promptEl.textContent = getSpaceShiftPrompt(_spaceShiftCurrent);
+    } else {
+      promptEl.textContent = buildPromptText(group, _targetKey);
+    }
     promptArea.appendChild(promptEl);
     promptArea.appendChild(nudgeEl);
 
@@ -4905,7 +4991,7 @@ function renderDrillView() {
     // Navigation buttons (appear after 1.5s)
     const btnWrap = mkEl('div', 'learn-celebration-buttons');
 
-    if (group.id === 'combined') {
+    if (group.id === 'spaceShift') {
       // Last group: "Start Playing!" and "Play Again"
       const goLabel = _bracket === '4-5'
         ? "Let's play the game!"
@@ -4994,6 +5080,15 @@ function handleLearnKeyPress(e) {
   }
 
   if (_phase === 'drill') {
+    const group = LESSON_GROUPS[_currentGroupIndex];
+
+    // SpaceShift group: handle space, shift+letter, and regular letters
+    if (group && group.id === 'spaceShift' && _spaceShiftCurrent) {
+      e.preventDefault();
+      handleSpaceShiftDrillKey(e);
+      return;
+    }
+
     if (e.key.length !== 1) return;       // only printable characters
     e.preventDefault();
     handleDrillKey(e.key.toUpperCase());
@@ -5011,7 +5106,10 @@ function transitionToDrill() {
   const group = LESSON_GROUPS[_currentGroupIndex];
   _phase = 'drill';
 
-  if (group.id === 'combined') {
+  if (group.id === 'spaceShift') {
+    _spaceShiftCurrent = _spaceShiftQueue.shift();
+    _targetKey = _spaceShiftCurrent ? (_spaceShiftCurrent.type === 'space' ? ' ' : _spaceShiftCurrent.key) : null;
+  } else if (group.id === 'combined') {
     _targetKey = pickRandomKey(group.keys, _combinedLastKeys);
     _combinedLastKeys.push(_targetKey);
     if (_combinedLastKeys.length > 5) _combinedLastKeys.shift();
@@ -5023,6 +5121,23 @@ function transitionToDrill() {
   if (_targetKey) {
     highlightKey(_targetKey);
     if (group.id === 'leftRight') highlightFingerZone(_targetKey);
+  }
+
+  if (group.id === 'spaceShift' && _spaceShiftCurrent) {
+    clearHighlights();
+    if (_spaceShiftCurrent.type === 'space') {
+      highlightKey(' ');
+    } else if (_spaceShiftCurrent.type === 'shift') {
+      const leftHandKeys = ['A', 'S', 'D', 'F'];
+      if (leftHandKeys.includes(_spaceShiftCurrent.key)) {
+        highlightKey('SHIFTRIGHT');
+      } else {
+        highlightKey('SHIFT');
+      }
+      highlightKey(_spaceShiftCurrent.key);
+    } else {
+      highlightKey(_spaceShiftCurrent.key);
+    }
   }
 
   renderDrillView();
@@ -5045,6 +5160,102 @@ function handleDrillKey(pressed) {
   }
 }
 
+
+/**
+ * Handle a keypress during the spaceShift drill.
+ * @param {KeyboardEvent} e
+ */
+function handleSpaceShiftDrillKey(e) {
+  if (!_spaceShiftCurrent) return;
+
+  const item = _spaceShiftCurrent;
+  let isCorrect = false;
+
+  if (item.type === 'letter') {
+    isCorrect = e.key.toUpperCase() === item.key;
+  } else if (item.type === 'space') {
+    isCorrect = e.key === ' ';
+  } else if (item.type === 'shift') {
+    // Must press the correct letter with Shift held (produces uppercase)
+    isCorrect = e.key === item.key && e.shiftKey;
+  }
+
+  if (isCorrect) {
+    playSound('learnCorrect');
+    if (item.type === 'space') {
+      flashCorrect(' ');
+    } else {
+      flashCorrect(item.key);
+    }
+    hideNudge();
+    _completedKeys++;
+
+    if (_spaceShiftQueue.length === 0) {
+      completeLessonGroup();
+      return;
+    }
+
+    // Advance to next item
+    _spaceShiftCurrent = _spaceShiftQueue.shift();
+    _targetKey = _spaceShiftCurrent.type === 'space' ? ' ' : _spaceShiftCurrent.key;
+
+    clearHighlights();
+    if (_spaceShiftCurrent.type === 'space') {
+      highlightKey(' ');
+    } else if (_spaceShiftCurrent.type === 'shift') {
+      const leftHandKeys = ['A', 'S', 'D', 'F'];
+      if (leftHandKeys.includes(_spaceShiftCurrent.key)) {
+        highlightKey('SHIFTRIGHT');
+      } else {
+        highlightKey('SHIFT');
+      }
+      highlightKey(_spaceShiftCurrent.key);
+    } else {
+      highlightKey(_spaceShiftCurrent.key);
+    }
+
+    updateDrillUI();
+  } else {
+    playSound('learnNudge');
+    // Show nudge with space/shift-specific text
+    const nudgeEl = document.getElementById('learn-nudge');
+    if (nudgeEl) {
+      if (item.type === 'space') {
+        nudgeEl.textContent = _bracket === '4-5'
+          ? 'Press the big bar at the bottom!'
+          : 'Press the Space bar!';
+      } else if (item.type === 'shift') {
+        nudgeEl.textContent = _bracket === '4-5'
+          ? 'Hold Shift and press ' + item.key + '!'
+          : 'Hold Shift + ' + item.key;
+      } else {
+        const template = NUDGE_TEXT[_bracket] || NUDGE_TEXT['Adult'];
+        nudgeEl.textContent = template
+          .replace('{pressed}', e.key.toUpperCase())
+          .replace('{target}', item.key);
+      }
+      nudgeEl.hidden = false;
+      if (_nudgeTimeout) clearTimeout(_nudgeTimeout);
+      _nudgeTimeout = setTimeout(hideNudge, 3000);
+    }
+
+    // Re-highlight correct target
+    clearHighlights();
+    if (item.type === 'space') {
+      highlightKey(' ');
+    } else if (item.type === 'shift') {
+      const leftHandKeys = ['A', 'S', 'D', 'F'];
+      if (leftHandKeys.includes(item.key)) {
+        highlightKey('SHIFTRIGHT');
+      } else {
+        highlightKey('SHIFT');
+      }
+      highlightKey(item.key);
+    } else {
+      highlightKey(item.key);
+    }
+  }
+}
 
 // ── Correct / Wrong handlers ─────────────────────────────────────
 
@@ -5211,8 +5422,12 @@ function updateDrillUI() {
 
   // Prompt text
   const promptEl = document.getElementById('learn-prompt');
-  if (promptEl && _targetKey) {
-    promptEl.textContent = buildPromptText(group, _targetKey);
+  if (promptEl) {
+    if (group.id === 'spaceShift' && _spaceShiftCurrent) {
+      promptEl.textContent = getSpaceShiftPrompt(_spaceShiftCurrent);
+    } else if (_targetKey) {
+      promptEl.textContent = buildPromptText(group, _targetKey);
+    }
   }
 
   // Progress text + fill bar
@@ -5382,6 +5597,7 @@ function startLearn(playerName, ageBracket) {
       topRow: 'locked',
       bottomRow: 'locked',
       combined: 'locked',
+      spaceShift: 'locked',
     };
     savePlayer(_playerName, _playerData);
   }
@@ -5465,6 +5681,20 @@ function cleanupLearn() {
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// roundRect polyfill for Safari < 16, older Firefox (#8)
+if (typeof CanvasRenderingContext2D !== 'undefined' &&
+    !CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
+    const r = typeof radii === 'number' ? radii : (Array.isArray(radii) ? radii[0] : 0);
+    this.moveTo(x + r, y);
+    this.arcTo(x + w, y,     x + w, y + h, r);
+    this.arcTo(x + w, y + h, x,     y + h, r);
+    this.arcTo(x,     y + h, x,     y,     r);
+    this.arcTo(x,     y,     x + w, y,     r);
+    this.closePath();
+  };
+}
+
 
 // ═══════════════════════════════════════════════════════════════════
 // DOM references — initialised lazily (Fix C2)
@@ -5479,6 +5709,9 @@ let hudEls = {};
 let playDOMReady = false;
 let resizeObserver = null;
 let themeObserver = null;
+
+let _ariaTimer = null;
+let _ariaLiveEl = null;
 
 /** Initialise DOM references on first Play mode entry. */
 function initPlayDOM() {
@@ -5524,6 +5757,15 @@ function initPlayDOM() {
   if (!themeObserver) {
     themeObserver = new MutationObserver(() => cacheThemeColours());
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
+  // Debounced aria-live region for screen reader updates (#3)
+  if (!_ariaLiveEl) {
+    _ariaLiveEl = document.createElement('div');
+    _ariaLiveEl.setAttribute('aria-live', 'polite');
+    _ariaLiveEl.setAttribute('aria-atomic', 'true');
+    _ariaLiveEl.className = 'sr-only';
+    document.getElementById('game-wrapper').appendChild(_ariaLiveEl);
   }
 
   playDOMReady = true;
@@ -5577,6 +5819,9 @@ function cacheThemeColours() {
 
   // Invalidate danger gradient
   cachedDangerGrad = null;
+
+  // Derive confetti colours from zone palette
+  confettiColours = Object.values(cachedZoneColours);
 }
 
 /** Get the resolved colour for a finger zone. */
@@ -5640,13 +5885,10 @@ function currentStage() {
 
 
 // ═══════════════════════════════════════════════════════════════════
-// Confetti colours for celebrations
+// Confetti colours — derived from theme's finger zone colours
 // ═══════════════════════════════════════════════════════════════════
 
-const CONFETTI_COLOURS = [
-  '#FF6B6B', '#4ECDC4', '#45B7D1', '#96E6A1',
-  '#DDA0DD', '#F7DC6F', '#FF8C42', '#98D8C8',
-];
+let confettiColours = [];
 
 
 // ═══════════════════════════════════════════════════════════════════
@@ -5879,7 +6121,7 @@ function spawnConfetti(count) {
       vx: (Math.random() - 0.5) * 4,
       vy: 1 + Math.random() * 3,
       life: 1.5,
-      colour: CONFETTI_COLOURS[i % CONFETTI_COLOURS.length],
+      colour: confettiColours[i % confettiColours.length] || '#FF6B6B',
       size: 4 + Math.random() * 4,
     });
   }
@@ -6105,10 +6347,6 @@ function removeItem(idx, success) {
       }
     }
 
-    // ── Keyboard adaptive fade ──
-    updateKeyboardAdaptive(gameState.streak, 0);
-    startHesitationTimer(gameState.streak);
-
     // ── Stage progression check ──
     const stage = currentStage();
     if (gameState.stageHits >= stage.needed) {
@@ -6137,10 +6375,6 @@ function removeItem(idx, success) {
       const almostMsg = gameState.bracket === '4-5' ? 'So close!' : 'Almost!';
       addPopText(almostMsg, item.x + item.tw / 2, item.y - 20, '#F59E0B');
     }
-
-    // Keyboard adaptive fade — streak reset
-    updateKeyboardAdaptive(0, 0);
-    clearHesitationTimer();
 
     updateHUD();
 
@@ -6722,12 +6956,11 @@ function getSessionWeakKeys() {
 
 function endGame() {
   gameState.active = false;
+  if (_ariaTimer) { clearInterval(_ariaTimer); _ariaTimer = null; }
   if (raf) {
     cancelAnimationFrame(raf);
     raf = null;
   }
-
-  clearHesitationTimer();
 
   // Play appropriate sound
   if (gameState.allStagesCleared) {
@@ -6989,7 +7222,6 @@ function loop(now) {
 function pauseGame() {
   if (!gameState.active || gameState.paused) return;
   gameState.paused = true;
-  clearHesitationTimer();
   showPauseOverlay();
 }
 
@@ -7088,8 +7320,21 @@ function startGame(bracket, stageList, callbacks) {
   updateHUD();
   updateTypedDisplay();
 
-  // Set keyboard adaptive mode
-  setVisibilityMode('adaptive');
+  // Debounce aria-live: remove per-element live regions during gameplay
+  if (hudEls.score) hudEls.score.removeAttribute('aria-live');
+  if (hudEls.streak) hudEls.streak.removeAttribute('aria-live');
+
+  // Announce combined summary every 5 seconds
+  if (_ariaTimer) clearInterval(_ariaTimer);
+  _ariaTimer = setInterval(() => {
+    if (!gameState.active || gameState.paused) return;
+    if (_ariaLiveEl) {
+      _ariaLiveEl.textContent = `Score ${gameState.score}, Stage ${gameState.stageIdx + 1}, ${gameState.lives} lives`;
+    }
+  }, 5000);
+
+  // Set keyboard visible
+  setVisibilityMode('show');
 
   // Spotlight mode for 4-5: dims all keys except the target
   setSpotlightMode(bracket === '4-5');
@@ -7149,7 +7394,6 @@ function cleanupPlay() {
     boundHandleKey = null;
   }
 
-  clearHesitationTimer();
   setSpotlightMode(false);
   clearHighlights();
 
@@ -7170,6 +7414,12 @@ function cleanupPlay() {
 
   // Hide pause button
   if (hudEls.pauseBtn) hudEls.pauseBtn.style.display = 'none';
+
+  // Restore aria-live on HUD elements
+  if (hudEls.score) hudEls.score.setAttribute('aria-live', 'polite');
+  if (hudEls.streak) hudEls.streak.setAttribute('aria-live', 'polite');
+  if (_ariaTimer) { clearInterval(_ariaTimer); _ariaTimer = null; }
+  if (_ariaLiveEl) { _ariaLiveEl.textContent = ''; }
 
   if (themeObserver) { themeObserver.disconnect(); themeObserver = null; }
 }
@@ -7552,6 +7802,47 @@ function showPlayerSelect() {
   feedbackLink.rel = 'noopener noreferrer';
   feedbackLink.textContent = 'Feedback & Ideas';
   footer.appendChild(feedbackLink);
+
+  // Data export/import links
+  footer.appendChild(document.createTextNode(' \u00B7 '));
+
+  const exportLink = document.createElement('a');
+  exportLink.href = '#';
+  exportLink.textContent = 'Export Data';
+  exportLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    exportData();
+  });
+  footer.appendChild(exportLink);
+
+  footer.appendChild(document.createTextNode(' \u00B7 '));
+
+  const importLink = document.createElement('a');
+  importLink.href = '#';
+  importLink.textContent = 'Import Data';
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.json';
+  fileInput.style.display = 'none';
+  fileInput.addEventListener('change', async () => {
+    if (!fileInput.files[0]) return;
+    const ok = confirm('This will replace all player data. Continue?');
+    if (!ok) { fileInput.value = ''; return; }
+    const success = await importData(fileInput.files[0]);
+    fileInput.value = '';
+    if (success) {
+      showPlayerSelect(); // Refresh to show imported data
+    } else {
+      alert('Import failed \u2014 the file does not appear to be a valid backup.');
+    }
+  });
+  importLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    fileInput.click();
+  });
+  footer.appendChild(importLink);
+  footer.appendChild(fileInput);
+
   overlay.appendChild(footer);
 
   requestAnimationFrame(() => {
@@ -8221,12 +8512,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const label = toggleBtn.querySelector('.hud-btn__label');
       if (label) {
         switch (newMode) {
-          case 'adaptive':   label.textContent = 'Keyboard'; break;
-          case 'force-hide': label.textContent = 'Keyboard (off)'; break;
-          case 'force-show': label.textContent = 'Keyboard (on)'; break;
+          case 'show': label.textContent = 'Keyboard'; break;
+          case 'hide': label.textContent = 'Keyboard (off)'; break;
         }
       }
-      toggleBtn.classList.toggle('hud-btn--active', newMode === 'force-show');
+      toggleBtn.classList.toggle('hud-btn--active', newMode === 'show');
     });
   }
 
