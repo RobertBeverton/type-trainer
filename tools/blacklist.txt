@@ -80,5 +80,17 @@ linearize     # stray compound
 hasten        # duplicated by other words
 outgo         # "Income/Outgo" — archaic
 
+# --- Multi-sense contamination: wrong word sense antonyms ---
+piano         # "Loud/Piano" — musical dynamic, not volume for kids
+unfairly      # "Clean/Unfairly" — fair-play sense, not clean/dirty
+wane          # "Full/Wane" — moon phase sense
+downward      # "Up/Downward" — adverb form, redundant with "down"
+downwardly    # "Up/Downwardly" — adverb form
+downwards     # "Up/Downwards" — adverb form
+badness       # "Good/Badness" — noun form, "bad" is sufficient
+evilness      # "Good/Evilness" — noun form, "evil" is sufficient
+ill           # "Good/Ill" — ambiguous; "bad" is the clear opposite
+softly        # "Loud/Softly" — adverb form, "soft" is sufficient
+
 # --- Confusing because too similar to question ---
 # (add specific pairs here if WordNet produces weird results)

@@ -72,19 +72,28 @@ def load_wordlist(path):
     return words
 
 def load_overrides(path):
-    """Returns dict: word -> list of extra antonyms."""
+    """Returns dict: word -> {'mode': 'add'|'replace', 'antonyms': [...]}.
+
+    Syntax in overrides.txt:
+      word: ant1, ant2   — ADD these antonyms to whatever WordNet returns
+      word = ant1, ant2  — REPLACE WordNet antonyms with exactly these
+    """
     if not path.exists():
         return {}
     result = {}
     for line in path.read_text(encoding='utf-8').splitlines():
         line = line.strip().split('#')[0].strip()
-        if ':' not in line:
+        if '=' in line and ':' not in line.split('=')[0]:
+            sep, mode = '=', 'replace'
+        elif ':' in line:
+            sep, mode = ':', 'add'
+        else:
             continue
-        word, _, rest = line.partition(':')
+        word, _, rest = line.partition(sep)
         word = word.strip().lower()
-        extras = [a.strip().lower() for a in rest.split(',') if a.strip()]
-        if word and extras:
-            result[word] = extras
+        ants = [a.strip().lower() for a in rest.split(',') if a.strip()]
+        if word and ants:
+            result[word] = {'mode': mode, 'antonyms': ants}
     return result
 
 def is_clean(word, min_len, max_len):
@@ -164,9 +173,18 @@ def main():
             pairs[word] = good_ants
             used.add(word)
 
+    def apply_override(base_ants, word):
+        """Merge or replace base_ants according to overrides entry for word."""
+        ov = overrides.get(word)
+        if not ov:
+            return base_ants
+        if ov['mode'] == 'replace':
+            return set(ov['antonyms'])
+        return base_ants | set(ov['antonyms'])
+
     # 1. Whitelist words — always included, freq filter bypassed for antonyms too
     for word in sorted(whitelist):
-        ants = get_antonyms(word, wn) | set(overrides.get(word, []))
+        ants = apply_override(get_antonyms(word, wn), word)
         record(word, ants, valid_whitelist_ant)
 
     # 2. Sweep every WordNet lemma that has direct antonyms
@@ -180,13 +198,13 @@ def main():
                 continue
             ants = {a.name().lower() for a in lemma.antonyms()
                     if '_' not in a.name()}
-            ants |= set(overrides.get(word, []))
+            ants = apply_override(ants, word)
             record(word, ants, valid_general)
 
     # 3. Apply overrides for any word not yet in pairs (adds missing entries)
-    for word, extra_ants in overrides.items():
+    for word, ov in overrides.items():
         if word not in used:
-            record(word, set(extra_ants), valid_whitelist_ant)
+            record(word, set(ov['antonyms']), valid_whitelist_ant)
 
     print(f'  {len(pairs)} word pairs collected')
 

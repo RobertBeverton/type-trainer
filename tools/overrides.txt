@@ -8,4 +8,14 @@ hard: tough
 cry: laugh, smile
 win: lose
 stop: go, start, begin
-right: left, wrong
+
+# = means REPLACE all WordNet antonyms with exactly these
+left = right           # WordNet picks up "left" as past tense of leave → wrong
+right = left, wrong    # keep both directional and correct/incorrect senses
+up = down              # drops downward/downwardly/downwards adverb forms
+loud = soft, quiet     # drops "piano" (music term WordNet returns)
+full = empty           # drops "wane" and "thin"
+good = bad, evil       # drops "badness", "evilness", "ill"
+clean = dirty, messy   # drops "unfairly" (WordNet fair/unfair sense)
+sit = stand            # drops "arise", "lie" (different contexts)
+let = allow, permit    # drops "prevent" — WordNet picks up "let" as obstruct sense
