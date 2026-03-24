@@ -328,14 +328,31 @@ if [ "${1:-}" = "--release" ]; then
   RELEASE_DIR="release"
   mkdir -p "$RELEASE_DIR"
   ZIP_NAME="kids-games-$(date +%Y%m%d).zip"
+  ZIP_PATH="$RELEASE_DIR/$ZIP_NAME"
 
-  # Create a README for the zip
-  echo "Open index.html in your web browser to play." > "$RELEASE_DIR/README.txt"
+  # Gather files to package
+  FILES=(
+    "$DOCS_DIR/index.html"
+    "$DOCS_DIR/type-trainer.html"
+    "$DOCS_DIR/opposites.html"
+  )
 
-  # Create zip of docs/ contents
-  (cd "$DOCS_DIR" && zip -r "../$RELEASE_DIR/$ZIP_NAME" index.html type-trainer.html opposites.html)
-  (cd "$RELEASE_DIR" && zip "$ZIP_NAME" README.txt && rm README.txt)
+  if command -v zip >/dev/null 2>&1; then
+    # Create a README for the zip
+    echo "Open index.html in your web browser to play." > "$RELEASE_DIR/README.txt"
+    (cd "$DOCS_DIR" && zip -r "../$ZIP_PATH" index.html type-trainer.html opposites.html)
+    (cd "$RELEASE_DIR" && zip "$ZIP_NAME" README.txt && rm README.txt)
+  elif command -v powershell >/dev/null 2>&1; then
+    # Fallback: use PowerShell Compress-Archive (Windows)
+    WIN_FILES=$(printf '"%s",' "${FILES[@]}" | sed 's/,$//')
+    WIN_DEST=$(echo "$ZIP_PATH" | sed 's|/|\\|g')
+    powershell -NoProfile -Command "\$files = @($WIN_FILES); Compress-Archive -Path \$files -DestinationPath '$WIN_DEST' -Force" >/dev/null
+  else
+    echo "Warning: neither 'zip' nor 'powershell' found — skipping zip creation."
+    echo "Manually zip the contents of $DOCS_DIR/ to create a release."
+    exit 0
+  fi
 
   echo ""
-  echo "Release package: $RELEASE_DIR/$ZIP_NAME"
+  echo "Release package: $ZIP_PATH"
 fi
