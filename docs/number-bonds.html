@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Number Bonds</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
+  <style>
 /* shared/tokens.css — Design tokens for Kids Games hub
    Two themes: colourful-light, colourful-dark
    Set via data-theme attribute on <html> */
@@ -653,103 +653,482 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* Number Bonds — game styles */
 
-  body {
-    font-family: var(--font-family);
-    background: var(--bg);
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    padding-top: 56px;
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body::before, body::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    z-index: 0;
-    opacity: 0.15;
-    animation: floaty 8s ease-in-out infinite;
-  }
-  body::before {
-    width: 300px; height: 300px;
-    background: var(--accent-tertiary);
-    top: -80px; right: -80px;
-  }
-  body::after {
-    width: 250px; height: 250px;
-    background: var(--accent-secondary);
-    bottom: -60px; left: -60px;
-    animation-delay: -4s;
-  }
+body {
+  font-family: var(--font-family);
+  background: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  padding-top: 56px;
+}
 
-  @keyframes floaty {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(15px, 20px) scale(1.05); }
-  }
+body::before, body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  z-index: 0;
+  opacity: 0.15;
+  animation: nbFloat 8s ease-in-out infinite;
+  pointer-events: none;
+}
+body::before { width: 300px; height: 300px; background: var(--accent-tertiary); top: -80px; right: -80px; }
+body::after  { width: 250px; height: 250px; background: var(--accent-secondary); bottom: -60px; left: -60px; animation-delay: -4s; }
 
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    position: relative;
-    z-index: 1;
-    text-align: center;
-  }
+@keyframes nbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(15px,20px) scale(1.05); }
+}
 
-  .game-icon {
-    font-size: 5rem;
-    display: block;
-    margin-bottom: 16px;
-    animation: titleBounce 0.6s ease-out;
-  }
+/* === Screens === */
 
-  @keyframes titleBounce {
-    0% { transform: scale(0.5); opacity: 0; }
-    60% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
-  }
+#nb-app {
+  position: relative;
+  z-index: 1;
+}
 
-  h1 {
-    font-weight: 900;
-    font-size: 2.8rem;
-    background: linear-gradient(135deg, var(--accent-tertiary), var(--accent-primary), var(--accent-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 1px;
-    line-height: 1.1;
-    margin-bottom: 12px;
-  }
+.nb-screen {
+  min-height: calc(100vh - 56px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px 48px;
+}
 
-  .desc {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    margin-bottom: 32px;
-    line-height: 1.5;
-  }
+.nb-screen[hidden] { display: none !important; }
 
-  .coming-soon {
-    display: inline-block;
-    background: var(--bg-surface);
-    border-radius: var(--radius-2xl);
-    padding: 32px 48px;
-    box-shadow: var(--shadow);
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--text-secondary);
-  }
+/* === Settings Screen === */
 
-  .coming-soon span {
-    display: block;
-    font-size: 2rem;
-    margin-bottom: 8px;
+.nb-settings-wrap {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.nb-logo {
+  font-size: 4rem;
+  text-align: center;
+  animation: nbBounce 0.6s ease-out;
+}
+
+@keyframes nbBounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.nb-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent-tertiary), var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Fieldsets */
+.nb-fieldset {
+  border: none;
+  padding: 0;
+}
+
+.nb-legend {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+  display: block;
+}
+
+/* Operation + Difficulty toggles */
+.nb-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.nb-toggle {
+  flex: 1;
+  min-width: 56px;
+  min-height: 48px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  font-family: var(--font-family);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.nb-toggle:hover {
+  border-color: var(--hud-accent);
+  color: var(--hud-accent);
+}
+
+.nb-toggle--active {
+  background: var(--hud-accent);
+  border-color: var(--hud-accent);
+  color: var(--bg-surface);
+}
+
+.nb-diff-hint {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: var(--space-xs);
+}
+
+/* Custom options */
+.nb-custom-opts {
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border: 1px solid var(--border);
+}
+
+.nb-custom-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.nb-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.nb-input {
+  width: 90px;
+  padding: var(--space-xs) var(--space-sm);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--bg);
+  text-align: center;
+}
+
+.nb-input:focus {
+  outline: none;
+  border-color: var(--hud-accent);
+}
+.nb-input:focus-visible {
+  outline: 2px solid var(--hud-accent);
+  outline-offset: 2px;
+}
+
+/* Mode buttons */
+.nb-mode-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+.nb-mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-md) var(--space-sm);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all var(--transition-fast);
+  min-height: 80px;
+}
+
+.nb-mode-btn:hover {
+  border-color: var(--hud-accent);
+}
+
+.nb-mode-btn--active {
+  background: var(--hud-accent);
+  border-color: var(--hud-accent);
+  color: var(--bg-surface);
+}
+
+.nb-mode-icon { font-size: 1.5rem; }
+.nb-mode-name { font-size: var(--text-sm); font-weight: 800; }
+.nb-mode-desc { font-size: var(--text-xs); opacity: 0.8; }
+
+/* Buttons */
+.nb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-xl);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 800;
+  cursor: pointer;
+  min-height: 48px;
+  border: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.nb-btn--primary {
+  background: linear-gradient(135deg, var(--accent-tertiary), var(--accent-primary));
+  color: var(--bg-surface);
+  border-color: var(--accent-primary);
+  width: 100%;
+}
+
+.nb-btn--primary:hover { filter: brightness(1.05); }
+
+.nb-btn--secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.nb-btn--secondary:hover { background: var(--border); }
+
+.nb-btn--ghost {
+  background: none;
+  color: var(--text-secondary);
+  border-color: var(--border);
+  font-size: var(--text-sm);
+  padding: var(--space-xs) var(--space-md);
+  min-height: 44px;
+}
+
+.nb-toggle:focus-visible,
+.nb-mode-btn:focus-visible,
+.nb-btn:focus-visible {
+  outline: 2px solid var(--hud-accent);
+  outline-offset: 2px;
+}
+
+.nb-btn--large { font-size: var(--text-xl); min-height: 60px; }
+
+/* === Game Screen === */
+
+.nb-screen--game {
+  flex-direction: column;
+  padding: 0;
+}
+
+.nb-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-surface);
+  min-height: 48px;
+  gap: var(--space-sm);
+}
+
+.nb-hud-score {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 80px;
+}
+
+.nb-hud-center {
+  font-size: var(--text-base);
+  font-weight: 800;
+  color: var(--hud-accent);
+  text-align: center;
+  flex: 1;
+}
+
+/* Question display */
+.nb-question-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.nb-question {
+  /* clamp(2rem, 8vw, 4rem) works for short equations.
+     For custom mode with 3+ digit numbers (e.g. "? × 144 = 1728"),
+     main.js must add class .nb-question--long which overrides to clamp(1.2rem, 4vw, 2.4rem). */
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.nb-question--long {
+  font-size: clamp(1.2rem, 4vw, 2.4rem);
+}
+
+.nb-question .nb-blank {
+  display: inline-block;
+  min-width: 2ch;
+  padding: 0 8px;
+  border-bottom: 4px solid var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Answer choices */
+.nb-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-md) var(--space-2xl);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.nb-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  font-size: clamp(1.2rem, 5vw, 2rem);
+  font-weight: 900;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow);
+}
+
+.nb-choice:hover:not(:disabled) {
+  border-color: var(--hud-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.nb-choice:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.nb-choice--correct {
+  background: var(--success-bg);
+  border-color: var(--success-text);
+  color: var(--success-text);
+  animation: nbCorrect 0.4s ease-out;
+}
+
+.nb-choice--wrong {
+  background: var(--error-bg);
+  border-color: var(--error-text);
+  color: var(--error-text);
+  animation: nbWrong 0.4s ease-out;
+}
+
+.nb-choice--reveal {
+  background: var(--success-bg);
+  border-color: var(--success-text);
+  color: var(--success-text);
+}
+
+@keyframes nbCorrect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes nbWrong {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* === Results Screen === */
+
+.nb-results-wrap {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.nb-results-icon {
+  font-size: 5rem;
+  animation: nbBounce 0.6s ease-out;
+}
+
+.nb-results-title {
+  font-size: var(--text-3xl);
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.nb-stats {
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.nb-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+
+.nb-stat-label { color: var(--text-secondary); }
+.nb-stat-value { font-size: var(--text-xl); font-weight: 900; color: var(--text-primary); }
+.nb-stat-value--best { color: var(--hud-accent); }
+
+.nb-results-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+/* === Responsive === */
+
+@media (max-width: 400px) {
+  .nb-toggle { font-size: var(--text-base); }
+  .nb-mode-row { grid-template-columns: 1fr; }
+}
+
+/* === Reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
   }
-</style>
+}
+  </style>
 </head>
-<body data-page="number-bonds">
+<body data-page="number-bonds" data-page-title="Number Bonds">
 <!-- Kids Games Shell Bar -->
 <div id="kg-shell" class="kg-shell" role="banner">
   <!-- Games dropdown -->
@@ -786,7 +1165,7 @@ body {
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">c9f119f 24 Mar 17:00</span>
+  <span class="kg-shell__version" title="Build version">090d920 24 Mar 20:13</span>
 </div>
 
 <!-- Player select overlay -->
@@ -845,15 +1224,1327 @@ body {
   </button>
 </div>
 
-<div class="container">
-  <div class="game-icon">🔢</div>
-  <h1>Number Bonds</h1>
-  <p class="desc">Find the two numbers that add up to the target — great for KS1 maths!</p>
-  <div class="coming-soon">
-    <span>🚧</span>
-    Coming soon
+<!-- Shell bar injected by build script -->
+
+<div id="nb-app">
+
+  <!-- SCREEN: Settings -->
+  <div id="nb-settings" class="nb-screen nb-screen--settings">
+    <div class="nb-settings-wrap">
+      <div class="nb-logo">🔢</div>
+      <h1 class="nb-title">Number Bonds</h1>
+
+      <!-- Operation -->
+      <fieldset class="nb-fieldset">
+        <legend class="nb-legend">Operation</legend>
+        <div class="nb-toggle-row" id="nb-op-row">
+          <button class="nb-toggle nb-toggle--active" data-op="+" aria-pressed="true">+</button>
+          <button class="nb-toggle" data-op="-" aria-pressed="false">−</button>
+          <button class="nb-toggle" data-op="*" aria-pressed="false">×</button>
+          <button class="nb-toggle" data-op="/" aria-pressed="false">÷</button>
+          <button class="nb-toggle" data-op="mixed" aria-pressed="false">Mixed</button>
+        </div>
+      </fieldset>
+
+      <!-- Difficulty -->
+      <fieldset class="nb-fieldset">
+        <legend class="nb-legend">Difficulty</legend>
+        <div class="nb-toggle-row" id="nb-diff-row">
+          <button class="nb-toggle" data-diff="easy" aria-pressed="false">Easy</button>
+          <button class="nb-toggle nb-toggle--active" data-diff="medium" aria-pressed="true">Medium</button>
+          <button class="nb-toggle" data-diff="hard" aria-pressed="false">Hard</button>
+          <button class="nb-toggle" data-diff="custom" aria-pressed="false">Custom</button>
+        </div>
+        <p class="nb-diff-hint" id="nb-diff-hint">Numbers 1–20, tables to 10</p>
+      </fieldset>
+
+      <!-- Custom options (hidden unless Custom selected) -->
+      <div id="nb-custom-opts" class="nb-custom-opts" hidden>
+        <div class="nb-custom-row">
+          <label class="nb-label" for="nb-min">Min</label>
+          <input id="nb-min" class="nb-input" type="number" value="-100" min="-9999" max="9999">
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label" for="nb-max">Max</label>
+          <input id="nb-max" class="nb-input" type="number" value="100" min="-9999" max="9999">
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label" for="nb-table">Max table (×÷)</label>
+          <input id="nb-table" class="nb-input" type="number" value="12" min="2" max="99">
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label">
+            <input id="nb-negatives" type="checkbox"> Negative numbers
+          </label>
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label">
+            <input id="nb-decimals" type="checkbox"> Decimals (1dp)
+          </label>
+        </div>
+      </div>
+
+      <!-- Session Mode -->
+      <fieldset class="nb-fieldset">
+        <legend class="nb-legend">Mode</legend>
+        <div class="nb-mode-row" id="nb-mode-row">
+          <button class="nb-mode-btn nb-mode-btn--active" data-mode="sprint" aria-pressed="true">
+            <span class="nb-mode-icon" aria-hidden="true">⏱</span>
+            <span class="nb-mode-name">Sprint</span>
+            <span class="nb-mode-desc">60 seconds</span>
+          </button>
+          <button class="nb-mode-btn" data-mode="round" aria-pressed="false">
+            <span class="nb-mode-icon" aria-hidden="true">🎯</span>
+            <span class="nb-mode-name">Round</span>
+            <span class="nb-mode-desc">10 questions</span>
+          </button>
+          <button class="nb-mode-btn" data-mode="endless" aria-pressed="false">
+            <span class="nb-mode-icon" aria-hidden="true">∞</span>
+            <span class="nb-mode-name">Endless</span>
+            <span class="nb-mode-desc">Keep going</span>
+          </button>
+        </div>
+      </fieldset>
+
+      <button id="nb-start-btn" class="nb-btn nb-btn--primary nb-btn--large">Let's go! 🚀</button>
+    </div>
   </div>
+
+  <!-- SCREEN: Game -->
+  <div id="nb-game" class="nb-screen nb-screen--game" hidden>
+    <div class="nb-hud">
+      <span class="nb-hud-score">Score: <strong id="nb-score">0</strong></span>
+      <span id="nb-hud-center" class="nb-hud-center"></span>
+      <button id="nb-quit-btn" class="nb-btn nb-btn--ghost">Quit</button>
+    </div>
+    <div class="nb-question-wrap">
+      <div class="nb-question" id="nb-question" aria-live="polite" aria-atomic="true"></div>
+    </div>
+    <div class="nb-choices" id="nb-choices" role="group" aria-label="Answer choices"></div>
+  </div>
+
+  <!-- SCREEN: Results -->
+  <div id="nb-results" class="nb-screen nb-screen--results" hidden>
+    <div class="nb-results-wrap">
+      <div class="nb-results-icon" id="nb-results-icon">🎉</div>
+      <h2 class="nb-results-title" id="nb-results-title">Well done!</h2>
+      <div class="nb-stats" id="nb-stats"></div>
+      <div class="nb-results-actions">
+        <button id="nb-play-again-btn" class="nb-btn nb-btn--primary">Play again</button>
+        <button id="nb-change-settings-btn" class="nb-btn nb-btn--secondary">Change settings</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
+  <script>
+(function() { 'use strict';
+// shared/storage.js — Player profiles and namespaced game data
+// NOTE: This file is concatenated INSIDE the shell IIFE by the build script.
+// Do NOT wrap in its own IIFE.
+
+const STORAGE_PREFIX = 'kidsgames_';
+const PLAYERS_KEY = STORAGE_PREFIX + 'players';
+const ACTIVE_KEY = STORAGE_PREFIX + 'activePlayer';
+
+function _read(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw === null ? null : JSON.parse(raw);
+  } catch (e) {
+    console.error('KidsGames: corrupt data for key', key, e);
+    return null;
+  }
+}
+
+function _write(key, val) {
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+    return true;
+  } catch (e) {
+    console.error('KidsGames: storage write failed', key, e);
+    return false;
+  }
+}
+
+// Sanitise player names: letters/numbers/spaces/hyphens/apostrophes, max 20 chars
+function sanitiseName(name) {
+  return name.replace(/[^\p{L}\p{N} '\-]/gu, '').trim().slice(0, 20);
+}
+
+// Escape HTML to prevent injection when inserting into innerHTML
+function escapeHtml(str) {
+  const el = document.createElement('span');
+  el.textContent = str;
+  return el.innerHTML;
+}
+
+function getAllPlayers() {
+  return _read(PLAYERS_KEY) || {};
+}
+
+function getPlayer(name) {
+  const players = getAllPlayers();
+  return players[name] || null;
+}
+
+function createPlayer(name, { dob, manualAge }) {
+  name = sanitiseName(name);
+  if (!name) return false;
+  const players = getAllPlayers();
+  if (players[name]) return false; // already exists
+  players[name] = {
+    name: name,
+    dob: dob || null,
+    manualAge: dob ? null : (manualAge || null),
+    theme: getDefaultTheme(),
+    createdAt: new Date().toISOString().slice(0, 10)
+  };
+  // Return the sanitised name on success so callers can look up the right key
+  return _write(PLAYERS_KEY, players) ? name : false;
+}
+
+function savePlayer(name, data) {
+  const players = getAllPlayers();
+  if (!players[name]) return;
+  players[name] = { ...players[name], ...data };
+  _write(PLAYERS_KEY, players);
+}
+
+function deletePlayer(name) {
+  const players = getAllPlayers();
+  delete players[name];
+  _write(PLAYERS_KEY, players);
+  // Clean up game-specific data — match exact suffix pattern
+  const suffix = '_' + name;
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith(STORAGE_PREFIX) && k.endsWith(suffix) && k !== PLAYERS_KEY && k !== ACTIVE_KEY) {
+        localStorage.removeItem(k);
+      }
+    });
+  } catch (e) {
+    console.error('KidsGames: failed to clean up game data for player', name, e);
+  }
+}
+
+function getActivePlayer() {
+  const name = _read(ACTIVE_KEY);
+  return name ? getPlayer(name) : null;
+}
+
+function setActivePlayer(name) {
+  _write(ACTIVE_KEY, name);
+}
+
+function getAgeBracket(player) {
+  const age = getAge(player);
+  if (age === null) return '6-8'; // fallback
+  if (age <= 5) return '4-5';
+  if (age <= 8) return '6-8';
+  if (age <= 12) return '9-12';
+  return '13+';
+}
+
+function getAge(player) {
+  if (player.dob) {
+    const today = new Date();
+    const birth = new Date(player.dob);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  }
+  return player.manualAge || null;
+}
+
+function getDefaultTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'colourful-dark' : 'colourful-light';
+}
+
+// Game-specific data
+function loadGameData(gameId) {
+  const player = getActivePlayer();
+  if (!player) return {};
+  return _read(STORAGE_PREFIX + gameId + '_' + player.name) || {};
+}
+
+function saveGameData(gameId, data) {
+  const player = getActivePlayer();
+  if (!player) return;
+  _write(STORAGE_PREFIX + gameId + '_' + player.name, data);
+}
+// shared/shell.js — Shell bar logic
+// NOTE: The build script wraps storage.js + shell.js together in a single IIFE.
+// Storage functions (getPlayer, savePlayer, etc.) are available here without import.
+
+
+
+
+  // --- Expose public API ---
+  const _playerChangeListeners = [];
+
+  window.KidsGames = {
+    get player() {
+      const p = getActivePlayer();
+      if (!p) return null;
+      return { name: p.name, ageBracket: getAgeBracket(p), theme: p.theme };
+    },
+    get muted() { return muted; },
+    loadGameData: loadGameData,
+    saveGameData: saveGameData,
+    onPlayerChange(fn) { _playerChangeListeners.push(fn); },
+  };
+
+  function _notifyPlayerChange() {
+    const ctx = window.KidsGames.player;
+    _playerChangeListeners.forEach(fn => { try { fn(ctx); } catch(e) { console.error(e); } });
+  }
+
+  // --- Games list — update when adding new games ---
+  const GAMES = [
+    { id: 'type-trainer',  title: 'Type Trainer',  icon: '⌨️',  url: 'type-trainer.html',  needsKeyboard: true  },
+    { id: 'opposites',     title: 'Opposites',      icon: '🔄',  url: 'opposites.html',     needsKeyboard: false },
+    { id: 'number-bonds',  title: 'Number Bonds',   icon: '🔢',  url: 'number-bonds.html',  needsKeyboard: false },
+  ];
+
+  // --- Volume state ---
+  let muted = false;
+
+  // --- Migration helpers ---
+
+  function bracketToAge(bracket) {
+    const map = { '4-5': 5, '6-8': 7, '9-12': 10, 'Adult': 18, '13+': 18 };
+    return map[bracket] || 7;
+  }
+
+  function migrateTypeTrainerData() {
+    // Only run once
+    if (localStorage.getItem('kidsgames_migrated_typetrainer')) return;
+
+    let oldPlayers;
+    try {
+      oldPlayers = JSON.parse(localStorage.getItem('players') || 'null');
+    } catch (e) {
+      console.error('KidsGames: corrupt old player data, skipping migration', e);
+      localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+      return;
+    }
+
+    if (!oldPlayers || !oldPlayers.players) {
+      localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+      return;
+    }
+
+    // Migrate each player profile
+    Object.entries(oldPlayers.players).forEach(([name, data]) => {
+      if (!getPlayer(name)) {
+        const theme = data.settings && data.settings.theme ? data.settings.theme : 'colourful-light';
+        const themeMap = { 'light': 'colourful-light', 'dark': 'colourful-dark', 'clean-light': 'colourful-light', 'clean-dark': 'colourful-dark', 'colourful-light': 'colourful-light', 'colourful-dark': 'colourful-dark' };
+        createPlayer(name, { dob: null, manualAge: bracketToAge(data.ageBracket) });
+        savePlayer(name, { theme: themeMap[theme] || theme });
+      }
+      // Migrate game-specific data
+      const key = STORAGE_PREFIX + 'typetrainer_' + name;
+      _write(key, {
+        highScore: data.highScore || 0,
+        highestStage: data.highestStage || 0,
+        totalGamesPlayed: data.totalGamesPlayed || 0,
+        stats: data.stats || {},
+        speedPreference: (data.settings && data.settings.speedPreference) || 1.8,
+      });
+    });
+
+    // Set active player from old data
+    const lastPlayer = localStorage.getItem('typingGame_lastPlayer');
+    if (lastPlayer && getPlayer(lastPlayer)) {
+      setActivePlayer(lastPlayer);
+    }
+
+    // Clean up old keys (only if migration succeeded)
+    const newPlayers = getAllPlayers();
+    if (Object.keys(newPlayers).length > 0) {
+      localStorage.removeItem('players');
+      localStorage.removeItem('currentPlayer');
+      localStorage.removeItem('typingGame_theme');
+      localStorage.removeItem('typingGame_lastPlayer');
+    } else {
+      console.error('KidsGames: migration wrote no players — keeping old keys as backup');
+    }
+    localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+  }
+
+  // --- Form helpers ---
+  function _resetAddPlayerForm() {
+    const nameInput = document.getElementById('kg-name-input');
+    nameInput.value = '';
+    nameInput.disabled = false;
+    document.getElementById('kg-dob-input').value = '';
+    document.getElementById('kg-age-input').value = '';
+    document.getElementById('kg-addplayer-submit').disabled = true;
+    document.getElementById('kg-addplayer-heading').textContent = 'New Player';
+    // Reset to DoB tab
+    document.querySelectorAll('.kg-age-tab').forEach(tab => {
+      const isDob = tab.dataset.mode === 'dob';
+      tab.classList.toggle('active', isDob);
+      tab.setAttribute('aria-selected', isDob ? 'true' : 'false');
+    });
+    document.getElementById('kg-dob-field').hidden = false;
+    document.getElementById('kg-age-field').hidden = true;
+  }
+
+  function _cancelAgeUpdate() {
+    const form = document.getElementById('kg-addplayer-form');
+    if (form._ageUpdateHandler) {
+      form.removeEventListener('submit', form._ageUpdateHandler);
+      form._ageUpdateHandler = null;
+    }
+    _resetAddPlayerForm();
+  }
+
+  // --- Age update (from nudge banner) ---
+  function showAgeUpdate(player) {
+    const addOverlay = document.getElementById('kg-addplayer-overlay');
+    const playerOverlay = document.getElementById('kg-player-overlay');
+    _cancelAgeUpdate(); // clean up any stale handler and reset form state
+    document.getElementById('kg-addplayer-heading').textContent = 'Update age for ' + escapeHtml(player.name);
+    const nameInput = document.getElementById('kg-name-input');
+    nameInput.value = player.name;
+    nameInput.disabled = true;
+    document.getElementById('kg-addplayer-submit').disabled = false;
+    playerOverlay.hidden = true;
+    addOverlay.hidden = false;
+
+    const form = document.getElementById('kg-addplayer-form');
+    function handler(e) {
+      e.preventDefault();
+      const dob = document.getElementById('kg-dob-input').value || null;
+      const manualAge = document.getElementById('kg-age-input').value
+        ? parseInt(document.getElementById('kg-age-input').value) : null;
+      savePlayer(player.name, {
+        dob: dob || player.dob,
+        manualAge: dob ? null : (manualAge || player.manualAge),
+        lastAgeNudge: new Date().toISOString().slice(0, 10),
+      });
+      addOverlay.hidden = true;
+      _cancelAgeUpdate();
+      showPlayerSelect();
+    }
+    form._ageUpdateHandler = handler;
+    form.addEventListener('submit', handler);
+  }
+
+  // --- OS colour scheme detection ---
+  function applyOSThemePreference() {
+    // Only applies if no active player (first visit or guest)
+    if (getActivePlayer()) return;
+    // Default to colourful-light for both light and no-preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = prefersDark ? 'colourful-dark' : 'colourful-light';
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+
+  // --- Init ---
+  let _initialized = false;  // guard against double-invocation
+
+  function initShell() {
+    if (_initialized) return;
+    _initialized = true;
+
+    applyOSThemePreference();
+
+    // Migrate old type trainer data (only runs once, only on type-trainer page)
+    if (document.body.dataset.page === 'type-trainer') {
+      migrateTypeTrainerData();
+    }
+
+    renderGamesDropdown();
+
+    // Restrict DoB input to today (prevents negative ages from future dates)
+    const dobInput = document.getElementById('kg-dob-input');
+    if (dobInput) dobInput.max = new Date().toISOString().slice(0, 10);
+
+    // Hide games dropdown button on the hub (hub IS the games list)
+    if (document.body.dataset.page === 'hub') {
+      document.getElementById('kg-games-btn').hidden = true;
+    }
+
+    const activePlayer = getActivePlayer();
+    if (!activePlayer) {
+      showPlayerSelect();
+    } else {
+      applyPlayer(activePlayer);
+    }
+    bindEvents();
+  }
+
+  // --- Player selection ---
+  function getPlayersDueForNudge(players) {
+    return Object.values(players).filter(p => {
+      if (getAge(p) === null) return false;
+      // Don't show if dismissed less than 7 days ago
+      const lastSeen = p.lastAgeNudgeSeen || '2000-01-01';
+      const daysSinceSeen = (Date.now() - new Date(lastSeen).getTime()) / 86400000;
+      if (daysSinceSeen < 7) return false;
+      // Show if it's been at least a year since last nudge
+      const lastNudge = p.lastAgeNudge || p.createdAt;
+      const daysSinceNudge = (Date.now() - new Date(lastNudge).getTime()) / 86400000;
+      return daysSinceNudge >= 365;
+    });
+  }
+
+  function showPlayerSelect() {
+    const overlay = document.getElementById('kg-player-overlay');
+    const grid = document.getElementById('kg-player-grid');
+    const players = getAllPlayers();
+
+    let html = '';
+    Object.values(players).forEach(p => {
+      const safeName = escapeHtml(p.name);
+      const initial = escapeHtml(p.name.charAt(0).toUpperCase());
+      const bracket = getAgeBracket(p);
+      html += `
+        <button class="kg-player-card" data-player="${p.name}">
+          <span class="kg-player-card__avatar">${initial}</span>
+          <span class="kg-player-card__name">${safeName}</span>
+          <span class="kg-player-card__bracket">${bracket}</span>
+        </button>`;
+    });
+    html += `
+      <button class="kg-player-card kg-player-card--add" id="kg-add-player-btn" aria-label="Add new player">
+        <span class="kg-player-card__avatar">+</span>
+        <span class="kg-player-card__name">New Player</span>
+      </button>`;
+
+    const dueForNudge = getPlayersDueForNudge(players);
+    const overlayContent = overlay.querySelector('.kg-overlay__content');
+    // Remove any existing nudge banner
+    const existingNudge = overlayContent.querySelector('.kg-nudge-banner');
+    if (existingNudge) existingNudge.remove();
+
+    if (dueForNudge.length > 0) {
+      const names = dueForNudge.map(p => escapeHtml(p.name)).join(', ');
+      const banner = document.createElement('div');
+      banner.className = 'kg-nudge-banner';
+      banner.innerHTML = `
+        <span class="kg-nudge-banner__icon" aria-hidden="true">🎂</span>
+        <span class="kg-nudge-banner__text">Time to check ages for ${names}!</span>
+        <button class="kg-btn kg-btn--secondary kg-nudge-banner__btn" id="kg-nudge-update">Update ages</button>
+        <button class="kg-nudge-banner__dismiss" aria-label="Dismiss age reminder">✕</button>
+      `;
+      overlayContent.insertBefore(banner, overlayContent.querySelector('.kg-overlay__heading').nextSibling);
+    }
+
+    grid.innerHTML = html;
+    overlay.hidden = false;
+    const firstCard = grid.querySelector('.kg-player-card');
+    if (firstCard) firstCard.focus();
+
+    if (dueForNudge.length > 0) {
+      document.getElementById('kg-nudge-update')?.addEventListener('click', () => {
+        showAgeUpdate(dueForNudge[0]);
+      });
+      overlayContent.querySelector('.kg-nudge-banner__dismiss')?.addEventListener('click', () => {
+        dueForNudge.forEach(p => {
+          savePlayer(p.name, { lastAgeNudgeSeen: new Date().toISOString().slice(0, 10) });
+        });
+        overlayContent.querySelector('.kg-nudge-banner')?.remove();
+      });
+    }
+  }
+
+  function applyPlayer(player) {
+    setActivePlayer(player.name);
+    // Migrate any clean theme stored before the theme reduction
+    let theme = player.theme;
+    if (theme === 'clean-light' || !theme) theme = 'colourful-light';
+    else if (theme === 'clean-dark') theme = 'colourful-dark';
+    if (theme !== player.theme) savePlayer(player.name, { theme });
+    document.getElementById('kg-player-avatar').textContent = player.name.charAt(0).toUpperCase();
+    document.getElementById('kg-player-name').textContent = player.name;
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('kg-player-overlay').hidden = true;
+    _notifyPlayerChange();
+  }
+
+  // --- Theme picker ---
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const player = getActivePlayer();
+    if (player) {
+      savePlayer(player.name, { theme });
+    }
+  }
+
+  function toggleThemeDropdown() {
+    const dd = document.getElementById('kg-theme-dropdown');
+    const btn = document.getElementById('kg-theme-btn');
+    dd.hidden = !dd.hidden;
+    btn.setAttribute('aria-expanded', !dd.hidden);
+    if (!dd.hidden) {
+      // Highlight current theme
+      const current = document.documentElement.getAttribute('data-theme');
+      dd.querySelectorAll('.kg-theme-option').forEach(b => {
+        b.classList.toggle('active', b.dataset.theme === current);
+      });
+    }
+  }
+
+  // --- Games dropdown ---
+  function renderGamesDropdown() {
+    const dd = document.getElementById('kg-games-dropdown');
+    dd.innerHTML = GAMES.map(g => `
+      <a href="${g.url}" class="kg-game-link${g.needsKeyboard ? ' kg-needs-keyboard' : ''}">
+        <span class="kg-game-link__icon">${g.icon}</span>
+        <span class="kg-game-link__title">${escapeHtml(g.title)}</span>
+      </a>
+    `).join('');
+  }
+
+  // --- Volume ---
+  function toggleMute() {
+    muted = !muted;
+    document.getElementById('kg-volume-icon').textContent = muted ? '🔇' : '🔊';
+    document.getElementById('kg-volume-btn').setAttribute('aria-pressed', muted);
+  }
+
+  // --- Event binding ---
+  function bindEvents() {
+    // Games dropdown
+    document.getElementById('kg-games-btn').addEventListener('click', () => {
+      const dd = document.getElementById('kg-games-dropdown');
+      const btn = document.getElementById('kg-games-btn');
+      dd.hidden = !dd.hidden;
+      btn.setAttribute('aria-expanded', !dd.hidden);
+    });
+
+    // Player button
+    document.getElementById('kg-player-btn').addEventListener('click', showPlayerSelect);
+
+    // Player card selection (delegated)
+    document.getElementById('kg-player-grid').addEventListener('click', (e) => {
+      const card = e.target.closest('.kg-player-card');
+      if (!card) return;
+      if (card.id === 'kg-add-player-btn') {
+        document.getElementById('kg-player-overlay').hidden = true;
+        _resetAddPlayerForm();
+        document.getElementById('kg-addplayer-overlay').hidden = false;
+        document.getElementById('kg-name-input').focus();
+        return;
+      }
+      const name = card.dataset.player;
+      const player = getPlayer(name);
+      if (player) applyPlayer(player);
+    });
+
+    // Add player form
+    document.getElementById('kg-addplayer-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('kg-name-input').value.trim();
+      const dobInput = document.getElementById('kg-dob-input');
+      const ageInput = document.getElementById('kg-age-input');
+      const dob = dobInput.value || null;
+      const manualAge = ageInput.value ? parseInt(ageInput.value) : null;
+
+      if (!name) return;
+      const created = createPlayer(name, { dob, manualAge });
+      if (created) {
+        const player = getPlayer(created);
+        document.getElementById('kg-addplayer-overlay').hidden = true;
+        _resetAddPlayerForm();
+        applyPlayer(player);
+      }
+    });
+
+    // Add player cancel
+    document.getElementById('kg-addplayer-cancel').addEventListener('click', () => {
+      document.getElementById('kg-addplayer-overlay').hidden = true;
+      _cancelAgeUpdate();
+      showPlayerSelect();
+    });
+
+    // Age toggle (dob vs manual)
+    document.querySelectorAll('.kg-age-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.kg-age-tab').forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        const mode = tab.dataset.mode;
+        document.getElementById('kg-dob-field').hidden = mode !== 'dob';
+        document.getElementById('kg-age-field').hidden = mode !== 'age';
+      });
+    });
+
+    // Enable submit when name is entered
+    document.getElementById('kg-name-input').addEventListener('input', (e) => {
+      document.getElementById('kg-addplayer-submit').disabled = !e.target.value.trim();
+    });
+
+    // Theme picker
+    document.getElementById('kg-theme-btn').addEventListener('click', toggleThemeDropdown);
+    document.getElementById('kg-theme-dropdown').addEventListener('click', (e) => {
+      const option = e.target.closest('.kg-theme-option');
+      if (!option) return;
+      setTheme(option.dataset.theme);
+      document.getElementById('kg-theme-dropdown').hidden = true;
+      document.getElementById('kg-theme-btn').setAttribute('aria-expanded', 'false');
+    });
+
+    // Volume
+    document.getElementById('kg-volume-btn').addEventListener('click', toggleMute);
+
+    // Keyboard: Escape closes overlays/dropdowns, Tab traps focus in overlays
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const playerOverlay = document.getElementById('kg-player-overlay');
+        const addOverlay = document.getElementById('kg-addplayer-overlay');
+        const gamesDD = document.getElementById('kg-games-dropdown');
+        const themeDD = document.getElementById('kg-theme-dropdown');
+
+        if (!themeDD.hidden) {
+          themeDD.hidden = true;
+          document.getElementById('kg-theme-btn').setAttribute('aria-expanded', 'false');
+          return;
+        }
+        if (!gamesDD.hidden) {
+          gamesDD.hidden = true;
+          document.getElementById('kg-games-btn').setAttribute('aria-expanded', 'false');
+          return;
+        }
+        if (!addOverlay.hidden) { addOverlay.hidden = true; _cancelAgeUpdate(); showPlayerSelect(); return; }
+        // Player overlay: only close if there's an active player (can't dismiss on first visit)
+        if (!playerOverlay.hidden && getActivePlayer()) { playerOverlay.hidden = true; return; }
+      }
+
+      if (e.key === 'Tab') {
+        const openOverlay = document.querySelector('.kg-overlay:not([hidden])');
+        if (!openOverlay) return;
+        const focusable = openOverlay.querySelectorAll('button:not([disabled]), input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+    });
+
+    // Lock body scroll when overlay is open
+    const scrollObserver = new MutationObserver(() => {
+      const anyOpen = document.querySelector('.kg-overlay:not([hidden])');
+      document.body.style.overflow = anyOpen ? 'hidden' : '';
+    });
+    document.querySelectorAll('.kg-overlay').forEach(o => {
+      scrollObserver.observe(o, { attributes: true, attributeFilter: ['hidden'] });
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.kg-shell__games-wrap')) {
+        document.getElementById('kg-games-dropdown').hidden = true;
+        document.getElementById('kg-games-btn').setAttribute('aria-expanded', 'false');
+      }
+      if (!e.target.closest('#kg-theme-btn') && !e.target.closest('.kg-theme-dropdown')) {
+        document.getElementById('kg-theme-dropdown').hidden = true;
+        document.getElementById('kg-theme-btn').setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // OS colour scheme: auto-switch theme when no player is logged in
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      // Only auto-switch if no player has explicitly chosen a theme
+      if (getActivePlayer()) return;
+      const theme = e.matches ? 'colourful-dark' : 'colourful-light';
+      document.documentElement.setAttribute('data-theme', theme);
+    });
+  }
+
+  // --- Init on DOM ready ---
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShell);
+  } else {
+    initShell();
+  }
+
+})();
+// --- questions.js ---
+// questions.js — Number generation and question assembly
+
+/**
+ * Generate a single question.
+ * @param {string} op  '+' | '-' | '*' | '/' | 'mixed'
+ * @param {object} settings  { min, max, maxTable, negatives, decimals }
+ * @returns {{ left, op, right, result, blank: 'left'|'right', answer }}
+ */
+function generateQuestion(op, settings) {
+  const { min, max, maxTable, negatives, decimals } = settings;
+  const resolvedOp = op === 'mixed'
+    ? ['+', '-', '*', '/'][Math.floor(Math.random() * 4)]
+    : op;
+
+  let left, right, result;
+
+  switch (resolvedOp) {
+    case '+': {
+      left = randInt(min, max);
+      right = randInt(min, max);
+      if (decimals) {
+        left = round1dp(left + randInt(0, 9) / 10);
+        right = round1dp(right + randInt(0, 9) / 10);
+      }
+      result = round1dp(left + right);
+      break;
+    }
+    case '-': {
+      if (negatives) {
+        left = randInt(min, max);
+        right = randInt(min, max);
+      } else {
+        const a = randInt(min, max);
+        const b = randInt(min, max);
+        left = Math.max(a, b);
+        right = Math.min(a, b);
+      }
+      if (decimals) {
+        left = round1dp(left + randInt(0, 9) / 10);
+        right = round1dp(right + randInt(0, 9) / 10);
+        if (!negatives && left < right) [left, right] = [right, left];
+      }
+      result = round1dp(left - right);
+      break;
+    }
+    case '*': {
+      left = randInt(1, maxTable);
+      right = randInt(1, maxTable);
+      result = left * right;
+      break;
+    }
+    case '/': {
+      // Always generates a clean integer result
+      right = randInt(1, maxTable);       // divisor (never 0)
+      result = randInt(1, maxTable);      // quotient
+      left = right * result;              // dividend
+      break;
+    }
+    default:
+      throw new Error(`Unknown op: ${resolvedOp}`);
+  }
+
+  const blank = Math.random() < 0.5 ? 'left' : 'right';
+  const answer = blank === 'left' ? left : right;
+
+  return { left, op: resolvedOp, right, result, blank, answer };
+}
+
+/**
+ * Generate wrong answer choices.
+ * @param {number} answer  The correct answer
+ * @param {string} op  The operation ('+' | '-' | '*' | '/')
+ * @param {object} settings  { min, max, maxTable, negatives, decimals }
+ * @param {number} count  Number of distractors to return (default 3)
+ * @returns {number[]}
+ */
+function generateDistractors(answer, op, settings, count = 3) {
+  const { negatives, decimals } = settings;
+  const candidates = new Set();
+  let attempts = 0;
+
+  while (candidates.size < count && attempts < 200) {
+    attempts++;
+    let candidate;
+
+    if (op === '*' || op === '/') {
+      // Use an adjacent multiple — stays in the same ballpark as the correct answer
+      const step = randInt(1, Math.max(2, Math.floor(settings.maxTable / 3)));
+      candidate = answer + step * (Math.random() < 0.5 ? 1 : -1);
+    } else {
+      // Offset by a small amount
+      const offset = randInt(1, 5) * (Math.random() < 0.5 ? 1 : -1);
+      candidate = answer + offset;
+    }
+
+    if (decimals) candidate = round1dp(candidate);
+    else candidate = Math.round(candidate);
+
+    if (candidate === answer) continue;
+    if (!negatives && candidate < 0) continue;
+    if (candidates.has(candidate)) continue;
+
+    candidates.add(candidate);
+  }
+
+  // Fallback: if we couldn't generate enough, use sequential offsets
+  let fallback = 1;
+  while (candidates.size < count) {
+    const c = answer + fallback;
+    if (c !== answer && !candidates.has(c)) candidates.add(c);
+    fallback++;
+  }
+
+  return [...candidates];
+}
+
+// --- Helpers ---
+
+function randInt(min, max) {
+  if (min > max) [min, max] = [max, min];
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function round1dp(n) {
+  return Math.round(n * 10) / 10;
+}
+
+// --- game.js ---
+// game.js — GameSession: manages one play session
+
+const SPRINT_DURATION = 60;
+const ROUND_QUESTIONS = 10;
+const POINTS_CORRECT = 10;
+const STREAK_BONUS = 2;
+const ANSWER_PAUSE_MS = 600; // ms to show correct/wrong before next question
+
+class GameSession {
+  constructor({ op, mode, range, onQuestion, onAnswer, onScore, onEnd }) {
+    this.op = op;
+    this.mode = mode;
+    this.range = range;
+    this.onQuestion = onQuestion;
+    this.onAnswer = onAnswer;   // ({ correct, correctAnswer, chosen }) — UI shows feedback
+    this.onScore = onScore;
+    this.onEnd = onEnd;
+
+    this.score = 0;
+    this.streak = 0;
+    this.bestStreak = 0;
+    this.correct = 0;
+    this.total = 0;
+    this.questionNum = 0;
+    this.timeLeft = SPRINT_DURATION;
+    this.startTime = null;
+    this._timer = null;
+    this._active = false;
+    this._currentQuestion = null;
+    this._answerLocked = false;
+  }
+
+  start() {
+    this._active = true;
+    this.startTime = Date.now();
+    if (this.mode === 'sprint') {
+      this._startTimer();
+    }
+    this._nextQuestion();
+  }
+
+  answer(value) {
+    if (!this._active || this._answerLocked) return;
+    this._answerLocked = true;
+
+    const q = this._currentQuestion;
+    const isCorrect = value === q.answer;
+    this.total++;
+
+    if (isCorrect) {
+      this.correct++;
+      this.streak++;
+      if (this.streak > this.bestStreak) this.bestStreak = this.streak;
+      this.score += POINTS_CORRECT + (this.streak - 1) * STREAK_BONUS;
+    } else {
+      this.streak = 0;
+    }
+
+    // Notify UI to show answer feedback — game.js does NOT touch the DOM
+    this.onAnswer({ correct: isCorrect, correctAnswer: q.answer, chosen: value });
+    this.onScore(this._hudState());
+
+    setTimeout(() => {
+      if (!this._active) return;
+      this._answerLocked = false;
+      if (this.mode === 'round' && this.questionNum >= ROUND_QUESTIONS) {
+        this.end();
+      } else {
+        this._nextQuestion();
+      }
+    }, ANSWER_PAUSE_MS);
+  }
+
+  end() {
+    if (!this._active) return;
+    this._active = false;
+    clearInterval(this._timer);
+    const timeTaken = this.mode !== 'endless'
+      ? Math.round((Date.now() - this.startTime) / 1000)
+      : null;
+    this.onEnd({
+      score: this.score,
+      accuracy: this.total > 0 ? Math.round((this.correct / this.total) * 100) : 0,
+      bestStreak: this.bestStreak,
+      timeTaken,
+    });
+  }
+
+  _nextQuestion() {
+    this.questionNum++;
+    const q = generateQuestion(this.op, this.range);
+    this._currentQuestion = q;
+    const distractors = generateDistractors(q.answer, q.op, this.range);
+    const choices = shuffle([q.answer, ...distractors]);
+    this.onQuestion(q, choices);
+    this.onScore(this._hudState());
+  }
+
+  _hudState() {
+    return {
+      score: this.score,
+      mode: this.mode,
+      timeLeft: this.timeLeft,
+      questionNum: this.questionNum,
+      totalQuestions: ROUND_QUESTIONS,
+    };
+  }
+
+  _startTimer() {
+    this._timer = setInterval(() => {
+      this.timeLeft--;
+      this.onScore(this._hudState());
+      if (this.timeLeft <= 0) {
+        clearInterval(this._timer);
+        this.end();
+      }
+    }, 1000);
+  }
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// --- main.js ---
+// main.js — Entry point, wires settings + game together
+
+// --- Settings state ---
+let settings = {
+  op: '+',
+  difficulty: 'medium',
+  mode: 'sprint',
+  custom: { min: 1, max: 100, maxTable: 12, negatives: false, decimals: false }
+};
+
+const DIFFICULTY_PRESETS = {
+  easy:   { min: 1, max: 10,  maxTable: 5,  negatives: false, decimals: false, hint: 'Numbers 1–10, tables to 5' },
+  medium: { min: 1, max: 20,  maxTable: 10, negatives: false, decimals: false, hint: 'Numbers 1–20, tables to 10' },
+  hard:   { min: 1, max: 100, maxTable: 12, negatives: false, decimals: false, hint: 'Numbers 1–100, tables to 12' },
+  custom: { hint: 'Your own settings' },
+};
+
+// --- DOM refs ---
+const screens = {
+  settings: document.getElementById('nb-settings'),
+  game:     document.getElementById('nb-game'),
+  results:  document.getElementById('nb-results'),
+};
+
+// --- Boot ---
+loadSettings();
+initSettingsScreen();
+showScreen('settings');
+
+// --- Initialise settings screen ---
+function initSettingsScreen() {
+  // Operation toggles
+  document.getElementById('nb-op-row').addEventListener('click', e => {
+    const btn = e.target.closest('[data-op]');
+    if (!btn) return;
+    settings.op = btn.dataset.op;
+    updateToggles('nb-op-row', 'data-op', settings.op);
+  });
+
+  // Difficulty toggles
+  document.getElementById('nb-diff-row').addEventListener('click', e => {
+    const btn = e.target.closest('[data-diff]');
+    if (!btn) return;
+    settings.difficulty = btn.dataset.diff;
+    updateToggles('nb-diff-row', 'data-diff', settings.difficulty);
+    updateDifficultyHint();
+    document.getElementById('nb-custom-opts').hidden = settings.difficulty !== 'custom';
+  });
+
+  // Mode buttons
+  document.getElementById('nb-mode-row').addEventListener('click', e => {
+    const btn = e.target.closest('[data-mode]');
+    if (!btn) return;
+    settings.mode = btn.dataset.mode;
+    updateModeButtons();
+  });
+
+  // Custom inputs
+  document.getElementById('nb-min').addEventListener('change', e => {
+    settings.custom.min = Number(e.target.value);
+  });
+  document.getElementById('nb-max').addEventListener('change', e => {
+    settings.custom.max = Number(e.target.value);
+  });
+  document.getElementById('nb-table').addEventListener('change', e => {
+    settings.custom.maxTable = Number(e.target.value);
+  });
+  document.getElementById('nb-negatives').addEventListener('change', e => {
+    settings.custom.negatives = e.target.checked;
+  });
+  document.getElementById('nb-decimals').addEventListener('change', e => {
+    settings.custom.decimals = e.target.checked;
+  });
+
+  // Start button
+  document.getElementById('nb-start-btn').addEventListener('click', startGame);
+
+  // Restore saved settings into UI
+  applySettingsToUI();
+}
+
+function updateToggles(rowId, attr, activeVal) {
+  document.getElementById(rowId).querySelectorAll(`[${attr}]`).forEach(btn => {
+    const active = btn.dataset[attr.replace('data-', '')] === activeVal;
+    btn.classList.toggle('nb-toggle--active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+function updateModeButtons() {
+  document.getElementById('nb-mode-row').querySelectorAll('[data-mode]').forEach(btn => {
+    const active = btn.dataset.mode === settings.mode;
+    btn.classList.toggle('nb-mode-btn--active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+function updateDifficultyHint() {
+  const preset = DIFFICULTY_PRESETS[settings.difficulty];
+  document.getElementById('nb-diff-hint').textContent = preset.hint;
+}
+
+function applySettingsToUI() {
+  updateToggles('nb-op-row', 'data-op', settings.op);
+  updateToggles('nb-diff-row', 'data-diff', settings.difficulty);
+  updateModeButtons();
+  updateDifficultyHint();
+  document.getElementById('nb-custom-opts').hidden = settings.difficulty !== 'custom';
+  document.getElementById('nb-min').value = settings.custom.min;
+  document.getElementById('nb-max').value = settings.custom.max;
+  document.getElementById('nb-table').value = settings.custom.maxTable;
+  document.getElementById('nb-negatives').checked = settings.custom.negatives;
+  document.getElementById('nb-decimals').checked = settings.custom.decimals;
+}
+
+function getActiveRange() {
+  if (settings.difficulty === 'custom') return settings.custom;
+  const p = DIFFICULTY_PRESETS[settings.difficulty];
+  return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals };
+}
+
+// --- Screen management ---
+function showScreen(name) {
+  Object.keys(screens).forEach(k => screens[k].hidden = k !== name);
+}
+
+// --- Persistence ---
+function saveSettings() {
+  try {
+    if (window.KidsGames) {
+      const d = window.KidsGames.loadGameData('numberbonds') || {};
+      window.KidsGames.saveGameData('numberbonds', { ...d, settings });
+    } else {
+      localStorage.setItem('nb_settings', JSON.stringify(settings));
+    }
+  } catch (e) { /* ignore */ }
+}
+
+function loadSettings() {
+  try {
+    let saved;
+    if (window.KidsGames) {
+      const d = window.KidsGames.loadGameData('numberbonds');
+      saved = d?.settings;
+    } else {
+      const raw = localStorage.getItem('nb_settings');
+      saved = raw ? JSON.parse(raw) : null;
+    }
+    if (saved) {
+      settings = { ...settings, ...saved };
+    }
+  } catch (e) { /* ignore */ }
+  applyAgeBracketDefault();
+}
+
+function applyAgeBracketDefault() {
+  // Only if no settings have been saved yet
+  try {
+    const existing = window.KidsGames?.loadGameData('numberbonds');
+    if (existing?.settings?.difficulty) return; // already set
+    const bracket = window.KidsGames?.player?.ageBracket;
+    if (bracket === '4-5') settings.difficulty = 'easy';
+    else if (bracket === '9-12') settings.difficulty = 'hard';
+    else settings.difficulty = 'medium';
+  } catch (e) { /* ignore */ }
+}
+
+// --- Game start ---
+let activeSession = null;
+
+function startGame() {
+  saveSettings();
+  const range = getActiveRange();
+  activeSession = new GameSession({
+    op: settings.op,
+    mode: settings.mode,
+    range,
+    onQuestion: renderQuestion,
+    onAnswer: renderAnswerFeedback,
+    onScore: renderHud,
+    onEnd: showResults,
+  });
+  showScreen('game');
+  initGameScreen();
+  activeSession.start();
+}
+
+function initGameScreen() {
+  document.getElementById('nb-quit-btn').onclick = () => {
+    activeSession?.end();
+  };
+}
+
+// --- Question rendering ---
+function renderQuestion(question, choiceNums) {
+  // Render equation with blank
+  const { left, op, right, result, blank } = question;
+  const opStr = { '+': '+', '-': '−', '*': '×', '/': '÷' }[op] ?? op;
+  const safeLeft = Number(left);
+  const safeRight = Number(right);
+  const safeResult = Number(result);
+  let html;
+  if (blank === 'left') {
+    html = `<span class="nb-blank">?</span> ${opStr} ${safeRight} = ${safeResult}`;
+  } else {
+    html = `${safeLeft} ${opStr} <span class="nb-blank">?</span> = ${safeResult}`;
+  }
+  const hasLargeNum = [safeLeft, safeRight, safeResult].some(n => Math.abs(n) >= 100);
+  const qEl = document.getElementById('nb-question');
+  qEl.innerHTML = html;
+  // Shrink font if any number has 3+ digits (custom large ranges)
+  qEl.classList.toggle('nb-question--long', hasLargeNum);
+
+  // Render choice buttons
+  const choicesEl = document.getElementById('nb-choices');
+  choicesEl.innerHTML = '';
+  choiceNums.forEach(num => {
+    const btn = document.createElement('button');
+    btn.className = 'nb-choice';
+    btn.textContent = num;
+    btn.setAttribute('aria-label', `Answer: ${num}`);
+    btn.addEventListener('click', () => activeSession?.answer(num));
+    choicesEl.appendChild(btn);
+  });
+}
+
+function renderAnswerFeedback({ correct, correctAnswer, chosen }) {
+  document.getElementById('nb-choices')?.querySelectorAll('.nb-choice').forEach(btn => {
+    btn.disabled = true;
+    const num = Number(btn.textContent);
+    if (num === correctAnswer) btn.classList.add('nb-choice--reveal');
+    if (num === chosen && !correct) btn.classList.add('nb-choice--wrong');
+    if (num === chosen && correct) btn.classList.add('nb-choice--correct');
+  });
+}
+
+function renderHud(hudState) {
+  document.getElementById('nb-score').textContent = hudState.score;
+  const center = document.getElementById('nb-hud-center');
+  if (hudState.mode === 'sprint') {
+    center.textContent = `⏱ ${hudState.timeLeft}s`;
+  } else if (hudState.mode === 'round') {
+    center.textContent = `${hudState.questionNum} / ${hudState.totalQuestions}`;
+  } else {
+    center.textContent = '';
+  }
+}
+
+// --- Results rendering ---
+function showResults(stats) {
+  // Use accuracy % so thresholds work consistently across all modes and score ranges
+  document.getElementById('nb-results-icon').textContent = stats.accuracy >= 80 ? '🏆' : stats.accuracy >= 50 ? '⭐' : '💪';
+  document.getElementById('nb-results-title').textContent =
+    stats.accuracy >= 80 ? 'Amazing!' : stats.accuracy >= 50 ? 'Well done!' : 'Keep practising!';
+
+  const isBest = savePersonalBest(stats);
+
+  const statsEl = document.getElementById('nb-stats');
+  statsEl.innerHTML = `
+    <div class="nb-stat-row">
+      <span class="nb-stat-label">Score</span>
+      <span class="nb-stat-value${isBest ? ' nb-stat-value--best' : ''}">${stats.score}${isBest ? ' ★' : ''}</span>
+    </div>
+    <div class="nb-stat-row">
+      <span class="nb-stat-label">Accuracy</span>
+      <span class="nb-stat-value">${stats.accuracy}%</span>
+    </div>
+    <div class="nb-stat-row">
+      <span class="nb-stat-label">Best streak</span>
+      <span class="nb-stat-value">${stats.bestStreak}</span>
+    </div>
+    ${stats.timeTaken ? `<div class="nb-stat-row">
+      <span class="nb-stat-label">Time</span>
+      <span class="nb-stat-value">${stats.timeTaken}s</span>
+    </div>` : ''}
+  `;
+
+  document.getElementById('nb-play-again-btn').onclick = startGame;
+  document.getElementById('nb-change-settings-btn').onclick = () => showScreen('settings');
+  showScreen('results');
+}
+
+function savePersonalBest(stats) {
+  const key = `pb_${settings.op}_${settings.difficulty}_${settings.mode}`;
+  try {
+    let current;
+    if (window.KidsGames) {
+      const store = window.KidsGames.loadGameData('numberbonds') || {};
+      current = store[key] || 0;
+      if (stats.score > current) {
+        window.KidsGames.saveGameData('numberbonds', { ...store, [key]: stats.score });
+        return true;
+      }
+    } else {
+      current = Number(localStorage.getItem(`nb_${key}`)) || 0;
+      if (stats.score > current) {
+        localStorage.setItem(`nb_${key}`, stats.score);
+        return true;
+      }
+    }
+  } catch (e) { /* ignore */ }
+  return false;
+}
+
+// --- Shell player change ---
+if (window.KidsGames) {
+  window.KidsGames.onPlayerChange(() => {
+    loadSettings();
+    applySettingsToUI();
+  });
+}
+
+  </script>
 </body>
 </html>

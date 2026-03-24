@@ -27,8 +27,9 @@
 
   // --- Games list — update when adding new games ---
   const GAMES = [
-    { id: 'type-trainer', title: 'Type Trainer', icon: '⌨️', url: 'type-trainer.html', needsKeyboard: true },
-    { id: 'opposites', title: 'Opposites', icon: '🔄', url: 'opposites.html', needsKeyboard: false },
+    { id: 'type-trainer',  title: 'Type Trainer',  icon: '⌨️',  url: 'type-trainer.html',  needsKeyboard: true  },
+    { id: 'opposites',     title: 'Opposites',      icon: '🔄',  url: 'opposites.html',     needsKeyboard: false },
+    { id: 'number-bonds',  title: 'Number Bonds',   icon: '🔢',  url: 'number-bonds.html',  needsKeyboard: false },
   ];
 
   // --- Volume state ---

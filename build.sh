@@ -81,7 +81,11 @@ JS_TEMP=$(mktemp)
 CSS_TEMP=$(mktemp)
 SHELL_JS_TEMP=$(mktemp)
 JS_COMBINED=$(mktemp)
-trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
+_cleanup() {
+  rm -f "$JS_TEMP" "$CSS_TEMP" "$SHELL_JS_TEMP" "$JS_COMBINED" \
+        "${NB_JS_TEMP:-}" "${NB_CSS_TEMP:-}" "${NB_JS_COMBINED:-}"
+}
+trap _cleanup EXIT
 
 for f in "${JS_FILES[@]}"; do
   echo "  Inlining $GAME_DIR/$f"
@@ -324,7 +328,85 @@ build_simple_game() {
   fi
 }
 
-build_simple_game "games/number-bonds/index.html"  "$DOCS_DIR/number-bonds.html"  "Number Bonds"
+# ==========================================================================
+# BUILD 4: Number Bonds (inline CSS + JS into single HTML)
+# ==========================================================================
+echo ""
+echo "--- Building Number Bonds ---"
+
+NB_GAME_DIR="games/number-bonds"
+NB_JS_FILES=(
+  "js/questions.js"
+  "js/game.js"
+  "js/main.js"
+)
+
+NB_JS_TEMP=$(mktemp)
+NB_CSS_TEMP=$(mktemp)
+NB_JS_COMBINED=$(mktemp)
+
+for f in "${NB_JS_FILES[@]}"; do
+  echo "  Inlining $NB_GAME_DIR/$f"
+  echo "// --- $(basename "$f") ---" >> "$NB_JS_TEMP"
+  awk '
+    /^import / || /^import\{/ {
+      if ($0 ~ /;/) { next }
+      while ((getline line) > 0) { if (line ~ /;/) break }
+      next
+    }
+    /^export\s*\{\s*\}\s*;?\s*$/ { next }
+    /^export default / { sub(/^export default /, ""); print; next }
+    /^export / { sub(/^export /, ""); print; next }
+    { print }
+  ' "$NB_GAME_DIR/$f" >> "$NB_JS_TEMP"
+  echo "" >> "$NB_JS_TEMP"
+done
+
+cat shared/tokens.css shared/shell.css "$NB_GAME_DIR/css/style.css" > "$NB_CSS_TEMP"
+cat "$SHELL_JS_TEMP" "$NB_JS_TEMP" > "$NB_JS_COMBINED"
+
+echo "Assembling number-bonds HTML..."
+
+awk -v css_file="$NB_CSS_TEMP" -v js_file="$NB_JS_COMBINED" -v shell_file="shared/shell.html" '
+  /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+  /<link[^>]*shared\/shell\.css[^>]*>/ { next }
+  /<link[^>]*css\/style\.css[^>]*>/ {
+    print "  <style>"
+    while ((getline line < css_file) > 0) { print line }
+    close(css_file)
+    print "  </style>"
+    next
+  }
+  /<body/ {
+    print
+    while ((getline line < shell_file) > 0) { print line }
+    close(shell_file)
+    next
+  }
+  /<script[^>]*type="module"[^>]*src=.*main\.js/ || /<script[^>]*src=.*main\.js[^>]*type="module"/ {
+    print "  <script>"
+    while ((getline line < js_file) > 0) { print line }
+    close(js_file)
+    print "  </script>"
+    next
+  }
+  { print }
+' "$NB_GAME_DIR/index.html" > "$DOCS_DIR/number-bonds.html"
+
+NB_SIZE=$(wc -c < "$DOCS_DIR/number-bonds.html" | tr -d ' ')
+echo "Number Bonds built: $DOCS_DIR/number-bonds.html ($NB_SIZE bytes)"
+
+if grep -q 'kg-shell' "$DOCS_DIR/number-bonds.html"; then
+  echo "  [ok] Shell bar injected"
+else
+  echo "  [WARN] Shell bar missing"
+fi
+
+if grep -q 'GameSession' "$DOCS_DIR/number-bonds.html"; then
+  echo "  [ok] JS inlined"
+else
+  echo "  [WARN] JS not found in output"
+fi
 build_simple_game "games/maths/index.html"          "$DOCS_DIR/maths.html"          "Maths"
 build_simple_game "games/memory-match/index.html"   "$DOCS_DIR/memory-match.html"   "Memory Match"
 
