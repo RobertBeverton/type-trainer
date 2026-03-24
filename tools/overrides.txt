@@ -8,3 +8,4 @@ hard: tough
 cry: laugh, smile
 win: lose
 stop: go, start, begin
+right: left, wrong
