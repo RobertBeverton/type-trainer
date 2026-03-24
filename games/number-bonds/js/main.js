@@ -196,17 +196,20 @@ function initGameScreen() {
 function renderQuestion(question, choiceNums) {
   // Render equation with blank
   const { left, op, right, result, blank } = question;
-  const opStr = { '+': '+', '-': '−', '*': '×', '/': '÷' }[op];
+  const opStr = { '+': '+', '-': '−', '*': '×', '/': '÷' }[op] ?? op;
+  const safeLeft = Number(left);
+  const safeRight = Number(right);
+  const safeResult = Number(result);
   let html;
   if (blank === 'left') {
-    html = `<span class="nb-blank">?</span> ${opStr} ${right} = ${result}`;
+    html = `<span class="nb-blank">?</span> ${opStr} ${safeRight} = ${safeResult}`;
   } else {
-    html = `${left} ${opStr} <span class="nb-blank">?</span> = ${result}`;
+    html = `${safeLeft} ${opStr} <span class="nb-blank">?</span> = ${safeResult}`;
   }
+  const hasLargeNum = [safeLeft, safeRight, safeResult].some(n => Math.abs(n) >= 100);
   const qEl = document.getElementById('nb-question');
   qEl.innerHTML = html;
   // Shrink font if any number has 3+ digits (custom large ranges)
-  const hasLargeNum = [left, right, result].some(n => Math.abs(n) >= 100);
   qEl.classList.toggle('nb-question--long', hasLargeNum);
 
   // Render choice buttons
@@ -281,13 +284,20 @@ function showResults(stats) {
 function savePersonalBest(stats) {
   const key = `pb_${settings.op}_${settings.difficulty}_${settings.mode}`;
   try {
-    const store = window.KidsGames ? window.KidsGames.loadGameData('numberbonds') || {} : {};
-    const current = store[key] || 0;
-    if (stats.score > current) {
-      window.KidsGames
-        ? window.KidsGames.saveGameData('numberbonds', { ...store, [key]: stats.score })
-        : localStorage.setItem(`nb_${key}`, stats.score);
-      return true;
+    let current;
+    if (window.KidsGames) {
+      const store = window.KidsGames.loadGameData('numberbonds') || {};
+      current = store[key] || 0;
+      if (stats.score > current) {
+        window.KidsGames.saveGameData('numberbonds', { ...store, [key]: stats.score });
+        return true;
+      }
+    } else {
+      current = Number(localStorage.getItem(`nb_${key}`)) || 0;
+      if (stats.score > current) {
+        localStorage.setItem(`nb_${key}`, stats.score);
+        return true;
+      }
     }
   } catch (e) { /* ignore */ }
   return false;
