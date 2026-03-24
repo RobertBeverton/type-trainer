@@ -1,0 +1,6422 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Type Trainer</title>
+  <style>
+@charset "UTF-8";
+
+/* ========================================
+   THEME SYSTEM — CSS Custom Properties
+   ======================================== */
+
+:root {
+  /* --- Typography --- */
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Liberation Mono', monospace;
+
+  /* --- Spacing scale --- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* --- Border radius --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* --- Font sizes --- */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 30px;
+  --text-3xl: 36px;
+
+  /* --- Finger zone colours (light theme — WCAG AAA 7:1+ against #FFF) --- */
+  --zone-left-pinky:   #1E3A5F;   /* Deep blue    — 8.9:1 */
+  --zone-left-ring:    #0F766E;   /* Teal         — 7.3:1 */
+  --zone-left-middle:  #166534;   /* Green        — 8.6:1 */
+  --zone-left-index:   #7C4A03;   /* Amber        — 7.5:1 */
+  --zone-right-index:  #8B3510;   /* Orange       — 7.2:1 */
+  --zone-right-middle: #9D174D;   /* Rose/pink    — 7.4:1 */
+  --zone-right-ring:   #6B21A8;   /* Purple       — 8.2:1 */
+  --zone-right-pinky:  #3F4E5F;   /* Slate blue   — 7.6:1 */
+
+  /* --- Transition --- */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+}
+
+/* --- Light theme (default for ages 4-5, 6-8) --- */
+:root[data-theme="light"] {
+  --bg-primary: #FAFAF8;
+  --bg-game: #FFFFFF;
+  --bg-grid: #F0F0EC;
+  --bg-surface: #F5F5F0;
+  --bg-overlay: rgba(250, 250, 248, 0.95);
+
+  --text-primary: #1A1A2E;
+  --text-secondary: #4A4A5A;
+  --text-muted: #8A8A9A;
+
+  --border-default: #E0E0D8;
+  --border-light: #EEEEEA;
+
+  --danger-zone: #FEE2E2;
+  --danger-text: #DC2626;
+
+  --hud-bg: #F5F5F0;
+  --hud-text: #1A1A2E;
+  --hud-accent: #536E7A;
+
+  --stage-bar-bg: #F5F5F0;
+  --stage-bar-fill: #536E7A;
+
+  --btn-primary-bg: #0B2C44;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover: #1A4A63;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #0B2C44;
+  --btn-secondary-border: #536E7A;
+  --btn-secondary-hover: #ECF1F4;
+
+  --overlay-bg: rgba(250, 250, 248, 0.95);
+  --overlay-text: #1A1A2E;
+
+  --kbd-bg: #FFFFFF;
+  --kbd-border: #D0D0C8;
+  --kbd-shadow: rgba(0, 0, 0, 0.08);
+  --kbd-text: #1A1A2E;
+}
+
+/* --- Dark theme (default for ages 9-12, Adult) --- */
+:root[data-theme="dark"] {
+  --bg-primary: #0E0E1A;
+  --bg-game: #0A0A1A;
+  --bg-grid: rgba(20, 20, 60, 0.8);
+  --bg-surface: #0F0F2A;
+  --bg-overlay: rgba(5, 5, 20, 0.93);
+
+  --text-primary: #E8E8F0;
+  /* Fix W9: improved contrast — #A3A3C2 ~7.4:1 against #0E0E1A */
+  --text-secondary: #A3A3C2;
+  /* Fix W9: improved contrast — #8585A8 ~4.8:1 (AA for muted text) */
+  --text-muted: #8585A8;
+
+  --border-default: #1A1A4A;
+  --border-light: #1A1A3A;
+
+  --danger-zone: rgba(220, 60, 60, 0.15);
+  --danger-text: #FF6B6B;
+
+  --hud-bg: #0F0F2A;
+  --hud-text: #7AF;
+  --hud-accent: #7AF;
+
+  --stage-bar-bg: #0C0C25;
+  --stage-bar-fill: #7AF;
+
+  --btn-primary-bg: #7AF;
+  --btn-primary-text: #0A0A1A;
+  --btn-primary-hover: #99BBFF;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #7AF;
+  --btn-secondary-border: #7AF;
+  --btn-secondary-hover: #1A2A4A;
+
+  --overlay-bg: rgba(5, 5, 20, 0.93);
+  --overlay-text: #FFFFFF;
+
+  --kbd-bg: #141428;
+  --kbd-border: #1A1A4A;
+  --kbd-shadow: rgba(0, 0, 0, 0.3);
+  --kbd-text: #C0C0D8;
+
+  /* --- Finger zone colours (dark theme — brighter/more saturated) --- */
+  --zone-left-pinky:   #3B82F6;
+  --zone-left-ring:    #14B8A6;
+  --zone-left-middle:  #22C55E;
+  --zone-left-index:   #F59E0B;
+  --zone-right-index:  #F97316;
+  --zone-right-middle: #F472B6;
+  --zone-right-ring:   #A855F7;
+  --zone-right-pinky:  #94A3B8;
+}
+
+
+/* ========================================
+   RESET & BASE
+   ======================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+
+/* ========================================
+   GLOBAL FOCUS STYLES (Fix W8)
+   ======================================== */
+
+:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+
+/* ========================================
+   GLOBAL THEME TOGGLE (outside game frame)
+   ======================================== */
+
+.global-theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.global-theme-toggle:hover {
+  background: var(--btn-secondary-hover);
+  border-color: var(--btn-primary-bg);
+}
+
+/* ========================================
+   GAME WRAPPER
+   ======================================== */
+
+#game-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  max-height: 95vh;
+  background: var(--bg-game);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+}
+
+
+/* ========================================
+   HUD
+   ======================================== */
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--hud-bg);
+  border-bottom: 1px solid var(--border-default);
+  color: var(--hud-text);
+  font-size: var(--text-xs);
+  flex-shrink: 0;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.hud-item span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.hud-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-base);
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  line-height: 1;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hud-text);
+  transition: background var(--transition-fast);
+}
+
+.hud-btn:hover {
+  background: var(--border-light);
+}
+
+.hud-btn:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+/* Back-to-hub link in HUD */
+.hud-home-link {
+  text-decoration: none;
+  color: inherit;
+  margin-right: auto;
+}
+
+/* Simplified HUD for youngest players (4-5 bracket) */
+.hud--simplified .hud-streak,
+.hud--simplified .keyboard-toggle-btn {
+  display: none !important;
+}
+
+/* ── Mute Button ─────────────────────────────────────────── */
+
+.mute-btn[aria-pressed="true"] {
+  opacity: 0.5;
+}
+
+.mute-icon {
+  pointer-events: none;
+}
+
+/* ── Theme Toggle Button ────────────────────────────────── */
+
+.theme-toggle-btn {
+  gap: var(--space-xs);
+}
+
+.theme-icon {
+  pointer-events: none;
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+/* Mode select theme toggle — standalone button below the mode buttons */
+.theme-toggle-standalone {
+  background: none;
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 36px;
+}
+
+.theme-toggle-standalone:hover {
+  background: var(--border-light);
+  color: var(--text-primary);
+}
+
+.theme-toggle-standalone:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+
+/* ========================================
+   STAGE BAR
+   ======================================== */
+
+.stage-bar {
+  padding: var(--space-xs) var(--space-md);
+  background: var(--stage-bar-bg);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.stage-label {
+  color: var(--hud-accent);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.stage-track {
+  flex: 1;
+  height: 3px;
+  background: var(--border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.stage-fill {
+  height: 100%;
+  background: var(--stage-bar-fill);
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+.stage-progress {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+
+/* ========================================
+   CANVAS AREA
+   ======================================== */
+
+.canvas-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Play area container */
+.play-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.play-area[hidden] { display: none; }
+
+
+/* ========================================
+   KEYBOARD CONTAINER (wrapper in game layout)
+   ======================================== */
+
+.keyboard-container {
+  flex-shrink: 0;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-default);
+  display: none;  /* Hidden until keyboard.js activates it */
+}
+
+
+/* ========================================
+   TYPED ROW
+   ======================================== */
+
+.typed-row {
+  background: var(--bg-game);
+  padding: var(--space-xs) var(--space-md);
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.typed-display {
+  font-size: var(--text-lg);
+  color: var(--hud-accent);
+  letter-spacing: 4px;
+  font-weight: 600;
+  min-height: 22px;
+}
+
+
+/* ========================================
+   OVERLAY (modal screens)
+   ======================================== */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  color: var(--overlay-text);
+  padding: var(--space-xl);
+  z-index: 100;
+}
+
+.overlay[hidden] {
+  display: none;
+}
+
+.overlay h2 {
+  font-family: var(--font-ui);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--hud-accent);
+  letter-spacing: 1px;
+}
+
+.overlay p {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 360px;
+  line-height: 1.7;
+}
+
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-md);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  border: 2px solid transparent;
+  min-width: 120px;
+  min-height: 44px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+}
+
+.btn-primary:hover {
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border);
+}
+
+.btn-secondary:hover {
+  background: var(--btn-secondary-hover);
+}
+
+.btn-lg {
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--text-base);
+  min-width: 180px;
+}
+
+.btn-sm {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--text-xs);
+  min-width: 80px;
+}
+
+/* Go button — prominent call-to-action variant */
+.go-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-2xl);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  border: 2px solid transparent;
+  min-width: 180px;
+  min-height: 44px;
+  text-align: center;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+}
+
+.go-btn:hover {
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+  transform: translateY(-1px);
+}
+
+.go-btn:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+/* Disabled state for all buttons */
+.btn:disabled, .btn[disabled],
+.go-btn:disabled, .go-btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* ========================================
+   PLAYER SELECT
+   ======================================== */
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 300px;
+  margin: var(--space-md) 0;
+}
+
+.player-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  min-height: 44px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.player-btn:hover {
+  border-color: var(--hud-accent);
+  background: var(--btn-secondary-hover);
+}
+
+.player-btn:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+.player-btn .player-bracket {
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.player-btn-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+  margin-left: var(--space-sm);
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-btn-delete:hover {
+  color: var(--danger-text);
+}
+
+.player-btn-delete:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+.add-player-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  min-height: 44px;
+  background: transparent;
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.add-player-btn:hover {
+  border-color: var(--hud-accent);
+  color: var(--hud-accent);
+}
+
+.add-player-btn:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+
+/* ========================================
+   PLAYER SELECT — GRID CARDS
+   ======================================== */
+
+/* Landing: scroll the overlay if cards overflow */
+.overlay--player-select {
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+}
+
+/* Footer credit on landing screen */
+.game-footer {
+  margin-top: auto;
+  padding-top: var(--space-lg);
+  font-family: var(--font-ui);
+  font-size: var(--font-sm);
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.game-footer a {
+  color: var(--hud-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.game-footer a:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* Game title / branding on landing screen */
+.game-title {
+  font-family: var(--font-ui);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--btn-primary-bg);
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.game-tagline {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+/* 3-column grid */
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  width: 100%;
+  max-width: 600px;
+  margin: var(--space-md) 0;
+}
+
+/* Square card */
+.player-card {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--space-md) var(--space-sm);
+  background: var(--bg-surface);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+  gap: var(--space-sm);
+  text-align: center;
+}
+
+.player-card:hover {
+  border-color: var(--btn-primary-bg);
+  transform: translateY(-2px);
+  background: var(--btn-secondary-hover);
+}
+
+.player-card:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+/* Large initial letter avatar */
+.player-card-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+.player-card-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin-bottom: 4px;
+}
+
+/* Coloured age bracket pill */
+.player-card-badge {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--btn-primary-bg);
+  background: var(--btn-secondary-hover);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+
+/* Stats mini-grid (2 columns) */
+.player-card-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px var(--space-xs);
+  width: 100%;
+  margin-top: auto;
+}
+
+.player-card-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-card-stat-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--hud-accent);
+  line-height: 1.2;
+}
+
+.player-card-stat-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+
+/* Delete button on card (top-right corner) */
+.player-card-delete {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  line-height: 1;
+  padding: 0;
+}
+
+.player-card-delete:hover {
+  color: var(--danger-text);
+  background: var(--danger-zone);
+}
+
+.player-card-delete:focus-visible {
+  outline: 2px solid var(--btn-primary-bg);
+  outline-offset: 1px;
+}
+
+/* "Add Player" card — dashed style */
+.player-card--add {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border-default);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.player-card--add:hover {
+  border-color: var(--hud-accent);
+  color: var(--hud-accent);
+  background: var(--btn-secondary-hover);
+  transform: translateY(-2px);
+}
+
+.player-card-add-icon {
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  color: inherit;
+  margin-bottom: var(--space-xs);
+  line-height: 1;
+}
+
+.player-card-add-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: inherit;
+}
+
+/* Responsive: 2-col on narrow viewports */
+@media (max-width: 500px) {
+  .player-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 400px;
+  }
+}
+
+
+/* ========================================
+   AGE BRACKET PICKER
+   ======================================== */
+
+.bracket-picker {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 300px;
+  margin: var(--space-sm) 0;
+}
+
+.bracket-btn {
+  padding: var(--space-sm) var(--space-md);
+  min-height: 44px;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.bracket-btn:hover {
+  border-color: var(--hud-accent);
+}
+
+.bracket-btn:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+.bracket-btn.selected {
+  border-color: var(--btn-primary-bg);
+  background: var(--btn-secondary-hover);
+  color: var(--btn-primary-bg);
+}
+
+
+/* ========================================
+   MODE SELECT
+   ======================================== */
+
+.mode-select-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: center;
+  margin: var(--space-md) 0;
+}
+
+.mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 220px;
+  padding: var(--space-lg) var(--space-md);
+  min-height: 44px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  border: 2px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.mode-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mode-btn:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+}
+
+.mode-btn--active {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mode-btn-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.mode-btn-desc {
+  font-size: var(--text-xs);
+  opacity: 0.8;
+  text-align: center;
+}
+
+.mode-btn.prominent {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+}
+
+.mode-btn.prominent:hover {
+  background: var(--btn-primary-hover);
+}
+
+.mode-btn.subtle {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+.mode-btn.subtle:hover {
+  border-color: var(--hud-accent);
+}
+
+
+/* ========================================
+   FORM INPUTS
+   ======================================== */
+
+.input-label {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  max-width: 300px;
+  padding: var(--space-sm) var(--space-md);
+  min-height: 44px;
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  background: var(--bg-game);
+  transition: border-color var(--transition-fast);
+}
+
+/* Fix W8: visible focus ring instead of outline: none */
+.input-field:focus-visible {
+  outline: 3px solid var(--btn-primary-bg);
+  outline-offset: 2px;
+  border-color: var(--btn-primary-bg);
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+
+/* ========================================
+   MOBILE / TOUCH GATE
+   ======================================== */
+
+.mobile-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  padding: var(--space-lg);
+}
+
+.mobile-gate[hidden] {
+  display: none;
+}
+
+.mobile-gate-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.mobile-gate-icon {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+}
+
+.mobile-gate-title {
+  font-family: var(--font-ui);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-md);
+}
+
+.mobile-gate-message {
+  font-family: var(--font-ui);
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  #game-wrapper {
+    max-width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  body {
+    padding: 0;
+  }
+}
+
+/* Mobile — keyboard required message */
+@media (max-width: 767px) {
+  #game-wrapper {
+    max-width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  body {
+    padding: 0;
+  }
+
+  .hud {
+    font-size: 10px;
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .mode-select-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .mode-btn {
+    width: 160px;
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  /* Hide game content on small screens as first line of defence */
+  #game-wrapper {
+    display: none;
+  }
+
+  .mobile-gate[hidden] {
+    display: flex;
+  }
+
+  .mobile-gate {
+    display: flex;
+  }
+}
+
+
+/* ========================================
+   DELETE CONFIRMATION (Fix W3)
+   ======================================== */
+
+.delete-confirm-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  background: var(--overlay-bg);
+  z-index: 110;
+  padding: var(--space-xl);
+}
+
+.delete-confirm-text {
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.delete-confirm-buttons {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* ========================================
+   NEW HIGH SCORE CELEBRATION
+   ======================================== */
+
+@keyframes hs-pulse {
+  0%   { transform: scale(0.6); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  80%  { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes hs-glow {
+  0%, 100% { text-shadow: 0 0 8px var(--hud-accent); }
+  50%       { text-shadow: 0 0 24px var(--hud-accent), 0 0 48px var(--hud-accent); }
+}
+
+.new-high-score-banner {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--hud-accent);
+  text-transform: uppercase;
+  animation: hs-pulse 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+             hs-glow 1.5s ease-in-out 0.5s infinite;
+  margin-top: var(--space-xs);
+}
+
+/* Danger button variant */
+.btn-danger {
+  background: var(--danger-text);
+  color: #FFFFFF;
+  border-color: var(--danger-text);
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+
+/* ========================================
+   INPUT ERROR MESSAGE
+   ======================================== */
+
+.input-error {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--danger-text);
+  text-align: center;
+  max-width: 300px;
+  margin: var(--space-xs) 0;
+}
+
+
+/* ========================================
+   LEARN PROGRESS DOTS (Fix W10)
+   ======================================== */
+
+.mode-btn-dots {
+  display: flex;
+  gap: var(--space-xs);
+  justify-content: center;
+  margin-top: var(--space-xs);
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--border-default);
+  display: inline-block;
+}
+
+.progress-dot.filled {
+  background: var(--btn-primary-bg);
+}
+
+/* Prominent mode button dots need inverted colours */
+.mode-btn.prominent .progress-dot {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.mode-btn.prominent .progress-dot.filled {
+  background: #FFFFFF;
+}
+
+
+/* ========================================
+   UTILITIES
+   ======================================== */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ========================================
+   ON-SCREEN KEYBOARD (Task 6)
+   ======================================== */
+
+.keyboard {
+  --key-gap: 4px;
+  --key-height: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--key-gap);
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px;
+  user-select: none;
+  transition: opacity 0.4s ease;
+}
+
+.keyboard[aria-hidden="true"] {
+  /* still visible — aria-hidden means "not interactive", not "display:none" */
+}
+
+.keyboard--hidden {
+  display: none !important;
+}
+
+.keyboard-row {
+  display: grid;
+  gap: var(--key-gap);
+}
+
+/* Row grid templates (UK QWERTY stagger)
+   Each row uses fractional units. Standard key = 1fr.
+   Wider keys use larger fractions for correct stagger. */
+.keyboard-row--number { grid-template-columns: repeat(13, 1fr) 2fr; }
+.keyboard-row--top    { grid-template-columns: 1.5fr repeat(10, 1fr) 1.5fr; }
+.keyboard-row--home   { grid-template-columns: 1.75fr repeat(10, 1fr) 2.25fr; }
+.keyboard-row--bottom { grid-template-columns: 2.25fr repeat(10, 1fr) 2.75fr; }
+.keyboard-row--space  { grid-template-columns: 3fr 6fr 3fr; }
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--key-height);
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  opacity: 0.75;                /* idle = low intensity */
+  position: relative;
+  overflow: hidden;             /* contain pattern pseudo-element */
+  transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+/* -- Zone background colours (applied via data attribute) -- */
+.key[data-zone="left-pinky"]   { background: var(--zone-left-pinky); }
+.key[data-zone="left-ring"]    { background: var(--zone-left-ring); }
+.key[data-zone="left-middle"]  { background: var(--zone-left-middle); }
+.key[data-zone="left-index"]   { background: var(--zone-left-index); }
+.key[data-zone="right-index"]  { background: var(--zone-right-index); }
+.key[data-zone="right-middle"] { background: var(--zone-right-middle); }
+.key[data-zone="right-ring"]   { background: var(--zone-right-ring); }
+.key[data-zone="right-pinky"]  { background: var(--zone-right-pinky); }
+
+/* -- Colour-blind pattern fills (pseudo-element overlay) --
+   Opacity 0.18 per Addendum 1 O3 for better visibility */
+.key::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  pointer-events: none;
+}
+.key[data-zone="left-pinky"]::after {
+  /* dots */
+  background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+.key[data-zone="left-ring"]::after {
+  /* horizontal lines */
+  background-image: repeating-linear-gradient(
+    0deg, #fff 0px, #fff 1px, transparent 1px, transparent 5px
+  );
+}
+.key[data-zone="left-middle"]::after {
+  /* vertical lines */
+  background-image: repeating-linear-gradient(
+    90deg, #fff 0px, #fff 1px, transparent 1px, transparent 5px
+  );
+}
+.key[data-zone="left-index"]::after {
+  /* diagonal lines (top-left to bottom-right) */
+  background-image: repeating-linear-gradient(
+    45deg, #fff 0px, #fff 1px, transparent 1px, transparent 6px
+  );
+}
+.key[data-zone="right-index"]::after {
+  /* diagonal lines (top-right to bottom-left) */
+  background-image: repeating-linear-gradient(
+    -45deg, #fff 0px, #fff 1px, transparent 1px, transparent 6px
+  );
+}
+.key[data-zone="right-middle"]::after {
+  /* crosshatch */
+  background-image:
+    repeating-linear-gradient(
+      45deg, #fff 0px, #fff 1px, transparent 1px, transparent 6px
+    ),
+    repeating-linear-gradient(
+      -45deg, #fff 0px, #fff 1px, transparent 1px, transparent 6px
+    );
+}
+.key[data-zone="right-ring"]::after {
+  /* large dots */
+  background-image: radial-gradient(circle, #fff 2px, transparent 2px);
+  background-size: 10px 10px;
+}
+.key[data-zone="right-pinky"]::after {
+  /* dashes */
+  background-image: repeating-linear-gradient(
+    90deg, #fff 0px, #fff 4px, transparent 4px, transparent 8px
+  );
+  background-size: 8px 5px;
+}
+
+/* -- Home-row indicator (tactile bumps on F and J) -- */
+.key--home-indicator::before {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
+}
+
+/* -- Responsive scaling -- */
+@media (max-width: 1024px) {
+  .keyboard { max-width: 100%; padding: 8px; }
+  .key { --key-height: 42px; font-size: 13px; }
+}
+@media (max-width: 768px) {
+  .key { --key-height: 36px; font-size: 11px; }
+}
+
+
+/* ========================================
+   KEYBOARD INTERACTION STATES (Task 7)
+   ======================================== */
+
+/* -- Idle state (default) --
+   Keys are at opacity: 0.55 (set on .key base class above).
+   No additional class needed. */
+
+/* -- Target: gentle pulse glow -- */
+@keyframes key-pulse {
+  0%, 100% { opacity: 0.75; box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
+  50%      { opacity: 1;    box-shadow: 0 0 18px rgba(255, 255, 255, 0.45); }
+}
+
+.key--target {
+  opacity: 1;
+  animation: key-pulse 1.5s ease-in-out infinite;
+}
+
+/* -- Correct: bright flash, then return to idle -- */
+@keyframes key-correct-flash {
+  0%   { opacity: 1; box-shadow: 0 0 24px rgba(255, 255, 255, 0.7); transform: scale(1.08); }
+  100% { opacity: 0.55; box-shadow: none; transform: scale(1); }
+}
+
+.key--correct {
+  animation: key-correct-flash 0.4s ease-out forwards;
+}
+
+/* -- Wrong: subtle shake on the wrong key -- */
+@keyframes key-shake {
+  0%, 100% { transform: translateX(0); }
+  15%      { transform: translateX(-4px); }
+  30%      { transform: translateX(4px); }
+  45%      { transform: translateX(-3px); }
+  60%      { transform: translateX(3px); }
+  75%      { transform: translateX(-1px); }
+  90%      { transform: translateX(1px); }
+}
+
+.key--wrong {
+  animation: key-shake 0.4s ease-out;
+  opacity: 0.55;
+}
+
+/* -- Spotlight mode (4-5 bracket): dim all keys except target -- */
+.keyboard--spotlight .key {
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+
+.keyboard--spotlight .key--target {
+  opacity: 1;
+  transform: scale(1.12);
+  z-index: 1;
+  animation: key-pulse 1.2s ease-in-out infinite;
+}
+
+
+/* ========================================
+   HUD KEYBOARD TOGGLE (Task 8)
+   ======================================== */
+
+.hud-btn__label {
+  font-size: var(--text-xs);
+}
+
+.hud-btn--active {
+  background: var(--text-secondary, #4A4A5A);
+  color: var(--bg-primary, #FAFAF8);
+}
+
+
+/* ========================================
+   PLAY MODE — THEME VARIABLES (Task 19)
+   ======================================== */
+
+:root[data-theme="light"] {
+  --heart-colour: #EF4444;
+  --streak-colour: #D97706;
+  --streak-glow: rgba(217, 119, 6, 0.4);
+  --streak-colour-max: #B45309;
+  --streak-glow-max: rgba(180, 83, 9, 0.5);
+}
+
+:root[data-theme="dark"] {
+  --heart-colour: #F87171;
+  --streak-colour: #FBBF24;
+  --streak-glow: rgba(251, 191, 36, 0.4);
+  --streak-colour-max: #F59E0B;
+  --streak-glow-max: rgba(245, 158, 11, 0.5);
+}
+
+
+/* ========================================
+   PLAY MODE — PLAY AREA
+   ======================================== */
+
+.play-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+
+/* ========================================
+   PLAY MODE — STREAK GLOW (Task 18)
+   ======================================== */
+
+#hud-streak-value[data-streak="high"] {
+  color: var(--streak-colour) !important;
+  text-shadow: 0 0 8px var(--streak-glow);
+  transition: text-shadow 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+  transform: scale(1.1);
+}
+
+#hud-streak-value[data-streak="max"] {
+  color: var(--streak-colour-max) !important;
+  text-shadow: 0 0 12px var(--streak-glow-max), 0 0 24px var(--streak-glow-max);
+  display: inline-block;
+  transform: scale(1.2);
+  animation: streak-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes streak-shimmer {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.8; }
+}
+
+
+/* ========================================
+   PLAY MODE — GAME OVER OVERLAY (Task 19)
+   ======================================== */
+
+.gameover-score {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--hud-accent);
+  font-family: var(--font-mono);
+  letter-spacing: 2px;
+}
+
+.gameover-stats {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 2;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 320px;
+}
+
+.gameover-stats strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.gameover-stat-row {
+  display: block;
+}
+
+.gameover-stat-label {
+  color: var(--text-muted);
+}
+
+/* Weak-key badges on game-over overlay (Task 20) */
+.weak-keys-section {
+  margin-top: var(--space-md);
+}
+
+.weak-key-list {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.weak-key-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 2px solid #FECACA;
+}
+
+[data-theme="dark"] .weak-key-badge {
+  background: #3B1111;
+  color: #FCA5A5;
+  border-color: #7F1D1D;
+}
+
+
+/* ========================================
+   PLAY MODE — HEARTS / LIVES (Task 19)
+   ======================================== */
+
+#hud-lives-value {
+  color: var(--heart-colour, #EF4444);
+  font-size: var(--text-lg);
+  letter-spacing: 2px;
+}
+
+
+/* ========================================
+   PAUSE BUTTON (Task T3)
+   ======================================== */
+
+#pause-btn {
+  /* base pause button in HUD — inherits .hud-btn styles */
+}
+
+.pause-btn--large {
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  border-radius: 50%;
+  background: var(--btn-primary-bg);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pause-btn--labelled {
+  min-width: 80px;
+  height: 44px;
+  font-size: 14px;
+}
+
+.pause-btn--pulse {
+  animation: pausePulse 0.5s ease-in-out 4;
+}
+
+@keyframes pausePulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
+
+
+
+
+/* ========================================
+   REDUCED MOTION (Task T3 — Accessibility)
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* Screen-reader only — visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+  </style>
+</head>
+<body>
+  <!-- Mobile/tablet gate — shown when no physical keyboard is detected -->
+  <div id="mobile-gate" class="mobile-gate" role="alert" aria-live="assertive" hidden>
+    <div class="mobile-gate-content">
+      <div class="mobile-gate-icon" aria-hidden="true">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="44" width="64" height="28" rx="4" stroke="currentColor" stroke-width="3" fill="none"/>
+          <rect x="12" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="22" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="32" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="42" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="52" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="16" y="60" width="48" height="6" rx="1" fill="currentColor" opacity="0.5"/>
+          <path d="M40 12 L40 36 M32 28 L40 36 L48 28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="mobile-gate-title">This game needs a keyboard!</h1>
+      <p class="mobile-gate-message">Plug in a keyboard or try on a laptop or desktop computer.</p>
+    </div>
+  </div>
+
+  <button id="global-theme-toggle" class="global-theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+    <span class="theme-icon" aria-hidden="true"></span>
+  </button>
+
+  <div id="game-wrapper">
+    <!-- HUD bar: score, stage, lives, streak, buttons -->
+    <div id="hud" class="hud" aria-label="Game status">
+      <a href="index.html" class="hud-btn hud-home-link" aria-label="Back to all games" title="All Games">
+        <span class="hud-btn__icon">🏠</span>
+        <span class="hud-btn__label">Games</span>
+      </a>
+      <div class="hud-item">Score: <span id="hud-score-value" aria-live="polite">0</span></div>
+      <div class="hud-item">Stage: <span id="hud-stage-current">1</span>/<span id="hud-stage-total">10</span></div>
+      <div class="hud-item" id="hud-lives">Lives: <span id="hud-lives-value" aria-live="polite">&#9829;&#9829;&#9829;</span></div>
+      <div class="hud-item hud-streak">Streak: <span id="hud-streak-value" aria-live="polite">0</span></div>
+      <button id="keyboard-toggle" class="hud-btn keyboard-toggle-btn" aria-label="Toggle on-screen keyboard" title="Toggle keyboard">
+        <span class="hud-btn__icon">&#9000;</span>
+        <span class="hud-btn__label">Keyboard</span>
+      </button>
+      <button id="theme-toggle" class="hud-btn theme-toggle-btn" aria-label="Toggle theme" title="Toggle light/dark theme">
+        <span class="theme-icon" aria-hidden="true"></span>
+      </button>
+      <button id="mute-btn" class="hud-btn mute-btn" aria-label="Mute audio" aria-pressed="false" title="Toggle sound">
+        <span class="mute-icon" aria-hidden="true">&#x1F50A;</span>
+      </button>
+      <button id="pause-btn" class="hud-btn" aria-label="Pause game">⏸</button>
+    </div>
+
+    <!-- Stage progress bar -->
+    <div id="stage-bar" class="stage-bar">
+      <span id="play-stage-label" class="stage-label" aria-live="polite">Home row only</span>
+      <div class="stage-track">
+        <div id="play-prog-fill" class="stage-fill" style="width: 0%"></div>
+      </div>
+      <span id="play-prog-pct" class="stage-progress">0/10</span>
+    </div>
+
+    <!-- Play mode area -->
+    <div id="play-area" class="play-area" hidden>
+      <div id="play-canvas-wrap" class="canvas-wrap">
+        <canvas id="game-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- On-screen keyboard container -->
+    <div id="keyboard" class="keyboard-container" aria-hidden="true">
+      <!-- Keyboard rendered by js/keyboard.js -->
+    </div>
+
+    <!-- Typed buffer display (Play mode) -->
+    <div id="typed-row" class="typed-row">
+      <span id="typed-display" class="typed-display"></span>
+    </div>
+
+    <!-- Overlay container for modal screens -->
+    <div id="overlay" class="overlay">
+      <!-- Player select, mode select, pause, game over injected here -->
+    </div>
+  </div>
+
+  <script>
+// --- utils.js ---
+// utils.js — Shared utilities (concatenated first in build)
+// Focus trap for modal dialogs (WCAG 2.4.3 compliance)
+
+let _focusTrapContainer = null;
+let _focusTrapHandler = null;
+let _previousFocus = null;
+
+/**
+ * Trap keyboard focus within a container element.
+ * Tab and Shift+Tab wrap around the focusable elements inside.
+ * @param {HTMLElement} container - The container to trap focus within.
+ */
+function trapFocus(container) {
+  releaseFocus(); // clean up any existing trap
+  _previousFocus = document.activeElement;
+  _focusTrapContainer = container;
+
+  const focusable = container.querySelectorAll(
+    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  );
+  if (focusable.length === 0) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  first.focus();
+
+  _focusTrapHandler = (e) => {
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+  container.addEventListener('keydown', _focusTrapHandler);
+}
+
+/**
+ * Release the current focus trap and restore focus to the previously focused element.
+ */
+function releaseFocus() {
+  if (_focusTrapContainer && _focusTrapHandler) {
+    _focusTrapContainer.removeEventListener('keydown', _focusTrapHandler);
+  }
+  if (_previousFocus && typeof _previousFocus.focus === 'function') {
+    _previousFocus.focus();
+  }
+  _focusTrapContainer = null;
+  _focusTrapHandler = null;
+  _previousFocus = null;
+}
+
+// --- audio.js ---
+// audio.js — Web Audio API sound synthesis
+// Tasks 9 & 10: Core audio engine + volume controls
+
+// ── AudioContext (lazy-initialised) ────────────────────────────
+
+/** @type {AudioContext|null} */
+let audioCtx = null;
+
+/** @type {GainNode|null} */
+let masterGain = null;
+
+// ── Volume State ───────────────────────────────────────────────
+
+const AUDIO_SETTINGS_KEY = 'typingGame_audioSettings';
+
+/** @type {number} Master volume level 0-1 */
+let _volume = 0.8;
+
+/** @type {boolean} Whether audio is currently muted */
+let _muted = false;
+
+// ── Initialisation ─────────────────────────────────────────────
+
+/**
+ * Initialise the AudioContext and master gain node.
+ * Called lazily on first user interaction (click or keydown)
+ * to satisfy browser autoplay policy. Idempotent — safe to call
+ * multiple times.
+ */
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.connect(audioCtx.destination);
+
+  // Load saved volume/mute from localStorage (review O2: delegate to loadAudioSettings)
+  loadAudioSettings();
+}
+
+/**
+ * Ensure AudioContext exists and is not suspended (Safari).
+ * Every sound function calls this as its first line.
+ */
+function ensureCtx() {
+  initAudio();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+// ── Sound Functions (Task 9) ───────────────────────────────────
+
+/**
+ * Soft pluck — sine wave with fast attack, quick decay.
+ * Pitch varies by horizontal keyboard position.
+ * @param {number} keyPosition — 0 (left of keyboard) to 1 (right)
+ */
+function playCorrectKey(keyPosition = 0.5) {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  // Map key position to frequency: E4 (330Hz) to E5 (660Hz)
+  const freq = 330 + (keyPosition * 330);
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, now);
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.3, now + 0.01);        // 10ms attack
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);  // 140ms decay
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 0.16);
+}
+
+/**
+ * Rising two-note chime — two sines a perfect fifth apart.
+ * C5 (523 Hz) then G5 (784 Hz) staggered by 80ms.
+ */
+function playWordComplete() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  // Note 1: C5 (523 Hz)
+  const osc1 = audioCtx.createOscillator();
+  const gain1 = audioCtx.createGain();
+  osc1.type = 'sine';
+  osc1.frequency.setValueAtTime(523.25, now);
+  gain1.gain.setValueAtTime(0, now);
+  gain1.gain.linearRampToValueAtTime(0.25, now + 0.01);
+  gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+  osc1.connect(gain1);
+  gain1.connect(masterGain);
+  osc1.start(now);
+  osc1.stop(now + 0.35);
+
+  // Note 2: G5 (784 Hz), starts 80ms later
+  const osc2 = audioCtx.createOscillator();
+  const gain2 = audioCtx.createGain();
+  osc2.type = 'sine';
+  osc2.frequency.setValueAtTime(783.99, now + 0.08);
+  gain2.gain.setValueAtTime(0, now + 0.08);
+  gain2.gain.linearRampToValueAtTime(0.25, now + 0.09);
+  gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+  osc2.connect(gain2);
+  gain2.connect(masterGain);
+  osc2.start(now + 0.08);
+  osc2.stop(now + 0.45);
+}
+
+/**
+ * Gentle dull thud — low triangle wave, very short.
+ * NOT alarming. Safe for young children.
+ */
+function playWrongKey() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(110, now);  // A2 — low, dull
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.15, now + 0.01);        // Quiet peak
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);   // Very fast decay
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 0.1);
+}
+
+/**
+ * Ascending 4-note major arpeggio — C major: C5, E5, G5, C6.
+ * Each note 200ms apart, rings for 350ms.
+ */
+function playStageClear() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+  const noteSpacing = 0.2;   // 200ms between note starts
+  const noteDuration = 0.35; // Each note rings for 350ms
+
+  notes.forEach((freq, i) => {
+    const t = now + (i * noteSpacing);
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t);
+
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.2, t + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + noteDuration);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(t);
+    osc.stop(t + noteDuration + 0.05);
+  });
+}
+
+/**
+ * Soft descending tone — gentle frequency glide downward.
+ * E5 (659 Hz) glides to C4 (262 Hz) over 0.8s. "That was fun" energy.
+ */
+function playGameOver() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(659.25, now);                        // Start at E5
+  osc.frequency.exponentialRampToValueAtTime(261.63, now + 0.8);    // Glide to C4
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.2, now + 0.02);
+  gain.gain.linearRampToValueAtTime(0.15, now + 0.4);  // Gentle sustain
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 1.05);
+}
+
+/**
+ * Brief low tone — informational, not punishing.
+ * A3 (220 Hz) with slight downward bend.
+ */
+function playLifeLost() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(220, now);                       // A3
+  osc.frequency.linearRampToValueAtTime(180, now + 0.15);       // Slight downward bend
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.18, now + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 0.18);
+}
+
+/**
+ * Warm bell — longer ring than play mode, more rewarding.
+ * Two sine layers: fundamental D5 (587 Hz) + octave harmonic D6 (1174 Hz).
+ */
+function playLearnCorrect() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  // Fundamental: D5 (587 Hz)
+  const osc1 = audioCtx.createOscillator();
+  const gain1 = audioCtx.createGain();
+  osc1.type = 'sine';
+  osc1.frequency.setValueAtTime(587.33, now);
+  gain1.gain.setValueAtTime(0, now);
+  gain1.gain.linearRampToValueAtTime(0.25, now + 0.01);
+  gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+  osc1.connect(gain1);
+  gain1.connect(masterGain);
+  osc1.start(now);
+  osc1.stop(now + 0.55);
+
+  // Harmonic: D6 (1174 Hz) — quieter, adds bell shimmer
+  const osc2 = audioCtx.createOscillator();
+  const gain2 = audioCtx.createGain();
+  osc2.type = 'sine';
+  osc2.frequency.setValueAtTime(1174.66, now);
+  gain2.gain.setValueAtTime(0, now);
+  gain2.gain.linearRampToValueAtTime(0.08, now + 0.01);
+  gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+  osc2.connect(gain2);
+  gain2.connect(masterGain);
+  osc2.start(now);
+  osc2.stop(now + 0.4);
+}
+
+/**
+ * Soft double-tap — two quiet triangle pulses, "not quite" without negativity.
+ * Two pulses at 280 Hz, 80ms apart.
+ */
+function playLearnNudge() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  for (let i = 0; i < 2; i++) {
+    const t = now + (i * 0.08); // 80ms apart
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, t);
+
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.12, t + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(t);
+    osc.stop(t + 0.06);
+  }
+}
+
+/**
+ * Quick sparkle — high-frequency shimmer, layered sines.
+ * Three tones: C7 (2093 Hz), E7 (2637 Hz), G7 (3136 Hz) staggered by 40ms.
+ */
+function playStreakMilestone() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const sparkleFreqs = [2093.00, 2637.02, 3135.96]; // C7, E7, G7
+  const stagger = 0.04; // 40ms between each tone
+
+  sparkleFreqs.forEach((freq, i) => {
+    const t = now + (i * stagger);
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t);
+
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.1, t + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(t);
+    osc.stop(t + 0.25);
+  });
+}
+
+// ── Countdown Sounds (Task T5) ──────────────────────────────────
+
+/**
+ * Short gentle "boop" — sine wave, 440 Hz, 100ms.
+ * Soft attack/release envelope for countdown ticks (3, 2, 1).
+ */
+function playCountdownTick() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(440, now);
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.3, now + 0.01);        // 10ms attack to 0.3
+  gain.gain.linearRampToValueAtTime(0, now + 0.1);           // fade to 0 over 90ms
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 0.1);
+}
+
+/**
+ * Brighter, slightly higher "go" tone — sine wave, 660 Hz, 150ms.
+ * More energetic than the tick for the final "Go!" moment.
+ */
+function playCountdownGo() {
+  ensureCtx();
+  const now = audioCtx.currentTime;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(660, now);
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.4, now + 0.01);        // 10ms attack to 0.4
+  gain.gain.linearRampToValueAtTime(0, now + 0.15);           // fade to 0 over 140ms
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 0.15);
+}
+
+// ── playSound Dispatcher (Addendum 2 Fix W9) ──────────────────
+
+/** @type {Object<string, Function>} Module-level sound lookup table */
+const soundMap = {
+  correctKey:      playCorrectKey,
+  wordComplete:    playWordComplete,
+  wrongKey:        playWrongKey,
+  stageClear:      playStageClear,
+  gameOver:        playGameOver,
+  lifeLost:        playLifeLost,
+  learnCorrect:    playLearnCorrect,
+  learnNudge:      playLearnNudge,
+  streakMilestone: playStreakMilestone,
+  countdownTick:   playCountdownTick,
+  countdownGo:     playCountdownGo,
+};
+
+/**
+ * Dispatch a sound by name. Allows consumers to call either
+ * `playCorrectKey(0.5)` directly OR `playSound('correctKey', 0.5)`.
+ *
+ * @param {string} name — Sound name (e.g. 'correctKey', 'wordComplete')
+ * @param {...*} args — Arguments forwarded to the sound function
+ * @returns {void}
+ */
+function playSound(name, ...args) {
+  const fn = soundMap[name];
+  if (fn) {
+    fn(...args);
+  } else {
+    console.warn(`[audio] Unknown sound: "${name}"`);
+  }
+}
+
+// ── Volume Control (Task 10) ───────────────────────────────────
+
+/**
+ * Load audio settings from localStorage.
+ * Called during initAudio() and can be called standalone.
+ */
+function loadAudioSettings() {
+  try {
+    const saved = localStorage.getItem(AUDIO_SETTINGS_KEY);
+    if (saved) {
+      const settings = JSON.parse(saved);
+      _volume = typeof settings.volume === 'number'
+        ? Math.max(0, Math.min(1, settings.volume))
+        : 0.8;
+      _muted = !!settings.muted;
+    }
+  } catch (e) {
+    _volume = 0.8;
+    _muted = false;
+  }
+  applyVolume();
+}
+
+/**
+ * Save current audio settings to localStorage.
+ */
+function saveAudioSettings() {
+  try {
+    localStorage.setItem(AUDIO_SETTINGS_KEY, JSON.stringify({
+      volume: _volume,
+      muted: _muted,
+    }));
+  } catch (e) {
+    // localStorage full or unavailable — silently ignore
+  }
+}
+
+/**
+ * Apply current volume/mute state to the master gain node.
+ */
+function applyVolume() {
+  if (!masterGain) return;
+  masterGain.gain.setValueAtTime(_muted ? 0 : _volume, audioCtx.currentTime);
+}
+
+/**
+ * Set master volume (0 to 1). Persists to localStorage.
+ * @param {number} level — 0.0 (silent) to 1.0 (full volume)
+ */
+function setVolume(level) {
+  _volume = Math.max(0, Math.min(1, level));
+  applyVolume();
+  saveAudioSettings();
+}
+
+/**
+ * Mute all audio. Persists to localStorage.
+ */
+function mute() {
+  _muted = true;
+  applyVolume();
+  saveAudioSettings();
+  updateMuteButtonUI();
+}
+
+/**
+ * Unmute audio (restores previous volume). Persists to localStorage.
+ */
+function unmute() {
+  _muted = false;
+  applyVolume();
+  saveAudioSettings();
+  updateMuteButtonUI();
+}
+
+/**
+ * Toggle mute state.
+ */
+function toggleMute() {
+  if (_muted) {
+    unmute();
+  } else {
+    mute();
+  }
+}
+
+/**
+ * @returns {boolean} Whether audio is currently muted.
+ */
+function isMuted() {
+  return _muted;
+}
+
+/**
+ * @returns {number} Current volume level (0-1), regardless of mute state.
+ */
+function getVolume() {
+  return _volume;
+}
+
+/**
+ * Update the mute button icon in the HUD to reflect current state.
+ */
+function updateMuteButtonUI() {
+  const btn = document.getElementById('mute-btn');
+  if (!btn) return;
+  const icon = btn.querySelector('.mute-icon');
+  if (icon) {
+    icon.textContent = _muted ? '\u{1F507}' : '\u{1F50A}'; // muted or speaker icon
+  }
+  btn.setAttribute('aria-label', _muted ? 'Unmute audio' : 'Mute audio');
+  btn.setAttribute('aria-pressed', String(_muted));
+}
+
+/**
+ * Attach click handler to the mute button in the HUD.
+ * Call this once from main.js after DOM is ready.
+ */
+function setupMuteButton() {
+  const btn = document.getElementById('mute-btn');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    initAudio(); // Ensure AudioContext exists (first interaction)
+    toggleMute();
+  });
+
+  // Set initial UI state from saved settings
+  loadAudioSettings();
+  updateMuteButtonUI();
+}
+
+/**
+ * Apply a player's saved audio settings.
+ * Called when a player profile is loaded.
+ * @param {{ volume?: number, muted?: boolean }} settings
+ */
+function applyPlayerAudioSettings(settings) {
+  if (settings) {
+    if (typeof settings.volume === 'number') {
+      _volume = Math.max(0, Math.min(1, settings.volume));
+    }
+    if (typeof settings.muted === 'boolean') {
+      _muted = settings.muted;
+    }
+    applyVolume();
+    updateMuteButtonUI();
+  }
+}
+
+/**
+ * Get current audio settings for saving into a player profile.
+ * @returns {{ volume: number, muted: boolean }}
+ */
+function getAudioSettings() {
+  return { volume: _volume, muted: _muted };
+}
+
+// ── Context Accessors (debugging & integration) ────────────────
+
+/**
+ * Expose the AudioContext for volume controls and debugging.
+ * @returns {AudioContext|null}
+ */
+function getAudioContext() {
+  return audioCtx;
+}
+
+/**
+ * Expose the master GainNode for advanced usage.
+ * @returns {GainNode|null}
+ */
+function getMasterGain() {
+  return masterGain;
+}
+
+// --- storage.js ---
+// storage.js — localStorage persistence layer
+// Schema version 1, matches design doc section 3
+// In-memory cache avoids redundant JSON.parse on repeated reads (W8)
+
+const STORAGE_KEY = 'typingGame';
+const CURRENT_VERSION = 1;
+const MAX_NAME_LENGTH = 20;
+
+/** @type {object|null} In-memory cache of the full data object */
+let _cache = null;
+
+/**
+ * Default schema structure for a brand new data store.
+ */
+function createDefaultData() {
+  return {
+    version: CURRENT_VERSION,
+    players: {}
+  };
+}
+
+/**
+ * Default player data for a newly created player.
+ * For the 4-5 age bracket, homeRow starts as "in_progress" (they begin learning).
+ * For other brackets, homeRow stays "locked" (they skip to play).
+ */
+function createDefaultPlayer(ageBracket) {
+  const defaultTheme = (ageBracket === '4-5' || ageBracket === '6-8') ? 'light' : 'dark';
+
+  return {
+    ageBracket,
+    highScore: 0,
+    highestStage: 0,
+    totalGamesPlayed: 0,
+    stats: {
+      accuracy: 0,
+      fastestWord: null,
+      longestStreak: 0,
+      weakKeys: [],
+      totalKeysPressed: 0,
+      totalCorrect: 0
+    },
+    settings: {
+      volume: 0.8,
+      keyboardVisible: true,
+      theme: defaultTheme,
+      muted: false,
+      speedPreference: 1.8
+    }
+  };
+}
+
+/**
+ * Sanitise a player name: strip characters that are not alphanumeric,
+ * spaces, hyphens, or apostrophes. Trim whitespace. Enforce max length.
+ * Prevents XSS when names are rendered with textContent (W1).
+ * @param {string} name - Raw input name
+ * @returns {string} Sanitised name
+ */
+function sanitiseName(name) {
+  if (typeof name !== 'string') return '';
+  return name
+    .replace(/[^\p{L}\p{N} '\-]/gu, '')
+    .trim()
+    .slice(0, MAX_NAME_LENGTH);
+}
+
+/**
+ * Run migrations if data version is behind current.
+ * Stub for now — future migrations go here.
+ */
+function migrate(data) {
+  if (!data.version) {
+    data.version = CURRENT_VERSION;
+  }
+  // Future: if (data.version === 1) { ... data.version = 2; }
+  return data;
+}
+
+/**
+ * Write the data object to localStorage.
+ * Internal helper — updates cache as a side-effect.
+ * @param {object} data - The full game data object
+ * @returns {boolean} true if write succeeded, false on error
+ */
+function writeToStorage(data) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    _cache = data;
+    return true;
+  } catch (e) {
+    console.error('storage: failed to save', e);
+    // Still update the in-memory cache so the current session works
+    _cache = data;
+    return false;
+  }
+}
+
+/**
+ * Load the entire game data object from localStorage.
+ * Uses an in-memory cache to avoid redundant JSON.parse calls.
+ * Returns default data if nothing saved or data is corrupt.
+ * @returns {object} The full game data object
+ */
+function loadGameData() {
+  if (_cache !== null) {
+    return _cache;
+  }
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      const defaults = createDefaultData();
+      _cache = defaults;
+      return defaults;
+    }
+    const data = JSON.parse(raw);
+    const migrated = migrate(data);
+    _cache = migrated;
+    return migrated;
+  } catch (e) {
+    console.warn('storage: failed to load, resetting', e);
+    const defaults = createDefaultData();
+    _cache = defaults;
+    return defaults;
+  }
+}
+
+/**
+ * Save the entire game data object to localStorage and update cache.
+ * @param {object} data - The full game data object
+ */
+function saveGameData(data) {
+  writeToStorage(data);
+}
+
+/**
+ * Get the list of player names (sorted alphabetically, case-insensitive).
+ * @returns {string[]} Array of player name strings
+ */
+function getPlayerList() {
+  const data = loadGameData();
+  return Object.keys(data.players).sort(
+    (a, b) => a.toLowerCase().localeCompare(b.toLowerCase())
+  );
+}
+
+/**
+ * Get a single player's data by name. Returns null if not found.
+ * @param {string} name - Player name to look up
+ * @returns {object|null} Player data object or null
+ */
+function getPlayer(name) {
+  const data = loadGameData();
+  return data.players[name] || null;
+}
+
+/**
+ * Create a new player with the given name and age bracket.
+ * Name is sanitised before storage (W1 XSS prevention).
+ * Returns true if created, false if name is empty, invalid, or already exists.
+ * @param {string} name - Raw player name
+ * @param {string} ageBracket - Age bracket string (e.g. '4-5', '6-8', '9-12')
+ * @returns {boolean} Whether the player was created
+ */
+function createPlayer(name, ageBracket) {
+  const clean = sanitiseName(name);
+  if (!clean) return false;
+
+  const data = loadGameData();
+  if (data.players[clean]) return false;
+
+  data.players[clean] = createDefaultPlayer(ageBracket);
+  writeToStorage(data);
+  return true;
+}
+
+/**
+ * Save/update a single player's entire data object.
+ * @param {string} name - Player name
+ * @param {object} playerData - Complete player data object
+ */
+function savePlayer(name, playerData) {
+  const data = loadGameData();
+  data.players[name] = playerData;
+  writeToStorage(data);
+}
+
+/**
+ * Delete a player by name. Returns true if deleted, false if not found.
+ * @param {string} name - Player name to delete
+ * @returns {boolean} Whether the player was found and deleted
+ */
+function deletePlayer(name) {
+  const data = loadGameData();
+  if (!data.players[name]) return false;
+  delete data.players[name];
+  writeToStorage(data);
+  return true;
+}
+
+/**
+ * Merge stats into an existing player's stats object.
+ * Only updates keys that are present in the incoming stats.
+ * If the player does not exist, this is a no-op.
+ * @param {string} name - Player name
+ * @param {object} stats - Partial stats object to merge
+ */
+function updatePlayerStats(name, stats) {
+  const data = loadGameData();
+  const player = data.players[name];
+  if (!player) return;
+
+  // Merge each provided stat key into the existing stats
+  const existing = player.stats;
+  for (const key of Object.keys(stats)) {
+    if (Object.prototype.hasOwnProperty.call(existing, key)) {
+      existing[key] = stats[key];
+    }
+  }
+
+  writeToStorage(data);
+}
+
+/**
+ * Update a player's age bracket and reset their learn progress
+ * to the default for the new bracket. All play stats, settings,
+ * and scores are preserved.
+ * @param {string} name - Player name
+ * @param {string} newBracket - New age bracket (e.g. '4-5', '6-8', '9-12')
+ */
+function updatePlayerBracket(name, newBracket) {
+  const player = getPlayer(name);
+  if (!player) return;
+
+  player.ageBracket = newBracket;
+  savePlayer(name, player);
+}
+
+/**
+ * Calculate current localStorage usage for the game data.
+ * @returns {{ used: number, limit: number, percent: number }}
+ */
+function getStorageUsage() {
+  const str = JSON.stringify(loadGameData());
+  const used = str.length;
+  const limit = 5242880;
+  return {
+    used,
+    limit,
+    percent: Math.round((used / limit) * 100)
+  };
+}
+
+/**
+ * Check whether localStorage usage exceeds 80% of the 5 MB limit.
+ * @returns {boolean} true if usage is above 80%
+ */
+function isStorageNearFull() {
+  return getStorageUsage().percent > 80;
+}
+
+/**
+ * Export all game data as a JSON file download.
+ * Triggers a browser download of type-trainer-backup-YYYY-MM-DD.json.
+ */
+function exportData() {
+  const data = loadGameData();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `type-trainer-backup-${today}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Import game data from a JSON file, replacing all current data.
+ * Returns true if import succeeded, false on validation failure.
+ * @param {File} file - JSON file from file input
+ * @returns {Promise<boolean>}
+ */
+function importData(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        // Validate structure
+        if (!data || typeof data !== 'object' || !data.players || typeof data.players !== 'object') {
+          resolve(false);
+          return;
+        }
+        writeToStorage(data);
+        resolve(true);
+      } catch {
+        resolve(false);
+      }
+    };
+    reader.onerror = () => resolve(false);
+    reader.readAsText(file);
+  });
+}
+
+// --- stages.js ---
+// stages.js — Stage definitions, word lists, difficulty curves
+// Task 15: Shared pool of 17 stages, bracket sequences, overrides
+
+// ── Finger zone mapping (matches keyboard.js zones) ─────────────
+// Independent from keyboard.js so stages.js has zero imports.
+
+const FINGER_ZONES = {
+  Q: "left-pinky",  A: "left-pinky",  Z: "left-pinky",
+  W: "left-ring",   S: "left-ring",   X: "left-ring",
+  E: "left-middle", D: "left-middle", C: "left-middle",
+  R: "left-index",  T: "left-index",  F: "left-index",
+  G: "left-index",  V: "left-index",  B: "left-index",
+  Y: "right-index", U: "right-index", H: "right-index",
+  J: "right-index", N: "right-index", M: "right-index",
+  I: "right-middle", K: "right-middle",
+  O: "right-ring",  L: "right-ring",
+  P: "right-pinky",
+  // Punctuation (home row + bottom row)
+  ";": "right-pinky", ",": "right-middle", ".": "right-ring", "/": "right-pinky",
+};
+
+// Zone → CSS custom property mapping (for canvas colour lookups)
+const ZONE_CSS_VARS = {
+  "left-pinky":   "--zone-left-pinky",
+  "left-ring":    "--zone-left-ring",
+  "left-middle":  "--zone-left-middle",
+  "left-index":   "--zone-left-index",
+  "right-index":  "--zone-right-index",
+  "right-middle": "--zone-right-middle",
+  "right-ring":   "--zone-right-ring",
+  "right-pinky":  "--zone-right-pinky",
+};
+
+// ── Words inappropriate for 4-5 bracket (Fix W6) ────────────────
+// These are filtered out for the youngest age group.
+const YOUNG_FILTER = new Set([
+  "gem", "den", "pub", "dusk", "gust", "ramp", "gun", "wax", "tax", "funk",
+  "scalp", "tramp", "stark", "stink", "skunk", "shrub", "rascal", "goblet",
+  "zenith", "pilgrim", "gin", "rum", "jab", "nag", "hag", "slag", "drab",
+  "grim", "skull", "trump", "grind", "dwelt", "skimp", "corpse", "damsel",
+  "gibbet", "musket", "punish", "demise", "captain", "emperor", "fiction",
+  "husband", "quantum", "company", "problem", "product", "program", "publish",
+  "protect", "content", "subject",
+  "rob", "mob", "sob", "slug", "spit", "grim", "skull", "filth", "thrash",
+]);
+
+// Extra simple words to add for 4-5 bracket replacements
+const YOUNG_EXTRAS = [
+  "dog", "mum", "dad", "sun", "cup", "pig", "leg", "cat", "hat", "top",
+  "pop", "hop", "got", "big", "hug", "fun", "bat",
+  "row", "map", "sun", "snug", "spin", "grin", "shell", "flour", "thread",
+];
+
+// ── Shared Stage Pool ────────────────────────────────────────────
+// Each stage defines its base parameters. Brackets apply multipliers.
+
+const STAGE_POOL = {
+  // --- Letter stages ---
+  "home-row": {
+    id: "home-row", label: "Home Row Only",
+    needed: 10, letters: "ASDFGHJK", words: null,
+    maxItems: 1, spawnMs: 5000, speed: 0.12,
+  },
+  "home-row-ext": {
+    id: "home-row-ext", label: "Home Row + Neighbours",
+    needed: 12, letters: "ASDFGHJKMNBVRT", words: null,
+    maxItems: 1, spawnMs: 4200, speed: 0.15,
+  },
+  "left-hand": {
+    id: "left-hand", label: "Left Hand Keys",
+    needed: 12, letters: "QWERTASDFGZXCVB", words: null,
+    maxItems: 1, spawnMs: 4000, speed: 0.16,
+  },
+  "right-hand": {
+    id: "right-hand", label: "Right Hand Keys",
+    needed: 12, letters: "YUIOPHJKLNM", words: null,
+    maxItems: 1, spawnMs: 4000, speed: 0.16,
+  },
+  "all-letters-slow": {
+    id: "all-letters-slow", label: "All Letters — Slow",
+    needed: 14, letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", words: null,
+    maxItems: 1, spawnMs: 3800, speed: 0.18,
+  },
+  "all-letters-fast": {
+    id: "all-letters-fast", label: "All Letters — Faster",
+    needed: 14, letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", words: null,
+    maxItems: 2, spawnMs: 3000, speed: 0.24,
+  },
+  "all-letters-rapid": {
+    id: "all-letters-rapid", label: "All Letters — Rapid",
+    needed: 16, letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", words: null,
+    maxItems: 3, spawnMs: 2400, speed: 0.3,
+  },
+
+  // --- 2-letter words ---
+  "two-letter": {
+    id: "two-letter", label: "2-Letter Words",
+    needed: 10, letters: null,
+    words: [
+      "at", "in", "on", "it", "is", "am", "an", "as", "up", "us",
+      "be", "he", "me", "we", "do", "go", "no", "so", "by", "my",
+      "or", "if", "of", "to", "hi", "ha", "ho", "oh", "la", "ma",
+      "pa", "ox", "ow", "ax", "ok", "oi", "ew",
+    ],
+    maxItems: 1, spawnMs: 4500, speed: 0.15,
+  },
+  // --- Word stages ---
+  "cvc-easy": {
+    id: "cvc-easy", label: "3-Letter CVC Words",
+    needed: 12, letters: null,
+    words: [
+      "cat", "bat", "hat", "mat", "rat", "van", "man", "fan", "can", "pan",
+      "bed", "red", "fed", "net", "set", "wet", "pet", "bit", "sit", "fit",
+      "hit", "pot", "dot", "got", "rot", "cut", "but", "nut", "mug", "bug",
+      "hug", "tug", "jug", "dog", "log", "fog", "hog", "wig", "dig", "pig",
+      "cup", "bus", "beg", "peg", "leg", "sum", "gum", "yam", "jam", "dam",
+      "ram", "ham", "dim", "rim", "dip", "hip", "lip", "rip", "sip", "tip",
+      "zip", "nod", "rod", "sob", "cob", "job", "mob", "rob",
+    ],
+    maxItems: 1, spawnMs: 4000, speed: 0.18,
+  },
+
+  "cvc-more": {
+    id: "cvc-more", label: "More 3-Letter Words",
+    needed: 14, letters: null,
+    words: [
+      "fun", "run", "sun", "bun", "gum", "map", "cap", "tap", "nap", "gap",
+      "web", "gem", "hen", "den", "ten", "pen", "bin", "pin", "win", "fin",
+      "fox", "box", "wax", "tax", "cub", "rub", "hub", "pub", "mud", "bud",
+      "cup", "pup", "vet", "jet", "met", "yet", "lab", "cab", "tab", "dab",
+      "jab", "nag", "tag", "bag", "rag", "wag", "sag", "lap", "rap", "zap",
+      "dug", "lug", "rug", "nun", "pun", "fig", "gin", "kit", "lid", "mix",
+      "rib", "tin", "vim", "wit", "yak", "cod", "cop", "cot", "hop", "mob",
+    ],
+    maxItems: 2, spawnMs: 3500, speed: 0.22,
+  },
+
+  // --- KS1 high-frequency / sight words ---
+  "ks1-sight-words": {
+    id: "ks1-sight-words", label: "KS1 Sight Words",
+    needed: 14, letters: null,
+    words: [
+      // 3-letter HFW
+      "the", "was", "you", "are", "all", "her", "his", "had", "has", "can",
+      "did", "but", "not", "for", "our", "out", "day", "how", "now", "old",
+      "see", "two", "way", "may", "too", "use", "say", "ask", "put", "she",
+      "him", "off", "who", "one", "ten",
+      // 4-letter HFW
+      "that", "this", "with", "have", "from", "they", "some", "what", "here",
+      "when", "come", "like", "been", "just", "also", "into", "your", "over",
+      "back", "time", "want", "give", "make", "went", "then", "them", "said",
+      "will", "told", "came", "look", "find", "more", "same", "each", "much",
+      "well", "help", "live", "next",
+    ],
+    maxItems: 2, spawnMs: 3200, speed: 0.22,
+  },
+
+  "four-letter": {
+    id: "four-letter", label: "4-Letter Words",
+    needed: 12, letters: null,
+    words: [
+      "jump", "frog", "crab", "flat", "grab", "help", "kept", "lamp", "neck", "ramp",
+      "sand", "task", "back", "band", "bark", "barn", "camp", "damp", "dusk", "fast",
+      "gust", "hand", "just", "kind", "last", "nest", "past", "rest", "rust", "sent",
+      "vent", "west", "wind", "wink", "dent", "funk", "land", "mint", "wish", "fish",
+      "dish", "chip", "clip", "flip", "grip", "trip", "skip", "slim", "swim", "drum",
+      "from", "step", "spot", "stop", "drop", "clap", "snap", "trap", "wrap", "plan",
+      "scan", "than", "belt", "bolt", "bump", "cast", "clam", "clog", "club", "crop",
+      "drab", "drag", "drip", "dump", "dust", "film", "flag", "glob", "grim", "gulf",
+      "gulp", "hint", "husk", "jolt", "knob", "lump", "melt", "mild", "mock", "plod",
+      "plug", "plum", "pond", "pump", "risk", "self", "silk", "slab", "glen", "slam",
+      "slap", "slit", "slug", "snag", "snip", "spin", "spit", "stem", "stir", "stub",
+      "stud", "stun", "sunk", "tilt", "trim", "trod", "trot", "tusk", "weld", "yelp",
+    ],
+    maxItems: 2, spawnMs: 3200, speed: 0.24,
+  },
+  "digraph-sh-ch-th": {
+    id: "digraph-sh-ch-th", label: "Digraphs: sh ch th",
+    needed: 14, letters: null,
+    words: [
+      "shop", "ship", "shed", "shut", "shin", "chap", "chip", "chin", "chop", "chat",
+      "this", "that", "them", "then", "with", "thin", "bash", "cash", "dash", "wash",
+      "dish", "fish", "wish", "such", "much", "rich", "each", "inch", "path", "bath",
+      "math", "moth", "both", "sham", "shim", "shod", "shot", "show", "shun", "chew",
+      "chef", "chia", "chum", "char", "than", "thus", "thud", "gash", "hash", "lash",
+      "mash", "rash", "gush", "hush", "lush", "mush", "rush", "arch", "loch", "etch",
+      "itch", "myth", "mesh", "push", "pith",
+    ],
+    maxItems: 2, spawnMs: 3000, speed: 0.26,
+  },
+  "digraph-ck-ng-qu": {
+    id: "digraph-ck-ng-qu", label: "Digraphs: ck ng qu",
+    needed: 14, letters: null,
+    words: [
+      "back", "duck", "kick", "lock", "neck", "pick", "rack", "rock", "sock", "tick",
+      "tuck", "deck", "hack", "jack", "pack", "sick", "bang", "hang", "rang", "sang",
+      "wing", "ring", "king", "sing", "long", "song", "quit", "quiz", "quip", "buck",
+      "dock", "flak", "lick", "luck", "muck", "mock", "nick", "peck", "puck", "ruck",
+      "sack", "wick", "honk", "ding", "glow", "dawn", "fang", "gang", "gong", "lung",
+      "pang", "ping", "palm", "rung", "sung", "tang", "tong", "zing", "quad", "quid",
+    ],
+    maxItems: 3, spawnMs: 2800, speed: 0.28,
+  },
+  "five-letter": {
+    id: "five-letter", label: "5-Letter Words",
+    needed: 14, letters: null,
+    words: [
+      "stamp", "brand", "craft", "flick", "flint", "frost", "grunt", "plant", "print", "scalp",
+      "shift", "shrub", "skunk", "slant", "smart", "spent", "stand", "stark", "stink", "stomp",
+      "stump", "swift", "swamp", "swept", "trail", "trend", "trunk", "twist", "whisk", "blast",
+      "clamp", "cramp", "draft", "drank", "dwelt", "flash", "flask", "grand", "grasp", "grind",
+      "plank", "plump", "quest", "shrug", "skimp", "skull", "slump", "smash", "snack", "stamp",
+      "spill", "split", "squat", "stalk", "sting", "stock", "strap", "strip", "strum", "swirl",
+      "think", "thump", "train", "trash", "trick", "truck", "trunk", "blank", "blink", "block",
+      "blunt", "brisk", "chunk", "cleft", "cling", "cloth", "crust", "drift", "drink", "dwell",
+      "filth", "flank", "flock", "flush", "graft", "grump", "hatch", "knelt", "match", "notch",
+      "patch", "pinch", "pluck", "prank", "prowl", "punch", "sling", "spelt", "stack", "staff",
+      "stiff", "still", "stork", "stuff", "swing", "thick", "thorn", "track", "watch", "wrist",
+    ],
+    maxItems: 3, spawnMs: 2800, speed: 0.3,
+  },
+  "five-letter-fast": {
+    id: "five-letter-fast", label: "5-Letter Words — Fast",
+    needed: 16, letters: null,
+    words: [
+      "stamp", "brand", "craft", "flick", "flint", "frost", "grunt", "plant", "print", "scalp",
+      "shift", "shrub", "skunk", "slant", "smart", "spent", "stand", "stark", "stink", "stomp",
+      "stump", "swift", "swamp", "swept", "trail", "trend", "trunk", "twist", "whisk", "blast",
+      "clamp", "cramp", "draft", "drank", "dwelt", "flash", "flask", "grand", "grasp", "grind",
+      "plank", "plump", "quest", "shrug", "skimp", "skull", "slump", "smash", "snack", "stamp",
+      "spill", "split", "squat", "stalk", "sting", "stock", "strap", "strip", "strum", "swirl",
+      "think", "thump", "train", "trash", "trick", "truck", "trunk", "blank", "blink", "block",
+      "blunt", "brisk", "chunk", "cleft", "cling", "cloth", "crust", "drift", "drink", "dwell",
+      "filth", "flank", "flock", "flush", "graft", "grump", "hatch", "knelt", "match", "notch",
+      "patch", "pinch", "pluck", "prank", "prowl", "punch", "sling", "spelt", "stack", "staff",
+      "stiff", "still", "stork", "stuff", "swing", "thick", "thorn", "track", "watch", "wrist",
+    ],
+    maxItems: 3, spawnMs: 2400, speed: 0.34,
+  },
+  "six-letter": {
+    id: "six-letter", label: "6-Letter Words",
+    needed: 14, letters: null,
+    words: [
+      "bridge", "button", "castle", "clumsy", "danger", "expect", "frozen", "goblet", "humble", "insect",
+      "jumble", "kitten", "locket", "muffin", "nibble", "pocket", "rascal", "sample", "thirst", "tumble",
+      "upward", "velvet", "wander", "zenith", "basket", "blanch", "bonnet", "breach", "buckle", "buffet",
+      "burden", "cobalt", "cobweb", "copper", "cradle", "dainty", "drench", "fathom", "fidget", "flimsy",
+      "flinch", "flight", "fossil", "garden", "global", "goblin", "gospel", "gravel", "impact", "invent",
+      "kennel", "lancet", "market", "marble", "napkin", "nestle", "nutmeg", "pardon", "picnic", "piston",
+      "plinth", "pencil", "rabbit", "ribbon", "ripple", "signal", "socket", "spirit", "splint", "strict",
+      "stroll", "submit", "sultan", "switch", "tablet", "tariff", "thrash", "thread", "ticket", "tonsil",
+      "tremor", "unplug", "violin", "walnut", "waffle", "wrench",
+    ],
+    maxItems: 3, spawnMs: 2600, speed: 0.32,
+  },
+  "six-letter-fast": {
+    id: "six-letter-fast", label: "6-Letter+ Words — Fast",
+    needed: 16, letters: null,
+    words: [
+      "bridge", "button", "castle", "clumsy", "danger", "expect", "frozen", "goblet", "humble", "insect",
+      "jumble", "kitten", "locket", "muffin", "nibble", "pocket", "rascal", "sample", "thirst", "tumble",
+      "upward", "velvet", "wander", "zenith", "basket", "blanch", "bonnet", "breach", "buckle", "buffet",
+      "burden", "cobalt", "cobweb", "copper", "cradle", "dainty", "drench", "fathom", "fidget", "flimsy",
+      "flinch", "flight", "fossil", "garden", "global", "goblin", "gospel", "gravel", "impact", "invent",
+      "kennel", "lancet", "market", "marble", "napkin", "nestle", "nutmeg", "pardon", "picnic", "piston",
+      "plinth", "pencil", "rabbit", "ribbon", "ripple", "signal", "socket", "spirit", "splint", "strict",
+      "stroll", "submit", "sultan", "switch", "tablet", "tariff", "thrash", "thread", "ticket", "tonsil",
+      "tremor", "unplug", "violin", "walnut", "waffle", "wrench",
+      // 7-letter words
+      "blanket", "captain", "distant", "flutter", "harvest", "kingdom", "monster", "pilgrim", "shelter", "trumpet",
+      "whisper",
+    ],
+    maxItems: 4, spawnMs: 2200, speed: 0.36,
+  },
+  "seven-letter": {
+    id: "seven-letter", label: "7-Letter Words",
+    needed: 16, letters: null,
+    words: [
+      "blanket", "captain", "channel", "chicken", "company", "content", "cricket", "cushion", "distant", "dolphin",
+      "emperor", "fashion", "fiction", "flutter", "freedom", "general", "harvest", "husband", "journey", "kingdom",
+      "kitchen", "lantern", "million", "monster", "nothing", "pattern", "pilgrim", "problem", "product", "program",
+      "protect", "publish", "quantum", "rainbow", "shelter", "sixteen", "subject", "thunder", "trumpet", "whisper",
+      "balcony", "biscuit", "cabinet", "charter", "climber", "cluster", "compact", "cracker", "crumble", "current",
+      "desktop", "doorway", "exhibit", "factory", "fitness", "flannel", "glimpse", "grapple", "grumble", "halfway",
+      "hamster", "handful", "impulse", "inspect", "javelin", "juniper", "ketchup", "kindred", "laundry", "lecture",
+      "marshal", "midwife", "mustard", "neglect", "numeral", "overlap", "panther", "phantom", "plaster", "plastic",
+      "plumber", "postman", "presume", "pumpkin", "quicken", "remnant", "sandpit", "segment", "scarlet", "scratch",
+      "shackle", "shingle", "sincere", "shuttle", "spinach", "splotch", "stamped", "startle", "stomach", "stretch",
+      "stumble", "sunspot", "tankard", "tempest", "tractor", "trinket", "triumph", "twinkle", "ukulele", "unkempt",
+      "upright", "verdict", "warthog", "western", "whistle", "wrangle",
+    ],
+    maxItems: 4, spawnMs: 2400, speed: 0.34,
+  },
+  // --- Mixed marathon ---
+  "mixed-marathon": {
+    id: "mixed-marathon",
+    label: "Mixed Marathon",
+    needed: 20,
+    letters: null,
+    words: [
+      // CVC
+      "cat", "bat", "hat", "net", "set", "hit", "pot", "cut", "hug", "fun",
+      "dog", "log", "pig", "bus", "cup", "jam", "zip", "nod", "rob", "dim",
+      // 4-letter
+      "jump", "frog", "crab", "help", "sand", "kind", "west", "band", "fast", "flip",
+      "grip", "drum", "step", "snap", "trap", "clap", "belt", "bolt",
+      // 5-letter
+      "stamp", "brand", "craft", "frost", "plant", "shift", "smart", "swift", "blast", "flash",
+      "grand", "think", "trick", "truck", "split", "stock",
+      // 6-letter
+      "bridge", "button", "castle", "frozen", "kitten", "pocket", "tumble", "basket", "cobalt", "global",
+      "impact", "market", "rabbit", "signal",
+      // 7-letter
+      "blanket", "captain", "channel", "dolphin", "flutter", "harvest", "kingdom", "monster", "shelter", "trumpet",
+      "whisper", "rainbow",
+    ],
+    maxItems: 4,
+    spawnMs: 2000,
+    speed: 0.38,
+  },
+};
+
+// ── Bracket-specific stage sequences ─────────────────────────────
+
+const BRACKET_STAGES = {
+  "4-5": [
+    "home-row",          // Stage 1 of 7
+    "home-row-ext",      // Stage 2 of 7
+    "all-letters-slow",  // Stage 3 of 7
+    "two-letter",        // Stage 4 of 7
+    "cvc-easy",          // Stage 5 of 7
+    "cvc-more",          // Stage 6 of 7
+    "four-letter",       // Stage 7 of 7
+  ],
+  "6-8": [
+    "home-row",          // Stage 1 of 10
+    "home-row-ext",      // Stage 2 of 10
+    "all-letters-slow",  // Stage 3 of 10
+    "two-letter",        // Stage 4 of 10
+    "cvc-easy",          // Stage 5 of 10
+    "cvc-more",          // Stage 6 of 10
+    "ks1-sight-words",   // Stage 7 of 10
+    "four-letter",       // Stage 8 of 10
+    "digraph-sh-ch-th",  // Stage 9 of 10
+    "digraph-ck-ng-qu",  // Stage 10 of 10
+  ],
+  "9-12": [
+    "home-row-ext",      // Stage 1 of 11
+    "all-letters-fast",  // Stage 2 of 11
+    "cvc-easy",          // Stage 3 of 11
+    "cvc-more",          // Stage 4 of 11
+    "ks1-sight-words",   // Stage 5 of 11
+    "four-letter",       // Stage 6 of 11
+    "digraph-sh-ch-th",  // Stage 7 of 11
+    "digraph-ck-ng-qu",  // Stage 8 of 11
+    "five-letter",       // Stage 9 of 11
+    "six-letter",        // Stage 10 of 11
+    "mixed-marathon",    // Stage 11 of 11
+  ],
+  Adult: [
+    "all-letters-fast",  // Stage 1 of 14
+    "all-letters-rapid", // Stage 2 of 14
+    "cvc-more",          // Stage 3 of 14
+    "ks1-sight-words",   // Stage 4 of 14
+    "four-letter",       // Stage 5 of 14
+    "digraph-sh-ch-th",  // Stage 6 of 14
+    "digraph-ck-ng-qu",  // Stage 7 of 14
+    "five-letter",       // Stage 8 of 14
+    "five-letter-fast",  // Stage 9 of 14
+    "six-letter",        // Stage 10 of 14
+    "six-letter-fast",   // Stage 11 of 14
+    "seven-letter",      // Stage 12 of 14
+    "mixed-marathon",    // Stage 13 of 14
+    "mixed-marathon",    // Stage 14 of 14 (repeat, higher effective speed)
+  ],
+};
+
+// ── Bracket overrides (applied per stage) ────────────────────────
+
+const BRACKET_OVERRIDES = {
+  "4-5": {
+    speedMult: 2.8,
+    spawnMult: 1.0,
+    maxItemsCap: 1,
+    livesOverride: 5,
+    fontLetter: 36,
+    fontWord: 26,
+  },
+  "6-8": {
+    speedMult: 0.9,
+    spawnMult: 1.1,
+    maxItemsCap: 2,
+    livesOverride: 4,
+    fontLetter: 30,
+    fontWord: 22,
+  },
+  "9-12": {
+    speedMult: 1.1,
+    spawnMult: 1.0,
+    maxItemsCap: 3,
+    livesOverride: 3,
+    fontLetter: 28,
+    fontWord: 20,
+  },
+  Adult: {
+    speedMult: 4.5,
+    spawnMult: 0.35,
+    maxItemsCap: 7,
+    livesOverride: 3,
+    fontLetter: 26,
+    fontWord: 18,
+  },
+};
+
+// ── Exports ──────────────────────────────────────────────────────
+
+/**
+ * Get the finger zone name for a given letter.
+ * @param {string} letter - Single letter (case-insensitive)
+ * @returns {string} Zone name (e.g. 'left-index')
+ */
+function getFingerZone(letter) {
+  return FINGER_ZONES[letter.toUpperCase()] || "left-pinky";
+}
+
+/**
+ * Get the CSS variable name for a zone colour.
+ * @param {string} zone - Zone name from getFingerZone()
+ * @returns {string} CSS variable name (e.g. '--zone-left-index')
+ */
+function getZoneCSSVar(zone) {
+  return ZONE_CSS_VARS[zone] || ZONE_CSS_VARS["left-pinky"];
+}
+
+/**
+ * Get bracket overrides (lives, font sizes, speed multiplier, etc.).
+ * @param {string} bracket - Age bracket ('4-5', '6-8', '9-12', 'Adult')
+ * @returns {object} Override settings
+ */
+function getBracketOverrides(bracket) {
+  return { ...(BRACKET_OVERRIDES[bracket] || BRACKET_OVERRIDES["6-8"]) };
+}
+
+/**
+ * Filter a word list for the 4-5 bracket — removes unfamiliar words
+ * and adds simple replacements (Fix W6).
+ * @param {string[]} words - Original word list
+ * @returns {string[]} Filtered list
+ */
+function filterForYoung(words) {
+  const filtered = words.filter((w) => !YOUNG_FILTER.has(w));
+  // Add extras that match the word length if needed
+  const avgLen =
+    filtered.length > 0
+      ? Math.round(filtered.reduce((s, w) => s + w.length, 0) / filtered.length)
+      : 3;
+  const extras = YOUNG_EXTRAS.filter((w) => w.length <= avgLen + 1);
+  // Merge, deduplicate
+  const set = new Set(filtered);
+  for (const w of extras) set.add(w);
+  return [...set];
+}
+
+/**
+ * Build the resolved stage list for a given age bracket.
+ * Deep-clones each pool entry and applies bracket speed/spawn/maxItems multipliers.
+ *
+ * @param {string} bracket - Age bracket ('4-5', '6-8', '9-12', 'Adult')
+ * @returns {Array<object>} Array of fully-resolved stage objects
+ */
+function getStagesForBracket(bracket) {
+  const ids = BRACKET_STAGES[bracket] || BRACKET_STAGES["6-8"];
+  const overrides = BRACKET_OVERRIDES[bracket] || BRACKET_OVERRIDES["6-8"];
+
+  return ids.map((id, index) => {
+    const base = { ...STAGE_POOL[id] };
+
+    // Deep-clone word array
+    if (base.words) {
+      base.words = [...base.words];
+      // Filter inappropriate words for youngest bracket (Fix W6)
+      if (bracket === "4-5") {
+        base.words = filterForYoung(base.words);
+      }
+    }
+
+    // Apply bracket multipliers
+    base.speed = +(base.speed * overrides.speedMult).toFixed(3);
+    base.spawnMs = Math.round(base.spawnMs * overrides.spawnMult);
+    base.maxItems = Math.min(base.maxItems, overrides.maxItemsCap);
+
+    // Attach stage position metadata
+    base.stageNumber = index + 1;
+    base.totalStages = ids.length;
+
+    return base;
+  });
+}
+
+// --- adaptive.js ---
+// js/adaptive.js — Real-time difficulty adjustment
+// Task 20: Tracks rolling accuracy and weak keys to silently tune difficulty.
+// Pure logic module — no DOM access.
+
+// --- Rolling accuracy window (last 10 inputs) ---
+const ACCURACY_WINDOW_SIZE = 10;
+let accuracyWindow = [];
+
+// --- Weak key tracker (last 100 misses) ---
+const WEAK_KEY_HISTORY_SIZE = 100;
+let missHistory = []; // Array of missed key characters (uppercase)
+
+/**
+ * Record a single input result.
+ * @param {boolean} correct - Whether the input was correct.
+ * @param {string|null} missedKey - The key the player SHOULD have pressed (uppercase), or null if correct.
+ */
+function recordInput(correct, missedKey = null) {
+  // Update accuracy window
+  accuracyWindow.push(correct ? 1 : 0);
+  if (accuracyWindow.length > ACCURACY_WINDOW_SIZE) {
+    accuracyWindow.shift();
+  }
+
+  // Update miss history
+  if (!correct && missedKey) {
+    missHistory.push(missedKey.toUpperCase());
+    if (missHistory.length > WEAK_KEY_HISTORY_SIZE) {
+      missHistory.shift();
+    }
+  }
+}
+
+/**
+ * Get accuracy as a ratio (0.0 to 1.0) over the rolling window.
+ * Returns 1.0 if no inputs recorded yet (benefit of the doubt).
+ */
+function getAccuracy() {
+  if (accuracyWindow.length === 0) return 1.0;
+  const sum = accuracyWindow.reduce((a, b) => a + b, 0);
+  return sum / accuracyWindow.length;
+}
+
+/**
+ * Get the speed multiplier based on current rolling accuracy.
+ * - Above 90% accuracy: 1.25 (speed up 25% — reward skilled typists)
+ * - Above 85% accuracy: 1.15 (speed up 15%)
+ * - Below 60% accuracy: 0.80 (slow down 20%)
+ * - Between 60-85%: 1.0 (no change)
+ *
+ * This is SILENT — no UI indicator. The player just feels it.
+ */
+function getSpeedMultiplier() {
+  const accuracy = getAccuracy();
+  if (accuracy > 0.95) return 2.0;   // Near-perfect: massive ramp
+  if (accuracy > 0.90) return 1.6;   // Excellent: strong ramp
+  if (accuracy > 0.85) return 1.3;   // Good: moderate ramp
+  if (accuracy < 0.60) return 0.75;  // Struggling: slow down
+  return 1.0;
+}
+
+/**
+ * Get the top 5 most-missed keys from the last 100 misses.
+ * Returns an array of { key, count } objects sorted by count descending.
+ * Returns empty array if no misses recorded.
+ */
+function getWeakKeys() {
+  if (missHistory.length === 0) return [];
+
+  // Count occurrences of each missed key
+  const counts = {};
+  for (const key of missHistory) {
+    counts[key] = (counts[key] || 0) + 1;
+  }
+
+  // Sort by count descending, take top 5
+  return Object.entries(counts)
+    .map(([key, count]) => ({ key, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+}
+
+/**
+ * Bias a character pool toward weak keys.
+ * Takes the original pool of characters and returns a new pool where
+ * weak keys appear ~20% more often.
+ *
+ * @param {string[]} pool - Array of characters to pick from.
+ * @returns {string[]} - Biased pool with weak keys duplicated.
+ */
+function biasPoolTowardWeakKeys(pool) {
+  const weakKeys = getWeakKeys().map(w => w.key);
+  if (weakKeys.length === 0) return pool;
+
+  // Calculate how many extra entries to add (20% of pool size, split among weak keys)
+  const extraCount = Math.max(1, Math.floor(pool.length * 0.20));
+  const biasedPool = [...pool];
+
+  // Only bias keys that actually exist in the pool
+  const weakKeysInPool = weakKeys.filter(k => pool.includes(k));
+  if (weakKeysInPool.length === 0) return pool;
+
+  // Distribute extra entries across weak keys in the pool
+  for (let i = 0; i < extraCount; i++) {
+    biasedPool.push(weakKeysInPool[i % weakKeysInPool.length]);
+  }
+
+  return biasedPool;
+}
+
+/**
+ * Reset all adaptive state. Call when starting a new game.
+ */
+function resetAdaptive() {
+  accuracyWindow = [];
+  missHistory = [];
+}
+
+// --- keyboard.js ---
+// keyboard.js — On-screen keyboard rendering & highlighting
+// Tasks 6, 7, 8: Keyboard HTML/CSS rendering, interaction states, visibility toggle
+
+// ── Layout Data ────────────────────────────────────────────────
+// Each row is an array of { key, zone, label? } objects.
+// `key`   = the character or key name (used for matching keyboard events)
+// `zone`  = finger zone name (matches data-zone CSS attribute)
+// `label` = optional display label (defaults to key if omitted)
+//
+// UK QWERTY layout. Number row included but may be hidden for
+// younger age brackets.
+
+/** @enum {string} Finger zone constants */
+const ZONE = {
+  LP: 'left-pinky',
+  LR: 'left-ring',
+  LM: 'left-middle',
+  LI: 'left-index',
+  RI: 'right-index',
+  RM: 'right-middle',
+  RR: 'right-ring',
+  RP: 'right-pinky',
+};
+
+/** @type {Array<{id: string, keys: Array<{key: string, zone: string, label?: string}>}>} */
+const ROWS = [
+  // Number row
+  { id: 'number', keys: [
+    { key: '`',  zone: ZONE.LP },
+    { key: '1',  zone: ZONE.LP },
+    { key: '2',  zone: ZONE.LR },
+    { key: '3',  zone: ZONE.LM },
+    { key: '4',  zone: ZONE.LI },
+    { key: '5',  zone: ZONE.LI },
+    { key: '6',  zone: ZONE.RI },
+    { key: '7',  zone: ZONE.RI },
+    { key: '8',  zone: ZONE.RM },
+    { key: '9',  zone: ZONE.RR },
+    { key: '0',  zone: ZONE.RP },
+    { key: '-',  zone: ZONE.RP },
+    { key: '=',  zone: ZONE.RP },
+    { key: 'Backspace', label: '\u232B', zone: ZONE.RP },
+  ]},
+  // Top row
+  { id: 'top', keys: [
+    { key: 'Tab', label: 'Tab', zone: ZONE.LP },
+    { key: 'Q',  zone: ZONE.LP },
+    { key: 'W',  zone: ZONE.LR },
+    { key: 'E',  zone: ZONE.LM },
+    { key: 'R',  zone: ZONE.LI },
+    { key: 'T',  zone: ZONE.LI },
+    { key: 'Y',  zone: ZONE.RI },
+    { key: 'U',  zone: ZONE.RI },
+    { key: 'I',  zone: ZONE.RM },
+    { key: 'O',  zone: ZONE.RR },
+    { key: 'P',  zone: ZONE.RP },
+    { key: '#',  zone: ZONE.RP },
+  ]},
+  // Home row
+  { id: 'home', keys: [
+    { key: 'CapsLock', label: 'Caps', zone: ZONE.LP },
+    { key: 'A',  zone: ZONE.LP },
+    { key: 'S',  zone: ZONE.LR },
+    { key: 'D',  zone: ZONE.LM },
+    { key: 'F',  zone: ZONE.LI },
+    { key: 'G',  zone: ZONE.LI },
+    { key: 'H',  zone: ZONE.RI },
+    { key: 'J',  zone: ZONE.RI },
+    { key: 'K',  zone: ZONE.RM },
+    { key: 'L',  zone: ZONE.RR },
+    { key: ';',  zone: ZONE.RP },
+    { key: 'Enter', label: 'Enter', zone: ZONE.RP },
+  ]},
+  // Bottom row
+  { id: 'bottom', keys: [
+    { key: 'Shift', label: 'Shift', zone: ZONE.LP },
+    { key: 'Z',  zone: ZONE.LP },
+    { key: 'X',  zone: ZONE.LR },
+    { key: 'C',  zone: ZONE.LM },
+    { key: 'V',  zone: ZONE.LI },
+    { key: 'B',  zone: ZONE.LI },
+    { key: 'N',  zone: ZONE.RI },
+    { key: 'M',  zone: ZONE.RI },
+    { key: ',',  zone: ZONE.RM },
+    { key: '.',  zone: ZONE.RR },
+    { key: '/',  zone: ZONE.RP },
+    { key: 'ShiftRight', label: 'Shift', zone: ZONE.RP },
+  ]},
+  // Space row
+  { id: 'space', keys: [
+    { key: 'Control', label: 'Ctrl', zone: ZONE.LP },
+    { key: ' ', label: 'Space', zone: ZONE.RI },
+    { key: 'Alt', label: 'Alt',  zone: ZONE.RP },
+  ]},
+];
+
+
+// ── DOM State ──────────────────────────────────────────────────
+
+/** @type {Map<string, HTMLElement>} key character (uppercase) → DOM element */
+let keyElements = new Map();
+
+/** @type {HTMLElement|null} */
+let containerEl = null;
+
+
+// ── Task 6: Rendering ──────────────────────────────────────────
+
+/**
+ * Build the keyboard DOM inside the given container element.
+ * Clears any existing content and populates with UK QWERTY layout.
+ * Sets aria-hidden="true" since the keyboard is decorative / non-interactive.
+ * Also makes the keyboard visible by showing the .keyboard-container parent.
+ * @param {HTMLElement} container - the #keyboard div from index.html
+ */
+function initKeyboard(container) {
+  containerEl = container;
+
+  // Show the keyboard container (it starts as display: none)
+  container.style.display = 'block';
+
+  // Add the keyboard flex layout class and accessibility attribute
+  container.classList.add('keyboard');
+  container.setAttribute('aria-hidden', 'true');
+  container.innerHTML = '';
+  keyElements.clear();
+
+  for (const row of ROWS) {
+    const rowEl = document.createElement('div');
+    rowEl.className = `keyboard-row keyboard-row--${row.id}`;
+
+    for (const k of row.keys) {
+      const keyEl = document.createElement('div');
+      keyEl.className = 'key';
+      keyEl.dataset.zone = k.zone;
+      keyEl.dataset.key = k.key;
+      keyEl.textContent = k.label ?? k.key;
+
+      // Home-row indicator bumps on F and J
+      if (k.key === 'F' || k.key === 'J') {
+        keyEl.classList.add('key--home-indicator');
+      }
+
+      rowEl.appendChild(keyEl);
+
+      // Store lookup — uppercase letter keys stored under uppercase
+      keyElements.set(k.key.toUpperCase(), keyEl);
+    }
+
+    container.appendChild(rowEl);
+  }
+}
+
+
+// ── Task 7: Interaction States ─────────────────────────────────
+
+/**
+ * Highlight the key the player should press next (target state).
+ * Adds the CSS class that triggers the pulse-glow animation.
+ * @param {string} key - The key character to highlight
+ */
+function highlightKey(key) {
+  const el = keyElements.get(key.toUpperCase());
+  if (el) el.classList.add('key--target');
+}
+
+/**
+ * Remove all highlight / animation classes from every key.
+ * Resets all keys to idle state.
+ */
+function clearHighlights() {
+  for (const el of keyElements.values()) {
+    el.classList.remove('key--target', 'key--correct', 'key--wrong');
+  }
+}
+
+/**
+ * Flash the correct-press state on a key.
+ * Removes target highlight, adds bright flash animation.
+ * Class auto-removes after animation ends via animationend listener.
+ * @param {string} key - The key that was correctly pressed
+ */
+function flashCorrect(key) {
+  const el = keyElements.get(key.toUpperCase());
+  if (!el) return;
+  el.classList.remove('key--target');
+  el.classList.add('key--correct');
+  el.addEventListener('animationend', () => el.classList.remove('key--correct'), { once: true });
+}
+
+/**
+ * Flash wrong-press: wrong key shakes, correct key brightens.
+ * Both animations auto-cleanup via animationend listeners.
+ * @param {string} wrongKey  - the key the player actually pressed
+ * @param {string} correctKey - the key they should have pressed
+ */
+function flashWrong(wrongKey, correctKey) {
+  const wrongEl = keyElements.get(wrongKey.toUpperCase());
+  const correctEl = keyElements.get(correctKey.toUpperCase());
+
+  if (wrongEl) {
+    wrongEl.classList.add('key--wrong');
+    wrongEl.addEventListener('animationend', () => wrongEl.classList.remove('key--wrong'), { once: true });
+  }
+  if (correctEl) {
+    correctEl.classList.add('key--target');
+  }
+}
+
+/**
+ * Set overall keyboard opacity (0-1).
+ * Used by manual toggle.
+ * @param {number} level - 0 to 1
+ */
+function setOpacity(level) {
+  if (containerEl) {
+    containerEl.style.opacity = String(Math.max(0, Math.min(1, level)));
+  }
+}
+
+/**
+ * Show the keyboard (remove hidden class, reset opacity).
+ */
+function showKeyboard() {
+  if (containerEl) {
+    containerEl.classList.remove('keyboard--hidden');
+    containerEl.style.opacity = '1';
+  }
+}
+
+/**
+ * Hide the keyboard (add hidden class for fade-out + pointer-events: none).
+ */
+function hideKeyboard() {
+  if (containerEl) {
+    containerEl.classList.add('keyboard--hidden');
+  }
+}
+
+/**
+ * Enable or disable spotlight mode on the keyboard.
+ * In spotlight mode, all keys dim except the target key, creating a visual
+ * "spotlight" effect that guides young players to the correct key.
+ * @param {boolean} enabled
+ */
+function setSpotlightMode(enabled) {
+  if (!containerEl) return;
+  containerEl.classList.toggle('keyboard--spotlight', enabled);
+}
+
+
+/**
+ * Get the horizontal position (0-1) of a key on the keyboard.
+ * Used by audio.js to vary pitch by key position.
+ * @param {string} key - The key character
+ * @returns {number} 0 (far left) to 1 (far right)
+ */
+function getKeyPosition(key) {
+  const el = keyElements.get(key.toUpperCase());
+  if (!el || !containerEl) return 0.5;
+  const rect = el.getBoundingClientRect();
+  const containerRect = containerEl.getBoundingClientRect();
+  if (containerRect.width === 0) return 0.5;
+  return (rect.left - containerRect.left + rect.width / 2) / containerRect.width;
+}
+
+
+// ── Visibility Toggle ────────────────────────────────────────
+//
+// Two modes: 'show' and 'hide'. Default: 'show' (keyboard always visible).
+// Toggle button cycles: show → hide → show.
+// The old adaptive-fade behaviour (streak ≥5 dims keyboard) is removed —
+// the keyboard now stays at full opacity with target key glow always active.
+
+/** @type {'show'|'hide'} */
+let visibilityMode = 'show';
+
+/**
+ * Toggle the keyboard visibility mode.
+ * Cycles: show → hide → show.
+ * @returns {'show'|'hide'}
+ */
+function toggleVisibilityMode() {
+  if (visibilityMode === 'show') {
+    visibilityMode = 'hide';
+    hideKeyboard();
+  } else {
+    visibilityMode = 'show';
+    showKeyboard();
+  }
+  return visibilityMode;
+}
+
+/**
+ * Get the current visibility mode.
+ * @returns {'show'|'hide'}
+ */
+function getVisibilityMode() {
+  return visibilityMode;
+}
+
+/**
+ * Set visibility mode directly.
+ * @param {'show'|'hide'} mode
+ */
+function setVisibilityMode(mode) {
+  visibilityMode = mode;
+  if (mode === 'hide') {
+    hideKeyboard();
+  } else {
+    showKeyboard();
+  }
+}
+
+// --- play.js ---
+// play.js — Play mode (falling letters/words game engine)
+// Tasks 16-19: Canvas rendering, input, scoring, HUD, overlays
+//
+// CRITICAL OVERRIDES applied:
+//   Fix C2: Lazy DOM init — no DOM access at module top level
+//   Fix C3: Event listeners attached ONCE in init, not on each show
+//   Fix W4: cleanupPlay() exported for mode switching
+//   Fix W6: Danger zone gradient cached, recreated only on resize
+//   Fix W7: Micro-celebrations for 4-5 bracket
+//   Fix W10: startGame accepts callbacks — no imports from main.js
+//   O6: gameState.celebrating flag — ignore keys during transitions
+
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// roundRect polyfill for Safari < 16, older Firefox (#8)
+if (typeof CanvasRenderingContext2D !== 'undefined' &&
+    !CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
+    const r = typeof radii === 'number' ? radii : (Array.isArray(radii) ? radii[0] : 0);
+    this.moveTo(x + r, y);
+    this.arcTo(x + w, y,     x + w, y + h, r);
+    this.arcTo(x + w, y + h, x,     y + h, r);
+    this.arcTo(x,     y + h, x,     y,     r);
+    this.arcTo(x,     y,     x + w, y,     r);
+    this.closePath();
+  };
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// DOM references — initialised lazily (Fix C2)
+// ═══════════════════════════════════════════════════════════════════
+
+let canvas, ctx, wrap;
+let playArea;
+
+// Cached HUD elements (Fix W6 from review 2 — cache references)
+let hudEls = {};
+
+let playDOMReady = false;
+let resizeObserver = null;
+let themeObserver = null;
+
+let _ariaTimer = null;
+let _ariaLiveEl = null;
+
+/** Initialise DOM references on first Play mode entry. */
+function initPlayDOM() {
+  if (playDOMReady) return;
+
+  canvas = document.getElementById('game-canvas');
+  ctx = canvas.getContext('2d');
+  wrap = document.getElementById('play-canvas-wrap');
+  playArea = document.getElementById('play-area');
+
+  // Cache all HUD element references
+  hudEls = {
+    score:       document.getElementById('hud-score-value'),
+    stageCur:    document.getElementById('hud-stage-current'),
+    stageTotal:  document.getElementById('hud-stage-total'),
+    lives:       document.getElementById('hud-lives-value'),
+    livesWrap:   document.getElementById('hud-lives'),
+    streak:      document.getElementById('hud-streak-value'),
+    stageLabel:  document.getElementById('play-stage-label'),
+    progFill:    document.getElementById('play-prog-fill'),
+    progPct:     document.getElementById('play-prog-pct'),
+    typedDisplay:document.getElementById('typed-display'),
+    overlay:     document.getElementById('overlay'),
+    hud:         document.getElementById('hud'),
+    stageBar:    document.getElementById('stage-bar'),
+    typedRow:    document.getElementById('typed-row'),
+    pauseBtn:    document.getElementById('pause-btn'),
+  };
+
+  if (hudEls.pauseBtn) {
+    hudEls.pauseBtn.addEventListener('click', () => {
+      if (gameState.active && !gameState.paused && !gameState.countingDown) pauseGame();
+    });
+  }
+
+  // Set up resize handling
+  resizeObserver = new ResizeObserver(handleResize);
+  resizeObserver.observe(wrap);
+
+  // Attach overlay button listeners ONCE (Fix C3)
+  initOverlayListeners();
+
+  if (!themeObserver) {
+    themeObserver = new MutationObserver(() => cacheThemeColours());
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
+  // Debounced aria-live region for screen reader updates (#3)
+  if (!_ariaLiveEl) {
+    _ariaLiveEl = document.createElement('div');
+    _ariaLiveEl.setAttribute('aria-live', 'polite');
+    _ariaLiveEl.setAttribute('aria-atomic', 'true');
+    _ariaLiveEl.className = 'sr-only';
+    document.getElementById('game-wrapper').appendChild(_ariaLiveEl);
+  }
+
+  playDOMReady = true;
+}
+
+function handleResize() {
+  if (!canvas || !wrap) return;
+  const r = wrap.getBoundingClientRect();
+  if (r.width === 0 || r.height === 0) return;
+  canvas.width = Math.floor(r.width);
+  canvas.height = Math.floor(r.height);
+  // Invalidate cached danger gradient (Fix W6)
+  cachedDangerGrad = null;
+}
+
+const W = () => canvas ? canvas.width : 0;
+const H = () => canvas ? canvas.height : 0;
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Theme colour cache
+// ═══════════════════════════════════════════════════════════════════
+
+let cachedColours = {};
+let cachedZoneColours = {};  // zone name → resolved hex colour
+let cachedDangerGrad = null;
+let cachedDangerH = 0;
+
+function cacheThemeColours() {
+  const s = getComputedStyle(document.documentElement);
+  cachedColours = {
+    bgGame:     s.getPropertyValue('--bg-game').trim()     || '#FFFFFF',
+    grid:       s.getPropertyValue('--bg-grid').trim()      || 'rgba(240,240,236,0.5)',
+    dangerZone: s.getPropertyValue('--danger-zone').trim()  || 'rgba(254,226,226,0.6)',
+    textPrimary:s.getPropertyValue('--text-primary').trim() || '#1A1A2E',
+    textMuted:  s.getPropertyValue('--text-muted').trim()   || '#8A8A9A',
+    hudAccent:  s.getPropertyValue('--hud-accent').trim()   || '#2563EB',
+    overlayBg:  s.getPropertyValue('--overlay-bg').trim()   || 'rgba(250,250,248,0.95)',
+    fontMono:   s.getPropertyValue('--font-mono').trim()    || 'Consolas, monospace',
+  };
+
+  // Cache resolved zone colours for canvas drawing
+  const zones = [
+    'left-pinky', 'left-ring', 'left-middle', 'left-index',
+    'right-index', 'right-middle', 'right-ring', 'right-pinky',
+  ];
+  for (const z of zones) {
+    const cssVar = getZoneCSSVar(z);
+    cachedZoneColours[z] = s.getPropertyValue(cssVar).trim() || '#666';
+  }
+
+  // Invalidate danger gradient
+  cachedDangerGrad = null;
+
+  // Derive confetti colours from zone palette
+  confettiColours = Object.values(cachedZoneColours);
+}
+
+/** Get the resolved colour for a finger zone. */
+function getResolvedZoneColour(zone) {
+  return cachedZoneColours[zone] || '#666';
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Game State
+// ═══════════════════════════════════════════════════════════════════
+
+const gameState = {
+  items: [],          // falling items on screen
+  particles: [],      // particle effects
+  popTexts: [],       // floating text popups
+  score: 0,
+  lives: 3,
+  stageIdx: 0,
+  streak: 0,
+  stageHits: 0,
+  active: false,
+  paused: false,
+  celebrating: false, // O6: ignore keys during stage transitions
+  typedBuffer: '',
+  nextSpawn: 0,
+  wrongFlash: 0,
+  stages: [],         // resolved stages for current bracket
+  bracket: '6-8',
+  overrides: {},      // bracket overrides (lives, fonts, etc.)
+  lastFrameTime: 0,
+  callbacks: null,    // { onQuit, getPlayerName, onGameOver }
+  allStagesCleared: false,
+};
+
+// ── Session stats (per game) ──
+const sessionStats = {
+  totalKeysPressed: 0,
+  totalCorrect: 0,
+  longestStreak: 0,
+  fastestWord: null,       // { word, ms } — overall fastest (backwards compat)
+  fastestByLength: {},     // { 3: {word:'LID', ms:180}, 5: {word:'SHIFT', ms:420}, ... }
+  wordStartTime: null,
+  keyMisses: {},           // { 'G': 3, 'V': 2, ... }
+};
+
+function resetSessionStats() {
+  sessionStats.totalKeysPressed = 0;
+  sessionStats.totalCorrect = 0;
+  sessionStats.longestStreak = 0;
+  sessionStats.fastestWord = null;
+  sessionStats.fastestByLength = {};
+  sessionStats.wordStartTime = null;
+  sessionStats.keyMisses = {};
+}
+
+/** Get current stage data. */
+function currentStage() {
+  return gameState.stages[Math.min(gameState.stageIdx, gameState.stages.length - 1)];
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Confetti colours — derived from theme's finger zone colours
+// ═══════════════════════════════════════════════════════════════════
+
+let confettiColours = [];
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Background rendering
+// ═══════════════════════════════════════════════════════════════════
+
+function drawBackground(w, h) {
+  // Solid background
+  ctx.fillStyle = cachedColours.bgGame;
+  ctx.fillRect(0, 0, w, h);
+
+  // Subtle grid
+  ctx.strokeStyle = cachedColours.grid;
+  ctx.lineWidth = 0.5;
+  for (let y = 40; y < h; y += 40) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+    ctx.stroke();
+  }
+
+  // Danger zone gradient — bottom 15% (cached, Fix W6)
+  const dangerStart = h * 0.85;
+  if (!cachedDangerGrad || cachedDangerH !== h) {
+    cachedDangerGrad = ctx.createLinearGradient(0, dangerStart, 0, h);
+    cachedDangerGrad.addColorStop(0, 'transparent');
+    cachedDangerGrad.addColorStop(1, cachedColours.dangerZone);
+    cachedDangerH = h;
+  }
+  ctx.fillStyle = cachedDangerGrad;
+  ctx.fillRect(0, dangerStart, w, h - dangerStart);
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Falling item rendering
+// ═══════════════════════════════════════════════════════════════════
+
+function drawItem(item) {
+  const { text, x, y, fontSize, zoneColour, typed } = item;
+  const pad = 10;
+
+  // Measure text width for pill dimensions
+  ctx.font = `bold ${fontSize}px ${cachedColours.fontMono}`;
+  item.tw = ctx.measureText(text).width;
+
+  const bx = x - pad;
+  const by = y - fontSize - 4;
+  const bw = item.tw + pad * 2;
+  const bh = fontSize + 16;
+  const radius = 8;
+
+  // Pill background in finger-zone colour
+  ctx.fillStyle = zoneColour;
+  ctx.globalAlpha = 0.88;
+  ctx.beginPath();
+  ctx.roundRect(bx, by, bw, bh, radius);
+  ctx.fill();
+
+  // Subtle border
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.globalAlpha = 1.0;
+
+  // Text stroke for contrast (M8)
+  ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+  ctx.lineWidth = 3;
+  ctx.lineJoin = 'round';
+
+  // Text rendering
+  if (typed > 0) {
+    // Typed portion: dimmed
+    const done = text.slice(0, typed);
+    const rest = text.slice(typed);
+    const dw = ctx.measureText(done).width;
+    ctx.strokeText(done, x, y);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.fillText(done, x, y);
+    ctx.strokeText(rest, x + dw, y);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(rest, x + dw, y);
+  } else {
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(text, x, y);
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Item position update with smooth easing
+// ═══════════════════════════════════════════════════════════════════
+
+function updateItemPosition(item, h, deltaMs) {
+  const progress = item.y / h;
+  let speedMult = 1.0;
+
+  // Ease-in: items start slightly slower, accelerate
+  if (progress < 0.3) {
+    speedMult = 0.7 + progress; // 0.7 -> 1.0 over top 30%
+  }
+  // Grace slowdown near bottom — give a chance to type
+  if (progress > 0.8) {
+    speedMult *= 0.85;
+  }
+
+  // Delta-time-based movement (normalised to 60fps)
+  // Adaptive difficulty: multiply by rolling-accuracy speed adjustment
+  const dtFactor = deltaMs / 16.67;
+  item.y += item.speed * speedMult * getSpeedMultiplier() * (gameState.speedPreference || 1.0) * dtFactor;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Spawn logic
+// ═══════════════════════════════════════════════════════════════════
+
+function spawnItem(now) {
+  const stage = currentStage();
+  if (gameState.items.length >= stage.maxItems) return;
+
+  // Pick text — avoid duplicates on screen
+  let text;
+  const onScreen = new Set(gameState.items.map(i => i.text));
+  let attempts = 0;
+
+  if (stage.words) {
+    // Bias word pool toward weak keys: duplicate words whose first letter
+    // is a weak key so they appear more often in spawns
+    const wordPool = stage.words.map(w => w.toUpperCase());
+    const weakKeySet = new Set(getWeakKeys().map(w => w.key));
+    const biasedWordPool = [...wordPool];
+    if (weakKeySet.size > 0) {
+      const extraCount = Math.max(1, Math.floor(wordPool.length * 0.20));
+      const weakWords = wordPool.filter(w => weakKeySet.has(w[0]));
+      for (let i = 0; i < extraCount && weakWords.length > 0; i++) {
+        biasedWordPool.push(weakWords[i % weakWords.length]);
+      }
+    }
+    do {
+      text = biasedWordPool[Math.floor(Math.random() * biasedWordPool.length)];
+      attempts++;
+    } while (onScreen.has(text) && attempts < 20);
+  } else {
+    const pool = stage.letters.split('');
+    const biasedPool = biasPoolTowardWeakKeys(pool);
+    do {
+      text = biasedPool[Math.floor(Math.random() * biasedPool.length)];
+      attempts++;
+    } while (onScreen.has(text) && attempts < 20);
+  }
+
+  // Determine font size from bracket overrides
+  const ov = gameState.overrides;
+  const fontSize = text.length === 1 ? ov.fontLetter : ov.fontWord;
+
+  // Measure text width
+  ctx.font = `bold ${fontSize}px ${cachedColours.fontMono}`;
+  const tw = ctx.measureText(text).width;
+
+  // X position — avoid overlap with existing items
+  const w = W();
+  const minPad = 20;
+  let x = minPad + Math.random() * Math.max(0, w - tw - minPad * 2);
+
+  // Check for x-overlap with existing items (min 60px gap)
+  for (const existing of gameState.items) {
+    const gap = Math.abs(x - existing.x);
+    if (gap < 60) {
+      x = Math.min(w - tw - minPad, Math.max(minPad, x + 80));
+    }
+  }
+
+  // Determine finger-zone colour from first letter
+  const zone = getFingerZone(text[0]);
+  const zoneColour = getResolvedZoneColour(zone);
+
+  const speed = stage.speed * (0.9 + Math.random() * 0.2);
+
+  // Younger brackets: spawn items already visible (not above canvas edge)
+  const startY = (gameState.bracket === '4-5') ? 15 : -10;
+
+  gameState.items.push({
+    text,
+    x,
+    y: startY,
+    speed,
+    fontSize,
+    zoneColour,
+    zone,
+    typed: 0,
+    tw,
+    spawnTime: now,
+  });
+
+  // Next spawn with some randomness
+  gameState.nextSpawn = now + stage.spawnMs * (0.85 + Math.random() * 0.3);
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Particle system
+// ═══════════════════════════════════════════════════════════════════
+
+function spawnParticles(cx, cy, colour, count) {
+  if (prefersReducedMotion) return;
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.4;
+    const vel = 1.5 + Math.random() * 3;
+    gameState.particles.push({
+      x: cx,
+      y: cy,
+      vx: Math.cos(angle) * vel,
+      vy: Math.sin(angle) * vel,
+      life: 1,
+      colour,
+      size: 3 + Math.random() * 3,
+    });
+  }
+}
+
+function spawnConfetti(count) {
+  if (prefersReducedMotion) return;
+  const w = W();
+  for (let i = 0; i < count; i++) {
+    gameState.particles.push({
+      x: Math.random() * w,
+      y: -10 - Math.random() * 50,
+      vx: (Math.random() - 0.5) * 4,
+      vy: 1 + Math.random() * 3,
+      life: 1.5,
+      colour: confettiColours[i % confettiColours.length] || '#FF6B6B',
+      size: 4 + Math.random() * 4,
+    });
+  }
+}
+
+function updateParticles(deltaMs) {
+  const dtFactor = deltaMs / 16.67;
+  for (let i = 0; i < gameState.particles.length; i++) {
+    const p = gameState.particles[i];
+    p.x += p.vx * dtFactor;
+    p.y += p.vy * dtFactor;
+    p.vy += 0.12 * dtFactor;  // gravity
+    p.life -= 0.04 * dtFactor;
+  }
+  gameState.particles = gameState.particles.filter(p => p.life > 0);
+}
+
+function drawParticles() {
+  for (const p of gameState.particles) {
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle = p.colour;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * Math.max(0, p.life), 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Pop text system (floating messages — "Almost!", "Nice!", etc.)
+// ═══════════════════════════════════════════════════════════════════
+
+function addPopText(msg, x, y, colour) {
+  gameState.popTexts.push({
+    msg, x, y, startY: y, life: 1, colour: colour || '#FFFFFF',
+  });
+}
+
+function updatePopTexts(deltaMs) {
+  const dtFactor = deltaMs / 16.67;
+  for (let i = 0; i < gameState.popTexts.length; i++) {
+    const pt = gameState.popTexts[i];
+    pt.y -= 1.2 * dtFactor;
+    pt.life -= 0.025 * dtFactor;
+  }
+  gameState.popTexts = gameState.popTexts.filter(p => p.life > 0);
+}
+
+function drawPopTexts() {
+  for (const pt of gameState.popTexts) {
+    ctx.globalAlpha = Math.max(0, pt.life);
+    ctx.font = 'bold 22px sans-serif';
+    ctx.fillStyle = pt.colour;
+    ctx.textAlign = 'center';
+    ctx.fillText(pt.msg, pt.x, pt.y);
+    ctx.textAlign = 'start';
+  }
+  ctx.globalAlpha = 1;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Wrong-key canvas flash
+// ═══════════════════════════════════════════════════════════════════
+
+function drawWrongFlash(w, h) {
+  if (prefersReducedMotion) return;
+  if (gameState.wrongFlash > 0) {
+    ctx.fillStyle = `rgba(255, 50, 50, ${gameState.wrongFlash * 0.02})`;
+    ctx.fillRect(0, 0, w, h);
+    gameState.wrongFlash--;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Matching logic (ported from v3, refined)
+// ═══════════════════════════════════════════════════════════════════
+
+/**
+ * Attempt to match the buffer against on-screen items.
+ * @param {string} buf - Current typed buffer (uppercase)
+ * @returns {string|null} '' = full match cleared, string = valid prefix, null = no match
+ */
+function tryMatch(buf) {
+  const items = gameState.items;
+  const bufUpper = buf.toUpperCase();
+
+  // Single letter match
+  if (bufUpper.length === 1) {
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].text.length === 1 && items[i].text === bufUpper) {
+        removeItem(i, true);
+        return '';
+      }
+    }
+  }
+
+  // Full word match
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].text === bufUpper) {
+      removeItem(i, true);
+      return '';
+    }
+  }
+
+  // Partial prefix match — update typed highlight on matching items
+  let anyPrefix = false;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].text.startsWith(bufUpper)) {
+      items[i].typed = bufUpper.length;
+      anyPrefix = true;
+    } else {
+      items[i].typed = 0;
+    }
+  }
+
+  if (anyPrefix) return bufUpper;
+
+  // No match at all
+  return null;
+}
+
+/** Find the next expected character for the first partially matched item. */
+function findNextExpectedChar() {
+  for (const item of gameState.items) {
+    if (item.typed > 0 && item.typed < item.text.length) {
+      return item.text[item.typed];
+    }
+  }
+  return null;
+}
+
+/**
+ * Find the key the player should have pressed.
+ * Returns the first character of the lowest (closest to danger zone) item,
+ * or the next expected char if a partial match is in progress.
+ * Used by the adaptive engine to track weak keys on misses.
+ */
+function findExpectedKey() {
+  // If there's a partial match in progress, the expected key is the next char
+  const nextChar = findNextExpectedChar();
+  if (nextChar) return nextChar;
+
+  // Otherwise, it's the first char of the lowest item on screen
+  let lowest = null;
+  for (const item of gameState.items) {
+    if (!lowest || item.y > lowest.y) {
+      lowest = item;
+    }
+  }
+  return lowest ? lowest.text[0] : null;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Remove item (success or miss)
+// ═══════════════════════════════════════════════════════════════════
+
+function removeItem(idx, success) {
+  const item = gameState.items[idx];
+
+  if (success) {
+    // ── Particles ──
+    const cx = item.x + item.tw / 2;
+    const cy = item.y;
+    const count = gameState.bracket === '4-5' ? 24 : 18;
+    spawnParticles(cx, cy, item.zoneColour, count);
+
+    // ── Sound + keyboard feedback ──
+    if (item.text.length === 1) {
+      playSound('correctKey', 0.5);
+      flashCorrect(item.text);
+    } else {
+      playSound('wordComplete');
+      // Staggered keyboard flash for each letter
+      item.text.split('').forEach((ch, i) => {
+        setTimeout(() => flashCorrect(ch), i * 50);
+      });
+    }
+
+    // ── Scoring ──
+    const streakMult = 1 + Math.min(gameState.streak, 10) * 0.05;
+    const stageMult = Math.max(1, gameState.stageIdx * 0.5 + 1);
+    const pts = Math.round(item.text.length * streakMult * stageMult);
+    gameState.score += pts;
+    gameState.streak++;
+    gameState.stageHits++;
+
+    // ── Stat tracking ──
+    sessionStats.totalCorrect += item.text.length;
+    sessionStats.longestStreak = Math.max(sessionStats.longestStreak, gameState.streak);
+
+    // Track fastest word (overall + per word length)
+    if (item.text.length > 1 && sessionStats.wordStartTime) {
+      const ms = performance.now() - sessionStats.wordStartTime;
+      const roundedMs = Math.round(ms);
+      // Overall fastest (backwards compat)
+      if (!sessionStats.fastestWord || ms < sessionStats.fastestWord.ms) {
+        sessionStats.fastestWord = { word: item.text, ms: roundedMs };
+      }
+      // Per-length fastest
+      const len = item.text.length;
+      if (!sessionStats.fastestByLength[len] || roundedMs < sessionStats.fastestByLength[len].ms) {
+        sessionStats.fastestByLength[len] = { word: item.text, ms: roundedMs };
+      }
+      sessionStats.wordStartTime = null;
+    }
+
+    // ── Streak milestones ──
+    if (gameState.streak > 0 && gameState.streak % 5 === 0) {
+      playSound('streakMilestone');
+    }
+
+    // ── Micro-celebrations for 4-5 bracket (Fix W7) ──
+    if (gameState.bracket === '4-5') {
+      if (gameState.streak === 3) {
+        addPopText('Nice!', cx, cy - 20, '#4ECDC4');
+      } else if (gameState.streak === 5) {
+        addPopText('Brilliant!', cx, cy - 20, '#F7DC6F');
+        spawnParticles(cx, cy - 30, '#F7DC6F', 12);
+      }
+    }
+
+    // ── Stage progression check ──
+    const stage = currentStage();
+    if (gameState.stageHits >= stage.needed) {
+      if (gameState.stageIdx < gameState.stages.length - 1) {
+        advanceStage();
+      } else {
+        // All stages cleared — victory!
+        gameState.allStagesCleared = true;
+        endGame();
+        return; // Don't splice — endGame handles it
+      }
+    }
+
+    // ── Update HUD ──
+    updateHUD();
+
+  } else {
+    // ── Item hit bottom — lose life ──
+    gameState.streak = 0;
+    gameState.lives--;
+    gameState.wrongFlash = 8;
+    playSound('lifeLost');
+
+    // "Almost!" / "So close!" feedback if 50%+ was typed (M9)
+    if (item.typed > 0 && item.typed / item.text.length >= 0.5) {
+      const almostMsg = gameState.bracket === '4-5' ? 'So close!' : 'Almost!';
+      addPopText(almostMsg, item.x + item.tw / 2, item.y - 20, '#F59E0B');
+    }
+
+    updateHUD();
+
+    if (gameState.lives <= 0) {
+      endGame();
+      return;
+    }
+  }
+
+  gameState.items.splice(idx, 1);
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Stage progression
+// ═══════════════════════════════════════════════════════════════════
+
+function advanceStage() {
+  gameState.celebrating = true; // O6: block input during transition
+  gameState.stageIdx++;
+  gameState.stageHits = 0;
+  gameState.items = [];
+
+  // Confetti + sound
+  spawnConfetti(50);
+  playSound('stageClear');
+
+  // Show stage popup text on canvas
+  const stage = currentStage();
+  const cx = W() / 2;
+  const cy = H() / 2;
+  addPopText(`Stage ${stage.stageNumber} of ${stage.totalStages}`, cx, cy - 15, cachedColours.hudAccent);
+  addPopText(stage.label, cx, cy + 20, '#FFFFFF');
+
+  // Pause spawning for 2.5 seconds
+  gameState.nextSpawn = performance.now() + 2500;
+
+  // Clear celebrating flag after transition
+  setTimeout(() => {
+    gameState.celebrating = false;
+  }, 1500);
+
+  updateHUD();
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Keyboard input handling
+// ═══════════════════════════════════════════════════════════════════
+
+/** Bound keydown handler reference (for cleanup) */
+let boundHandleKey = null;
+
+function handleKey(e) {
+  if (!gameState.active) return;
+
+  // O6: Ignore keys during stage celebrations
+  if (gameState.celebrating) return;
+
+  // Block input during countdown
+  if (gameState.countingDown) return;
+
+  // Escape toggles pause
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    if (gameState.paused) {
+      resumeGame();
+    } else {
+      pauseGame();
+    }
+    return;
+  }
+
+  // Ignore input while paused
+  if (gameState.paused) return;
+
+  // Backspace: delete last character from buffer
+  if (e.key === 'Backspace') {
+    e.preventDefault();
+    gameState.typedBuffer = gameState.typedBuffer.slice(0, -1);
+    gameState.items.forEach(i => { i.typed = 0; });
+    if (gameState.typedBuffer) {
+      tryMatch(gameState.typedBuffer);
+    }
+    updateTypedDisplay();
+    return;
+  }
+
+  // Only handle single-character keys
+  if (e.key.length !== 1) return;
+  e.preventDefault();
+
+  const ku = e.key.toUpperCase();
+
+  // Track keypress for stats
+  sessionStats.totalKeysPressed++;
+
+  // Track word start time for fastest-word stat
+  if (gameState.typedBuffer.length === 0) {
+    sessionStats.wordStartTime = performance.now();
+  }
+
+  const attempt = gameState.typedBuffer + ku;
+  const result = tryMatch(attempt);
+
+  if (result === '') {
+    // Full match — cleared
+    gameState.typedBuffer = '';
+    clearHighlights();
+    recordInput(true);
+  } else if (result !== null) {
+    // Valid prefix — keep building
+    gameState.typedBuffer = result;
+    const nextChar = findNextExpectedChar();
+    if (nextChar) {
+      clearHighlights();
+      highlightKey(nextChar);
+    }
+    // Track as correct keypress
+    playSound('correctKey', 0.5);
+    flashCorrect(ku);
+    recordInput(true);
+  } else {
+    // No match for accumulated buffer — try just this key alone
+    gameState.items.forEach(i => { i.typed = 0; });
+    const single = tryMatch(ku);
+    if (single === '') {
+      gameState.typedBuffer = '';
+      clearHighlights();
+      recordInput(true);
+    } else if (single !== null) {
+      gameState.typedBuffer = single;
+      const nextChar = findNextExpectedChar();
+      if (nextChar) {
+        clearHighlights();
+        highlightKey(nextChar);
+      }
+      playSound('correctKey', 0.5);
+      flashCorrect(ku);
+      recordInput(true);
+    } else {
+      // Truly wrong key
+      gameState.typedBuffer = '';
+      gameState.wrongFlash = 5;
+      playSound('wrongKey');
+      // Track miss for weak-key stats — determine what they should have pressed
+      const expectedKey = findExpectedKey();
+      sessionStats.keyMisses[ku] = (sessionStats.keyMisses[ku] || 0) + 1;
+      recordInput(false, expectedKey);
+      // Flash wrong on keyboard — no correct key to show in this context
+      const nextChar = findNextExpectedChar();
+      if (nextChar) {
+        flashWrong(ku, nextChar);
+      }
+    }
+  }
+
+  updateTypedDisplay();
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// HUD updates (cached element references)
+// ═══════════════════════════════════════════════════════════════════
+
+function updateHUD() {
+  const stage = currentStage();
+  const ov = gameState.overrides;
+
+  // Score
+  if (hudEls.score) {
+    hudEls.score.textContent = gameState.score.toLocaleString();
+  }
+
+  // Stage counter
+  if (hudEls.stageCur) {
+    hudEls.stageCur.textContent = gameState.stageIdx + 1;
+  }
+  if (hudEls.stageTotal) {
+    hudEls.stageTotal.textContent = gameState.stages.length;
+  }
+
+  // Lives (hearts)
+  if (hudEls.lives) {
+    let hearts = '';
+    for (let i = 0; i < ov.livesOverride; i++) {
+      if (i < gameState.lives) {
+        hearts += '\u2665 ';
+      } else {
+        hearts += '\u2661 ';
+      }
+    }
+    hudEls.lives.textContent = hearts.trim();
+  }
+  if (hudEls.livesWrap) {
+    hudEls.livesWrap.setAttribute('aria-label', `${gameState.lives} lives remaining`);
+  }
+
+  // Streak (with glow tiers via data attribute)
+  if (hudEls.streak) {
+    hudEls.streak.textContent = gameState.streak;
+    if (gameState.streak >= 10) {
+      hudEls.streak.dataset.streak = 'max';
+    } else if (gameState.streak >= 3) {
+      hudEls.streak.dataset.streak = 'high';
+    } else {
+      hudEls.streak.dataset.streak = '';
+    }
+  }
+
+  // Stage label + progress bar
+  if (hudEls.stageLabel) {
+    hudEls.stageLabel.textContent = stage.label;
+  }
+  if (hudEls.progFill) {
+    const pct = Math.min(gameState.stageHits / stage.needed, 1);
+    hudEls.progFill.style.width = (pct * 100) + '%';
+  }
+  if (hudEls.progPct) {
+    hudEls.progPct.textContent = `${gameState.stageHits}/${stage.needed}`;
+  }
+}
+
+function updateTypedDisplay() {
+  if (hudEls.typedDisplay) {
+    hudEls.typedDisplay.textContent = gameState.typedBuffer;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Overlay system (Fix C3 — listeners attached ONCE)
+// ═══════════════════════════════════════════════════════════════════
+
+// Callback holders — set when overlays are shown, invoked by persistent listeners
+let onResumeClick = null;
+let onQuitClick = null;
+let onPlayAgainClick = null;
+let onBackMenuClick = null;
+
+function initOverlayListeners() {
+  // These will be wired up when the overlay buttons exist
+  // Since we reuse the main overlay, we create buttons once and keep references
+  // The overlay content is rebuilt each time, but listeners call the current callbacks
+}
+
+
+// ── Pause overlay ──
+
+function showPauseOverlay() {
+  const overlay = hudEls.overlay;
+  if (!overlay) return;
+
+  overlay.innerHTML = '';
+  overlay.hidden = false;
+  overlay.style.display = 'flex';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Game paused');
+
+  const h2 = document.createElement('h2');
+  h2.textContent = 'Paused';
+  overlay.appendChild(h2);
+
+  const isYoung = gameState.bracket === '4-5';
+
+  if (gameState.bracket !== '4-5') {
+    const p = document.createElement('p');
+    p.textContent = 'Press Esc or tap Resume to continue';
+    overlay.appendChild(p);
+  }
+
+  const resumeBtn = document.createElement('button');
+  resumeBtn.className = 'btn btn-primary btn-lg';
+  resumeBtn.textContent = isYoung ? '▶ Play' : 'Resume';
+  resumeBtn.id = 'pause-resume-btn';
+  resumeBtn.addEventListener('click', () => resumeGame(), { once: true });
+  overlay.appendChild(resumeBtn);
+
+  const quitBtn = document.createElement('button');
+  quitBtn.className = 'btn btn-secondary btn-sm';
+  quitBtn.textContent = isYoung ? 'Stop playing' : 'Back to Menu';
+  quitBtn.addEventListener('click', () => quitToMenu(), { once: true });
+  overlay.appendChild(quitBtn);
+
+  // Focus management (Fix C2 from review 1)
+  requestAnimationFrame(() => {
+    resumeBtn.focus();
+  });
+
+  // Trap focus within pause overlay
+  trapFocus(overlay);
+}
+
+function hidePauseOverlay() {
+  const overlay = hudEls.overlay;
+  if (!overlay) return;
+  overlay.hidden = true;
+  overlay.style.display = 'none';
+  overlay.removeAttribute('role');
+  overlay.removeAttribute('aria-modal');
+}
+
+
+// ── Game over overlay ──
+
+/**
+ * Get age-appropriate game-over title (Fix W4 from review 1).
+ */
+function getGameOverTitle() {
+  const bracket = gameState.bracket;
+  const cleared = gameState.allStagesCleared;
+
+  if (bracket === '4-5') {
+    return cleared ? 'You are a star!' : 'Amazing job!';
+  } else if (bracket === '6-8') {
+    return cleared ? 'Brilliant!' : 'Well done!';
+  } else if (bracket === '9-12') {
+    return cleared ? 'You did it!' : 'Good effort!';
+  } else {
+    return cleared ? 'Complete!' : 'Game Over';
+  }
+}
+
+function showGameOverOverlay(stats) {
+  const overlay = hudEls.overlay;
+  if (!overlay) return;
+
+  overlay.innerHTML = '';
+  overlay.hidden = false;
+  overlay.style.display = 'flex';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Game over');
+
+  // Title
+  const title = document.createElement('h2');
+  title.textContent = getGameOverTitle();
+  overlay.appendChild(title);
+
+  // Score
+  const scoreDiv = document.createElement('div');
+  scoreDiv.className = 'gameover-score';
+  scoreDiv.textContent = stats.score.toLocaleString();
+  overlay.appendChild(scoreDiv);
+
+  // New high score banner (shown when player beats their previous best)
+  const prevHigh = (gameState.callbacks && gameState.callbacks.previousHighScore) || 0;
+  if (stats.score > prevHigh && stats.score > 0) {
+    const banner = document.createElement('div');
+    banner.className = 'new-high-score-banner';
+    banner.textContent = '\u2605 New High Score! \u2605';
+    banner.setAttribute('aria-live', 'assertive');
+    overlay.appendChild(banner);
+  }
+
+  // ── WPM calculation (AD6) ──
+  const elapsedMs = performance.now() - gameState.startTime;
+  const elapsedMin = elapsedMs / 60000;
+  const wpm = elapsedMin > 0 ? Math.round((sessionStats.totalCorrect / 5) / elapsedMin) : 0;
+
+  // ── Age-adapted stats (AD10) ──
+  const bracket = gameState.bracket;
+  const statsDiv = document.createElement('div');
+  statsDiv.className = 'gameover-stats';
+  statsDiv.setAttribute('aria-live', 'polite');
+
+  const accuracy = stats.totalKeysPressed > 0
+    ? stats.totalCorrect / stats.totalKeysPressed
+    : 0;
+  const accuracyPct = Math.round(accuracy * 100);
+  const fastest = stats.fastestWord
+    ? `${stats.fastestWord.word} (${(stats.fastestWord.ms / 1000).toFixed(1)}s)`
+    : '--';
+  const stageName = currentStage() ? currentStage().label : '';
+
+  let lines = [];
+
+  if (bracket === '4-5') {
+    // 4-5: simplified, encouraging stats only
+    const starRow = document.createElement('div');
+    starRow.className = 'gameover-stat-row gameover-star';
+    starRow.textContent = '\u2605';
+    starRow.style.fontSize = '3rem';
+    starRow.style.textAlign = 'center';
+    statsDiv.appendChild(starRow);
+
+    lines = [
+      { label: 'You got', value: `${stats.totalCorrect} letters right!` },
+      { label: 'You reached', value: `Stage ${stats.stageReached} — ${stageName}` },
+    ];
+  } else if (bracket === '6-8') {
+    // 6-8: friendly phrasing, no weak keys
+    const outOfTen = Math.round(accuracy * 10);
+    lines = [
+      { label: 'Stage reached', value: `${stats.stageReached}/${gameState.stages.length}` },
+      { label: 'Accuracy', value: `You got ${outOfTen} out of every 10 right!` },
+      { label: 'Fastest word', value: fastest },
+      { label: 'Speed', value: `${wpm} words per minute` },
+    ];
+  } else {
+    // 9-12 / Adult: full stats
+    lines = [
+      { label: 'Stage reached', value: `${stats.stageReached}/${gameState.stages.length}` },
+      { label: 'Accuracy', value: `${accuracyPct}%` },
+      { label: 'Fastest word', value: fastest },
+      { label: 'Longest streak', value: `${stats.longestStreak}` },
+      { label: 'WPM', value: `${wpm}` },
+    ];
+  }
+
+  // Use textContent for safety (Fix W1 from review 2)
+  for (const line of lines) {
+    const row = document.createElement('div');
+    row.className = 'gameover-stat-row';
+    const lbl = document.createElement('span');
+    lbl.className = 'gameover-stat-label';
+    lbl.textContent = line.label + ': ';
+    const val = document.createElement('strong');
+    val.textContent = line.value;
+    row.appendChild(lbl);
+    row.appendChild(val);
+    statsDiv.appendChild(row);
+  }
+
+  overlay.appendChild(statsDiv);
+
+  // Weak keys section — only for 9-12 and Adult brackets (Task 20 / AD10)
+  if (bracket !== '4-5' && bracket !== '6-8' && stats.weakKeys.length > 0) {
+    const weakSection = document.createElement('div');
+    weakSection.className = 'stats-section weak-keys-section';
+    const weakTitle = document.createElement('h3');
+    weakTitle.textContent = 'Keys to practise';
+    weakSection.appendChild(weakTitle);
+    const badgeList = document.createElement('div');
+    badgeList.className = 'weak-key-list';
+    for (const key of stats.weakKeys) {
+      const badge = document.createElement('span');
+      badge.className = 'weak-key-badge';
+      badge.textContent = key;
+      badge.setAttribute('aria-label', `Weak key: ${key}`);
+      badgeList.appendChild(badge);
+    }
+    weakSection.appendChild(badgeList);
+    overlay.appendChild(weakSection);
+  }
+
+  // Difficulty suggestion — suggest stepping up/down based on performance
+  const DIFFS = [
+    { label: 'Easy', speed: 1.0 },
+    { label: 'Normal', speed: 1.8 },
+    { label: 'Hard', speed: 2.3 },
+    { label: 'Extra Hard', speed: 3.0 },
+  ];
+  const currentSpeed = gameState.speedPreference || 1.0;
+  const currentIdx = DIFFS.reduce((bestI, d, i) =>
+    Math.abs(d.speed - currentSpeed) < Math.abs(DIFFS[bestI].speed - currentSpeed) ? i : bestI
+  , 0);
+  const avgReactionMs = stats.totalCorrect > 0 && elapsedMs > 0
+    ? elapsedMs / stats.totalCorrect : 9999;
+
+  let suggestedIdx = -1;
+  if (accuracyPct >= 90 && avgReactionMs < 1500 && currentIdx < DIFFS.length - 1) {
+    suggestedIdx = currentIdx + 1; // suggest harder
+  } else if (accuracyPct < 50 && currentIdx > 0) {
+    suggestedIdx = currentIdx - 1; // suggest easier
+  }
+
+  if (suggestedIdx >= 0) {
+    const nextDiff = DIFFS[suggestedIdx];
+    const suggestion = document.createElement('div');
+    suggestion.style.cssText = 'text-align: center; margin: 8px 0; padding: 8px 16px; border-radius: 8px; background: var(--bg-surface); font-size: 13px;';
+    const isHarder = suggestedIdx > currentIdx;
+    const suggText = document.createElement('span');
+    suggText.textContent = isHarder
+      ? `\u26A1 You're fast! Try ${nextDiff.label}? `
+      : `Try ${nextDiff.label}? It might help! `;
+    const suggBtn = document.createElement('button');
+    suggBtn.className = 'btn btn-sm';
+    suggBtn.textContent = isHarder ? 'Yes!' : 'OK';
+    suggBtn.style.cssText = 'margin-left: 8px; padding: 4px 12px; font-size: 12px;';
+    suggBtn.addEventListener('click', () => {
+      gameState.speedPreference = nextDiff.speed;
+      if (gameState.callbacks && gameState.callbacks.onSpeedChange) {
+        gameState.callbacks.onSpeedChange(nextDiff.speed);
+      }
+      suggestion.textContent = `\u2713 Difficulty set to ${nextDiff.label}`;
+      suggestion.style.color = 'var(--success-text, #059669)';
+    }, { once: true });
+    suggestion.appendChild(suggText);
+    suggestion.appendChild(suggBtn);
+    overlay.appendChild(suggestion);
+  }
+
+  // Play Again button
+  const playAgainBtn = document.createElement('button');
+  playAgainBtn.className = 'btn btn-primary btn-lg';
+  playAgainBtn.textContent = 'Play Again';
+  playAgainBtn.addEventListener('click', () => {
+    releaseFocus();
+    hideGameOverOverlay();
+    startGame(gameState.bracket, gameState.stages, gameState.callbacks);
+  }, { once: true });
+  overlay.appendChild(playAgainBtn);
+
+  // Back to Menu button
+  const menuBtn = document.createElement('button');
+  menuBtn.className = 'btn btn-secondary btn-sm';
+  menuBtn.textContent = 'Back to Menu';
+  menuBtn.addEventListener('click', () => {
+    releaseFocus();
+    hideGameOverOverlay();
+    quitToMenu();
+  }, { once: true });
+  overlay.appendChild(menuBtn);
+
+  // Focus management (Fix C2)
+  requestAnimationFrame(() => {
+    playAgainBtn.focus();
+  });
+
+  // Trap focus within game-over overlay
+  trapFocus(overlay);
+}
+
+function hideGameOverOverlay() {
+  const overlay = hudEls.overlay;
+  if (!overlay) return;
+  overlay.hidden = true;
+  overlay.style.display = 'none';
+  overlay.removeAttribute('role');
+  overlay.removeAttribute('aria-modal');
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Game end and stats
+// ═══════════════════════════════════════════════════════════════════
+
+/** Get weak keys — renamed to avoid build collision (Fix C1 from review 2) */
+function getSessionWeakKeys() {
+  return Object.entries(sessionStats.keyMisses)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([key]) => key);
+}
+
+function endGame() {
+  gameState.active = false;
+  if (_ariaTimer) { clearInterval(_ariaTimer); _ariaTimer = null; }
+  if (raf) {
+    cancelAnimationFrame(raf);
+    raf = null;
+  }
+
+  // Play appropriate sound
+  if (gameState.allStagesCleared) {
+    playSound('stageClear'); // Victory arpeggio
+    spawnConfetti(80); // Extra confetti for victory
+  } else {
+    playSound('gameOver');
+  }
+
+  const stats = {
+    score: gameState.score,
+    stageReached: gameState.stageIdx + 1,
+    accuracy: sessionStats.totalKeysPressed > 0
+      ? sessionStats.totalCorrect / sessionStats.totalKeysPressed
+      : 0,
+    fastestWord: sessionStats.fastestWord,
+    fastestByLength: { ...sessionStats.fastestByLength },
+    longestStreak: sessionStats.longestStreak,
+    weakKeys: getWeakKeys().map(w => w.key),
+    weakKeysDetailed: getWeakKeys(),
+    totalKeysPressed: sessionStats.totalKeysPressed,
+    totalCorrect: sessionStats.totalCorrect,
+  };
+
+  // Save stats via callback (Fix W10)
+  if (gameState.callbacks && gameState.callbacks.onGameOver) {
+    gameState.callbacks.onGameOver(stats);
+  }
+
+  // Draw one final frame (with victory confetti if applicable)
+  if (gameState.allStagesCleared && canvas) {
+    // Quick draw loop for confetti
+    let frames = 0;
+    function victoryLoop(now) {
+      const w = W(), h = H();
+      drawBackground(w, h);
+      updateParticles(16.67);
+      drawParticles();
+      drawPopTexts();
+      frames++;
+      if (frames < 90) { // ~1.5 seconds of confetti
+        victoryRaf = requestAnimationFrame(victoryLoop);
+      } else {
+        victoryRaf = null;
+        showGameOverOverlay(stats);
+      }
+    }
+    victoryRaf = requestAnimationFrame(victoryLoop);
+  } else {
+    showGameOverOverlay(stats);
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Main game loop
+// ═══════════════════════════════════════════════════════════════════
+
+let raf = null;
+let victoryRaf = null;
+
+function loop(now) {
+  if (!gameState.active) return;
+
+  const deltaMs = Math.min(now - (gameState.lastFrameTime || now), 50); // Cap at 50ms
+  gameState.lastFrameTime = now;
+  const w = W(), h = H();
+
+  // Draw background
+  drawBackground(w, h);
+
+  // Countdown phase — draw numerals, block spawning and input
+  if (gameState.countingDown) {
+    const elapsed = now - gameState.countdownStart;
+    const bracket = gameState.bracket;
+
+    // Bracket-specific timing (ms per step)
+    let stepMs, steps;
+    if (bracket === '4-5') {
+      stepMs = 1500; // 1.5s intervals
+      steps = ['3', '2', '1', '\u2605']; // star instead of GO
+    } else if (bracket === '6-8') {
+      stepMs = 1000;
+      steps = ['3', '2', '1', 'GO!'];
+    } else {
+      stepMs = 750;
+      steps = ['3', '2', '1', 'GO!'];
+    }
+
+    const totalDuration = stepMs * steps.length;
+    const currentStepIdx = Math.min(Math.floor(elapsed / stepMs), steps.length - 1);
+
+    // Play sound on step transitions
+    if (currentStepIdx !== gameState._lastCountdownStep) {
+      gameState._lastCountdownStep = currentStepIdx;
+      if (currentStepIdx < steps.length - 1) {
+        playSound('countdownTick');
+      } else {
+        playSound('countdownGo');
+      }
+    }
+
+    // Draw the current countdown symbol
+    if (elapsed < totalDuration + 500) { // show last symbol for 500ms extra
+      const symbol = steps[currentStepIdx];
+      const fontSize = bracket === '4-5' ? 96 : 72;
+      ctx.save();
+      ctx.font = `bold ${fontSize}px ${cachedColours.fontMono || 'Consolas, monospace'}`;
+      ctx.fillStyle = cachedColours.textPrimary || '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.globalAlpha = 1.0;
+      ctx.fillText(symbol, w / 2, h / 2);
+      ctx.restore();
+    }
+
+    // End countdown
+    if (elapsed >= totalDuration + 500) {
+      gameState.countingDown = false;
+      gameState.startTime = performance.now(); // for WPM
+      gameState.nextSpawn = performance.now() + 1500; // buffer before first item
+    }
+
+    raf = requestAnimationFrame(loop);
+    return; // skip all game logic during countdown
+  }
+
+  if (!gameState.paused) {
+    // Spawn check — also spawn immediately if screen is empty
+    if (!gameState.celebrating) {
+      if (gameState.items.length === 0 || now >= gameState.nextSpawn) {
+        spawnItem(now);
+      }
+    }
+
+    // Update and draw items (reverse iterate for safe removal)
+    for (let i = gameState.items.length - 1; i >= 0; i--) {
+      const item = gameState.items[i];
+      updateItemPosition(item, h, deltaMs);
+
+      if (item.y > h + 20) {
+        removeItem(i, false);
+        continue;
+      }
+      drawItem(item);
+    }
+
+    // Keyboard hint: highlight the next expected key for young brackets
+    if (gameState.bracket === '4-5' || gameState.bracket === '6-8') {
+      const hintKey = findExpectedKey();
+      if (hintKey && hintKey !== gameState._lastHintKey) {
+        clearHighlights();
+        highlightKey(hintKey);
+        gameState._lastHintKey = hintKey;
+      } else if (!hintKey && gameState._lastHintKey) {
+        clearHighlights();
+        gameState._lastHintKey = null;
+      }
+    }
+
+    // Update animations
+    updateParticles(deltaMs);
+    updatePopTexts(deltaMs);
+  } else {
+    // Even when paused, draw existing items (frozen)
+    for (const item of gameState.items) {
+      drawItem(item);
+    }
+  }
+
+  // Draw effects
+  drawParticles();
+  drawPopTexts();
+  drawWrongFlash(w, h);
+
+  raf = requestAnimationFrame(loop);
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Pause / Resume
+// ═══════════════════════════════════════════════════════════════════
+
+function pauseGame() {
+  if (!gameState.active || gameState.paused) return;
+  gameState.paused = true;
+  showPauseOverlay();
+}
+
+function resumeGame() {
+  if (!gameState.paused) return;
+  gameState.paused = false;
+  gameState.lastFrameTime = performance.now(); // Prevent delta spike
+  releaseFocus();
+  hidePauseOverlay();
+}
+
+function quitToMenu() {
+  releaseFocus();
+  cleanupPlay();
+  if (gameState.callbacks && gameState.callbacks.onQuit) {
+    gameState.callbacks.onQuit();
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Public API
+// ═══════════════════════════════════════════════════════════════════
+
+/**
+ * Start a new game.
+ * @param {string} bracket - Age bracket ('4-5', '6-8', '9-12', 'Adult')
+ * @param {Array} stageList - Resolved stage objects from getStagesForBracket()
+ * @param {object} callbacks - { onQuit, getPlayerName, onGameOver }
+ */
+function startGame(bracket, stageList, callbacks) {
+  // Cancel any lingering victory confetti loop (Fix C2)
+  if (victoryRaf) { cancelAnimationFrame(victoryRaf); victoryRaf = null; }
+
+  // Lazy DOM init (Fix C2)
+  initPlayDOM();
+
+  // Cache theme colours
+  cacheThemeColours();
+
+  // Reset adaptive difficulty engine
+  resetAdaptive();
+
+  const overrides = getBracketOverrides(bracket);
+
+  // Reset game state
+  Object.assign(gameState, {
+    items: [],
+    particles: [],
+    popTexts: [],
+    score: 0,
+    lives: overrides.livesOverride,
+    stageIdx: 0,
+    streak: 0,
+    stageHits: 0,
+    active: true,
+    paused: false,
+    celebrating: false,
+    typedBuffer: '',
+    wrongFlash: 0,
+    stages: stageList,
+    bracket,
+    overrides,
+    nextSpawn: 0, // set properly when countdown ends
+    lastFrameTime: 0,
+    callbacks: callbacks || null,
+    allStagesCleared: false,
+    _lastHintKey: null,
+    speedPreference: (callbacks && callbacks.speedPreference) || 1.0,
+    countingDown: true,
+    countdownStart: 0, // set after loop starts
+    _lastCountdownStep: -1,
+    startTime: 0, // for WPM tracking, set when countdown ends
+  });
+
+  // Reset session stats
+  resetSessionStats();
+
+  // Show play area, hide overlay
+  if (playArea) {
+    playArea.hidden = false;
+  }
+  if (hudEls.overlay) {
+    hudEls.overlay.hidden = true;
+    hudEls.overlay.style.display = 'none';
+  }
+
+  // Show HUD elements
+  if (hudEls.hud) hudEls.hud.style.display = 'flex';
+  if (hudEls.stageBar) hudEls.stageBar.style.display = 'flex';
+  if (hudEls.typedRow) hudEls.typedRow.style.display = 'flex';
+
+  // Initial HUD update
+  updateHUD();
+  updateTypedDisplay();
+
+  // Debounce aria-live: remove per-element live regions during gameplay
+  if (hudEls.score) hudEls.score.removeAttribute('aria-live');
+  if (hudEls.streak) hudEls.streak.removeAttribute('aria-live');
+
+  // Announce combined summary every 5 seconds
+  if (_ariaTimer) clearInterval(_ariaTimer);
+  _ariaTimer = setInterval(() => {
+    if (!gameState.active || gameState.paused) return;
+    if (_ariaLiveEl) {
+      _ariaLiveEl.textContent = `Score ${gameState.score}, Stage ${gameState.stageIdx + 1}, ${gameState.lives} lives`;
+    }
+  }, 5000);
+
+  // Set keyboard visible
+  setVisibilityMode('show');
+
+  // Spotlight mode for 4-5: dims all keys except the target
+  setSpotlightMode(bracket === '4-5');
+
+  // Show and style pause button per bracket
+  if (hudEls.pauseBtn) {
+    hudEls.pauseBtn.style.display = '';
+    hudEls.pauseBtn.className = 'hud-btn'; // reset classes
+    hudEls.pauseBtn.textContent = '⏸';
+    if (bracket === '4-5') {
+      hudEls.pauseBtn.classList.add('pause-btn--large');
+    } else if (bracket === '6-8') {
+      hudEls.pauseBtn.classList.add('pause-btn--labelled');
+      hudEls.pauseBtn.textContent = '⏸ Pause';
+    }
+    // First-play pulse
+    if (callbacks && callbacks.totalGamesPlayed === 0) {
+      hudEls.pauseBtn.classList.add('pause-btn--pulse');
+      setTimeout(() => hudEls.pauseBtn.classList.remove('pause-btn--pulse'), 2000);
+    }
+  }
+
+  // Resize canvas to current dimensions
+  handleResize();
+
+  // Attach keydown handler
+  if (boundHandleKey) {
+    document.removeEventListener('keydown', boundHandleKey);
+  }
+  boundHandleKey = handleKey;
+  document.addEventListener('keydown', boundHandleKey);
+
+  // Start the game loop
+  if (raf) cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(loop);
+  gameState.countdownStart = performance.now();
+}
+
+/**
+ * Clean up Play mode — remove listeners, cancel animations (Fix W4).
+ * Called by main.js during mode switches.
+ */
+function cleanupPlay() {
+  if (victoryRaf) { cancelAnimationFrame(victoryRaf); victoryRaf = null; }
+
+  gameState.active = false;
+  gameState.paused = false;
+  gameState.celebrating = false;
+
+  if (raf) {
+    cancelAnimationFrame(raf);
+    raf = null;
+  }
+
+  if (boundHandleKey) {
+    document.removeEventListener('keydown', boundHandleKey);
+    boundHandleKey = null;
+  }
+
+  setSpotlightMode(false);
+  clearHighlights();
+
+  // Hide play area
+  if (playArea) {
+    playArea.hidden = true;
+  }
+
+  // Clear canvas
+  if (ctx && canvas) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Clear typed display
+  if (hudEls.typedDisplay) {
+    hudEls.typedDisplay.textContent = '';
+  }
+
+  // Hide pause button
+  if (hudEls.pauseBtn) hudEls.pauseBtn.style.display = 'none';
+
+  // Restore aria-live on HUD elements
+  if (hudEls.score) hudEls.score.setAttribute('aria-live', 'polite');
+  if (hudEls.streak) hudEls.streak.setAttribute('aria-live', 'polite');
+  if (_ariaTimer) { clearInterval(_ariaTimer); _ariaTimer = null; }
+  if (_ariaLiveEl) { _ariaLiveEl.textContent = ''; }
+
+  if (themeObserver) { themeObserver.disconnect(); themeObserver = null; }
+}
+
+/**
+ * Check if a game is currently active.
+ * @returns {boolean}
+ */
+function isGameActive() {
+  return gameState.active;
+}
+
+/**
+ * Check if game is paused.
+ * @returns {boolean}
+ */
+function isPaused() {
+  return gameState.paused;
+}
+
+// --- main.js ---
+// main.js — Entry point, game state machine
+// Implements: Player Selection (Task 4), Mode Selection (Task 5), Mobile Gate
+
+// Note: In concatenated build, startPlayGame alias is lost.
+// play.js exports 'startGame', so the build will use that name directly.
+// main.js's local function is 'enterPlayMode' to avoid collision.
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+
+/** @type {{ name: string, data: object } | null} */
+let currentPlayer = null;
+
+/** @type {'playerSelect' | 'modeSelect' | 'play'} */
+let appState = 'playerSelect';
+
+// ---------------------------------------------------------------------------
+// DOM references (resolved once on DOMContentLoaded)
+// ---------------------------------------------------------------------------
+
+let overlay = null;
+let mobileGate = null;
+
+// ---------------------------------------------------------------------------
+// Utility: focus management (Fix C2)
+// ---------------------------------------------------------------------------
+
+/**
+ * Focus an element, adding tabindex="-1" if needed so non-interactive
+ * elements (headings, divs) can receive programmatic focus.
+ * @param {HTMLElement|null} el
+ */
+function focusElement(el) {
+  if (!el) return;
+  // Only set tabindex on non-natively-focusable elements (headings, divs)
+  // Setting tabindex="-1" on buttons/inputs removes them from tab order
+  const nativelyFocusable = ['A', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(el.tagName);
+  if (!nativelyFocusable && !el.getAttribute('tabindex')) {
+    el.setAttribute('tabindex', '-1');
+  }
+  el.focus();
+}
+
+// ---------------------------------------------------------------------------
+// Utility: DOM helpers
+// ---------------------------------------------------------------------------
+
+/** Create an element with optional class(es) and textContent. */
+function el(tag, classNames, text) {
+  const node = document.createElement(tag);
+  if (classNames) {
+    const classes = Array.isArray(classNames) ? classNames : classNames.split(' ');
+    classes.forEach(c => { if (c) node.classList.add(c); });
+  }
+  if (text !== undefined && text !== null) {
+    node.textContent = text;
+  }
+  return node;
+}
+
+// ---------------------------------------------------------------------------
+// Mobile / Touch Gate
+// ---------------------------------------------------------------------------
+
+/**
+ * Detect whether the device is touch-only (no physical keyboard).
+ * Show the mobile gate if so, and dismiss it on a real keydown event.
+ */
+function initMobileGate() {
+  mobileGate = document.getElementById('mobile-gate');
+  if (!mobileGate) return;
+
+  const isTouchOnly = ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+    && !window.matchMedia('(pointer: fine)').matches;
+
+  if (isTouchOnly) {
+    mobileGate.hidden = false;
+
+    // Allow dismissal when a real keyboard event fires
+    const dismissOnKey = (e) => {
+      // Ignore virtual keyboard keys that fire on touch
+      // A real keyboard event from a physical keyboard will have isTrusted = true
+      if (e.isTrusted && e.key.length === 1) {
+        mobileGate.hidden = true;
+        window.removeEventListener('keydown', dismissOnKey);
+      }
+    };
+    window.addEventListener('keydown', dismissOnKey);
+  } else {
+    mobileGate.hidden = true;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Theme management
+// ---------------------------------------------------------------------------
+
+/**
+ * Return the default theme for a given age bracket.
+ * 4-5 and 6-8 → light; 9-12 and Adult → dark.
+ * @param {string} ageBracket
+ * @returns {'light' | 'dark'}
+ */
+function getDefaultThemeForBracket(ageBracket) {
+  return (ageBracket === '4-5' || ageBracket === '6-8') ? 'light' : 'dark';
+}
+
+/**
+ * Apply a theme ('light' or 'dark') to the document and update toggle icons.
+ * @param {'light' | 'dark'} theme
+ */
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeToggleIcons(theme);
+}
+
+/**
+ * Update all theme toggle button icons to reflect the current theme.
+ * Shows sun (☀) in dark mode (click to go light), moon (🌙) in light mode (click to go dark).
+ * @param {'light' | 'dark'} theme
+ */
+function updateThemeToggleIcons(theme) {
+  const icon = theme === 'dark' ? '\u2600' : '\uD83C\uDF19';
+  document.querySelectorAll('.theme-icon').forEach(el => {
+    el.textContent = icon;
+  });
+}
+
+/**
+ * Toggle between light and dark theme. Saves preference to current player.
+ * @returns {'light' | 'dark'} The new theme
+ */
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  setTheme(next);
+
+  // Save globally (not per-player)
+  try { localStorage.setItem('typingGame_theme', next); } catch (e) { /* ignore */ }
+
+  return next;
+}
+
+// ---------------------------------------------------------------------------
+// Reusable arrow-key navigation for radio groups (H11)
+// ---------------------------------------------------------------------------
+
+/**
+ * Add arrow-key, Home and End navigation to a radio group container.
+ * Works with any container whose children have role="radio".
+ * Uses the 'active' class that already exists on the radio buttons
+ * (either 'selected' for bracket-btn or 'mode-btn--active' for mode-btn).
+ * @param {HTMLElement} container - The [role="radiogroup"] container
+ */
+function setupRadioGroupKeys(container) {
+  container.addEventListener('keydown', (e) => {
+    const radios = Array.from(container.querySelectorAll('[role="radio"]'));
+    const currentIdx = radios.findIndex(r => r.getAttribute('aria-checked') === 'true');
+    if (currentIdx === -1) return;
+
+    let newIdx = currentIdx;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      newIdx = (currentIdx + 1) % radios.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      newIdx = (currentIdx - 1 + radios.length) % radios.length;
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      newIdx = 0;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      newIdx = radios.length - 1;
+    } else {
+      return;
+    }
+
+    // Update aria and tabindex
+    radios.forEach((r, i) => {
+      r.setAttribute('aria-checked', i === newIdx ? 'true' : 'false');
+      r.setAttribute('tabindex', i === newIdx ? '0' : '-1');
+      // Support both class conventions used in the codebase
+      if (i === newIdx) {
+        r.classList.add('mode-btn--active');
+        r.classList.add('selected');
+      } else {
+        r.classList.remove('mode-btn--active');
+        r.classList.remove('selected');
+      }
+    });
+    radios[newIdx].focus();
+    radios[newIdx].click(); // trigger the selection handler
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Age bracket labels
+// ---------------------------------------------------------------------------
+
+/** Human-readable label for each age bracket. */
+const BRACKET_LABELS = {
+  '4-5': 'ages 4-5',
+  '6-8': 'ages 6-8',
+  '9-12': 'ages 9-12',
+  'Adult': 'Adult'
+};
+
+// ---------------------------------------------------------------------------
+// Task 4: Player Selection Screen
+// ---------------------------------------------------------------------------
+
+function showPlayerSelect() {
+  cleanupAll();
+  appState = 'playerSelect';
+  overlay.innerHTML = '';
+  overlay.hidden = false;
+  overlay.style.display = 'flex';
+  overlay.className = 'overlay overlay--player-select';
+
+  // Remove simplified HUD (no player selected)
+  const hud = document.querySelector('.hud');
+  if (hud) hud.classList.remove('hud--simplified');
+
+  // Game title branding
+  const titleEl = el('h1', 'game-title', 'Type Trainer');
+  titleEl.id = 'overlay-heading';
+  overlay.appendChild(titleEl);
+  overlay.appendChild(el('p', 'game-tagline', "Who\u2019s playing?"));
+
+  const players = getPlayerList();
+  const grid = el('div', 'player-grid');
+  grid.setAttribute('role', 'list');
+  grid.setAttribute('aria-label', 'Player profiles');
+
+  let firstCard = null;
+
+  players.forEach(name => {
+    const playerData = getPlayer(name);
+    if (!playerData) return;
+
+    const card = el('div', 'player-card');
+    card.setAttribute('role', 'listitem');
+    card.setAttribute('tabindex', '0');
+    const bracketLabel = BRACKET_LABELS[playerData.ageBracket] || playerData.ageBracket;
+    card.setAttribute('aria-label', `${name}, ${bracketLabel}`);
+
+    // Avatar (first letter)
+    card.appendChild(el('div', 'player-card-avatar', name.charAt(0).toUpperCase()));
+
+    // Name
+    card.appendChild(el('span', 'player-card-name', name));
+
+    // Age bracket badge
+    card.appendChild(el('span', 'player-card-badge', bracketLabel));
+
+    // Stats mini-grid
+    const statsDiv = el('div', 'player-card-stats');
+    const highScore = playerData.highScore || 0;
+    const highestStage = playerData.highestStage || 0;
+    const stats = playerData.stats || {};
+    const fw = stats.fastestWord;
+
+    // Best score
+    const scoreStatDiv = el('div', 'player-card-stat');
+    const scoreValueEl = el('span', 'player-card-stat-value', highScore > 0 ? `\uD83C\uDFC6 ${highScore.toLocaleString()}` : '\u2014');
+    if (highScore > 0) {
+      scoreValueEl.classList.add('player-card-stat-value--score');
+      scoreValueEl.style.cssText = 'font-size: 1.1em; font-weight: 700;';
+    }
+    scoreStatDiv.appendChild(scoreValueEl);
+    scoreStatDiv.appendChild(el('span', 'player-card-stat-label', 'Best score'));
+    statsDiv.appendChild(scoreStatDiv);
+
+    // Stage reached
+    const stageStatDiv = el('div', 'player-card-stat');
+    stageStatDiv.appendChild(el('span', 'player-card-stat-value', highestStage > 0 ? `Stg ${highestStage}` : '\u2014'));
+    stageStatDiv.appendChild(el('span', 'player-card-stat-label', 'Stage'));
+    statsDiv.appendChild(stageStatDiv);
+
+    // Fastest word (if any)
+    if (fw) {
+      const fwDiv = el('div', 'player-card-stat');
+      fwDiv.appendChild(el('span', 'player-card-stat-value', fw.word));
+      fwDiv.appendChild(el('span', 'player-card-stat-label', `${(fw.ms / 1000).toFixed(1)}s fastest`));
+      statsDiv.appendChild(fwDiv);
+    }
+
+    // Games played
+    const gamesPlayed = playerData.totalGamesPlayed || 0;
+    const gamesDiv = el('div', 'player-card-stat');
+    gamesDiv.appendChild(el('span', 'player-card-stat-value', gamesPlayed > 0 ? String(gamesPlayed) : '\u2014'));
+    gamesDiv.appendChild(el('span', 'player-card-stat-label', 'Games'));
+    statsDiv.appendChild(gamesDiv);
+
+    card.appendChild(statsDiv);
+
+    // Click / keyboard navigation
+    const doSelect = () => selectPlayer(name);
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.player-card-delete')) return;
+      doSelect();
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.target.closest('.player-card-delete')) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doSelect(); }
+    });
+
+    // Delete button (top-right, absolute)
+    const deleteBtn = el('button', 'player-card-delete', '\u00D7');
+    deleteBtn.setAttribute('aria-label', `Delete ${name}`);
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showDeleteConfirmation(name);
+    });
+    card.appendChild(deleteBtn);
+
+    grid.appendChild(card);
+    if (!firstCard) firstCard = card;
+  });
+
+  // Add Player card
+  const addCard = el('div', ['player-card', 'player-card--add']);
+  addCard.setAttribute('role', 'button');
+  addCard.setAttribute('tabindex', '0');
+  addCard.setAttribute('aria-label', 'Add new player');
+  addCard.appendChild(el('div', 'player-card-add-icon', '+'));
+  addCard.appendChild(el('span', 'player-card-add-label', 'Add Player'));
+  addCard.addEventListener('click', () => showAddPlayer());
+  addCard.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showAddPlayer(); }
+  });
+  grid.appendChild(addCard);
+
+  // Top score banner (AD5): show when 2+ players exist and at least one has a score
+  if (players.length >= 2) {
+    const allPlayerData = players.map(name => ({ name, data: getPlayer(name) }));
+    const topPlayer = allPlayerData.reduce((best, p) =>
+      (p.data && p.data.highScore > (best.data ? best.data.highScore : 0)) ? p : best
+    , allPlayerData[0]);
+
+    if (topPlayer && topPlayer.data && topPlayer.data.highScore > 0) {
+      const banner = el('div', 'top-score-banner');
+      banner.style.cssText = 'text-align: center; padding: 12px; margin-bottom: 16px; border-radius: 8px; background: var(--surface); font-size: 16px;';
+      banner.textContent = `\uD83C\uDFC6 Top Score: ${topPlayer.name} \u2014 ${topPlayer.data.highScore.toLocaleString()}`;
+      overlay.appendChild(banner);
+    }
+  }
+
+  overlay.appendChild(grid);
+
+  // Footer credit
+  const footer = el('div', 'game-footer');
+  const credit = document.createTextNode('Created by Robert Beverton \u00B7 v1.3.0 \u00B7 ');
+  footer.appendChild(credit);
+  const feedbackLink = document.createElement('a');
+  feedbackLink.href = 'https://github.com/RobertBeverton/type-trainer/issues';
+  feedbackLink.target = '_blank';
+  feedbackLink.rel = 'noopener noreferrer';
+  feedbackLink.textContent = 'Feedback & Ideas';
+  footer.appendChild(feedbackLink);
+
+  // Data export/import links
+  footer.appendChild(document.createTextNode(' \u00B7 '));
+
+  const exportLink = document.createElement('a');
+  exportLink.href = '#';
+  exportLink.textContent = 'Export Data';
+  exportLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    exportData();
+  });
+  footer.appendChild(exportLink);
+
+  footer.appendChild(document.createTextNode(' \u00B7 '));
+
+  const importLink = document.createElement('a');
+  importLink.href = '#';
+  importLink.textContent = 'Import Data';
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.json';
+  fileInput.style.display = 'none';
+  fileInput.addEventListener('change', async () => {
+    if (!fileInput.files[0]) return;
+    const ok = confirm('This will replace all player data. Continue?');
+    if (!ok) { fileInput.value = ''; return; }
+    const success = await importData(fileInput.files[0]);
+    fileInput.value = '';
+    if (success) {
+      showPlayerSelect(); // Refresh to show imported data
+    } else {
+      alert('Import failed \u2014 the file does not appear to be a valid backup.');
+    }
+  });
+  importLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    fileInput.click();
+  });
+  footer.appendChild(importLink);
+  footer.appendChild(fileInput);
+
+  overlay.appendChild(footer);
+
+  requestAnimationFrame(() => {
+    focusElement(firstCard || addCard);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Fix W3: Custom Delete Confirmation (in-overlay, not window.confirm)
+// ---------------------------------------------------------------------------
+
+/**
+ * Show an in-overlay confirmation panel for deleting a player.
+ * Focus moves to the "No, keep" button (safe option).
+ * @param {string} name - Player name to confirm deletion of
+ */
+function showDeleteConfirmation(name) {
+  // Build a confirmation panel overlaid inside the existing overlay
+  const confirmPanel = el('div', 'delete-confirm-panel');
+  confirmPanel.setAttribute('role', 'alertdialog');
+  confirmPanel.setAttribute('aria-modal', 'true');
+  confirmPanel.setAttribute('aria-label', `Confirm deletion of ${name}`);
+
+  const confirmText = el('p', 'delete-confirm-text');
+  confirmText.innerHTML = `Delete ${name}?<br>All progress will be lost.<br>This cannot be undone.`;
+  confirmPanel.appendChild(confirmText);
+
+  const btnRow = el('div', 'delete-confirm-buttons');
+
+  // "Yes, delete" button — danger styled
+  const yesBtn = el('button', ['btn', 'btn-sm', 'btn-danger'], 'Yes, delete');
+  yesBtn.setAttribute('aria-label', `Confirm delete ${name}`);
+  yesBtn.addEventListener('click', () => {
+    releaseFocus();
+    deletePlayer(name);
+    // Clear last player reference if we just deleted them
+    try {
+      if (localStorage.getItem('typingGame_lastPlayer') === name) {
+        localStorage.removeItem('typingGame_lastPlayer');
+      }
+    } catch (_) {}
+    showPlayerSelect(); // Refresh list
+  });
+  btnRow.appendChild(yesBtn);
+
+  // "No, keep" button — primary styled (safe option)
+  const noBtn = el('button', ['btn', 'btn-sm', 'btn-primary'], 'No, keep');
+  noBtn.setAttribute('aria-label', `Cancel, keep ${name}`);
+  noBtn.addEventListener('click', () => {
+    releaseFocus();
+    confirmPanel.remove();
+  });
+  btnRow.appendChild(noBtn);
+
+  confirmPanel.appendChild(btnRow);
+  overlay.appendChild(confirmPanel);
+
+  // Escape key cancels the dialog (Fix C5)
+  confirmPanel.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      releaseFocus();
+      confirmPanel.remove();
+    }
+  });
+
+  // Trap focus within the confirmation dialog (Fix C5)
+  trapFocus(confirmPanel);
+
+  // Focus the safe option (Fix C2 + Fix W3)
+  requestAnimationFrame(() => {
+    focusElement(noBtn);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Task 4: Add Player Form
+// ---------------------------------------------------------------------------
+
+/**
+ * Render the add-player form: name input with visible label, age bracket picker,
+ * and start button. Focus goes to the name input (Fix C2).
+ */
+function showAddPlayer() {
+  overlay.innerHTML = '';
+  overlay.className = 'overlay';
+
+  // Title
+  overlay.appendChild(el('h2', null, 'New Player'));
+
+  // Visible label (Fix C3)
+  const label = el('label', 'input-label', 'Your name');
+  label.setAttribute('for', 'player-name-input');
+  overlay.appendChild(label);
+
+  // Name input
+  const nameInput = document.createElement('input');
+  nameInput.id = 'player-name-input';
+  nameInput.className = 'input-field';
+  nameInput.setAttribute('maxlength', '20');
+  nameInput.setAttribute('autocomplete', 'off');
+  nameInput.setAttribute('type', 'text');
+  overlay.appendChild(nameInput);
+
+  // Age question
+  overlay.appendChild(el('p', null, 'How old is the player?'));
+
+  // Bracket picker
+  const brackets = ['4-5', '6-8', '9-12', 'Adult'];
+  const picker = el('div', 'bracket-picker');
+  picker.setAttribute('role', 'radiogroup');
+  picker.setAttribute('aria-label', 'Age bracket');
+
+  let selectedBracket = null;
+
+  brackets.forEach((bracket, idx) => {
+    const btn = el('button', 'bracket-btn', bracket);
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', 'false');
+    btn.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+    btn.setAttribute('type', 'button');
+    btn.addEventListener('click', () => {
+      // Deselect siblings
+      picker.querySelectorAll('.bracket-btn').forEach(b => {
+        b.classList.remove('selected');
+        b.setAttribute('aria-checked', 'false');
+        b.setAttribute('tabindex', '-1');
+      });
+      btn.classList.add('selected');
+      btn.setAttribute('aria-checked', 'true');
+      btn.setAttribute('tabindex', '0');
+      selectedBracket = bracket;
+      updateStartBtn();
+      // Theme is applied on submit (selectPlayer), not here (Fix M17)
+    });
+    picker.appendChild(btn);
+  });
+
+  setupRadioGroupKeys(picker);
+  overlay.appendChild(picker);
+
+  // Error message container (hidden by default)
+  const errorMsg = el('p', 'input-error');
+  errorMsg.setAttribute('role', 'alert');
+  errorMsg.setAttribute('aria-live', 'polite');
+  errorMsg.hidden = true;
+  overlay.appendChild(errorMsg);
+
+  // Start button — disabled until name + bracket selected
+  const startBtn = el('button', ['btn', 'btn-primary', 'btn-lg'], "Let's go!");
+  startBtn.disabled = true;
+  startBtn.setAttribute('type', 'button');
+  overlay.appendChild(startBtn);
+
+  /** Enable start button only when name is non-empty and bracket is selected. */
+  function updateStartBtn() {
+    const hasName = nameInput.value.trim().length > 0;
+    startBtn.disabled = !(hasName && selectedBracket);
+  }
+
+  nameInput.addEventListener('input', updateStartBtn);
+
+  startBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    if (!name || !selectedBracket) return;
+
+    // Check for duplicate
+    if (getPlayer(name)) {
+      errorMsg.textContent = `"${name}" already exists. Choose a different name.`;
+      errorMsg.hidden = false;
+      focusElement(nameInput);
+      return;
+    }
+
+    errorMsg.hidden = true;
+    const created = createPlayer(name, selectedBracket);
+    if (created) {
+      selectPlayer(name);
+    } else {
+      errorMsg.textContent = 'Could not create player. Try a different name.';
+      errorMsg.hidden = false;
+      focusElement(nameInput);
+    }
+  });
+
+  // Allow Enter key in the name input to trigger start
+  nameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !startBtn.disabled) {
+      e.preventDefault();
+      startBtn.click();
+    }
+  });
+
+  // Back button
+  const backBtn = el('button', ['btn', 'btn-secondary', 'btn-sm'], 'Back');
+  backBtn.setAttribute('type', 'button');
+  backBtn.addEventListener('click', () => {
+    showPlayerSelect();
+  });
+  overlay.appendChild(backBtn);
+
+  // Focus management (Fix C2): focus the name input
+  requestAnimationFrame(() => {
+    focusElement(nameInput);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Task 4: Select Player
+// ---------------------------------------------------------------------------
+
+/**
+ * Set the current player and apply their theme, then show mode select.
+ * @param {string} name - Player name
+ */
+function selectPlayer(name) {
+  const data = getPlayer(name);
+  if (!data) return;
+
+  currentPlayer = { name, data };
+
+  // Apply player's audio settings
+  applyPlayerAudioSettings(data.settings);
+
+  // Simplified HUD for youngest players (hides streak + keyboard toggle)
+  const hud = document.querySelector('.hud');
+  if (hud) {
+    hud.classList.toggle('hud--simplified', data.ageBracket === '4-5');
+  }
+
+  // Remember last selected player for early theme application on reload
+  try { localStorage.setItem('typingGame_lastPlayer', name); } catch (_) {}
+
+  // Proceed to mode selection
+  showModeSelect();
+}
+
+// ---------------------------------------------------------------------------
+// Task 5: Mode Selection Screen
+// ---------------------------------------------------------------------------
+
+/**
+ * Render the mode selection screen into the overlay.
+ * Shows difficulty selection and Play button.
+ * Focus management: focuses the Play button (Fix C2).
+ */
+function showModeSelect() {
+  cleanupAll(); // Fix W4: clean up any active mode
+  appState = 'modeSelect';
+  overlay.innerHTML = '';
+  overlay.hidden = false;
+  overlay.style.display = 'flex';
+  overlay.className = 'overlay';
+
+  if (!currentPlayer) {
+    showPlayerSelect();
+    return;
+  }
+
+  const { name, data } = currentPlayer;
+
+  // Greeting
+  const heading = el('h2', null, `Hi, ${name}!`);
+  heading.id = 'overlay-heading';
+  overlay.appendChild(heading);
+
+  // Tappable age badge (T13 / AD4)
+  const ageBadge = document.createElement('button');
+  ageBadge.className = 'age-badge-btn';
+  ageBadge.textContent = `Ages ${currentPlayer.data.ageBracket} \u270F`;
+  ageBadge.setAttribute('aria-label', `Change age bracket, currently ${currentPlayer.data.ageBracket}`);
+  ageBadge.setAttribute('type', 'button');
+
+  ageBadge.addEventListener('click', () => {
+    // Toggle accordion
+    let accordion = document.getElementById('bracket-accordion');
+    if (accordion) {
+      accordion.remove();
+      return;
+    }
+    accordion = document.createElement('div');
+    accordion.id = 'bracket-accordion';
+    accordion.style.cssText = 'display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; justify-content: center;';
+
+    const brackets = ['4-5', '6-8', '9-12', 'Adult'];
+    accordion.setAttribute('role', 'radiogroup');
+    accordion.setAttribute('aria-label', 'Change age bracket');
+    brackets.forEach(b => {
+      const isActive = b === currentPlayer.data.ageBracket;
+      const btn = document.createElement('button');
+      btn.className = 'mode-btn' + (isActive ? ' mode-btn--active' : '');
+      btn.textContent = b;
+      btn.style.cssText = 'min-width: 60px; padding: 8px 16px;';
+      btn.setAttribute('role', 'radio');
+      btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+      btn.setAttribute('tabindex', isActive ? '0' : '-1');
+      btn.addEventListener('click', () => {
+        if (b === currentPlayer.data.ageBracket) return;
+        // Update bracket
+        updatePlayerBracket(currentPlayer.name, b);
+        currentPlayer.data = getPlayer(currentPlayer.name);
+        // Apply theme
+        const theme = (b === '4-5' || b === '6-8') ? 'light' : 'dark';
+        setTheme(theme);
+        // Refresh the mode select screen
+        showModeSelect();
+      });
+      accordion.appendChild(btn);
+    });
+
+    setupRadioGroupKeys(accordion);
+
+    // Insert after the badge
+    ageBadge.parentNode.insertBefore(accordion, ageBadge.nextSibling);
+  });
+
+  overlay.appendChild(ageBadge);
+
+  // Difficulty presets
+  const DIFFICULTIES = [
+    { label: 'Easy', speed: 1.0 },
+    { label: 'Normal', speed: 1.8 },
+    { label: 'Hard', speed: 2.3 },
+    { label: 'Extra Hard', speed: 3.0 },
+  ];
+  const savedSpeed = (data.settings && data.settings.speedPreference) || 1.0;
+  // Find closest matching difficulty
+  const closestDiff = DIFFICULTIES.reduce((best, d) =>
+    Math.abs(d.speed - savedSpeed) < Math.abs(best.speed - savedSpeed) ? d : best
+  , DIFFICULTIES[0]);
+
+  const diffSection = document.createElement('div');
+  diffSection.style.cssText = 'display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; justify-content: center;';
+  diffSection.setAttribute('role', 'radiogroup');
+  diffSection.setAttribute('aria-label', 'Difficulty');
+
+  DIFFICULTIES.forEach(d => {
+    const btn = document.createElement('button');
+    const isActive = d.label === closestDiff.label;
+    btn.className = 'mode-btn mode-btn--sm' + (isActive ? ' mode-btn--active' : '');
+    btn.textContent = d.label;
+    btn.style.cssText = 'padding: 6px 14px; font-size: 13px; min-width: auto;';
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    btn.setAttribute('tabindex', isActive ? '0' : '-1');
+    btn.addEventListener('click', () => {
+      // Update visual state
+      diffSection.querySelectorAll('[role="radio"]').forEach(r => {
+        r.classList.remove('mode-btn--active');
+        r.setAttribute('aria-checked', 'false');
+        r.setAttribute('tabindex', '-1');
+      });
+      btn.classList.add('mode-btn--active');
+      btn.setAttribute('aria-checked', 'true');
+      btn.setAttribute('tabindex', '0');
+      // Save
+      const player = getPlayer(name);
+      if (player) {
+        if (!player.settings) player.settings = {};
+        player.settings.speedPreference = d.speed;
+        savePlayer(name, player);
+        currentPlayer.data = player;
+      }
+    });
+    diffSection.appendChild(btn);
+  });
+
+  setupRadioGroupKeys(diffSection);
+  overlay.appendChild(diffSection);
+
+  overlay.appendChild(el('p', null, 'What would you like to do?'));
+
+  // Mode buttons container
+  const buttonsContainer = el('div', 'mode-select-buttons');
+
+  // --- Play button ---
+  const playBtn = document.createElement('button');
+  playBtn.className = 'mode-btn prominent';
+  playBtn.setAttribute('type', 'button');
+
+  const playTitle = el('span', 'mode-btn-title', 'Play');
+  playBtn.appendChild(playTitle);
+
+  const playDesc = el('span', 'mode-btn-desc', 'Type falling letters before they land!');
+  playBtn.appendChild(playDesc);
+
+  playBtn.addEventListener('click', () => {
+    appState = 'play';
+    enterPlayMode();
+  });
+
+  buttonsContainer.appendChild(playBtn);
+  overlay.appendChild(buttonsContainer);
+
+  // Switch Player button
+  const switchBtn = el('button', ['btn', 'btn-secondary', 'btn-sm'], 'Switch Player');
+  switchBtn.setAttribute('type', 'button');
+  switchBtn.addEventListener('click', () => {
+    currentPlayer = null;
+    showPlayerSelect();
+  });
+  overlay.appendChild(switchBtn);
+
+  // Focus management (Fix C2): focus the Play button
+  requestAnimationFrame(() => {
+    focusElement(playBtn);
+  });
+}
+
+/** Start Play mode — resolve stages for bracket, pass callbacks (Fix W10). */
+function enterPlayMode() {
+  if (!currentPlayer) return;
+
+  const { name, data } = currentPlayer;
+  const bracket = data.ageBracket;
+  const stages = getStagesForBracket(bracket);
+
+  // Hide overlay
+  overlay.hidden = true;
+  overlay.style.display = 'none';
+
+  const previousHighScore = (data && data.highScore) || 0;
+
+  // Start game with callbacks — play.js never imports from main.js
+  const speedPref = (data.settings && data.settings.speedPreference) || 1.0;
+  startGame(bracket, stages, {
+    previousHighScore,
+    totalGamesPlayed: currentPlayer.data.totalGamesPlayed || 0,
+    speedPreference: speedPref,
+    onSpeedChange: (newSpeed) => {
+      if (!currentPlayer) return;
+      const p = getPlayer(currentPlayer.name);
+      if (p) {
+        if (!p.settings) p.settings = {};
+        p.settings.speedPreference = newSpeed;
+        savePlayer(currentPlayer.name, p);
+        currentPlayer.data = p;
+      }
+    },
+    onQuit: () => {
+      showModeSelect();
+    },
+    getPlayerName: () => currentPlayer ? currentPlayer.name : 'Player',
+    onGameOver: (stats) => {
+      if (!currentPlayer) return;
+      const player = getPlayer(currentPlayer.name);
+      if (!player) return;
+
+      // Update high score
+      player.highScore = Math.max(player.highScore || 0, stats.score);
+      player.highestStage = Math.max(player.highestStage || 0, stats.stageReached);
+      player.totalGamesPlayed = (player.totalGamesPlayed || 0) + 1;
+
+      // Rolling accuracy (70% historical, 30% this game)
+      const prevAcc = player.stats?.accuracy || 0;
+      player.stats = player.stats || {};
+      player.stats.accuracy = player.totalGamesPlayed === 1
+        ? stats.accuracy
+        : prevAcc * 0.7 + stats.accuracy * 0.3;
+
+      // Fastest word (keep best — overall)
+      if (stats.fastestWord &&
+          (!player.stats.fastestWord || stats.fastestWord.ms < player.stats.fastestWord.ms)) {
+        player.stats.fastestWord = stats.fastestWord;
+      }
+
+      // Fastest word per length (merge, keeping the faster one)
+      if (stats.fastestByLength) {
+        player.stats.fastestByLength = player.stats.fastestByLength || {};
+        for (const len of Object.keys(stats.fastestByLength)) {
+          const incoming = stats.fastestByLength[len];
+          const existing = player.stats.fastestByLength[len];
+          if (!existing || incoming.ms < existing.ms) {
+            player.stats.fastestByLength[len] = incoming;
+          }
+        }
+      }
+
+      // Longest streak (keep best)
+      player.stats.longestStreak = Math.max(
+        player.stats.longestStreak || 0,
+        stats.longestStreak
+      );
+
+      // Weak keys
+      player.stats.weakKeys = stats.weakKeys.slice(0, 5);
+
+      // Totals
+      player.stats.totalKeysPressed = (player.stats.totalKeysPressed || 0) + stats.totalKeysPressed;
+      player.stats.totalCorrect = (player.stats.totalCorrect || 0) + stats.totalCorrect;
+
+      savePlayer(currentPlayer.name, player);
+    },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Mode cleanup (Fix W4 from review 2)
+// ---------------------------------------------------------------------------
+
+/**
+ * Clean up all active game modes. Called at the start of every screen
+ * transition to ensure no orphaned listeners or animation frames.
+ */
+function cleanupAll() {
+  // Clean up Play mode
+  try { cleanupPlay(); } catch (_) { /* play.js may not be initialised */ }
+}
+
+// ---------------------------------------------------------------------------
+// Expose for cross-module access
+// ---------------------------------------------------------------------------
+
+// play.js needs to call back into main
+// for screen transitions. Expose on window for now.
+window._main = {
+  showPlayerSelect,
+  showModeSelect,
+  getCurrentPlayer: () => currentPlayer
+};
+
+// ---------------------------------------------------------------------------
+// Initialisation
+// ---------------------------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', () => {
+  overlay = document.getElementById('overlay');
+
+  // ── Early theme application ──
+  // Load globally saved theme preference (not per-player)
+  try {
+    const savedTheme = localStorage.getItem('typingGame_theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      setTheme(savedTheme);
+    }
+  } catch (_) {
+    // localStorage unavailable — stay on default light theme
+  }
+
+  // ── Global theme toggle (outside game frame) ──
+  updateThemeToggleIcons(document.documentElement.getAttribute('data-theme') || 'light');
+  const globalThemeBtn = document.getElementById('global-theme-toggle');
+  if (globalThemeBtn) {
+    globalThemeBtn.addEventListener('click', toggleTheme);
+  }
+
+  // Initialise mobile/touch gate
+  initMobileGate();
+
+  // Wire up audio mute button (Task 10)
+  setupMuteButton();
+
+  // Ensure AudioContext is created on first keydown (browser autoplay policy)
+  document.addEventListener('keydown', () => { initAudio(); }, { once: true });
+
+  // ── Keyboard initialisation (Task 6) ──
+  const keyboardContainer = document.getElementById('keyboard');
+  if (keyboardContainer) {
+    initKeyboard(keyboardContainer);
+  }
+
+  // ── Keyboard toggle button (Task 8) ──
+  // Listener attached ONCE here (Addendum 2 Fix C3: never add listeners in repeated functions)
+  const toggleBtn = document.getElementById('keyboard-toggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const newMode = toggleVisibilityMode();
+      const label = toggleBtn.querySelector('.hud-btn__label');
+      if (label) {
+        switch (newMode) {
+          case 'show': label.textContent = 'Keyboard'; break;
+          case 'hide': label.textContent = 'Keyboard (off)'; break;
+        }
+      }
+      toggleBtn.classList.toggle('hud-btn--active', newMode === 'show');
+    });
+  }
+
+  // ── HUD theme toggle button ──
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  if (themeToggleBtn) {
+    // Set initial icon
+    const initTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const icon = themeToggleBtn.querySelector('.theme-icon');
+    if (icon) icon.textContent = initTheme === 'dark' ? '\u2600' : '\uD83C\uDF19';
+
+    themeToggleBtn.addEventListener('click', () => {
+      toggleTheme();
+    });
+  }
+
+  // Start with player selection
+  showPlayerSelect();
+});
+
+  </script>
+</body>
+</html>
