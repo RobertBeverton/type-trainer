@@ -105,12 +105,12 @@ function initMobileGate() {
 
 /**
  * Return the default theme for a given age bracket.
- * 4-5 and 6-8 → light; 9-12 and Adult → dark.
+ * 4-5 and 6-8 → colourful-light; 9-12 and Adult → clean-light.
  * @param {string} ageBracket
- * @returns {'light' | 'dark'}
+ * @returns {string}
  */
 function getDefaultThemeForBracket(ageBracket) {
-  return (ageBracket === '4-5' || ageBracket === '6-8') ? 'light' : 'dark';
+  return (ageBracket === '4-5' || ageBracket === '6-8') ? 'colourful-light' : 'clean-light';
 }
 
 /**
@@ -139,8 +139,14 @@ function updateThemeToggleIcons(theme) {
  * @returns {'light' | 'dark'} The new theme
  */
 function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'light';
-  const next = current === 'dark' ? 'light' : 'dark';
+  const current = document.documentElement.getAttribute('data-theme') || 'clean-light';
+  const themeToggleMap = {
+    'clean-light': 'clean-dark',
+    'clean-dark': 'clean-light',
+    'colourful-light': 'colourful-dark',
+    'colourful-dark': 'colourful-light'
+  };
+  const next = themeToggleMap[current] || 'clean-light';
   setTheme(next);
 
   // Save globally (not per-player)
@@ -709,7 +715,7 @@ function showModeSelect() {
         updatePlayerBracket(currentPlayer.name, b);
         currentPlayer.data = getPlayer(currentPlayer.name);
         // Apply theme
-        const theme = (b === '4-5' || b === '6-8') ? 'light' : 'dark';
+        const theme = getDefaultThemeForBracket(b);
         setTheme(theme);
         // Refresh the mode select screen
         showModeSelect();
@@ -938,8 +944,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Early theme application ──
   // Load globally saved theme preference (not per-player)
   try {
+    // Migrate old theme names
+    const _themeMigration = { 'light': 'clean-light', 'dark': 'clean-dark' };
+    const _savedTheme = localStorage.getItem('typingGame_theme');
+    if (_savedTheme && _themeMigration[_savedTheme]) {
+      localStorage.setItem('typingGame_theme', _themeMigration[_savedTheme]);
+    }
+
     const savedTheme = localStorage.getItem('typingGame_theme');
-    if (savedTheme === 'dark' || savedTheme === 'light') {
+    const validThemes = ['clean-light', 'clean-dark', 'colourful-light', 'colourful-dark'];
+    if (validThemes.includes(savedTheme)) {
       setTheme(savedTheme);
     }
   } catch (_) {
