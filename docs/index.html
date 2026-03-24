@@ -68,6 +68,16 @@
   */
 
   /* TODO Phase 4: @media (prefers-contrast: more) overrides */
+
+  /* Theme swatch colours — static, not theme-dependent (used by shell.css to preview each theme) */
+  --swatch-colourful-light-bg: #FFF8E7;
+  --swatch-colourful-light-border: #FF6B6B;
+  --swatch-colourful-dark-bg: #1A1520;
+  --swatch-colourful-dark-border: #C4A8FF;
+  --swatch-clean-light-bg: #FAFAF8;
+  --swatch-clean-light-border: #536E7A;
+  --swatch-clean-dark-bg: #0E0E1A;
+  --swatch-clean-dark-border: #77AAFF;
 }
 
 /* === Colourful Light (default for ages 4-8) === */
@@ -459,10 +469,10 @@ body {
   flex-shrink: 0;
 }
 
-.kg-theme-swatch--colourful-light { background: #FFF8E7; border-color: #FF6B6B; }
-.kg-theme-swatch--colourful-dark  { background: #1A1520; border-color: #C4A8FF; }
-.kg-theme-swatch--clean-light     { background: #FAFAF8; border-color: #536E7A; }
-.kg-theme-swatch--clean-dark      { background: #0E0E1A; border-color: #77AAFF; }
+.kg-theme-swatch--colourful-light { background: var(--swatch-colourful-light-bg); border-color: var(--swatch-colourful-light-border); }
+.kg-theme-swatch--colourful-dark  { background: var(--swatch-colourful-dark-bg);  border-color: var(--swatch-colourful-dark-border); }
+.kg-theme-swatch--clean-light     { background: var(--swatch-clean-light-bg);     border-color: var(--swatch-clean-light-border); }
+.kg-theme-swatch--clean-dark      { background: var(--swatch-clean-dark-bg);      border-color: var(--swatch-clean-dark-border); }
 
 /* === Overlays === */
 .kg-overlay {
