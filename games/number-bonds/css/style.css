@@ -195,6 +195,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   border: 2px solid var(--border);
   border-radius: var(--radius-xl);
   background: var(--bg-surface);
+  color: var(--text-primary);
   cursor: pointer;
   font-family: var(--font-family);
   transition: all var(--transition-fast);
