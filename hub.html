@@ -21,6 +21,7 @@
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    padding-top: 56px;
   }
 
   /* Floating background shapes */
@@ -55,29 +56,6 @@
     padding: 40px 20px;
     position: relative;
     z-index: 1;
-  }
-
-  .header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  .header h1 {
-    font-weight: 900;
-    font-size: var(--text-3xl);
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple), var(--accent-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 1px;
-    line-height: 1.1;
-    margin-bottom: 8px;
-  }
-
-  .header p {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    font-weight: 600;
   }
 
   .games-grid {
@@ -205,28 +183,24 @@
     box-shadow: 0 4px 15px rgba(167,139,250,0.3);
   }
 
-  .footer {
+  .kg-hub-welcome {
+    font-size: var(--text-2xl);
+    font-weight: 900;
+    color: var(--text-primary);
     text-align: center;
-    margin-top: 48px;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 600;
+    margin-bottom: var(--space-lg);
   }
 
   @media (max-width: 500px) {
-    .header h1 { font-size: 2.2rem; }
     .games-grid { gap: var(--space-md); }
     .game-card { padding: 24px 18px; }
   }
 </style>
 </head>
-<body>
+<body data-page="hub">
 
 <div class="container">
-  <div class="header">
-    <h1>Kids Games</h1>
-    <p>Fun, free, ad-free educational games</p>
-  </div>
+  <h1 id="kg-hub-welcome" class="kg-hub-welcome">Pick a game!</h1>
 
   <div class="games-grid">
     <a href="type-trainer.html" class="game-card type-trainer needs-keyboard">
@@ -248,18 +222,9 @@
     </a>
   </div>
 
-  <div class="footer">
-    Made with ❤️ by Robert Beverton
-  </div>
+
 </div>
 
-<script>
-  // Detect touch-only devices and add class to body for CSS-driven reordering.
-  // Games still remain clickable (user might have a bluetooth keyboard), just dimmed.
-  if ('ontouchstart' in window && !matchMedia('(pointer: fine)').matches) {
-    document.body.classList.add('touch-device');
-  }
-</script>
 
 </body>
 </html>
