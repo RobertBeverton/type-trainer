@@ -34,12 +34,80 @@
   // --- Volume state ---
   let muted = false;
 
+  // --- Migration helpers ---
+
+  function bracketToAge(bracket) {
+    const map = { '4-5': 5, '6-8': 7, '9-12': 10, 'Adult': 18 };
+    return map[bracket] || 7;
+  }
+
+  function migrateTypeTrainerData() {
+    // Only run once
+    if (localStorage.getItem('kidsgames_migrated_typetrainer')) return;
+
+    let oldPlayers;
+    try {
+      oldPlayers = JSON.parse(localStorage.getItem('players') || 'null');
+    } catch (e) {
+      console.error('KidsGames: corrupt old player data, skipping migration', e);
+      localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+      return;
+    }
+
+    if (!oldPlayers || !oldPlayers.players) {
+      localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+      return;
+    }
+
+    // Migrate each player profile
+    Object.entries(oldPlayers.players).forEach(([name, data]) => {
+      if (!getPlayer(name)) {
+        const theme = data.settings && data.settings.theme ? data.settings.theme : 'clean-light';
+        const themeMap = { 'light': 'clean-light', 'dark': 'clean-dark', 'clean-light': 'clean-light', 'clean-dark': 'clean-dark', 'colourful-light': 'colourful-light', 'colourful-dark': 'colourful-dark' };
+        createPlayer(name, { dob: null, manualAge: bracketToAge(data.ageBracket) });
+        savePlayer(name, { theme: themeMap[theme] || theme });
+      }
+      // Migrate game-specific data
+      const key = STORAGE_PREFIX + 'typetrainer_' + name;
+      _write(key, {
+        highScore: data.highScore || 0,
+        highestStage: data.highestStage || 0,
+        totalGamesPlayed: data.totalGamesPlayed || 0,
+        stats: data.stats || {},
+        speedPreference: (data.settings && data.settings.speedPreference) || 1.8,
+      });
+    });
+
+    // Set active player from old data
+    const lastPlayer = localStorage.getItem('typingGame_lastPlayer');
+    if (lastPlayer && getPlayer(lastPlayer)) {
+      setActivePlayer(lastPlayer);
+    }
+
+    // Clean up old keys (only if migration succeeded)
+    const newPlayers = getAllPlayers();
+    if (Object.keys(newPlayers).length > 0) {
+      localStorage.removeItem('players');
+      localStorage.removeItem('currentPlayer');
+      localStorage.removeItem('typingGame_theme');
+      localStorage.removeItem('typingGame_lastPlayer');
+    } else {
+      console.error('KidsGames: migration wrote no players — keeping old keys as backup');
+    }
+    localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+  }
+
   // --- Init ---
   let _initialized = false;  // guard against double-invocation
 
   function initShell() {
     if (_initialized) return;
     _initialized = true;
+
+    // Migrate old type trainer data (only runs once, only on type-trainer page)
+    if (document.body.dataset.page === 'type-trainer') {
+      migrateTypeTrainerData();
+    }
 
     renderGamesDropdown();
 
