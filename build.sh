@@ -73,8 +73,6 @@ echo "--- Building Type Trainer ---"
 JS_TEMP=$(mktemp)
 CSS_TEMP=$(mktemp)
 SHELL_JS_TEMP=$(mktemp)
-trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
-
 JS_COMBINED=$(mktemp)
 trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
 
