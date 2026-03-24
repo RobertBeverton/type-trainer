@@ -258,7 +258,7 @@ awk -v tokens_file="shared/tokens.css" -v shell_css="shared/shell.css" \
     close(shell_html)
     next
   }
-  /<\/body>/ {
+  /^<script>$/ {
     print "  <script>"
     while ((getline line < shell_js) > 0) { print line }
     close(shell_js)
@@ -304,7 +304,7 @@ build_simple_game() {
       close(shell_html)
       next
     }
-    /<\/body>/ {
+    /^<script>$/ {
       print "  <script>"
       while ((getline line < shell_js) > 0) { print line }
       close(shell_js)
