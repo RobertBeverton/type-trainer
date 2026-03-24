@@ -2069,6 +2069,59 @@ body {
   color: var(--bg-primary, #FAFAF8);
 }
 
+/* Speed dropdown */
+.hud-speed-wrap {
+  position: relative;
+}
+
+.speed-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 140px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.speed-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: left;
+  min-height: 44px;
+  transition: background var(--transition-fast);
+}
+
+.speed-option:hover {
+  background: var(--border);
+}
+
+.speed-option--active {
+  color: var(--hud-accent, var(--btn-primary-bg));
+}
+
+.speed-option__check {
+  opacity: 0;
+  font-size: var(--text-base);
+}
+
+.speed-option--active .speed-option__check {
+  opacity: 1;
+}
+
 
 /* ========================================
    PLAY MODE — THEME VARIABLES (Task 19)
@@ -2316,7 +2369,7 @@ body {
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">3ae0fed 24 Mar 15:45</span>
+  <span class="kg-shell__version" title="Build version">6865191 24 Mar 15:53</span>
 </div>
 
 <!-- Player select overlay -->
@@ -2386,10 +2439,15 @@ body {
         <span class="hud-btn__icon">&#9000;</span>
         <span class="hud-btn__label">Keyboard</span>
       </button>
-      <button id="speed-btn" class="hud-btn" aria-label="Change difficulty" title="Difficulty">
-        <span class="hud-btn__icon">⚡</span>
-        <span class="hud-btn__label" id="speed-label">Normal</span>
-      </button>
+      <div class="hud-speed-wrap">
+        <button id="speed-btn" class="hud-btn" aria-label="Change difficulty" aria-expanded="false" aria-controls="speed-dropdown">
+          <span class="hud-btn__icon">⚡</span>
+          <span class="hud-btn__label" id="speed-label">Normal</span>
+        </button>
+        <div id="speed-dropdown" class="speed-dropdown" hidden>
+          <!-- Populated by main.js -->
+        </div>
+      </div>
       <button id="mute-btn" class="hud-btn mute-btn" aria-label="Mute audio" aria-pressed="false" title="Toggle sound">
         <span class="mute-icon" aria-hidden="true">&#x1F50A;</span>
       </button>
@@ -6779,22 +6837,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Speed picker button
-  const speedBtn = document.getElementById('speed-btn');
-  const speedLabel = document.getElementById('speed-label');
-  if (speedBtn && speedLabel) {
-    speedBtn.addEventListener('click', () => {
-      const currentText = speedLabel.textContent;
-      const currentIdx = SPEEDS.findIndex(s => s.label === currentText);
-      const next = SPEEDS[(currentIdx + 1) % SPEEDS.length];
-      // Update the live game immediately
-      setSpeedPreference(next.value);
-      // Persist for next session
-      if (window.KidsGames) {
-        const existing = window.KidsGames.loadGameData('typetrainer');
-        window.KidsGames.saveGameData('typetrainer', { ...existing, speedPreference: next.value });
-      }
-      speedLabel.textContent = next.label;
+  // Speed picker dropdown
+  const speedBtn      = document.getElementById('speed-btn');
+  const speedLabel    = document.getElementById('speed-label');
+  const speedDropdown = document.getElementById('speed-dropdown');
+
+  function buildSpeedDropdown(currentLabel) {
+    speedDropdown.innerHTML = '';
+    SPEEDS.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'speed-option' + (s.label === currentLabel ? ' speed-option--active' : '');
+      btn.innerHTML = `${s.label}<span class="speed-option__check">✓</span>`;
+      btn.addEventListener('click', () => {
+        setSpeedPreference(s.value);
+        if (window.KidsGames) {
+          const existing = window.KidsGames.loadGameData('typetrainer');
+          window.KidsGames.saveGameData('typetrainer', { ...existing, speedPreference: s.value });
+        }
+        speedLabel.textContent = s.label;
+        speedDropdown.hidden = true;
+        speedBtn.setAttribute('aria-expanded', 'false');
+      });
+      speedDropdown.appendChild(btn);
+    });
+  }
+
+  if (speedBtn && speedLabel && speedDropdown) {
+    speedBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = !speedDropdown.hidden;
+      speedDropdown.hidden = open;
+      speedBtn.setAttribute('aria-expanded', String(!open));
+      if (!open) buildSpeedDropdown(speedLabel.textContent);
+    });
+
+    document.addEventListener('click', () => {
+      speedDropdown.hidden = true;
+      speedBtn.setAttribute('aria-expanded', 'false');
     });
   }
 

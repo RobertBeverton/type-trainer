@@ -1421,6 +1421,59 @@ body {
   color: var(--bg-primary, #FAFAF8);
 }
 
+/* Speed dropdown */
+.hud-speed-wrap {
+  position: relative;
+}
+
+.speed-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 140px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.speed-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: left;
+  min-height: 44px;
+  transition: background var(--transition-fast);
+}
+
+.speed-option:hover {
+  background: var(--border);
+}
+
+.speed-option--active {
+  color: var(--hud-accent, var(--btn-primary-bg));
+}
+
+.speed-option__check {
+  opacity: 0;
+  font-size: var(--text-base);
+}
+
+.speed-option--active .speed-option__check {
+  opacity: 1;
+}
+
 
 /* ========================================
    PLAY MODE — THEME VARIABLES (Task 19)

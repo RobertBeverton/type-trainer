@@ -167,22 +167,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Speed picker button
-  const speedBtn = document.getElementById('speed-btn');
-  const speedLabel = document.getElementById('speed-label');
-  if (speedBtn && speedLabel) {
-    speedBtn.addEventListener('click', () => {
-      const currentText = speedLabel.textContent;
-      const currentIdx = SPEEDS.findIndex(s => s.label === currentText);
-      const next = SPEEDS[(currentIdx + 1) % SPEEDS.length];
-      // Update the live game immediately
-      setSpeedPreference(next.value);
-      // Persist for next session
-      if (window.KidsGames) {
-        const existing = window.KidsGames.loadGameData('typetrainer');
-        window.KidsGames.saveGameData('typetrainer', { ...existing, speedPreference: next.value });
-      }
-      speedLabel.textContent = next.label;
+  // Speed picker dropdown
+  const speedBtn      = document.getElementById('speed-btn');
+  const speedLabel    = document.getElementById('speed-label');
+  const speedDropdown = document.getElementById('speed-dropdown');
+
+  function buildSpeedDropdown(currentLabel) {
+    speedDropdown.innerHTML = '';
+    SPEEDS.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'speed-option' + (s.label === currentLabel ? ' speed-option--active' : '');
+      btn.innerHTML = `${s.label}<span class="speed-option__check">✓</span>`;
+      btn.addEventListener('click', () => {
+        setSpeedPreference(s.value);
+        if (window.KidsGames) {
+          const existing = window.KidsGames.loadGameData('typetrainer');
+          window.KidsGames.saveGameData('typetrainer', { ...existing, speedPreference: s.value });
+        }
+        speedLabel.textContent = s.label;
+        speedDropdown.hidden = true;
+        speedBtn.setAttribute('aria-expanded', 'false');
+      });
+      speedDropdown.appendChild(btn);
+    });
+  }
+
+  if (speedBtn && speedLabel && speedDropdown) {
+    speedBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = !speedDropdown.hidden;
+      speedDropdown.hidden = open;
+      speedBtn.setAttribute('aria-expanded', String(!open));
+      if (!open) buildSpeedDropdown(speedLabel.textContent);
+    });
+
+    document.addEventListener('click', () => {
+      speedDropdown.hidden = true;
+      speedBtn.setAttribute('aria-expanded', 'false');
     });
   }
 

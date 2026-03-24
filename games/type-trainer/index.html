@@ -20,10 +20,15 @@
         <span class="hud-btn__icon">&#9000;</span>
         <span class="hud-btn__label">Keyboard</span>
       </button>
-      <button id="speed-btn" class="hud-btn" aria-label="Change difficulty" title="Difficulty">
-        <span class="hud-btn__icon">⚡</span>
-        <span class="hud-btn__label" id="speed-label">Normal</span>
-      </button>
+      <div class="hud-speed-wrap">
+        <button id="speed-btn" class="hud-btn" aria-label="Change difficulty" aria-expanded="false" aria-controls="speed-dropdown">
+          <span class="hud-btn__icon">⚡</span>
+          <span class="hud-btn__label" id="speed-label">Normal</span>
+        </button>
+        <div id="speed-dropdown" class="speed-dropdown" hidden>
+          <!-- Populated by main.js -->
+        </div>
+      </div>
       <button id="mute-btn" class="hud-btn mute-btn" aria-label="Mute audio" aria-pressed="false" title="Toggle sound">
         <span class="mute-icon" aria-hidden="true">&#x1F50A;</span>
       </button>
