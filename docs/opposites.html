@@ -1687,8 +1687,7 @@ function createPlayer(name, { dob, manualAge }) {
     theme: getDefaultTheme(dob, manualAge),
     createdAt: new Date().toISOString().slice(0, 10)
   };
-  _write(PLAYERS_KEY, players);
-  return true;
+  return _write(PLAYERS_KEY, players);
 }
 
 function savePlayer(name, data) {
@@ -1703,11 +1702,15 @@ function deletePlayer(name) {
   _write(PLAYERS_KEY, players);
   // Clean up game-specific data — match exact suffix pattern
   const suffix = '_' + name;
-  Object.keys(localStorage).forEach(k => {
-    if (k.startsWith(STORAGE_PREFIX) && k.endsWith(suffix) && k !== PLAYERS_KEY && k !== ACTIVE_KEY) {
-      localStorage.removeItem(k);
-    }
-  });
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith(STORAGE_PREFIX) && k.endsWith(suffix) && k !== PLAYERS_KEY && k !== ACTIVE_KEY) {
+        localStorage.removeItem(k);
+      }
+    });
+  } catch (e) {
+    console.error('KidsGames: failed to clean up game data for player', name, e);
+  }
 }
 
 function getActivePlayer() {
@@ -1797,8 +1800,17 @@ function saveGameData(gameId, data) {
   let muted = false;
 
   // --- Init ---
+  let _initialized = false;  // guard against double-invocation
+
   function initShell() {
+    if (_initialized) return;
+    _initialized = true;
+
     renderGamesDropdown();
+
+    // Restrict DoB input to today (prevents negative ages from future dates)
+    const dobInput = document.getElementById('kg-dob-input');
+    if (dobInput) dobInput.max = new Date().toISOString().slice(0, 10);
 
     // Set page title from data attribute
     const pageTitle = document.body.dataset.pageTitle;
@@ -2008,7 +2020,7 @@ function saveGameData(gameId, data) {
       if (e.key === 'Tab') {
         const openOverlay = document.querySelector('.kg-overlay:not([hidden])');
         if (!openOverlay) return;
-        const focusable = openOverlay.querySelectorAll('button:not([disabled]), input, [tabindex]:not([tabindex="-1"])');
+        const focusable = openOverlay.querySelectorAll('button:not([disabled]), input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])');
         if (!focusable.length) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
