@@ -734,6 +734,7 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    padding-top: 56px;
   }
 
   /* Floating background shapes */
@@ -1129,29 +1130,9 @@ body {
     .score-item { padding: 8px 14px; font-size: 0.9rem; }
   }
 
-  .back-link {
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    z-index: 50;
-    background: var(--bg-surface);
-    border-radius: 14px;
-    padding: 8px 16px;
-    font-family: var(--font-family);
-    font-weight: 800;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    text-decoration: none;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .back-link:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-  }
 </style>
 </head>
-<body>
+<body data-page="opposites" data-page-title="Opposites">
 <!-- Kids Games Shell Bar -->
 <div id="kg-shell" class="kg-shell" role="banner">
   <!-- Games dropdown -->
@@ -1252,8 +1233,6 @@ body {
   </button>
 </div>
 
-<a href="index.html" class="back-link" aria-label="Back to all games">🏠 Games</a>
-
 <div class="container">
   <div class="header">
     <h1>Opposites!</h1>
@@ -1286,6 +1265,24 @@ body {
 </div>
 
 <script>
+// Read player context from shared shell
+const playerCtx = window.KidsGames ? window.KidsGames.player : null;
+const ageBracket = playerCtx ? playerCtx.ageBracket : '6-8';
+
+const BRACKET_CONFIG = {
+  '4-5': { wordCount: 15, distractorCount: 2, showHint: true },
+  '6-8': { wordCount: 20, distractorCount: 3, showHint: true },
+  '9-12': { wordCount: 30, distractorCount: 3, showHint: false },
+  '13+': { wordCount: 40, distractorCount: 3, showHint: false },
+};
+const config = BRACKET_CONFIG[ageBracket] || BRACKET_CONFIG['6-8'];
+
+// Load saved data for current player
+const savedData = window.KidsGames ? window.KidsGames.loadGameData('opposites') : {};
+let lifetimeGames = savedData.gamesPlayed || 0;
+let lifetimeBestStreak = savedData.bestStreak || 0;
+let lifetimeBestScore = savedData.bestScore || 0;
+
 // ---- WORD DATA ----
 const wordPairs = [
   { word: "Big", opposites: ["small", "little"], distractors: ["red", "fun", "round"] },
@@ -1426,7 +1423,7 @@ function setMode(m) {
 }
 
 function startGame() {
-  shuffledPairs = shuffle(wordPairs);
+  shuffledPairs = shuffle(wordPairs).slice(0, config.wordCount);
   currentIndex = 0;
   correctScore = 0;
   wrongScore = 0;
@@ -1463,7 +1460,7 @@ function renderQuestion() {
   if (mode === 'choice') {
     // Pick 1 correct answer and 3 distractors (only from this word's own distractor list)
     const correctOne = pair.opposites[Math.floor(Math.random() * pair.opposites.length)];
-    const wrongOnes = shuffle(pair.distractors).slice(0, 3);
+    const wrongOnes = shuffle(pair.distractors).slice(0, config.distractorCount);
     const options = shuffle([correctOne, ...wrongOnes]);
 
     html += `<div class="choices">`;
@@ -1477,9 +1474,11 @@ function renderQuestion() {
         <input class="type-input" id="typeInput" type="text" placeholder="Type the opposite..." autocomplete="off" autofocus />
         <br>
         <button class="submit-btn" onclick="checkTyped()">Check! ✨</button>
-        <div class="hint-text">Any correct opposite counts!</div>
       </div>
     `;
+    if (mode === 'type' && config.showHint) {
+      html += `<div class="hint-text">Any correct opposite counts!</div>`;
+    }
   }
 
   html += `<div class="feedback" id="feedback"></div>`;
@@ -1584,6 +1583,18 @@ function nextQuestion() {
 }
 
 function showEndScreen() {
+  // Update and save lifetime stats
+  lifetimeGames++;
+  if (bestStreak > lifetimeBestStreak) lifetimeBestStreak = bestStreak;
+  if (correctScore > lifetimeBestScore) lifetimeBestScore = correctScore;
+  if (window.KidsGames) {
+    window.KidsGames.saveGameData('opposites', {
+      gamesPlayed: lifetimeGames,
+      bestStreak: lifetimeBestStreak,
+      bestScore: lifetimeBestScore,
+      lastPlayed: new Date().toISOString().slice(0, 10),
+    });
+  }
   playFinishSound();
   const pct = Math.round((correctScore / shuffledPairs.length) * 100);
   let stars = '';
@@ -1609,6 +1620,14 @@ function showEndScreen() {
       <button class="restart-btn" onclick="startGame()">Play Again! 🔄</button>
     </div>
   `;
+
+  if (lifetimeGames > 1) {
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'final-score';
+    statsDiv.style.cssText = 'margin-top: 8px; opacity: 0.7;';
+    statsDiv.textContent = `Personal best: ${lifetimeBestScore} · Best streak: ${lifetimeBestStreak} · Games: ${lifetimeGames}`;
+    document.querySelector('.end-screen').appendChild(statsDiv);
+  }
 
   // Big celebration particles
   setTimeout(() => {
@@ -1799,12 +1818,80 @@ function saveGameData(gameId, data) {
   // --- Volume state ---
   let muted = false;
 
+  // --- Migration helpers ---
+
+  function bracketToAge(bracket) {
+    const map = { '4-5': 5, '6-8': 7, '9-12': 10, 'Adult': 18 };
+    return map[bracket] || 7;
+  }
+
+  function migrateTypeTrainerData() {
+    // Only run once
+    if (localStorage.getItem('kidsgames_migrated_typetrainer')) return;
+
+    let oldPlayers;
+    try {
+      oldPlayers = JSON.parse(localStorage.getItem('players') || 'null');
+    } catch (e) {
+      console.error('KidsGames: corrupt old player data, skipping migration', e);
+      localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+      return;
+    }
+
+    if (!oldPlayers || !oldPlayers.players) {
+      localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+      return;
+    }
+
+    // Migrate each player profile
+    Object.entries(oldPlayers.players).forEach(([name, data]) => {
+      if (!getPlayer(name)) {
+        const theme = data.settings && data.settings.theme ? data.settings.theme : 'clean-light';
+        const themeMap = { 'light': 'clean-light', 'dark': 'clean-dark', 'clean-light': 'clean-light', 'clean-dark': 'clean-dark', 'colourful-light': 'colourful-light', 'colourful-dark': 'colourful-dark' };
+        createPlayer(name, { dob: null, manualAge: bracketToAge(data.ageBracket) });
+        savePlayer(name, { theme: themeMap[theme] || theme });
+      }
+      // Migrate game-specific data
+      const key = STORAGE_PREFIX + 'typetrainer_' + name;
+      _write(key, {
+        highScore: data.highScore || 0,
+        highestStage: data.highestStage || 0,
+        totalGamesPlayed: data.totalGamesPlayed || 0,
+        stats: data.stats || {},
+        speedPreference: (data.settings && data.settings.speedPreference) || 1.8,
+      });
+    });
+
+    // Set active player from old data
+    const lastPlayer = localStorage.getItem('typingGame_lastPlayer');
+    if (lastPlayer && getPlayer(lastPlayer)) {
+      setActivePlayer(lastPlayer);
+    }
+
+    // Clean up old keys (only if migration succeeded)
+    const newPlayers = getAllPlayers();
+    if (Object.keys(newPlayers).length > 0) {
+      localStorage.removeItem('players');
+      localStorage.removeItem('currentPlayer');
+      localStorage.removeItem('typingGame_theme');
+      localStorage.removeItem('typingGame_lastPlayer');
+    } else {
+      console.error('KidsGames: migration wrote no players — keeping old keys as backup');
+    }
+    localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
+  }
+
   // --- Init ---
   let _initialized = false;  // guard against double-invocation
 
   function initShell() {
     if (_initialized) return;
     _initialized = true;
+
+    // Migrate old type trainer data (only runs once, only on type-trainer page)
+    if (document.body.dataset.page === 'type-trainer') {
+      migrateTypeTrainerData();
+    }
 
     renderGamesDropdown();
 
