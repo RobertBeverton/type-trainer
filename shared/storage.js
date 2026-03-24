@@ -56,7 +56,7 @@ function createPlayer(name, { dob, manualAge }) {
     name: name,
     dob: dob || null,
     manualAge: dob ? null : (manualAge || null),
-    theme: getDefaultTheme(dob, manualAge),
+    theme: getDefaultTheme(),
     createdAt: new Date().toISOString().slice(0, 10)
   };
   // Return the sanitised name on success so callers can look up the right key
@@ -117,19 +117,9 @@ function getAge(player) {
   return player.manualAge || null;
 }
 
-function getDefaultTheme(dob, manualAge) {
-  let age;
-  if (dob) {
-    const today = new Date();
-    const birth = new Date(dob);
-    age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
-  } else {
-    age = manualAge != null ? manualAge : null;
-  }
-  if (age !== null && age <= 8) return 'colourful-light';
-  return 'clean-light';
+function getDefaultTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'colourful-dark' : 'colourful-light';
 }
 
 // Game-specific data

@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* shared/tokens.css — Design tokens for Kids Games hub
-   Four themes: colourful-light, colourful-dark, clean-light, clean-dark
+   Two themes: colourful-light, colourful-dark
    Set via data-theme attribute on <html> */
 
 /* === Base Tokens (theme-agnostic) === */
@@ -74,13 +74,9 @@
   --swatch-colourful-light-border: #FF6B6B;
   --swatch-colourful-dark-bg: #1A1520;
   --swatch-colourful-dark-border: #C4A8FF;
-  --swatch-clean-light-bg: #FAFAF8;
-  --swatch-clean-light-border: #536E7A;
-  --swatch-clean-dark-bg: #0E0E1A;
-  --swatch-clean-dark-border: #77AAFF;
 }
 
-/* === Colourful Light (default for ages 4-8) === */
+/* === Colourful Light === */
 :root[data-theme="colourful-light"] {
   /* Backgrounds */
   --bg: #FFF8E7;
@@ -134,7 +130,7 @@
   --hud-accent: #7C5FE0;       /* Darkened from #A78BFA — 4.6:1 on white */
 }
 
-/* === Colourful Dark (ages 4-8, dark preference) === */
+/* === Colourful Dark === */
 :root[data-theme="colourful-dark"] {
   /* Backgrounds */
   --bg: #1A1520;
@@ -185,112 +181,6 @@
   --hud-bg: #251E2C;
   --hud-text: #F0ECF4;
   --hud-accent: #C4A8FF;
-}
-
-/* === Clean Light (default for ages 9+) === */
-:root[data-theme="clean-light"] {
-  /* Backgrounds */
-  --bg: #FAFAF8;
-  --bg-surface: #F5F5F0;
-  --bg-game: #FFFFFF;
-  --bg-overlay: rgba(250, 250, 248, 0.95);
-
-  /* Text */
-  --text-primary: #1A1A2E;
-  --text-secondary: #4A4A5A;
-  --text-muted: #6E6E7E;       /* Darkened from #8A8A9A — 5.0:1 on bg-surface */
-
-  /* Borders */
-  --border: #E0E0D8;
-  --border-light: #EEEEEA;
-
-  /* Shadows */
-  --shadow: 0 4px 16px rgba(0,0,0,0.06);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
-
-  /* Accent colours (muted, restrained) */
-  --accent-primary: #536E7A;
-  --accent-secondary: #4A8E85;
-  --accent-tertiary: #9A7D2E;   /* Darkened from #C4A44A — visible on light bg */
-  --accent-purple: #7A6BA0;
-  --accent-warm: #B87A4A;
-  --accent-pink: #B06090;
-  --accent-blue: #4A80B0;
-
-  /* Feedback */
-  --success-bg: #D1FAE5;
-  --success-text: #065F46;
-  --error-bg: #FEE2E2;
-  --error-text: #B91C1C;       /* Darkened from #DC2626 — 5.3:1 on error-bg */
-  --warning-bg: #FEF3C7;
-  --warning-text: #92400E;
-
-  /* Buttons — solid colours */
-  --btn-primary-bg: #0B2C44;
-  --btn-primary-text: #FFFFFF;
-  --btn-primary-hover: #1A4A63;
-  --btn-secondary-bg: transparent;
-  --btn-secondary-text: #0B2C44;
-  --btn-secondary-border: #536E7A;
-  --btn-secondary-hover: #ECF1F4;
-
-  /* HUD / Shell bar */
-  --hud-bg: #F5F5F0;
-  --hud-text: #1A1A2E;
-  --hud-accent: #536E7A;
-}
-
-/* === Clean Dark (ages 9+, dark preference) === */
-:root[data-theme="clean-dark"] {
-  /* Backgrounds */
-  --bg: #0E0E1A;
-  --bg-surface: #0F0F2A;
-  --bg-game: #0A0A1A;
-  --bg-overlay: rgba(5, 5, 20, 0.93);
-
-  /* Text */
-  --text-primary: #E8E8F0;
-  --text-secondary: #A3A3C2;
-  --text-muted: #8585A8;
-
-  /* Borders */
-  --border: #1A1A4A;
-  --border-light: #1A1A3A;
-
-  /* Shadows */
-  --shadow: 0 4px 16px rgba(0,0,0,0.3);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
-
-  /* Accent colours */
-  --accent-primary: #7AF;
-  --accent-secondary: #14B8A6;
-  --accent-tertiary: #FBBF24;
-  --accent-purple: #A855F7;
-  --accent-warm: #F97316;
-  --accent-pink: #F472B6;
-  --accent-blue: #60A5FA;
-
-  /* Feedback */
-  --success-bg: rgba(34, 197, 94, 0.15);
-  --success-text: #4ADE80;
-  --error-bg: rgba(220, 60, 60, 0.15);
-  --error-text: #FF6B6B;
-  --warning-bg: rgba(251, 191, 36, 0.15);
-  --warning-text: #FBBF24;
-
-  /* Buttons — solid colours */
-  --btn-primary-bg: #7AF;
-  --btn-primary-text: #0A0A1A;
-  --btn-primary-hover: #99BBFF;
-  --btn-secondary-bg: transparent;
-  --btn-secondary-text: #7AF;
-  --btn-secondary-border: #7AF;
-  --btn-secondary-hover: #1A2A4A;
-
-  /* HUD / Shell bar */
-  --hud-bg: #0F0F2A;
-  --hud-text: #E8E8F0;   /* near-white text — --hud-accent (#7AF) is for icons/highlights only */
-  --hud-accent: #7AF;
 }
 
 /* === Reduced Motion === */
@@ -483,8 +373,6 @@ body {
 
 .kg-theme-swatch--colourful-light { background: var(--swatch-colourful-light-bg); border-color: var(--swatch-colourful-light-border); }
 .kg-theme-swatch--colourful-dark  { background: var(--swatch-colourful-dark-bg);  border-color: var(--swatch-colourful-dark-border); }
-.kg-theme-swatch--clean-light     { background: var(--swatch-clean-light-bg);     border-color: var(--swatch-clean-light-border); }
-.kg-theme-swatch--clean-dark      { background: var(--swatch-clean-dark-bg);      border-color: var(--swatch-clean-dark-border); }
 
 /* === Overlays === */
 .kg-overlay {
@@ -1013,19 +901,11 @@ body {
 <div id="kg-theme-dropdown" class="kg-theme-dropdown" hidden>
   <button class="kg-theme-option" data-theme="colourful-light">
     <span class="kg-theme-swatch kg-theme-swatch--colourful-light"></span>
-    Colourful Light
+    Light
   </button>
   <button class="kg-theme-option" data-theme="colourful-dark">
     <span class="kg-theme-swatch kg-theme-swatch--colourful-dark"></span>
-    Colourful Dark
-  </button>
-  <button class="kg-theme-option" data-theme="clean-light">
-    <span class="kg-theme-swatch kg-theme-swatch--clean-light"></span>
-    Clean Light
-  </button>
-  <button class="kg-theme-option" data-theme="clean-dark">
-    <span class="kg-theme-swatch kg-theme-swatch--clean-dark"></span>
-    Clean Dark
+    Dark
   </button>
 </div>
 
@@ -1116,7 +996,7 @@ function createPlayer(name, { dob, manualAge }) {
     name: name,
     dob: dob || null,
     manualAge: dob ? null : (manualAge || null),
-    theme: getDefaultTheme(dob, manualAge),
+    theme: getDefaultTheme(),
     createdAt: new Date().toISOString().slice(0, 10)
   };
   // Return the sanitised name on success so callers can look up the right key
@@ -1177,19 +1057,9 @@ function getAge(player) {
   return player.manualAge || null;
 }
 
-function getDefaultTheme(dob, manualAge) {
-  let age;
-  if (dob) {
-    const today = new Date();
-    const birth = new Date(dob);
-    age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
-  } else {
-    age = manualAge != null ? manualAge : null;
-  }
-  if (age !== null && age <= 8) return 'colourful-light';
-  return 'clean-light';
+function getDefaultTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'colourful-dark' : 'colourful-light';
 }
 
 // Game-specific data
@@ -1268,8 +1138,8 @@ function saveGameData(gameId, data) {
     // Migrate each player profile
     Object.entries(oldPlayers.players).forEach(([name, data]) => {
       if (!getPlayer(name)) {
-        const theme = data.settings && data.settings.theme ? data.settings.theme : 'clean-light';
-        const themeMap = { 'light': 'clean-light', 'dark': 'clean-dark', 'clean-light': 'clean-light', 'clean-dark': 'clean-dark', 'colourful-light': 'colourful-light', 'colourful-dark': 'colourful-dark' };
+        const theme = data.settings && data.settings.theme ? data.settings.theme : 'colourful-light';
+        const themeMap = { 'light': 'colourful-light', 'dark': 'colourful-dark', 'clean-light': 'colourful-light', 'clean-dark': 'colourful-dark', 'colourful-light': 'colourful-light', 'colourful-dark': 'colourful-dark' };
         createPlayer(name, { dob: null, manualAge: bracketToAge(data.ageBracket) });
         savePlayer(name, { theme: themeMap[theme] || theme });
       }
@@ -1490,9 +1360,14 @@ function saveGameData(gameId, data) {
 
   function applyPlayer(player) {
     setActivePlayer(player.name);
+    // Migrate any clean theme stored before the theme reduction
+    let theme = player.theme;
+    if (theme === 'clean-light' || !theme) theme = 'colourful-light';
+    else if (theme === 'clean-dark') theme = 'colourful-dark';
+    if (theme !== player.theme) savePlayer(player.name, { theme });
     document.getElementById('kg-player-avatar').textContent = player.name.charAt(0).toUpperCase();
     document.getElementById('kg-player-name').textContent = player.name;
-    document.documentElement.setAttribute('data-theme', player.theme);
+    document.documentElement.setAttribute('data-theme', theme);
     document.getElementById('kg-player-overlay').hidden = true;
     _notifyPlayerChange();
   }

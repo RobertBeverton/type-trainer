@@ -62,8 +62,8 @@
     // Migrate each player profile
     Object.entries(oldPlayers.players).forEach(([name, data]) => {
       if (!getPlayer(name)) {
-        const theme = data.settings && data.settings.theme ? data.settings.theme : 'clean-light';
-        const themeMap = { 'light': 'clean-light', 'dark': 'clean-dark', 'clean-light': 'clean-light', 'clean-dark': 'clean-dark', 'colourful-light': 'colourful-light', 'colourful-dark': 'colourful-dark' };
+        const theme = data.settings && data.settings.theme ? data.settings.theme : 'colourful-light';
+        const themeMap = { 'light': 'colourful-light', 'dark': 'colourful-dark', 'clean-light': 'colourful-light', 'clean-dark': 'colourful-dark', 'colourful-light': 'colourful-light', 'colourful-dark': 'colourful-dark' };
         createPlayer(name, { dob: null, manualAge: bracketToAge(data.ageBracket) });
         savePlayer(name, { theme: themeMap[theme] || theme });
       }
@@ -284,9 +284,14 @@
 
   function applyPlayer(player) {
     setActivePlayer(player.name);
+    // Migrate any clean theme stored before the theme reduction
+    let theme = player.theme;
+    if (theme === 'clean-light' || !theme) theme = 'colourful-light';
+    else if (theme === 'clean-dark') theme = 'colourful-dark';
+    if (theme !== player.theme) savePlayer(player.name, { theme });
     document.getElementById('kg-player-avatar').textContent = player.name.charAt(0).toUpperCase();
     document.getElementById('kg-player-name').textContent = player.name;
-    document.documentElement.setAttribute('data-theme', player.theme);
+    document.documentElement.setAttribute('data-theme', theme);
     document.getElementById('kg-player-overlay').hidden = true;
     _notifyPlayerChange();
   }
