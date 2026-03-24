@@ -563,9 +563,9 @@ export function generateDistractors(answer, op, settings, count = 3) {
     let candidate;
 
     if (op === '*' || op === '/') {
-      // Use nearby multiplication facts
-      const offset = randInt(1, 4) * (Math.random() < 0.5 ? 1 : -1);
-      candidate = answer + offset * randInt(1, settings.maxTable);
+      // Use an adjacent multiple — stays in the same ballpark as the correct answer
+      const step = randInt(1, Math.max(2, Math.floor(settings.maxTable / 3)));
+      candidate = answer + step * (Math.random() < 0.5 ? 1 : -1);
     } else {
       // Offset by a small amount
       const offset = randInt(1, 5) * (Math.random() < 0.5 ? 1 : -1);
@@ -1038,11 +1038,18 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
 }
 
 .nb-question {
+  /* clamp(2rem, 8vw, 4rem) works for short equations.
+     For custom mode with 3+ digit numbers (e.g. "? × 144 = 1728"),
+     main.js must add class .nb-question--long which overrides to clamp(1.2rem, 4vw, 2.4rem). */
   font-size: clamp(2rem, 8vw, 4rem);
   font-weight: 900;
   color: var(--text-primary);
   text-align: center;
   line-height: 1.2;
+}
+
+.nb-question--long {
+  font-size: clamp(1.2rem, 4vw, 2.4rem);
 }
 
 .nb-question .nb-blank {
@@ -1217,7 +1224,6 @@ git commit -m "feat(number-bonds): settings, game, and results screen HTML + CSS
 
 ```js
 // main.js — Entry point, wires settings + game together
-import { generateQuestion, generateDistractors } from './questions.js';
 import { GameSession } from './game.js';
 
 // --- Settings state ---
@@ -1397,6 +1403,7 @@ function startGame() {
     mode: settings.mode,
     range,
     onQuestion: renderQuestion,
+    onAnswer: renderAnswerFeedback,
     onScore: renderHud,
     onEnd: showResults,
   });
@@ -1422,7 +1429,11 @@ function renderQuestion(question, choiceNums) {
   } else {
     html = `${left} ${opStr} <span class="nb-blank">?</span> = ${result}`;
   }
-  document.getElementById('nb-question').innerHTML = html;
+  const qEl = document.getElementById('nb-question');
+  qEl.innerHTML = html;
+  // Shrink font if any number has 3+ digits (custom large ranges)
+  const hasLargeNum = [left, right, result].some(n => Math.abs(n) >= 100);
+  qEl.classList.toggle('nb-question--long', hasLargeNum);
 
   // Render choice buttons
   const choicesEl = document.getElementById('nb-choices');
@@ -1434,6 +1445,16 @@ function renderQuestion(question, choiceNums) {
     btn.setAttribute('aria-label', `Answer: ${num}`);
     btn.addEventListener('click', () => activeSession?.answer(num));
     choicesEl.appendChild(btn);
+  });
+}
+
+function renderAnswerFeedback({ correct, correctAnswer, chosen }) {
+  document.getElementById('nb-choices')?.querySelectorAll('.nb-choice').forEach(btn => {
+    btn.disabled = true;
+    const num = Number(btn.textContent);
+    if (num === correctAnswer) btn.classList.add('nb-choice--reveal');
+    if (num === chosen && !correct) btn.classList.add('nb-choice--wrong');
+    if (num === chosen && correct) btn.classList.add('nb-choice--correct');
   });
 }
 
@@ -1451,9 +1472,10 @@ function renderHud(hudState) {
 
 // --- Results rendering ---
 function showResults(stats) {
-  document.getElementById('nb-results-icon').textContent = stats.score >= 80 ? '🏆' : stats.score >= 40 ? '⭐' : '💪';
+  // Use accuracy % so thresholds work consistently across all modes and score ranges
+  document.getElementById('nb-results-icon').textContent = stats.accuracy >= 80 ? '🏆' : stats.accuracy >= 50 ? '⭐' : '💪';
   document.getElementById('nb-results-title').textContent =
-    stats.score >= 80 ? 'Amazing!' : stats.score >= 40 ? 'Well done!' : 'Keep practising!';
+    stats.accuracy >= 80 ? 'Amazing!' : stats.accuracy >= 50 ? 'Well done!' : 'Keep practising!';
 
   const isBest = savePersonalBest(stats);
 
@@ -1537,11 +1559,12 @@ const STREAK_BONUS = 2;
 const ANSWER_PAUSE_MS = 600; // ms to show correct/wrong before next question
 
 export class GameSession {
-  constructor({ op, mode, range, onQuestion, onScore, onEnd }) {
+  constructor({ op, mode, range, onQuestion, onAnswer, onScore, onEnd }) {
     this.op = op;
     this.mode = mode;
     this.range = range;
     this.onQuestion = onQuestion;
+    this.onAnswer = onAnswer;   // ({ correct, correctAnswer, chosen }) — UI shows feedback
     this.onScore = onScore;
     this.onEnd = onEnd;
 
@@ -1576,16 +1599,6 @@ export class GameSession {
     const isCorrect = value === q.answer;
     this.total++;
 
-    // Notify UI to show feedback
-    const choicesEl = document.getElementById('nb-choices');
-    choicesEl?.querySelectorAll('.nb-choice').forEach(btn => {
-      btn.disabled = true;
-      const num = Number(btn.textContent);
-      if (num === q.answer) btn.classList.add('nb-choice--reveal');
-      if (num === value && !isCorrect) btn.classList.add('nb-choice--wrong');
-      if (num === value && isCorrect) btn.classList.add('nb-choice--correct');
-    });
-
     if (isCorrect) {
       this.correct++;
       this.streak++;
@@ -1595,6 +1608,8 @@ export class GameSession {
       this.streak = 0;
     }
 
+    // Notify UI to show answer feedback — game.js does NOT touch the DOM
+    this.onAnswer({ correct: isCorrect, correctAnswer: q.answer, chosen: value });
     this.onScore(this._hudState());
 
     setTimeout(() => {
@@ -1684,7 +1699,55 @@ git commit -m "feat(number-bonds): GameSession with Sprint, Round, and Endless m
 
 ---
 
-## Task 9: build.sh — add number-bonds build section
+## Task 9: Add number-bonds to shell.js Games dropdown
+
+**Files:**
+- Modify: `shared/shell.js`
+
+The shell bar's Games dropdown is populated from the `GAMES` array in `shared/shell.js`. Number bonds is not currently listed — it won't appear in the switcher until added.
+
+**Step 1: Find the GAMES array**
+
+Around line 29 of `shared/shell.js`:
+```js
+const GAMES = [
+  { id: 'type-trainer', title: 'Type Trainer', icon: '⌨️', url: 'type-trainer.html', needsKeyboard: true },
+  { id: 'opposites', title: 'Opposites', icon: '🔄', url: 'opposites.html', needsKeyboard: false },
+];
+```
+
+**Step 2: Add number-bonds entry**
+
+```js
+const GAMES = [
+  { id: 'type-trainer',  title: 'Type Trainer',  icon: '⌨️',  url: 'type-trainer.html',  needsKeyboard: true  },
+  { id: 'opposites',     title: 'Opposites',      icon: '🔄',  url: 'opposites.html',     needsKeyboard: false },
+  { id: 'number-bonds',  title: 'Number Bonds',   icon: '🔢',  url: 'number-bonds.html',  needsKeyboard: false },
+];
+```
+
+**Step 3: Run build to regenerate all docs**
+
+```bash
+bash build.sh
+```
+
+All output HTML files include the inline shell.js — rebuilding propagates the new entry to every game.
+
+**Step 4: Verify in browser**
+
+Open any `docs/*.html`, click the 🎮 Games button — Number Bonds should appear in the dropdown.
+
+**Step 5: Commit**
+
+```bash
+git add shared/shell.js
+git commit -m "feat(shell): add Number Bonds to games dropdown"
+```
+
+---
+
+## Task 10: build.sh — add number-bonds build section
 
 **Files:**
 - Modify: `build.sh`
@@ -1719,7 +1782,14 @@ NB_JS_FILES=(
 NB_JS_TEMP=$(mktemp)
 NB_CSS_TEMP=$(mktemp)
 NB_JS_COMBINED=$(mktemp)
-trap "rm -f '$NB_JS_TEMP' '$NB_CSS_TEMP' '$NB_JS_COMBINED'" EXIT
+# NOTE: Do NOT add a new trap here — it would replace the type-trainer trap and leak those temp files.
+# The existing cleanup trap (set in the type-trainer section) must be updated to include these vars.
+# Replace the type-trainer trap definition:
+#   trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
+# with a cleanup function defined BEFORE the first mktemp call, e.g.:
+#   _cleanup() { rm -f "$JS_TEMP" "$CSS_TEMP" "$SHELL_JS_TEMP" "$JS_COMBINED" "$NB_JS_TEMP" "$NB_CSS_TEMP" "$NB_JS_COMBINED"; }
+#   trap _cleanup EXIT
+# Then remove the original trap line and this block entirely.
 
 for f in "${NB_JS_FILES[@]}"; do
   echo "  Inlining $NB_GAME_DIR/$f"
