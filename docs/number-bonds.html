@@ -277,6 +277,15 @@ body {
   flex: 1;
 }
 
+.kg-shell__version {
+  font-size: 10px;
+  font-family: var(--font-family);
+  color: var(--hud-text);
+  opacity: 0.35;
+  white-space: nowrap;
+  user-select: none;
+}
+
 .kg-shell__avatar {
   display: inline-flex;
   align-items: center;
@@ -768,6 +777,9 @@ body {
   <button id="kg-volume-btn" class="kg-shell__btn" aria-label="Toggle sound" aria-pressed="false" title="Sound">
     <span id="kg-volume-icon" class="kg-shell__icon" aria-hidden="true">🔊</span>
   </button>
+
+  <!-- Build version — injected by build.sh -->
+  <span class="kg-shell__version" title="Build version">53c90bf 24 Mar 15:42</span>
 </div>
 
 <!-- Player select overlay -->

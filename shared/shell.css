@@ -91,6 +91,15 @@ body {
   flex: 1;
 }
 
+.kg-shell__version {
+  font-size: 10px;
+  font-family: var(--font-family);
+  color: var(--hud-text);
+  opacity: 0.35;
+  white-space: nowrap;
+  user-select: none;
+}
+
 .kg-shell__avatar {
   display: inline-flex;
   align-items: center;

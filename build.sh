@@ -24,6 +24,11 @@ JS_FILES=(
 echo "=== Kids Games Build ==="
 echo ""
 
+# Build version: short git hash + date/time
+BUILD_VERSION="$(git rev-parse --short HEAD 2>/dev/null || echo 'dev') $(date +'%d %b %H:%M')"
+echo "Build version: $BUILD_VERSION"
+echo ""
+
 # --- Preflight checks ---
 if [ ! -f "hub.html" ]; then
   echo "Error: hub.html not found. Run this script from the project root." >&2
@@ -364,6 +369,15 @@ if grep -q 'kg-shell' "$DOCS_DIR/index.html"; then
 else
   echo "  [WARN] Shell bar missing from hub"
 fi
+
+# ==========================================================================
+# Stamp build version into all output files
+# ==========================================================================
+for f in "$DOCS_DIR"/*.html; do
+  sed -i "s/{{BUILD_VERSION}}/$BUILD_VERSION/g" "$f"
+done
+echo "Build version stamped: $BUILD_VERSION"
+echo ""
 
 # ==========================================================================
 # Summary
