@@ -7,38 +7,11 @@
   <link rel="stylesheet" href="../../shared/tokens.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <!-- Mobile/tablet gate — shown when no physical keyboard is detected -->
-  <div id="mobile-gate" class="mobile-gate" role="alert" aria-live="assertive" hidden>
-    <div class="mobile-gate-content">
-      <div class="mobile-gate-icon" aria-hidden="true">
-        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="44" width="64" height="28" rx="4" stroke="currentColor" stroke-width="3" fill="none"/>
-          <rect x="12" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
-          <rect x="22" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
-          <rect x="32" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
-          <rect x="42" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
-          <rect x="52" y="50" width="8" height="6" rx="1" fill="currentColor" opacity="0.5"/>
-          <rect x="16" y="60" width="48" height="6" rx="1" fill="currentColor" opacity="0.5"/>
-          <path d="M40 12 L40 36 M32 28 L40 36 L48 28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <h1 class="mobile-gate-title">This game needs a keyboard!</h1>
-      <p class="mobile-gate-message">Plug in a keyboard or try on a laptop or desktop computer.</p>
-    </div>
-  </div>
-
-  <button id="global-theme-toggle" class="global-theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
-    <span class="theme-icon" aria-hidden="true"></span>
-  </button>
+<body data-page="type-trainer" data-page-title="Type Trainer">
 
   <div id="game-wrapper">
     <!-- HUD bar: score, stage, lives, streak, buttons -->
     <div id="hud" class="hud" aria-label="Game status">
-      <a href="index.html" class="hud-btn hud-home-link" aria-label="Back to all games" title="All Games">
-        <span class="hud-btn__icon">🏠</span>
-        <span class="hud-btn__label">Games</span>
-      </a>
       <div class="hud-item">Score: <span id="hud-score-value" aria-live="polite">0</span></div>
       <div class="hud-item">Stage: <span id="hud-stage-current">1</span>/<span id="hud-stage-total">10</span></div>
       <div class="hud-item" id="hud-lives">Lives: <span id="hud-lives-value" aria-live="polite">&#9829;&#9829;&#9829;</span></div>
@@ -47,8 +20,9 @@
         <span class="hud-btn__icon">&#9000;</span>
         <span class="hud-btn__label">Keyboard</span>
       </button>
-      <button id="theme-toggle" class="hud-btn theme-toggle-btn" aria-label="Toggle theme" title="Toggle light/dark theme">
-        <span class="theme-icon" aria-hidden="true"></span>
+      <button id="speed-btn" class="hud-btn" aria-label="Change difficulty" title="Difficulty">
+        <span class="hud-btn__icon">⚡</span>
+        <span class="hud-btn__label" id="speed-label">Normal</span>
       </button>
       <button id="mute-btn" class="hud-btn mute-btn" aria-label="Mute audio" aria-pressed="false" title="Toggle sound">
         <span class="mute-icon" aria-hidden="true">&#x1F50A;</span>
