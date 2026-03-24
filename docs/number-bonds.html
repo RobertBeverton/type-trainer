@@ -957,13 +957,24 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   flex: 1;
 }
 
+/* Game body — centres question + choices as one unit */
+.nb-game-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: var(--space-xl);
+  padding: var(--space-lg) var(--space-md) var(--space-2xl);
+}
+
 /* Question display */
 .nb-question-wrap {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-xl) var(--space-lg);
+  width: 100%;
 }
 
 .nb-question {
@@ -994,7 +1005,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-sm);
-  padding: var(--space-md) var(--space-md) var(--space-2xl);
+  padding: var(--space-md);
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
@@ -1167,7 +1178,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">38fc6eb 24 Mar 20:29</span>
+  <span class="kg-shell__version" title="Build version">6c01615 24 Mar 20:37</span>
 </div>
 
 <!-- Player select overlay -->
@@ -1319,10 +1330,12 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
       <span id="nb-hud-center" class="nb-hud-center"></span>
       <button id="nb-quit-btn" class="nb-btn nb-btn--ghost">Quit</button>
     </div>
-    <div class="nb-question-wrap">
-      <div class="nb-question" id="nb-question" aria-live="polite" aria-atomic="true"></div>
+    <div class="nb-game-body">
+      <div class="nb-question-wrap">
+        <div class="nb-question" id="nb-question" aria-live="polite" aria-atomic="true"></div>
+      </div>
+      <div class="nb-choices" id="nb-choices" role="group" aria-label="Answer choices"></div>
     </div>
-    <div class="nb-choices" id="nb-choices" role="group" aria-label="Answer choices"></div>
   </div>
 
   <!-- SCREEN: Results -->
