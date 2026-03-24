@@ -2375,7 +2375,7 @@ body {
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">fe61206 24 Mar 16:21</span>
+  <span class="kg-shell__version" title="Build version">c9f119f 24 Mar 17:00</span>
 </div>
 
 <!-- Player select overlay -->
@@ -2438,6 +2438,7 @@ body {
     <!-- HUD bar: score, stage, lives, streak, buttons -->
     <div id="hud" class="hud" aria-label="Game status">
       <div class="hud-item">Score: <span id="hud-score-value" aria-live="polite">0</span></div>
+      <div class="hud-item">Best: <span id="hud-best-value">0</span></div>
       <div class="hud-item">Stage: <span id="hud-stage-current">1</span>/<span id="hud-stage-total">10</span></div>
       <div class="hud-item" id="hud-lives">Lives: <span id="hud-lives-value" aria-live="polite">&#9829;&#9829;&#9829;</span></div>
       <div class="hud-item hud-streak">Streak: <span id="hud-streak-value" aria-live="polite">0</span></div>
@@ -5085,6 +5086,7 @@ function initPlayDOM() {
   // Cache all HUD element references
   hudEls = {
     score:       document.getElementById('hud-score-value'),
+    best:        document.getElementById('hud-best-value'),
     stageCur:    document.getElementById('hud-stage-current'),
     stageTotal:  document.getElementById('hud-stage-total'),
     lives:       document.getElementById('hud-lives-value'),
@@ -5907,6 +5909,12 @@ function updateHUD() {
   // Score
   if (hudEls.score) {
     hudEls.score.textContent = gameState.score.toLocaleString();
+  }
+
+  // Best (running max of stored high score and current score)
+  if (hudEls.best) {
+    const prevHigh = (gameState.callbacks && gameState.callbacks.previousHighScore) || 0;
+    hudEls.best.textContent = Math.max(prevHigh, gameState.score).toLocaleString();
   }
 
   // Stage counter

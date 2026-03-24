@@ -68,6 +68,7 @@ function initPlayDOM() {
   // Cache all HUD element references
   hudEls = {
     score:       document.getElementById('hud-score-value'),
+    best:        document.getElementById('hud-best-value'),
     stageCur:    document.getElementById('hud-stage-current'),
     stageTotal:  document.getElementById('hud-stage-total'),
     lives:       document.getElementById('hud-lives-value'),
@@ -890,6 +891,12 @@ function updateHUD() {
   // Score
   if (hudEls.score) {
     hudEls.score.textContent = gameState.score.toLocaleString();
+  }
+
+  // Best (running max of stored high score and current score)
+  if (hudEls.best) {
+    const prevHigh = (gameState.callbacks && gameState.callbacks.previousHighScore) || 0;
+    hudEls.best.textContent = Math.max(prevHigh, gameState.score).toLocaleString();
   }
 
   // Stage counter

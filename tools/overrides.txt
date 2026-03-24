@@ -4,6 +4,7 @@
 
 run: walk
 happy: sad
+like: unlike, dislike
 cry: laugh, smile
 win: lose
 stop: go, start, begin
