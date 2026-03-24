@@ -80,3 +80,66 @@ describe('generateQuestion — subtraction', () => {
     }
   });
 });
+
+describe('generateQuestion — multiplication', () => {
+  it('result equals left * right', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('*', baseSettings);
+      assert.equal(q.result, q.left * q.right);
+    }
+  });
+
+  it('operands within 1..maxTable', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('*', { ...baseSettings, maxTable: 5 });
+      assert.ok(q.left >= 1 && q.left <= 5);
+      assert.ok(q.right >= 1 && q.right <= 5);
+    }
+  });
+
+  it('answer matches blank position', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('*', baseSettings);
+      const expected = q.blank === 'left' ? q.left : q.right;
+      assert.equal(q.answer, expected);
+    }
+  });
+});
+
+describe('generateQuestion — division', () => {
+  it('result equals left / right (integer)', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('/', baseSettings);
+      assert.equal(q.left / q.right, q.result);
+      assert.equal(q.left % q.right, 0, 'should divide evenly');
+    }
+  });
+
+  it('right operand is never 0', () => {
+    for (let i = 0; i < 50; i++) {
+      assert.ok(generateQuestion('/', baseSettings).right !== 0);
+    }
+  });
+
+  it('answer matches blank position', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('/', baseSettings);
+      const expected = q.blank === 'left' ? q.left : q.right;
+      assert.equal(q.answer, expected);
+    }
+  });
+});
+
+describe('generateQuestion — mixed', () => {
+  it('uses all four operations over many calls', () => {
+    const ops = new Set();
+    for (let i = 0; i < 200; i++) ops.add(generateQuestion('mixed', baseSettings).op);
+    assert.deepEqual([...ops].sort(), ['+', '-', '*', '/'].sort());
+  });
+
+  it('never returns mixed as op', () => {
+    for (let i = 0; i < 50; i++) {
+      assert.notEqual(generateQuestion('mixed', baseSettings).op, 'mixed');
+    }
+  });
+});
