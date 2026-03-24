@@ -271,6 +271,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
 
 .nb-screen--game {
   flex-direction: column;
+  align-items: stretch;
   padding: 0;
 }
 
