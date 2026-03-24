@@ -143,3 +143,44 @@ describe('generateQuestion — mixed', () => {
     }
   });
 });
+
+describe('generateQuestion — negatives', () => {
+  const negSettings = { min: -10, max: 10, maxTable: 10, negatives: true, decimals: false };
+
+  it('can produce negative operands', () => {
+    const lefts = new Set();
+    for (let i = 0; i < 100; i++) lefts.add(Math.sign(generateQuestion('-', negSettings).left));
+    assert.ok(lefts.has(-1), 'should produce negative left operands');
+  });
+
+  it('can produce negative results', () => {
+    const results = [];
+    for (let i = 0; i < 100; i++) results.push(generateQuestion('-', negSettings).result);
+    assert.ok(results.some(r => r < 0), 'should sometimes produce negative results');
+  });
+});
+
+describe('generateQuestion — decimals', () => {
+  const decSettings = { min: 1, max: 10, maxTable: 10, negatives: false, decimals: true };
+
+  it('operands have at most 1 decimal place for addition', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('+', decSettings);
+      assert.ok(countDp(q.left) <= 1, `left ${q.left} should have ≤1dp`);
+      assert.ok(countDp(q.right) <= 1, `right ${q.right} should have ≤1dp`);
+    }
+  });
+
+  it('result has at most 1 decimal place for addition', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('+', decSettings);
+      assert.ok(countDp(q.result) <= 1, `result ${q.result} should have ≤1dp`);
+    }
+  });
+});
+
+function countDp(n) {
+  const s = n.toString();
+  const dot = s.indexOf('.');
+  return dot === -1 ? 0 : s.length - dot - 1;
+}

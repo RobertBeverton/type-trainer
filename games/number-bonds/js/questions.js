@@ -7,7 +7,7 @@
  * @returns {{ left, op, right, result, blank: 'left'|'right', answer }}
  */
 export function generateQuestion(op, settings) {
-  const { min, max, maxTable, negatives, decimals } = settings; // decimals: applied in Task 4
+  const { min, max, maxTable, negatives, decimals } = settings;
   const resolvedOp = op === 'mixed'
     ? ['+', '-', '*', '/'][Math.floor(Math.random() * 4)]
     : op;
@@ -18,7 +18,11 @@ export function generateQuestion(op, settings) {
     case '+': {
       left = randInt(min, max);
       right = randInt(min, max);
-      result = left + right;
+      if (decimals) {
+        left = round1dp(left + randInt(0, 9) / 10);
+        right = round1dp(right + randInt(0, 9) / 10);
+      }
+      result = round1dp(left + right);
       break;
     }
     case '-': {
@@ -26,13 +30,17 @@ export function generateQuestion(op, settings) {
         left = randInt(min, max);
         right = randInt(min, max);
       } else {
-        // Ensure left >= right so result >= 0
         const a = randInt(min, max);
         const b = randInt(min, max);
         left = Math.max(a, b);
         right = Math.min(a, b);
       }
-      result = left - right;
+      if (decimals) {
+        left = round1dp(left + randInt(0, 9) / 10);
+        right = round1dp(right + randInt(0, 9) / 10);
+        if (!negatives && left < right) [left, right] = [right, left];
+      }
+      result = round1dp(left - right);
       break;
     }
     case '*': {
@@ -63,4 +71,8 @@ export function generateQuestion(op, settings) {
 function randInt(min, max) {
   if (min > max) [min, max] = [max, min];
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function round1dp(n) {
+  return Math.round(n * 10) / 10;
 }
