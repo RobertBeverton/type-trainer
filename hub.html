@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Games</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+<meta property="og:title" content="Kids Games">
+<meta property="og:description" content="Fun, free, ad-free educational games for kids">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF8E7;
+    --card: #FFFFFF;
+    --primary: #FF6B6B;
+    --secondary: #4ECDC4;
+    --accent: #FFE66D;
+    --purple: #A78BFA;
+    --text: #2D3436;
+    --text-light: #636E72;
+    --shadow: 0 8px 30px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Floating background shapes */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0.15;
+    animation: floaty 8s ease-in-out infinite;
+  }
+  body::before {
+    width: 300px; height: 300px;
+    background: var(--primary);
+    top: -80px; right: -80px;
+  }
+  body::after {
+    width: 250px; height: 250px;
+    background: var(--secondary);
+    bottom: -60px; left: -60px;
+    animation-delay: -4s;
+  }
+
+  @keyframes floaty {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(15px, 20px) scale(1.05); }
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .header h1 {
+    font-weight: 900;
+    font-size: 3rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .game-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .game-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+  }
+
+  .game-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .game-card:active {
+    transform: translateY(-2px) scale(0.98);
+  }
+
+  .game-card.type-trainer::before {
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+  }
+
+  .game-card.opposites::before {
+    background: linear-gradient(90deg, var(--purple), var(--primary), var(--accent));
+  }
+
+  .game-icon {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .game-title {
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .game-desc {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-weight: 600;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .game-badge {
+    display: inline-block;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+
+  .device-badge {
+    display: inline-block;
+    border-radius: 10px;
+    padding: 4px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .device-badge.any-device {
+    background: #D1FAE5;
+    color: #065F46;
+  }
+
+  .device-badge.keyboard-required {
+    background: #FEF3C7;
+    color: #92400E;
+  }
+
+  /* On touch-only devices, dim keyboard-required games and reorder grid */
+  .touch-device .game-card.needs-keyboard {
+    opacity: 0.55;
+    order: 1;
+  }
+  .touch-device .game-card.needs-keyboard:hover {
+    opacity: 0.8;
+  }
+  .touch-device .game-card:not(.needs-keyboard) {
+    order: 0;
+  }
+
+  .play-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--purple), #60A5FA);
+    color: #fff;
+    border-radius: 14px;
+    padding: 12px 32px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+    transition: box-shadow 0.2s;
+  }
+
+  .game-card:hover .play-btn {
+    box-shadow: 0 4px 15px rgba(167,139,250,0.3);
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+
+  @media (max-width: 500px) {
+    .header h1 { font-size: 2.2rem; }
+    .games-grid { gap: 16px; }
+    .game-card { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Kids Games</h1>
+    <p>Fun, free, ad-free educational games</p>
+  </div>
+
+  <div class="games-grid">
+    <a href="type-trainer.html" class="game-card type-trainer needs-keyboard">
+      <span class="game-icon">⌨️</span>
+      <div class="game-title">Type Trainer</div>
+      <div class="game-desc">Letters and words fall from the sky — type them before they land!</div>
+      <div class="game-badge">Ages 4–12+</div>
+      <div class="device-badge keyboard-required">⌨️ Needs a keyboard</div>
+      <span class="play-btn">Play</span>
+    </a>
+
+    <a href="opposites.html" class="game-card opposites">
+      <span class="game-icon">🔄</span>
+      <div class="game-title">Opposites</div>
+      <div class="game-desc">Find the opposite word — choose or type your answer!</div>
+      <div class="game-badge">Ages 4–8</div>
+      <div class="device-badge any-device">📱 Works on any device</div>
+      <span class="play-btn">Play</span>
+    </a>
+  </div>
+
+  <div class="footer">
+    Made with ❤️ by Robert Beverton
+  </div>
+</div>
+
+<script>
+  // Detect touch-only devices and add class to body for CSS-driven reordering.
+  // Games still remain clickable (user might have a bluetooth keyboard), just dimmed.
+  if ('ontouchstart' in window && !matchMedia('(pointer: fine)').matches) {
+    document.body.classList.add('touch-device');
+  }
+</script>
+
+</body>
+</html>
