@@ -47,10 +47,12 @@ for f in "${JS_FILES[@]}"; do
   fi
 done
 
-if [ ! -f "games/opposites/index.html" ]; then
-  echo "Error: games/opposites/index.html not found." >&2
-  exit 1
-fi
+for game in opposites number-bonds maths memory-match; do
+  if [ ! -f "games/$game/index.html" ]; then
+    echo "Error: games/$game/index.html not found." >&2
+    exit 1
+  fi
+done
 
 for f in "shared/tokens.css" "shared/shell.html" "shared/shell.css" "shared/shell.js" "shared/storage.js"; do
   if [ ! -f "$f" ]; then
@@ -271,6 +273,57 @@ else
 fi
 
 # ==========================================================================
+# BUILD simple games (inline shared tokens + shell)
+# ==========================================================================
+build_simple_game() {
+  local src="$1"
+  local out="$2"
+  local name="$3"
+  echo ""
+  echo "--- Building $name ---"
+  awk -v tokens_file="shared/tokens.css" -v shell_css="shared/shell.css" \
+      -v shell_html="shared/shell.html" -v shell_js="$SHELL_JS_TEMP" '
+    /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+    /<link[^>]*shared\/shell\.css[^>]*>/ { next }
+    /<style>/ {
+      print
+      while ((getline line < tokens_file) > 0) { print line }
+      close(tokens_file)
+      while ((getline line < shell_css) > 0) { print line }
+      close(shell_css)
+      next
+    }
+    /<body/ {
+      print
+      while ((getline line < shell_html) > 0) { print line }
+      close(shell_html)
+      next
+    }
+    /<\/body>/ {
+      print "  <script>"
+      while ((getline line < shell_js) > 0) { print line }
+      close(shell_js)
+      print "  </script>"
+      print
+      next
+    }
+    { print }
+  ' "$src" > "$out"
+  local size
+  size=$(wc -c < "$out" | tr -d ' ')
+  echo "$name built: $out ($size bytes)"
+  if grep -q 'kg-shell' "$out"; then
+    echo "  [ok] Shell bar injected"
+  else
+    echo "  [WARN] Shell bar missing"
+  fi
+}
+
+build_simple_game "games/number-bonds/index.html"  "$DOCS_DIR/number-bonds.html"  "Number Bonds"
+build_simple_game "games/maths/index.html"          "$DOCS_DIR/maths.html"          "Maths"
+build_simple_game "games/memory-match/index.html"   "$DOCS_DIR/memory-match.html"   "Memory Match"
+
+# ==========================================================================
 # BUILD 3: Landing Page (inline shared tokens)
 # ==========================================================================
 echo ""
@@ -320,6 +373,9 @@ echo "=== Build Complete ==="
 echo "  $DOCS_DIR/index.html          — Landing page"
 echo "  $DOCS_DIR/type-trainer.html   — Type Trainer"
 echo "  $DOCS_DIR/opposites.html      — Opposites Game"
+echo "  $DOCS_DIR/number-bonds.html   — Number Bonds"
+echo "  $DOCS_DIR/maths.html          — Maths"
+echo "  $DOCS_DIR/memory-match.html   — Memory Match"
 echo ""
 echo "Test by opening docs/index.html in a browser."
 
@@ -335,12 +391,15 @@ if [ "${1:-}" = "--release" ]; then
     "$DOCS_DIR/index.html"
     "$DOCS_DIR/type-trainer.html"
     "$DOCS_DIR/opposites.html"
+    "$DOCS_DIR/number-bonds.html"
+    "$DOCS_DIR/maths.html"
+    "$DOCS_DIR/memory-match.html"
   )
 
   if command -v zip >/dev/null 2>&1; then
     # Create a README for the zip
     echo "Open index.html in your web browser to play." > "$RELEASE_DIR/README.txt"
-    (cd "$DOCS_DIR" && zip -r "../$ZIP_PATH" index.html type-trainer.html opposites.html)
+    (cd "$DOCS_DIR" && zip -r "../$ZIP_PATH" index.html type-trainer.html opposites.html number-bonds.html maths.html memory-match.html)
     (cd "$RELEASE_DIR" && zip "$ZIP_NAME" README.txt && rm README.txt)
   elif command -v powershell >/dev/null 2>&1; then
     # Fallback: use PowerShell Compress-Archive (Windows)

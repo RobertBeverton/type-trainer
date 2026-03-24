@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="colourful-light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../shared/tokens.css">
+<link rel="stylesheet" href="../../shared/shell.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-family);
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    padding-top: 56px;
+  }
+
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0.15;
+    animation: floaty 8s ease-in-out infinite;
+  }
+  body::before {
+    width: 300px; height: 300px;
+    background: var(--accent-secondary);
+    top: -80px; right: -80px;
+  }
+  body::after {
+    width: 250px; height: 250px;
+    background: var(--accent-primary);
+    bottom: -60px; left: -60px;
+    animation-delay: -4s;
+  }
+
+  @keyframes floaty {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(15px, 20px) scale(1.05); }
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .game-icon {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 16px;
+    animation: titleBounce 0.6s ease-out;
+  }
+
+  @keyframes titleBounce {
+    0% { transform: scale(0.5); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  h1 {
+    font-weight: 900;
+    font-size: 2.8rem;
+    background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .desc {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  .coming-soon {
+    display: inline-block;
+    background: var(--bg-surface);
+    border-radius: var(--radius-2xl);
+    padding: 32px 48px;
+    box-shadow: var(--shadow);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+  }
+
+  .coming-soon span {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body data-page="maths">
+
+<div class="container">
+  <div class="game-icon">🧮</div>
+  <h1>Maths</h1>
+  <p class="desc">Answer + − × ÷ questions as fast as you can — starts easy and gets harder!</p>
+  <div class="coming-soon">
+    <span>🚧</span>
+    Coming soon
+  </div>
+</div>
+
+</body>
+</html>
