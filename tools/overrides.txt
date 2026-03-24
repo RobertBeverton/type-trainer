@@ -4,18 +4,23 @@
 
 run: walk
 happy: sad
-hard: tough
 cry: laugh, smile
 win: lose
 stop: go, start, begin
 
 # = means REPLACE all WordNet antonyms with exactly these
-left = right           # WordNet picks up "left" as past tense of leave → wrong
-right = left, wrong    # keep both directional and correct/incorrect senses
-up = down              # drops downward/downwardly/downwards adverb forms
-loud = soft, quiet     # drops "piano" (music term WordNet returns)
-full = empty           # drops "wane" and "thin"
-good = bad, evil       # drops "badness", "evilness", "ill"
-clean = dirty, messy   # drops "unfairly" (WordNet fair/unfair sense)
-sit = stand            # drops "arise", "lie" (different contexts)
-let = allow, permit    # drops "prevent" — WordNet picks up "let" as obstruct sense
+left = right                 # WordNet picks up "left" as past tense of leave → wrong
+right = left, wrong          # keep both directional and correct/incorrect senses
+up = down                    # drops downward/downwardly/downwards adverb forms
+loud = soft, quiet           # drops "piano" (music term WordNet returns)
+full = empty                 # drops "wane" and "thin"
+good = bad, evil             # drops "badness", "evilness", "ill"
+clean = dirty, messy         # drops "unfairly" (WordNet fair/unfair sense)
+sit = stand                  # drops "arise", "lie" (different contexts)
+let = allow, permit          # drops "prevent" — WordNet picks up "let" as obstruct sense
+lower: higher                # WordNet only has verb sense (lower/raise); add comparative
+hard = easy, soft            # "tough" ≈ hard, not its opposite
+boy = girl                   # drops "daughter" (wrong relationship)
+front = back                 # drops "rear" (not what a child would say)
+open = close, shut           # drops "fold" (wrong context entirely)
+dark = light                 # drops "day" — night/day ≠ dark/light

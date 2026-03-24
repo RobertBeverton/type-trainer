@@ -80,6 +80,22 @@ linearize     # stray compound
 hasten        # duplicated by other words
 outgo         # "Income/Outgo" — archaic
 
+# --- Too abstract for easy/medium but wordfreq rates them as common ---
+# (blacklisting removes them from all tiers — acceptable since equivalents exist)
+cowardly      # "Brave/Cowardly" — not in child speech; "scared" is the word kids use
+fold          # "Open/Fold" — wrong context for the open/closed sense
+rear          # "Front/Rear" — kids say "back", not "rear"
+tough         # "Hard/Tough" — synonyms, not opposites
+daughter      # "Boy/Daughter" — not an opposite, different relationship type
+
+# --- Too abstract for under-8 — wordfreq classifies as medium but they're not child vocabulary ---
+able          # abstract concept; "unable" requires prefix understanding
+potential     # philosophical; no clear child-friendly opposite
+individual    # abstract logical concept
+central       # abstract positional term
+legal         # legal system concept
+former        # temporal/positional — "latter" pair makes no sense to a child
+
 # --- Multi-sense contamination: wrong word sense antonyms ---
 piano         # "Loud/Piano" — musical dynamic, not volume for kids
 unfairly      # "Clean/Unfairly" — fair-play sense, not clean/dirty
