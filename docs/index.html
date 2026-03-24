@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="colourful-light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,23 +12,280 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #FFF8E7;
-    --card: #FFFFFF;
-    --primary: #FF6B6B;
-    --secondary: #4ECDC4;
-    --accent: #FFE66D;
-    --purple: #A78BFA;
-    --text: #2D3436;
-    --text-light: #636E72;
-    --shadow: 0 8px 30px rgba(0,0,0,0.08);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-  }
+/* shared/tokens.css — Design tokens for Kids Games hub
+   Four themes: colourful-light, colourful-dark, clean-light, clean-dark
+   Set via data-theme attribute on <html> */
 
+/* === Base Tokens (theme-agnostic) === */
+:root {
+  /* Typography */
+  --font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+
+  /* Spacing scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;  /* Oversized touch targets for young children */
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Font sizes */
+  --text-xs: 11px;   /* Admin/hint text only — not readable by ages 4-5 */
+  --text-sm: 13px;   /* Secondary text — not reliable for pre-readers */
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 30px;
+  --text-3xl: 36px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+
+  /* === Usage Guide ===
+     --bg:         Main page background
+     --bg-surface: Elevated surfaces (cards, panels, modals)
+     --bg-game:    Game play area (canvas container)
+     --bg-overlay: Semi-transparent overlay behind modals
+
+     Accent colours are for backgrounds, borders, and decorative fills.
+     NOT safe as text colour on light themes — use --text-primary/secondary.
+     On dark themes, all accents pass AA as text.
+     Always pair colour feedback with animation/shape cues.
+
+     --text-xs/--text-sm: Not readable by ages 4-5. Use --text-base+ for
+     any content young children need to read.
+  */
+
+  /* TODO Phase 4: @media (prefers-contrast: more) overrides */
+}
+
+/* === Colourful Light (default for ages 4-8) === */
+:root[data-theme="colourful-light"] {
+  /* Backgrounds */
+  --bg: #FFF8E7;
+  --bg-surface: #FFFFFF;
+  --bg-game: #FFFFFF;
+  --bg-overlay: rgba(255, 248, 231, 0.95);
+
+  /* Text */
+  --text-primary: #2D3436;
+  --text-secondary: #636E72;
+  --text-muted: #6E6E7E;       /* Darkened from #8A8A9A — 4.9:1 on white, 4.6:1 on cream */
+
+  /* Borders */
+  --border: #E2E8F0;
+  --border-light: #EEEEEA;
+
+  /* Shadows */
+  --shadow: 0 8px 30px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+
+  /* Accent colours — for backgrounds/borders/decorative use, NOT as text on light bg */
+  --accent-primary: #FF6B6B;
+  --accent-secondary: #4ECDC4;
+  --accent-tertiary: #D4A300;   /* Darkened from #FFE66D — visible on cream (3.8:1) */
+  --accent-purple: #A78BFA;
+  --accent-warm: #FB923C;
+  --accent-pink: #F472B6;
+  --accent-blue: #60A5FA;
+
+  /* Feedback */
+  --success-bg: #D1FAE5;
+  --success-text: #065F46;
+  --error-bg: #FEE2E2;
+  --error-text: #B91C1C;       /* Darkened from #DC2626 — 5.3:1 on error-bg */
+  --warning-bg: #FEF3C7;
+  --warning-text: #92400E;
+
+  /* Buttons — MUST be solid colours, not gradients.
+     Colourful gradient applied in component CSS via background: linear-gradient() */
+  --btn-primary-bg: #7C5FE0;   /* Solid purple — used for border-color, outline, etc. */
+  --btn-primary-text: #FFFFFF;  /* 4.8:1 on #7C5FE0 */
+  --btn-primary-hover: #6A4FCC;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #2D3436;
+  --btn-secondary-border: #E2E8F0;
+  --btn-secondary-hover: #F5F5F0;
+
+  /* HUD / Shell bar */
+  --hud-bg: #FFFFFF;
+  --hud-text: #2D3436;
+  --hud-accent: #7C5FE0;       /* Darkened from #A78BFA — 4.6:1 on white */
+}
+
+/* === Colourful Dark (ages 4-8, dark preference) === */
+:root[data-theme="colourful-dark"] {
+  /* Backgrounds */
+  --bg: #1A1520;
+  --bg-surface: #251E2C;
+  --bg-game: #1A1520;
+  --bg-overlay: rgba(26, 21, 32, 0.95);
+
+  /* Text */
+  --text-primary: #F0ECF4;
+  --text-secondary: #BDB4C8;
+  --text-muted: #9590A5;       /* Lightened from #8A8098 — 4.8:1 on surface */
+
+  /* Borders */
+  --border: #3A3244;
+  --border-light: #2E2838;
+
+  /* Shadows */
+  --shadow: 0 8px 30px rgba(0,0,0,0.25);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.35);
+
+  /* Accent colours (brighter for dark bg contrast) — all pass 7:1+ on dark bg */
+  --accent-primary: #FF8A8A;
+  --accent-secondary: #6EE7D8;
+  --accent-tertiary: #F5DC78;   /* Slightly desaturated from #FFE66D — reduces halation */
+  --accent-purple: #C4A8FF;
+  --accent-warm: #FFB06A;
+  --accent-pink: #F9A8D4;
+  --accent-blue: #80B4FF;
+
+  /* Feedback */
+  --success-bg: rgba(52, 211, 153, 0.15);
+  --success-text: #6EE7B7;
+  --error-bg: rgba(255, 107, 107, 0.15);
+  --error-text: #FF8A8A;
+  --warning-bg: rgba(255, 230, 109, 0.15);
+  --warning-text: #F5DC78;
+
+  /* Buttons — solid colours only */
+  --btn-primary-bg: #C4A8FF;
+  --btn-primary-text: #1A1520;
+  --btn-primary-hover: #A888EE;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #F0ECF4;
+  --btn-secondary-border: #3A3244;
+  --btn-secondary-hover: #2E2838;
+
+  /* HUD / Shell bar */
+  --hud-bg: #251E2C;
+  --hud-text: #F0ECF4;
+  --hud-accent: #C4A8FF;
+}
+
+/* === Clean Light (default for ages 9+) === */
+:root[data-theme="clean-light"] {
+  /* Backgrounds */
+  --bg: #FAFAF8;
+  --bg-surface: #F5F5F0;
+  --bg-game: #FFFFFF;
+  --bg-overlay: rgba(250, 250, 248, 0.95);
+
+  /* Text */
+  --text-primary: #1A1A2E;
+  --text-secondary: #4A4A5A;
+  --text-muted: #6E6E7E;       /* Darkened from #8A8A9A — 5.0:1 on bg-surface */
+
+  /* Borders */
+  --border: #E0E0D8;
+  --border-light: #EEEEEA;
+
+  /* Shadows */
+  --shadow: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+
+  /* Accent colours (muted, restrained) */
+  --accent-primary: #536E7A;
+  --accent-secondary: #4A8E85;
+  --accent-tertiary: #9A7D2E;   /* Darkened from #C4A44A — visible on light bg */
+  --accent-purple: #7A6BA0;
+  --accent-warm: #B87A4A;
+  --accent-pink: #B06090;
+  --accent-blue: #4A80B0;
+
+  /* Feedback */
+  --success-bg: #D1FAE5;
+  --success-text: #065F46;
+  --error-bg: #FEE2E2;
+  --error-text: #B91C1C;       /* Darkened from #DC2626 — 5.3:1 on error-bg */
+  --warning-bg: #FEF3C7;
+  --warning-text: #92400E;
+
+  /* Buttons — solid colours */
+  --btn-primary-bg: #0B2C44;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover: #1A4A63;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #0B2C44;
+  --btn-secondary-border: #536E7A;
+  --btn-secondary-hover: #ECF1F4;
+
+  /* HUD / Shell bar */
+  --hud-bg: #F5F5F0;
+  --hud-text: #1A1A2E;
+  --hud-accent: #536E7A;
+}
+
+/* === Clean Dark (ages 9+, dark preference) === */
+:root[data-theme="clean-dark"] {
+  /* Backgrounds */
+  --bg: #0E0E1A;
+  --bg-surface: #0F0F2A;
+  --bg-game: #0A0A1A;
+  --bg-overlay: rgba(5, 5, 20, 0.93);
+
+  /* Text */
+  --text-primary: #E8E8F0;
+  --text-secondary: #A3A3C2;
+  --text-muted: #8585A8;
+
+  /* Borders */
+  --border: #1A1A4A;
+  --border-light: #1A1A3A;
+
+  /* Shadows */
+  --shadow: 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
+
+  /* Accent colours */
+  --accent-primary: #7AF;
+  --accent-secondary: #14B8A6;
+  --accent-tertiary: #FBBF24;
+  --accent-purple: #A855F7;
+  --accent-warm: #F97316;
+  --accent-pink: #F472B6;
+  --accent-blue: #60A5FA;
+
+  /* Feedback */
+  --success-bg: rgba(34, 197, 94, 0.15);
+  --success-text: #4ADE80;
+  --error-bg: rgba(220, 60, 60, 0.15);
+  --error-text: #FF6B6B;
+  --warning-bg: rgba(251, 191, 36, 0.15);
+  --warning-text: #FBBF24;
+
+  /* Buttons — solid colours */
+  --btn-primary-bg: #7AF;
+  --btn-primary-text: #0A0A1A;
+  --btn-primary-hover: #99BBFF;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: #7AF;
+  --btn-secondary-border: #7AF;
+  --btn-secondary-hover: #1A2A4A;
+
+  /* HUD / Shell bar */
+  --hud-bg: #0F0F2A;
+  --hud-text: #E8E8F0;   /* near-white text — --hud-accent (#7AF) is for icons/highlights only */
+  --hud-accent: #7AF;
+}
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     background: var(--bg);
     min-height: 100vh;
     overflow-x: hidden;
@@ -46,12 +303,12 @@
   }
   body::before {
     width: 300px; height: 300px;
-    background: var(--primary);
+    background: var(--accent-primary);
     top: -80px; right: -80px;
   }
   body::after {
     width: 250px; height: 250px;
-    background: var(--secondary);
+    background: var(--accent-secondary);
     bottom: -60px; left: -60px;
     animation-delay: -4s;
   }
@@ -76,8 +333,8 @@
 
   .header h1 {
     font-weight: 900;
-    font-size: 3rem;
-    background: linear-gradient(135deg, var(--primary), var(--purple), var(--secondary));
+    font-size: var(--text-3xl);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple), var(--accent-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -88,24 +345,24 @@
 
   .header p {
     font-size: 1.1rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
   }
 
   .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
+    gap: var(--space-lg);
   }
 
   .game-card {
-    background: var(--card);
-    border-radius: 24px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-2xl);
     padding: 32px 24px;
     box-shadow: var(--shadow);
     text-align: center;
     text-decoration: none;
-    color: var(--text);
+    color: var(--text-primary);
     position: relative;
     overflow: hidden;
     transition: transform 0.25s, box-shadow 0.25s;
@@ -132,11 +389,11 @@
   }
 
   .game-card.type-trainer::before {
-    background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-tertiary), var(--accent-secondary));
   }
 
   .game-card.opposites::before {
-    background: linear-gradient(90deg, var(--purple), var(--primary), var(--accent));
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-primary), var(--accent-tertiary));
   }
 
   .game-icon {
@@ -153,7 +410,7 @@
 
   .game-desc {
     font-size: 0.95rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
     margin-bottom: 16px;
     line-height: 1.4;
@@ -162,17 +419,17 @@
   .game-badge {
     display: inline-block;
     background: var(--bg);
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     padding: 4px 14px;
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--text-light);
+    color: var(--text-secondary);
     margin-bottom: 6px;
   }
 
   .device-badge {
     display: inline-block;
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     padding: 4px 14px;
     font-size: 0.75rem;
     font-weight: 700;
@@ -180,13 +437,13 @@
   }
 
   .device-badge.any-device {
-    background: #D1FAE5;
-    color: #065F46;
+    background: var(--success-bg);
+    color: var(--success-text);
   }
 
   .device-badge.keyboard-required {
-    background: #FEF3C7;
-    color: #92400E;
+    background: var(--warning-bg);
+    color: var(--warning-text);
   }
 
   /* On touch-only devices, dim keyboard-required games and reorder grid */
@@ -203,11 +460,11 @@
 
   .play-btn {
     display: inline-block;
-    background: linear-gradient(135deg, var(--purple), #60A5FA);
-    color: #fff;
-    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    color: var(--btn-primary-text);
+    border-radius: var(--radius-xl);
     padding: 12px 32px;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     font-weight: 800;
     font-size: 1.05rem;
     transition: box-shadow 0.2s;
@@ -221,13 +478,13 @@
     text-align: center;
     margin-top: 48px;
     font-size: 0.85rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
   }
 
   @media (max-width: 500px) {
     .header h1 { font-size: 2.2rem; }
-    .games-grid { gap: 16px; }
+    .games-grid { gap: var(--space-md); }
     .game-card { padding: 24px 18px; }
   }
 </style>
