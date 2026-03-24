@@ -24,7 +24,7 @@
       <!-- Operation -->
       <fieldset class="nb-fieldset">
         <legend class="nb-legend">Operation</legend>
-        <div class="nb-toggle-row" id="nb-op-row" role="group" aria-label="Operation">
+        <div class="nb-toggle-row" id="nb-op-row">
           <button class="nb-toggle nb-toggle--active" data-op="+" aria-pressed="true">+</button>
           <button class="nb-toggle" data-op="-" aria-pressed="false">−</button>
           <button class="nb-toggle" data-op="*" aria-pressed="false">×</button>
@@ -36,7 +36,7 @@
       <!-- Difficulty -->
       <fieldset class="nb-fieldset">
         <legend class="nb-legend">Difficulty</legend>
-        <div class="nb-toggle-row" id="nb-diff-row" role="group" aria-label="Difficulty">
+        <div class="nb-toggle-row" id="nb-diff-row">
           <button class="nb-toggle" data-diff="easy" aria-pressed="false">Easy</button>
           <button class="nb-toggle nb-toggle--active" data-diff="medium" aria-pressed="true">Medium</button>
           <button class="nb-toggle" data-diff="hard" aria-pressed="false">Hard</button>
@@ -74,19 +74,19 @@
       <!-- Session Mode -->
       <fieldset class="nb-fieldset">
         <legend class="nb-legend">Mode</legend>
-        <div class="nb-mode-row" id="nb-mode-row" role="group" aria-label="Session mode">
+        <div class="nb-mode-row" id="nb-mode-row">
           <button class="nb-mode-btn nb-mode-btn--active" data-mode="sprint" aria-pressed="true">
-            <span class="nb-mode-icon">⏱</span>
+            <span class="nb-mode-icon" aria-hidden="true">⏱</span>
             <span class="nb-mode-name">Sprint</span>
             <span class="nb-mode-desc">60 seconds</span>
           </button>
           <button class="nb-mode-btn" data-mode="round" aria-pressed="false">
-            <span class="nb-mode-icon">🎯</span>
+            <span class="nb-mode-icon" aria-hidden="true">🎯</span>
             <span class="nb-mode-name">Round</span>
             <span class="nb-mode-desc">10 questions</span>
           </button>
           <button class="nb-mode-btn" data-mode="endless" aria-pressed="false">
-            <span class="nb-mode-icon">∞</span>
+            <span class="nb-mode-icon" aria-hidden="true">∞</span>
             <span class="nb-mode-name">Endless</span>
             <span class="nb-mode-desc">Keep going</span>
           </button>
