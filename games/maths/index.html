@@ -7,114 +7,126 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../shared/tokens.css">
 <link rel="stylesheet" href="../../shared/shell.css">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: var(--font-family);
-    background: var(--bg);
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    padding-top: 56px;
-  }
-
-  body::before, body::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    z-index: 0;
-    opacity: 0.15;
-    animation: floaty 8s ease-in-out infinite;
-  }
-  body::before {
-    width: 300px; height: 300px;
-    background: var(--accent-secondary);
-    top: -80px; right: -80px;
-  }
-  body::after {
-    width: 250px; height: 250px;
-    background: var(--accent-primary);
-    bottom: -60px; left: -60px;
-    animation-delay: -4s;
-  }
-
-  @keyframes floaty {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(15px, 20px) scale(1.05); }
-  }
-
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    position: relative;
-    z-index: 1;
-    text-align: center;
-  }
-
-  .game-icon {
-    font-size: 5rem;
-    display: block;
-    margin-bottom: 16px;
-    animation: titleBounce 0.6s ease-out;
-  }
-
-  @keyframes titleBounce {
-    0% { transform: scale(0.5); opacity: 0; }
-    60% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  h1 {
-    font-weight: 900;
-    font-size: 2.8rem;
-    background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary), var(--accent-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 1px;
-    line-height: 1.1;
-    margin-bottom: 12px;
-  }
-
-  .desc {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    margin-bottom: 32px;
-    line-height: 1.5;
-  }
-
-  .coming-soon {
-    display: inline-block;
-    background: var(--bg-surface);
-    border-radius: var(--radius-2xl);
-    padding: 32px 48px;
-    box-shadow: var(--shadow);
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--text-secondary);
-  }
-
-  .coming-soon span {
-    display: block;
-    font-size: 2rem;
-    margin-bottom: 8px;
-  }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="maths">
+<body data-page="maths" data-page-title="Maths">
 
-<div class="container">
-  <div class="game-icon">🧮</div>
-  <h1>Maths</h1>
-  <p class="desc">Answer + − × ÷ questions as fast as you can — starts easy and gets harder!</p>
-  <div class="coming-soon">
-    <span>🚧</span>
-    Coming soon
+<!-- Shell bar injected by build script -->
+
+<div id="maths-app">
+
+  <!-- SCREEN: Settings -->
+  <div id="maths-settings" class="maths-screen maths-screen--settings">
+    <div class="maths-settings-wrap">
+      <div class="maths-logo">🧮</div>
+      <h1 class="maths-title">Maths</h1>
+
+      <!-- Operation -->
+      <fieldset class="maths-fieldset">
+        <legend class="maths-legend">Operation</legend>
+        <div class="maths-toggle-row" id="maths-op-row">
+          <button class="maths-toggle maths-toggle--active" data-op="+" aria-pressed="true">+</button>
+          <button class="maths-toggle" data-op="-" aria-pressed="false">−</button>
+          <button class="maths-toggle" data-op="*" aria-pressed="false">×</button>
+          <button class="maths-toggle" data-op="/" aria-pressed="false">÷</button>
+          <button class="maths-toggle" data-op="mixed" aria-pressed="false">Mixed</button>
+        </div>
+      </fieldset>
+
+      <!-- Difficulty -->
+      <fieldset class="maths-fieldset">
+        <legend class="maths-legend">Difficulty</legend>
+        <div class="maths-toggle-row" id="maths-diff-row">
+          <button class="maths-toggle" data-diff="easy" aria-pressed="false">Easy</button>
+          <button class="maths-toggle maths-toggle--active" data-diff="medium" aria-pressed="true">Medium</button>
+          <button class="maths-toggle" data-diff="hard" aria-pressed="false">Hard</button>
+          <button class="maths-toggle" data-diff="custom" aria-pressed="false">Custom</button>
+        </div>
+        <p class="maths-diff-hint" id="maths-diff-hint">Numbers 1–20, tables to 10</p>
+      </fieldset>
+
+      <!-- Custom options (hidden unless Custom selected) -->
+      <div id="maths-custom-opts" class="maths-custom-opts" hidden>
+        <div class="maths-custom-row">
+          <label class="maths-label" for="maths-min">Min</label>
+          <input id="maths-min" class="maths-input" type="number" value="-100" min="-9999" max="9999">
+        </div>
+        <div class="maths-custom-row">
+          <label class="maths-label" for="maths-max">Max</label>
+          <input id="maths-max" class="maths-input" type="number" value="100" min="-9999" max="9999">
+        </div>
+        <div class="maths-custom-row">
+          <label class="maths-label" for="maths-table">Max table (×÷)</label>
+          <input id="maths-table" class="maths-input" type="number" value="12" min="2" max="99">
+        </div>
+        <div class="maths-custom-row">
+          <label class="maths-label">
+            <input id="maths-negatives" type="checkbox"> Negative numbers
+          </label>
+        </div>
+        <div class="maths-custom-row">
+          <label class="maths-label">
+            <input id="maths-decimals" type="checkbox"> Decimals (1dp)
+          </label>
+        </div>
+      </div>
+
+      <!-- Session Mode -->
+      <fieldset class="maths-fieldset">
+        <legend class="maths-legend">Mode</legend>
+        <div class="maths-mode-row" id="maths-mode-row">
+          <button class="maths-mode-btn maths-mode-btn--active" data-mode="sprint" aria-pressed="true">
+            <span class="maths-mode-icon" aria-hidden="true">⏱</span>
+            <span class="maths-mode-name">Sprint</span>
+            <span class="maths-mode-desc">60 seconds</span>
+          </button>
+          <button class="maths-mode-btn" data-mode="round" aria-pressed="false">
+            <span class="maths-mode-icon" aria-hidden="true">🎯</span>
+            <span class="maths-mode-name">Round</span>
+            <span class="maths-mode-desc">10 questions</span>
+          </button>
+          <button class="maths-mode-btn" data-mode="endless" aria-pressed="false">
+            <span class="maths-mode-icon" aria-hidden="true">∞</span>
+            <span class="maths-mode-name">Endless</span>
+            <span class="maths-mode-desc">Keep going</span>
+          </button>
+        </div>
+      </fieldset>
+
+      <button id="maths-start-btn" class="maths-btn maths-btn--primary maths-btn--large">Let's go! 🚀</button>
+    </div>
   </div>
+
+  <!-- SCREEN: Game -->
+  <div id="maths-game" class="maths-screen maths-screen--game" hidden>
+    <div class="maths-hud">
+      <span class="maths-hud-score">Score: <strong id="maths-score">0</strong></span>
+      <span id="maths-hud-center" class="maths-hud-center"></span>
+      <button id="maths-quit-btn" class="maths-btn maths-btn--ghost">Quit</button>
+    </div>
+    <div class="maths-game-body">
+      <div class="maths-question-wrap">
+        <div class="maths-question" id="maths-question" aria-live="polite" aria-atomic="true"></div>
+      </div>
+      <div class="maths-choices" id="maths-choices" role="group" aria-label="Answer choices"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN: Results -->
+  <div id="maths-results" class="maths-screen maths-screen--results" hidden>
+    <div class="maths-results-wrap">
+      <div class="maths-results-icon" id="maths-results-icon">🎉</div>
+      <h2 class="maths-results-title" id="maths-results-title">Well done!</h2>
+      <div class="maths-stats" id="maths-stats"></div>
+      <div class="maths-results-actions">
+        <button id="maths-play-again-btn" class="maths-btn maths-btn--primary">Play again</button>
+        <button id="maths-change-settings-btn" class="maths-btn maths-btn--secondary">Change settings</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
