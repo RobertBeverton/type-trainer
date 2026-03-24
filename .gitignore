@@ -10,3 +10,6 @@ desktop.ini
 .vscode/
 *.swp
 *.swo
+
+# Release packages
+release/

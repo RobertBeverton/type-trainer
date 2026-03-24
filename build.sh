@@ -322,3 +322,20 @@ echo "  $DOCS_DIR/type-trainer.html   — Type Trainer"
 echo "  $DOCS_DIR/opposites.html      — Opposites Game"
 echo ""
 echo "Test by opening docs/index.html in a browser."
+
+# --- Optional: create release zip ---
+if [ "${1:-}" = "--release" ]; then
+  RELEASE_DIR="release"
+  mkdir -p "$RELEASE_DIR"
+  ZIP_NAME="kids-games-$(date +%Y%m%d).zip"
+
+  # Create a README for the zip
+  echo "Open index.html in your web browser to play." > "$RELEASE_DIR/README.txt"
+
+  # Create zip of docs/ contents
+  (cd "$DOCS_DIR" && zip -r "../$RELEASE_DIR/$ZIP_NAME" index.html type-trainer.html opposites.html)
+  (cd "$RELEASE_DIR" && zip "$ZIP_NAME" README.txt && rm README.txt)
+
+  echo ""
+  echo "Release package: $RELEASE_DIR/$ZIP_NAME"
+fi
