@@ -14,7 +14,115 @@
 <!-- Shell bar injected by build script -->
 
 <div id="nb-app">
-  <!-- Screens injected here by JS -->
+
+  <!-- SCREEN: Settings -->
+  <div id="nb-settings" class="nb-screen nb-screen--settings">
+    <div class="nb-settings-wrap">
+      <div class="nb-logo">🔢</div>
+      <h1 class="nb-title">Number Bonds</h1>
+
+      <!-- Operation -->
+      <fieldset class="nb-fieldset">
+        <legend class="nb-legend">Operation</legend>
+        <div class="nb-toggle-row" id="nb-op-row" role="group" aria-label="Operation">
+          <button class="nb-toggle nb-toggle--active" data-op="+" aria-pressed="true">+</button>
+          <button class="nb-toggle" data-op="-" aria-pressed="false">−</button>
+          <button class="nb-toggle" data-op="*" aria-pressed="false">×</button>
+          <button class="nb-toggle" data-op="/" aria-pressed="false">÷</button>
+          <button class="nb-toggle" data-op="mixed" aria-pressed="false">Mixed</button>
+        </div>
+      </fieldset>
+
+      <!-- Difficulty -->
+      <fieldset class="nb-fieldset">
+        <legend class="nb-legend">Difficulty</legend>
+        <div class="nb-toggle-row" id="nb-diff-row" role="group" aria-label="Difficulty">
+          <button class="nb-toggle" data-diff="easy" aria-pressed="false">Easy</button>
+          <button class="nb-toggle nb-toggle--active" data-diff="medium" aria-pressed="true">Medium</button>
+          <button class="nb-toggle" data-diff="hard" aria-pressed="false">Hard</button>
+          <button class="nb-toggle" data-diff="custom" aria-pressed="false">Custom</button>
+        </div>
+        <p class="nb-diff-hint" id="nb-diff-hint">Numbers 1–20, tables to 10</p>
+      </fieldset>
+
+      <!-- Custom options (hidden unless Custom selected) -->
+      <div id="nb-custom-opts" class="nb-custom-opts" hidden>
+        <div class="nb-custom-row">
+          <label class="nb-label" for="nb-min">Min</label>
+          <input id="nb-min" class="nb-input" type="number" value="-100" min="-9999" max="9999">
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label" for="nb-max">Max</label>
+          <input id="nb-max" class="nb-input" type="number" value="100" min="-9999" max="9999">
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label" for="nb-table">Max table (×÷)</label>
+          <input id="nb-table" class="nb-input" type="number" value="12" min="2" max="99">
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label">
+            <input id="nb-negatives" type="checkbox"> Negative numbers
+          </label>
+        </div>
+        <div class="nb-custom-row">
+          <label class="nb-label">
+            <input id="nb-decimals" type="checkbox"> Decimals (1dp)
+          </label>
+        </div>
+      </div>
+
+      <!-- Session Mode -->
+      <fieldset class="nb-fieldset">
+        <legend class="nb-legend">Mode</legend>
+        <div class="nb-mode-row" id="nb-mode-row" role="group" aria-label="Session mode">
+          <button class="nb-mode-btn nb-mode-btn--active" data-mode="sprint" aria-pressed="true">
+            <span class="nb-mode-icon">⏱</span>
+            <span class="nb-mode-name">Sprint</span>
+            <span class="nb-mode-desc">60 seconds</span>
+          </button>
+          <button class="nb-mode-btn" data-mode="round" aria-pressed="false">
+            <span class="nb-mode-icon">🎯</span>
+            <span class="nb-mode-name">Round</span>
+            <span class="nb-mode-desc">10 questions</span>
+          </button>
+          <button class="nb-mode-btn" data-mode="endless" aria-pressed="false">
+            <span class="nb-mode-icon">∞</span>
+            <span class="nb-mode-name">Endless</span>
+            <span class="nb-mode-desc">Keep going</span>
+          </button>
+        </div>
+      </fieldset>
+
+      <button id="nb-start-btn" class="nb-btn nb-btn--primary nb-btn--large">Let's go! 🚀</button>
+    </div>
+  </div>
+
+  <!-- SCREEN: Game -->
+  <div id="nb-game" class="nb-screen nb-screen--game" hidden>
+    <div class="nb-hud">
+      <span class="nb-hud-score">Score: <strong id="nb-score">0</strong></span>
+      <span id="nb-hud-center" class="nb-hud-center"></span>
+      <button id="nb-quit-btn" class="nb-btn nb-btn--ghost">Quit</button>
+    </div>
+    <div class="nb-question-wrap">
+      <div class="nb-question" id="nb-question" aria-live="polite" aria-atomic="true"></div>
+    </div>
+    <div class="nb-choices" id="nb-choices" role="group" aria-label="Answer choices"></div>
+  </div>
+
+  <!-- SCREEN: Results -->
+  <div id="nb-results" class="nb-screen nb-screen--results" hidden>
+    <div class="nb-results-wrap">
+      <div class="nb-results-icon" id="nb-results-icon">🎉</div>
+      <h2 class="nb-results-title" id="nb-results-title">Well done!</h2>
+      <div class="nb-stats" id="nb-stats"></div>
+      <div class="nb-results-actions">
+        <button id="nb-play-again-btn" class="nb-btn nb-btn--primary">Play again</button>
+        <button id="nb-change-settings-btn" class="nb-btn nb-btn--secondary">Change settings</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script type="module" src="js/main.js"></script>
