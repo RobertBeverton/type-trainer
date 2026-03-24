@@ -52,6 +52,11 @@ if [ ! -f "games/opposites/index.html" ]; then
   exit 1
 fi
 
+if [ ! -f "shared/tokens.css" ]; then
+  echo "Error: shared/tokens.css not found." >&2
+  exit 1
+fi
+
 echo "All source files found."
 echo ""
 
@@ -64,7 +69,8 @@ mkdir -p "$DOCS_DIR"
 echo "--- Building Type Trainer ---"
 
 JS_TEMP=$(mktemp)
-trap "rm -f '$JS_TEMP'" EXIT
+CSS_TEMP=$(mktemp)
+trap "rm -f '$JS_TEMP' '$CSS_TEMP'" EXIT
 
 for f in "${JS_FILES[@]}"; do
   echo "  Inlining $GAME_DIR/$f"
@@ -110,12 +116,14 @@ else
   echo "  [ok] startPlayGame -> startGame"
 fi
 
-CSS_FILE="$GAME_DIR/css/style.css"
+# --- Concatenate shared tokens + game CSS ---
+cat shared/tokens.css "$GAME_DIR/css/style.css" > "$CSS_TEMP"
 
 echo ""
 echo "Assembling type-trainer HTML..."
 
-awk -v css_file="$CSS_FILE" -v js_file="$JS_TEMP" '
+awk -v css_file="$CSS_TEMP" -v js_file="$JS_TEMP" '
+  /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
   /<link[^>]*style\.css[^>]*>/ {
     print "  <style>"
     while ((getline line < css_file) > 0) {
@@ -193,23 +201,44 @@ if grep -q 'type="module"' "$TT_OUTPUT"; then
   echo "  [WARN] Original <script type=\"module\"> still present"
 fi
 
+# NOTE: Opposites and hub source HTML must have exactly one <style> tag.
+# Shared tokens are injected immediately after the opening <style> tag.
+
 # ==========================================================================
-# BUILD 2: Opposites Game (simple copy)
+# BUILD 2: Opposites Game (inline shared tokens)
 # ==========================================================================
 echo ""
 echo "--- Building Opposites Game ---"
-cp games/opposites/index.html "$DOCS_DIR/opposites.html"
+awk -v tokens_file="shared/tokens.css" '
+  /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+  /<style>/ {
+    print
+    while ((getline line < tokens_file) > 0) { print line }
+    close(tokens_file)
+    next
+  }
+  { print }
+' games/opposites/index.html > "$DOCS_DIR/opposites.html"
 OPP_SIZE=$(wc -c < "$DOCS_DIR/opposites.html" | tr -d ' ')
-echo "Opposites copied: $DOCS_DIR/opposites.html ($OPP_SIZE bytes)"
+echo "Opposites built: $DOCS_DIR/opposites.html ($OPP_SIZE bytes)"
 
 # ==========================================================================
-# BUILD 3: Landing Page (simple copy)
+# BUILD 3: Landing Page (inline shared tokens)
 # ==========================================================================
 echo ""
 echo "--- Building Landing Page ---"
-cp hub.html "$DOCS_DIR/index.html"
+awk -v tokens_file="shared/tokens.css" '
+  /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+  /<style>/ {
+    print
+    while ((getline line < tokens_file) > 0) { print line }
+    close(tokens_file)
+    next
+  }
+  { print }
+' hub.html > "$DOCS_DIR/index.html"
 HUB_SIZE=$(wc -c < "$DOCS_DIR/index.html" | tr -d ' ')
-echo "Landing page copied: $DOCS_DIR/index.html ($HUB_SIZE bytes)"
+echo "Landing page built: $DOCS_DIR/index.html ($HUB_SIZE bytes)"
 
 # ==========================================================================
 # Summary
