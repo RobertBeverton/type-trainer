@@ -156,6 +156,19 @@ function cleanupAll() {
 }
 
 // ---------------------------------------------------------------------------
+// Keyboard check
+// ---------------------------------------------------------------------------
+
+function checkKeyboard() {
+  if ('ontouchstart' in window && !matchMedia('(pointer: fine)').matches) {
+    const warn = document.createElement('div');
+    warn.className = 'keyboard-warning';
+    warn.innerHTML = '<p>This game works best with a keyboard! 🎹</p>';
+    document.getElementById('game-wrapper').prepend(warn);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Expose for cross-module access
 // ---------------------------------------------------------------------------
 
@@ -171,6 +184,9 @@ window._main = {
 
 document.addEventListener('DOMContentLoaded', () => {
   overlay = document.getElementById('overlay');
+
+  // Show soft keyboard warning on touch-only devices
+  checkKeyboard();
 
   // Wire up audio mute button
   setupMuteButton();

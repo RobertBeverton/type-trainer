@@ -236,44 +236,6 @@ body {
   pointer-events: none;
 }
 
-/* ── Theme Toggle Button ────────────────────────────────── */
-
-.theme-toggle-btn {
-  gap: var(--space-xs);
-}
-
-.theme-icon {
-  pointer-events: none;
-  font-size: var(--text-lg);
-  line-height: 1;
-}
-
-/* Mode select theme toggle — standalone button below the mode buttons */
-.theme-toggle-standalone {
-  background: none;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  font-size: var(--text-sm);
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-full);
-  color: var(--text-secondary);
-  transition: background var(--transition-fast), color var(--transition-fast);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  min-height: 36px;
-}
-
-.theme-toggle-standalone:hover {
-  background: var(--border-light);
-  color: var(--text-primary);
-}
-
-.theme-toggle-standalone:focus-visible {
-  outline: 3px solid var(--btn-primary-bg);
-  outline-offset: 2px;
-}
-
 
 /* ========================================
    STAGE BAR
