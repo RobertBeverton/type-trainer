@@ -1,0 +1,99 @@
+<!-- Kids Games Shell Bar -->
+<div id="kg-shell" class="kg-shell" role="banner">
+  <!-- Games dropdown -->
+  <div class="kg-shell__games-wrap">
+    <button id="kg-games-btn" class="kg-shell__btn kg-shell__games-btn" aria-expanded="false" aria-controls="kg-games-dropdown">
+      <span class="kg-shell__icon" aria-hidden="true">🎮</span>
+      <span class="kg-shell__label">Games</span>
+    </button>
+    <div id="kg-games-dropdown" class="kg-games-dropdown" hidden>
+      <!-- Populated by shell.js -->
+    </div>
+  </div>
+
+  <!-- Page title -->
+  <span id="kg-page-title" class="kg-shell__title">Kids Games</span>
+
+  <!-- Spacer -->
+  <span class="kg-shell__spacer"></span>
+
+  <!-- Player -->
+  <button id="kg-player-btn" class="kg-shell__btn kg-shell__player-btn" aria-label="Switch player">
+    <span id="kg-player-avatar" class="kg-shell__avatar">?</span>
+    <span id="kg-player-name" class="kg-shell__label">Guest</span>
+  </button>
+
+  <!-- Theme picker -->
+  <button id="kg-theme-btn" class="kg-shell__btn" aria-label="Change theme" aria-expanded="false" aria-controls="kg-theme-dropdown" title="Theme">
+    <span id="kg-theme-icon" class="kg-shell__icon" aria-hidden="true">🎨</span>
+  </button>
+
+  <!-- Volume -->
+  <button id="kg-volume-btn" class="kg-shell__btn" aria-label="Toggle sound" aria-pressed="false" title="Sound">
+    <span id="kg-volume-icon" class="kg-shell__icon" aria-hidden="true">🔊</span>
+  </button>
+</div>
+
+<!-- Player select overlay -->
+<div id="kg-player-overlay" class="kg-overlay" hidden>
+  <div class="kg-overlay__content kg-player-select" role="dialog" aria-labelledby="kg-player-heading">
+    <h2 id="kg-player-heading" class="kg-overlay__heading">Who's playing?</h2>
+    <div id="kg-player-grid" class="kg-player-grid">
+      <!-- Player cards + "Add player" card populated by shell.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Add player overlay -->
+<div id="kg-addplayer-overlay" class="kg-overlay" hidden>
+  <div class="kg-overlay__content kg-addplayer-form" role="dialog" aria-labelledby="kg-addplayer-heading">
+    <h2 id="kg-addplayer-heading" class="kg-overlay__heading">New Player</h2>
+    <form id="kg-addplayer-form">
+      <label class="kg-form-label" for="kg-name-input">Name</label>
+      <input id="kg-name-input" class="kg-form-input" type="text" maxlength="20" autocomplete="off" placeholder="Your name" required>
+
+      <fieldset class="kg-form-fieldset">
+        <legend class="kg-form-label">How old are you? (optional)</legend>
+        <div class="kg-age-toggle" role="tablist">
+          <button type="button" class="kg-age-tab active" data-mode="dob" role="tab" aria-selected="true">Date of birth</button>
+          <button type="button" class="kg-age-tab" data-mode="age" role="tab" aria-selected="false">Age number</button>
+        </div>
+
+        <div id="kg-dob-field" class="kg-form-field" role="tabpanel">
+          <label class="kg-form-label" for="kg-dob-input">Date of birth</label>
+          <input id="kg-dob-input" class="kg-form-input" type="date">
+        </div>
+
+        <div id="kg-age-field" class="kg-form-field" role="tabpanel" hidden>
+          <label class="kg-form-label" for="kg-age-input">Age</label>
+          <input id="kg-age-input" class="kg-form-input" type="number" min="3" max="99">
+        </div>
+      </fieldset>
+
+      <div class="kg-form-actions">
+        <button type="submit" class="kg-btn kg-btn--primary" id="kg-addplayer-submit" disabled>Let's go!</button>
+        <button type="button" class="kg-btn kg-btn--secondary" id="kg-addplayer-cancel">Back</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Theme picker dropdown -->
+<div id="kg-theme-dropdown" class="kg-theme-dropdown" hidden>
+  <button class="kg-theme-option" data-theme="colourful-light">
+    <span class="kg-theme-swatch kg-theme-swatch--colourful-light"></span>
+    Colourful Light
+  </button>
+  <button class="kg-theme-option" data-theme="colourful-dark">
+    <span class="kg-theme-swatch kg-theme-swatch--colourful-dark"></span>
+    Colourful Dark
+  </button>
+  <button class="kg-theme-option" data-theme="clean-light">
+    <span class="kg-theme-swatch kg-theme-swatch--clean-light"></span>
+    Clean Light
+  </button>
+  <button class="kg-theme-option" data-theme="clean-dark">
+    <span class="kg-theme-swatch kg-theme-swatch--clean-dark"></span>
+    Clean Dark
+  </button>
+</div>
