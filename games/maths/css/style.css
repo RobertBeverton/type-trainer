@@ -1,0 +1,487 @@
+/* Maths — game styles */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  padding-top: 56px;
+}
+
+body::before, body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  z-index: 0;
+  opacity: 0.15;
+  animation: mathsFloat 8s ease-in-out infinite;
+  pointer-events: none;
+}
+body::before { width: 300px; height: 300px; background: var(--accent-primary); top: -80px; right: -80px; }
+body::after  { width: 250px; height: 250px; background: var(--accent-purple); bottom: -60px; left: -60px; animation-delay: -4s; }
+
+@keyframes mathsFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(15px,20px) scale(1.05); }
+}
+
+/* === Screens === */
+
+#maths-app {
+  position: relative;
+  z-index: 1;
+}
+
+.maths-screen {
+  min-height: calc(100vh - 56px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px 48px;
+}
+
+.maths-screen[hidden] { display: none !important; }
+
+/* === Settings Screen === */
+
+.maths-settings-wrap {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.maths-logo {
+  font-size: 4rem;
+  text-align: center;
+  animation: mathsBounce 0.6s ease-out;
+}
+
+@keyframes mathsBounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.maths-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Fieldsets */
+.maths-fieldset {
+  border: none;
+  padding: 0;
+}
+
+.maths-legend {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+  display: block;
+}
+
+/* Operation + Difficulty toggles */
+.maths-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.maths-toggle {
+  flex: 1;
+  min-width: 56px;
+  min-height: 48px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  font-family: var(--font-family);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.maths-toggle:hover {
+  border-color: var(--hud-accent);
+  color: var(--hud-accent);
+}
+
+.maths-toggle--active {
+  background: var(--hud-accent);
+  border-color: var(--hud-accent);
+  color: var(--bg-surface);
+}
+
+.maths-diff-hint {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: var(--space-xs);
+}
+
+/* Custom options */
+.maths-custom-opts {
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border: 1px solid var(--border);
+}
+
+.maths-custom-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.maths-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.maths-input {
+  width: 90px;
+  padding: var(--space-xs) var(--space-sm);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--bg);
+  text-align: center;
+}
+
+.maths-input:focus {
+  outline: none;
+  border-color: var(--hud-accent);
+}
+.maths-input:focus-visible {
+  outline: 2px solid var(--hud-accent);
+  border-color: var(--hud-accent);
+  outline-offset: 2px;
+}
+
+/* Mode buttons */
+.maths-mode-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+.maths-mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-md) var(--space-sm);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all var(--transition-fast);
+  min-height: 80px;
+}
+
+.maths-mode-btn:hover {
+  border-color: var(--hud-accent);
+}
+
+.maths-mode-btn--active {
+  background: var(--hud-accent);
+  border-color: var(--hud-accent);
+  color: var(--bg-surface);
+}
+
+.maths-mode-icon { font-size: 1.5rem; }
+.maths-mode-name { font-size: var(--text-sm); font-weight: 800; }
+.maths-mode-desc { font-size: var(--text-xs); opacity: 0.8; }
+
+/* Buttons */
+.maths-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-xl);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 800;
+  cursor: pointer;
+  min-height: 48px;
+  border: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.maths-btn--primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary));
+  color: var(--bg-surface);
+  border-color: var(--accent-primary);
+  width: 100%;
+}
+
+.maths-btn--primary:hover { filter: brightness(1.05); }
+
+.maths-btn--secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.maths-btn--secondary:hover { background: var(--border); }
+
+.maths-btn--ghost {
+  background: none;
+  color: var(--text-secondary);
+  border-color: var(--border);
+  font-size: var(--text-sm);
+  padding: var(--space-xs) var(--space-md);
+  min-height: 44px;
+}
+
+.maths-toggle:focus-visible,
+.maths-mode-btn:focus-visible,
+.maths-btn:focus-visible {
+  outline: 2px solid var(--hud-accent);
+  outline-offset: 2px;
+}
+
+.maths-btn--large { font-size: var(--text-xl); min-height: 60px; }
+
+/* === Game Screen === */
+
+.maths-screen--game {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+}
+
+.maths-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-surface);
+  min-height: 48px;
+  gap: var(--space-sm);
+}
+
+.maths-hud-score {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 80px;
+}
+
+.maths-hud-center {
+  font-size: var(--text-base);
+  font-weight: 800;
+  color: var(--hud-accent);
+  text-align: center;
+  flex: 1;
+}
+
+/* Game body — centres question + choices as one unit */
+.maths-game-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: var(--space-xl);
+  padding: var(--space-lg) var(--space-md) var(--space-2xl);
+}
+
+/* Question display */
+.maths-question-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.maths-question {
+  /* clamp(2rem, 8vw, 4rem) works for short equations.
+     For custom mode with 3+ digit numbers (e.g. "? × 144 = 1728"),
+     main.js must add class .maths-question--long which overrides to clamp(1.2rem, 4vw, 2.4rem). */
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.maths-question--long {
+  font-size: clamp(1.2rem, 4vw, 2.4rem);
+}
+
+.maths-question .maths-blank {
+  display: inline-block;
+  min-width: 2ch;
+  padding: 0 8px;
+  border-bottom: 4px solid var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Answer choices */
+.maths-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.maths-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  font-size: clamp(1.2rem, 5vw, 2rem);
+  font-weight: 900;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow);
+}
+
+.maths-choice:hover:not(:disabled) {
+  border-color: var(--hud-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.maths-choice:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.maths-choice--correct {
+  background: var(--success-bg);
+  border-color: var(--success-text);
+  color: var(--success-text);
+  animation: mathsCorrect 0.4s ease-out;
+}
+
+.maths-choice--wrong {
+  background: var(--error-bg);
+  border-color: var(--error-text);
+  color: var(--error-text);
+  animation: mathsWrong 0.4s ease-out;
+}
+
+.maths-choice--reveal {
+  background: var(--success-bg);
+  border-color: var(--success-text);
+  color: var(--success-text);
+}
+
+@keyframes mathsCorrect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes mathsWrong {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* === Results Screen === */
+
+.maths-results-wrap {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.maths-results-icon {
+  font-size: 5rem;
+  animation: mathsBounce 0.6s ease-out;
+}
+
+.maths-results-title {
+  font-size: var(--text-3xl);
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.maths-stats {
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.maths-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+
+.maths-stat-label { color: var(--text-secondary); }
+.maths-stat-value { font-size: var(--text-xl); font-weight: 900; color: var(--text-primary); }
+.maths-stat-value--best { color: var(--hud-accent); }
+
+.maths-results-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+/* === Responsive === */
+
+@media (max-width: 400px) {
+  .maths-toggle { font-size: var(--text-base); }
+  .maths-mode-row { grid-template-columns: 1fr; }
+}
+
+/* === Reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
