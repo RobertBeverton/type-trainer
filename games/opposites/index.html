@@ -1,32 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="colourful-light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Opposites Game!</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../shared/tokens.css">
 <style>
-  :root {
-    --bg: #FFF8E7;
-    --card: #FFFFFF;
-    --primary: #FF6B6B;
-    --secondary: #4ECDC4;
-    --accent: #FFE66D;
-    --purple: #A78BFA;
-    --orange: #FB923C;
-    --pink: #F472B6;
-    --green: #34D399;
-    --blue: #60A5FA;
-    --text: #2D3436;
-    --text-light: #636E72;
-    --shadow: 0 8px 30px rgba(0,0,0,0.08);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-  }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     background: var(--bg);
     min-height: 100vh;
     overflow-x: hidden;
@@ -44,12 +28,12 @@
   }
   body::before {
     width: 300px; height: 300px;
-    background: var(--primary);
+    background: var(--accent-primary);
     top: -80px; right: -80px;
   }
   body::after {
     width: 250px; height: 250px;
-    background: var(--secondary);
+    background: var(--accent-secondary);
     bottom: -60px; left: -60px;
     animation-delay: -4s;
   }
@@ -74,9 +58,9 @@
   }
 
   .header h1 {
-    font-family: 'Nunito', sans-serif; font-weight: 900;
+    font-family: var(--font-family); font-weight: 900;
     font-size: 2.8rem;
-    background: linear-gradient(135deg, var(--primary), var(--purple), var(--secondary));
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple), var(--accent-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -94,7 +78,7 @@
 
   .header .subtitle {
     font-size: 1rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
   }
 
@@ -108,7 +92,7 @@
   }
 
   .score-item {
-    background: var(--card);
+    background: var(--bg-surface);
     border-radius: 16px;
     padding: 10px 22px;
     box-shadow: var(--shadow);
@@ -121,12 +105,12 @@
     transition: transform 0.2s;
   }
 
-  .score-item.correct { border-color: var(--green); }
-  .score-item.wrong { border-color: var(--primary); }
-  .score-item.streak { border-color: var(--accent); }
+  .score-item.correct { border-color: var(--success-text); }
+  .score-item.wrong { border-color: var(--accent-primary); }
+  .score-item.streak { border-color: var(--accent-tertiary); }
 
   .score-item .emoji { font-size: 1.3rem; }
-  .score-item .num { font-size: 1.3rem; color: var(--text); }
+  .score-item .num { font-size: 1.3rem; color: var(--text-primary); }
 
   .score-item.pop {
     animation: scorePop 0.35s ease-out;
@@ -145,30 +129,30 @@
   }
 
   .toggle-btn {
-    background: var(--card);
-    border: 2px solid #E2E8F0;
+    background: var(--bg-surface);
+    border: 2px solid var(--border);
     padding: 10px 24px;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.25s;
-    color: var(--text-light);
+    color: var(--text-secondary);
   }
 
   .toggle-btn:first-child { border-radius: 14px 0 0 14px; }
   .toggle-btn:last-child { border-radius: 0 14px 14px 0; }
 
   .toggle-btn.active {
-    background: var(--secondary);
-    border-color: var(--secondary);
-    color: #fff;
+    background: var(--accent-secondary);
+    border-color: var(--accent-secondary);
+    color: var(--btn-primary-text);
     box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
   }
 
   /* GAME CARD */
   .game-card {
-    background: var(--card);
+    background: var(--bg-surface);
     border-radius: 28px;
     padding: 36px 28px;
     box-shadow: var(--shadow-lg);
@@ -183,27 +167,27 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 6px;
-    background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary), var(--purple));
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-tertiary), var(--accent-secondary), var(--accent-purple));
   }
 
   .progress-text {
     font-size: 0.85rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
     margin-bottom: 10px;
   }
 
   .prompt-label {
     font-size: 1rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
     margin-bottom: 6px;
   }
 
   .prompt-word {
-    font-family: 'Nunito', sans-serif; font-weight: 900;
+    font-family: var(--font-family); font-weight: 900;
     font-size: 3.2rem;
-    color: var(--text);
+    color: var(--text-primary);
     margin-bottom: 24px;
     animation: wordIn 0.4s ease-out;
     line-height: 1.2;
@@ -225,36 +209,36 @@
 
   .choice-btn {
     background: var(--bg);
-    border: 3px solid #E2E8F0;
+    border: 3px solid var(--border);
     border-radius: 16px;
     padding: 16px 12px;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     font-weight: 800;
     font-size: 1.25rem;
     cursor: pointer;
     transition: all 0.2s;
-    color: var(--text);
+    color: var(--text-primary);
     position: relative;
     overflow: hidden;
   }
 
   .choice-btn:hover {
     transform: translateY(-2px);
-    border-color: var(--purple);
+    border-color: var(--accent-purple);
     box-shadow: 0 6px 20px rgba(167, 139, 250, 0.2);
   }
 
   .choice-btn:active { transform: scale(0.97); }
 
   .choice-btn.correct-answer {
-    background: #D1FAE5;
-    border-color: var(--green);
+    background: var(--success-bg);
+    border-color: var(--success-text);
     animation: correctShake 0.5s ease-out;
   }
 
   .choice-btn.wrong-answer {
-    background: #FEE2E2;
-    border-color: var(--primary);
+    background: var(--error-bg);
+    border-color: var(--accent-primary);
     animation: wrongShake 0.4s ease-out;
   }
 
@@ -282,42 +266,42 @@
   .type-input {
     width: 100%;
     padding: 16px 20px;
-    border: 3px solid #E2E8F0;
+    border: 3px solid var(--border);
     border-radius: 16px;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
     font-size: 1.3rem;
     text-align: center;
     outline: none;
     transition: border-color 0.25s;
-    color: var(--text);
+    color: var(--text-primary);
     background: var(--bg);
   }
 
   .type-input:focus {
-    border-color: var(--purple);
+    border-color: var(--accent-purple);
     box-shadow: 0 0 0 4px rgba(167,139,250,0.15);
   }
 
   .type-input.correct-input {
-    border-color: var(--green);
-    background: #D1FAE5;
+    border-color: var(--success-text);
+    background: var(--success-bg);
   }
 
   .type-input.wrong-input {
-    border-color: var(--primary);
-    background: #FEE2E2;
+    border-color: var(--accent-primary);
+    background: var(--error-bg);
     animation: wrongShake 0.4s ease-out;
   }
 
   .submit-btn {
     margin-top: 14px;
-    background: linear-gradient(135deg, var(--purple), var(--blue));
-    color: #fff;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    color: var(--btn-primary-text);
     border: none;
     border-radius: 14px;
     padding: 14px 40px;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     font-weight: 800;
     font-size: 1.1rem;
     cursor: pointer;
@@ -333,7 +317,7 @@
   .hint-text {
     margin-top: 12px;
     font-size: 0.85rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
   }
 
@@ -346,13 +330,13 @@
     transition: opacity 0.3s;
   }
 
-  .feedback.correct-fb { color: var(--green); }
-  .feedback.wrong-fb { color: var(--primary); }
+  .feedback.correct-fb { color: var(--success-text); }
+  .feedback.wrong-fb { color: var(--accent-primary); }
 
   .accepted-answers {
     margin-top: 6px;
     font-size: 0.85rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 600;
   }
 
@@ -379,15 +363,15 @@
   .end-screen .trophy { font-size: 5rem; margin-bottom: 10px; animation: titleBounce 0.6s ease-out; }
 
   .end-screen h2 {
-    font-family: 'Nunito', sans-serif; font-weight: 900;
+    font-family: var(--font-family); font-weight: 900;
     font-size: 2.2rem;
-    color: var(--text);
+    color: var(--text-primary);
     margin-bottom: 6px;
   }
 
   .end-screen .final-score {
     font-size: 1.2rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-weight: 700;
     margin-bottom: 8px;
   }
@@ -398,12 +382,12 @@
   }
 
   .restart-btn {
-    background: linear-gradient(135deg, var(--primary), var(--orange));
-    color: #fff;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+    color: var(--btn-primary-text);
     border: none;
     border-radius: 16px;
     padding: 16px 44px;
-    font-family: 'Nunito', sans-serif; font-weight: 900;
+    font-family: var(--font-family); font-weight: 900;
     font-size: 1.3rem;
     cursor: pointer;
     transition: all 0.25s;
@@ -431,13 +415,13 @@
     top: 16px;
     left: 16px;
     z-index: 50;
-    background: var(--card);
+    background: var(--bg-surface);
     border-radius: 14px;
     padding: 8px 16px;
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     font-weight: 800;
     font-size: 0.95rem;
-    color: var(--text);
+    color: var(--text-primary);
     text-decoration: none;
     box-shadow: var(--shadow);
     transition: transform 0.2s, box-shadow 0.2s;
