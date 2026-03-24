@@ -285,6 +285,14 @@
   --hud-text: #E8E8F0;   /* near-white text — --hud-accent (#7AF) is for icons/highlights only */
   --hud-accent: #7AF;
 }
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
 /* shared/shell.css — Shell bar styles
    Uses kg- prefix on all class names to avoid conflicts with game CSS.
    All colours reference shared design tokens (var(--*)). */
@@ -2750,12 +2758,64 @@ function saveGameData(gameId, data) {
     localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
   }
 
+  // --- Age update (from nudge banner) ---
+  function showAgeUpdate(player) {
+    const addOverlay = document.getElementById('kg-addplayer-overlay');
+    const playerOverlay = document.getElementById('kg-player-overlay');
+    document.getElementById('kg-addplayer-heading').textContent = 'Update age for ' + escapeHtml(player.name);
+    const nameInput = document.getElementById('kg-name-input');
+    nameInput.value = player.name;
+    nameInput.disabled = true;
+    document.getElementById('kg-addplayer-submit').disabled = false;
+    playerOverlay.hidden = true;
+    addOverlay.hidden = false;
+
+    const form = document.getElementById('kg-addplayer-form');
+    // Remove any stale handler from a previous showAgeUpdate call that was abandoned
+    if (form._ageUpdateHandler) {
+      form.removeEventListener('submit', form._ageUpdateHandler);
+      form._ageUpdateHandler = null;
+    }
+    function handler(e) {
+      e.preventDefault();
+      const dob = document.getElementById('kg-dob-input').value || null;
+      const manualAge = document.getElementById('kg-age-input').value
+        ? parseInt(document.getElementById('kg-age-input').value) : null;
+      savePlayer(player.name, {
+        dob: dob || player.dob,
+        manualAge: dob ? null : (manualAge || player.manualAge),
+        lastAgeNudge: new Date().toISOString().slice(0, 10),
+      });
+      addOverlay.hidden = true;
+      nameInput.disabled = false;
+      nameInput.value = '';
+      document.getElementById('kg-addplayer-heading').textContent = 'New Player';
+      form.removeEventListener('submit', handler);
+      form._ageUpdateHandler = null;
+      showPlayerSelect();
+    }
+    form._ageUpdateHandler = handler;
+    form.addEventListener('submit', handler);
+  }
+
+  // --- OS colour scheme detection ---
+  function applyOSThemePreference() {
+    // Only applies if no active player (first visit or guest)
+    if (getActivePlayer()) return;
+    // Default to colourful-light for both light and no-preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = prefersDark ? 'colourful-dark' : 'colourful-light';
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+
   // --- Init ---
   let _initialized = false;  // guard against double-invocation
 
   function initShell() {
     if (_initialized) return;
     _initialized = true;
+
+    applyOSThemePreference();
 
     // Migrate old type trainer data (only runs once, only on type-trainer page)
     if (document.body.dataset.page === 'type-trainer') {
@@ -2789,6 +2849,20 @@ function saveGameData(gameId, data) {
   }
 
   // --- Player selection ---
+  function getPlayersDueForNudge(players) {
+    return Object.values(players).filter(p => {
+      if (getAge(p) === null) return false;
+      // Don't show if dismissed less than 7 days ago
+      const lastSeen = p.lastAgeNudgeSeen || '2000-01-01';
+      const daysSinceSeen = (Date.now() - new Date(lastSeen).getTime()) / 86400000;
+      if (daysSinceSeen < 7) return false;
+      // Show if it's been at least a year since last nudge
+      const lastNudge = p.lastAgeNudge || p.createdAt;
+      const daysSinceNudge = (Date.now() - new Date(lastNudge).getTime()) / 86400000;
+      return daysSinceNudge >= 365;
+    });
+  }
+
   function showPlayerSelect() {
     const overlay = document.getElementById('kg-player-overlay');
     const grid = document.getElementById('kg-player-grid');
@@ -2812,8 +2886,39 @@ function saveGameData(gameId, data) {
         <span class="kg-player-card__name">New Player</span>
       </button>`;
 
+    const dueForNudge = getPlayersDueForNudge(players);
+    const overlayContent = overlay.querySelector('.kg-overlay__content');
+    // Remove any existing nudge banner
+    const existingNudge = overlayContent.querySelector('.kg-nudge-banner');
+    if (existingNudge) existingNudge.remove();
+
+    if (dueForNudge.length > 0) {
+      const names = dueForNudge.map(p => escapeHtml(p.name)).join(', ');
+      const banner = document.createElement('div');
+      banner.className = 'kg-nudge-banner';
+      banner.innerHTML = `
+        <span class="kg-nudge-banner__icon" aria-hidden="true">🎂</span>
+        <span class="kg-nudge-banner__text">Time to check ages for ${names}!</span>
+        <button class="kg-btn kg-btn--secondary kg-nudge-banner__btn" id="kg-nudge-update">Update ages</button>
+        <button class="kg-nudge-banner__dismiss" aria-label="Dismiss age reminder">✕</button>
+      `;
+      overlayContent.insertBefore(banner, overlayContent.querySelector('.kg-overlay__heading').nextSibling);
+    }
+
     grid.innerHTML = html;
     overlay.hidden = false;
+
+    if (dueForNudge.length > 0) {
+      document.getElementById('kg-nudge-update')?.addEventListener('click', () => {
+        showAgeUpdate(dueForNudge[0]);
+      });
+      overlayContent.querySelector('.kg-nudge-banner__dismiss')?.addEventListener('click', () => {
+        dueForNudge.forEach(p => {
+          savePlayer(p.name, { lastAgeNudgeSeen: new Date().toISOString().slice(0, 10) });
+        });
+        overlayContent.querySelector('.kg-nudge-banner')?.remove();
+      });
+    }
   }
 
   function applyPlayer(player) {
@@ -3007,6 +3112,14 @@ function saveGameData(gameId, data) {
         document.getElementById('kg-theme-dropdown').hidden = true;
         document.getElementById('kg-theme-btn').setAttribute('aria-expanded', 'false');
       }
+    });
+
+    // OS colour scheme: auto-switch theme when no player is logged in
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      // Only auto-switch if no player has explicitly chosen a theme
+      if (getActivePlayer()) return;
+      const theme = e.matches ? 'colourful-dark' : 'colourful-light';
+      document.documentElement.setAttribute('data-theme', theme);
     });
   }
 

@@ -110,6 +110,11 @@
     addOverlay.hidden = false;
 
     const form = document.getElementById('kg-addplayer-form');
+    // Remove any stale handler from a previous showAgeUpdate call that was abandoned
+    if (form._ageUpdateHandler) {
+      form.removeEventListener('submit', form._ageUpdateHandler);
+      form._ageUpdateHandler = null;
+    }
     function handler(e) {
       e.preventDefault();
       const dob = document.getElementById('kg-dob-input').value || null;
@@ -125,8 +130,10 @@
       nameInput.value = '';
       document.getElementById('kg-addplayer-heading').textContent = 'New Player';
       form.removeEventListener('submit', handler);
+      form._ageUpdateHandler = null;
       showPlayerSelect();
     }
+    form._ageUpdateHandler = handler;
     form.addEventListener('submit', handler);
   }
 

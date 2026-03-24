@@ -36,6 +36,13 @@ bash build.sh
 # Produces docs/index.html (hub), docs/type-trainer.html, docs/opposites.html
 ```
 
+### Create a downloadable release package
+
+```bash
+bash build.sh --release
+# Creates release/kids-games-YYYYMMDD.zip
+```
+
 ### Adding a new game
 
 1. Create `games/<name>/index.html`
