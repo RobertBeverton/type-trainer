@@ -450,11 +450,17 @@ body {
 }
 
 /* === Responsive === */
-@media (max-width: 400px) {
-  .kg-shell__title {
+@media (max-width: 540px) {
+  .kg-shell__label {
     display: none;
   }
-  .kg-shell__label {
+  .kg-shell__version {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .kg-shell__title {
     display: none;
   }
   .kg-player-grid {

@@ -642,11 +642,17 @@ body {
 }
 
 /* === Responsive === */
-@media (max-width: 400px) {
-  .kg-shell__title {
+@media (max-width: 540px) {
+  .kg-shell__label {
     display: none;
   }
-  .kg-shell__label {
+  .kg-shell__version {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .kg-shell__title {
     display: none;
   }
   .kg-player-grid {
@@ -691,7 +697,7 @@ body {
   }
 
   .container {
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 24px 20px 56px;
     position: relative;
@@ -881,8 +887,7 @@ body {
 
   .hub-footer a:hover { color: var(--text-primary); }
 
-  @media (max-width: 500px) {
-    .games-grid { grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
+  @media (max-width: 480px) {
     .game-card { padding: 16px 12px; }
   }
 </style>
@@ -924,7 +929,7 @@ body {
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">f4712e5 24 Mar 16:16</span>
+  <span class="kg-shell__version" title="Build version">fe61206 24 Mar 16:21</span>
 </div>
 
 <!-- Player select overlay -->
