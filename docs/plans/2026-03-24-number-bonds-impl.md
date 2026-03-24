@@ -1761,7 +1761,27 @@ build_simple_game "games/number-bonds/index.html"  "$DOCS_DIR/number-bonds.html"
 
 This needs to be replaced with a proper JS-inlining build section.
 
-**Step 2: Add JS files array and build section**
+**Step 2: Fix the trap — update the existing cleanup to cover all temp files**
+
+Before adding the new build section, find the existing `trap` line in the type-trainer section (around line 84):
+
+```bash
+trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
+```
+
+**Replace it** with a named cleanup function (defined before the first `mktemp` in the file):
+
+```bash
+_cleanup() {
+  rm -f "$JS_TEMP" "$CSS_TEMP" "$SHELL_JS_TEMP" "$JS_COMBINED" \
+        "$NB_JS_TEMP" "$NB_CSS_TEMP" "$NB_JS_COMBINED"
+}
+trap _cleanup EXIT
+```
+
+This must go where the original `trap` line was. The NB vars will be empty strings initially — `rm -f` on an empty string is a no-op, so this is safe.
+
+**Step 3: Add the number-bonds build section**
 
 In `build.sh`, after the `build_simple_game` function definition (around line 325), **replace** the `build_simple_game` call for number-bonds with:
 
@@ -1782,14 +1802,6 @@ NB_JS_FILES=(
 NB_JS_TEMP=$(mktemp)
 NB_CSS_TEMP=$(mktemp)
 NB_JS_COMBINED=$(mktemp)
-# NOTE: Do NOT add a new trap here — it would replace the type-trainer trap and leak those temp files.
-# The existing cleanup trap (set in the type-trainer section) must be updated to include these vars.
-# Replace the type-trainer trap definition:
-#   trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
-# with a cleanup function defined BEFORE the first mktemp call, e.g.:
-#   _cleanup() { rm -f "$JS_TEMP" "$CSS_TEMP" "$SHELL_JS_TEMP" "$JS_COMBINED" "$NB_JS_TEMP" "$NB_CSS_TEMP" "$NB_JS_COMBINED"; }
-#   trap _cleanup EXIT
-# Then remove the original trap line and this block entirely.
 
 for f in "${NB_JS_FILES[@]}"; do
   echo "  Inlining $NB_GAME_DIR/$f"
@@ -1855,7 +1867,7 @@ else
 fi
 ```
 
-**Step 3: Run the build**
+**Step 4: Run the build**
 
 ```bash
 bash build.sh
@@ -1874,11 +1886,11 @@ Number Bonds built: docs/number-bonds.html (XXXXX bytes)
 
 No errors. All other games should still build successfully.
 
-**Step 4: Open docs/number-bonds.html in browser — verify shell bar appears**
+**Step 5: Open docs/number-bonds.html in browser — verify shell bar appears**
 
 The shell bar (player picker, theme toggle, volume) should now render correctly.
 
-**Step 5: Commit**
+**Step 6: Commit**
 
 ```bash
 git add build.sh docs/number-bonds.html
@@ -1887,7 +1899,7 @@ git commit -m "build: add number-bonds JS inlining to build pipeline"
 
 ---
 
-## Task 10: Final verification
+## Task 11: Final verification
 
 **Step 1: Run all question tests**
 
