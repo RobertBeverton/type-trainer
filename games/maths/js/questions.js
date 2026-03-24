@@ -118,12 +118,28 @@ export function generateDistractors(answer, op, settings, count = 3) {
     candidates.add(candidate);
   }
 
-  // Fallback: sequential offsets if we couldn't generate enough
-  let fallback = 1;
-  while (candidates.size < count) {
-    const c = answer + fallback;
-    if (c !== answer && !candidates.has(c)) candidates.add(c);
-    fallback++;
+  // Fallback: draw from pool of valid table products (for */÷) or sequential offsets (+/−)
+  if (op === '*' || op === '/') {
+    const pool = [];
+    for (let a = 1; a <= maxTable; a++) {
+      for (let b = 1; b <= maxTable; b++) {
+        const p = a * b;
+        if (p !== answer && !candidates.has(p)) pool.push(p);
+      }
+    }
+    // Deduplicate and sort by proximity to answer
+    const uniquePool = [...new Set(pool)].sort((a, b) => Math.abs(a - answer) - Math.abs(b - answer));
+    for (const p of uniquePool) {
+      if (candidates.size >= count) break;
+      candidates.add(p);
+    }
+  } else {
+    let fallback = 1;
+    while (candidates.size < count) {
+      const c = answer + fallback;
+      if (c !== answer && !candidates.has(c)) candidates.add(c);
+      fallback++;
+    }
   }
 
   return [...candidates];

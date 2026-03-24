@@ -206,6 +206,22 @@ describe('generateDistractors — multiplication uses valid table products', () 
       });
     }
   });
+
+  it('all distractors are valid table products for prime-squared answers (fallback case)', () => {
+    // answer=25 (5×5) has only one factor (5) in [2,12], so fallback often triggers
+    const settings = { min: 1, max: 144, maxTable: 12, negatives: false, decimals: false };
+    for (let i = 0; i < 50; i++) {
+      const d = generateDistractors(25, '*', settings);
+      d.forEach(x => {
+        let isTableProduct = false;
+        for (let a = 1; a <= settings.maxTable && !isTableProduct; a++) {
+          const b = x / a;
+          if (Number.isInteger(b) && b >= 1 && b <= settings.maxTable) isTableProduct = true;
+        }
+        assert.ok(isTableProduct, `distractor ${x} is not a valid table product (answer=25)`);
+      });
+    }
+  });
 });
 
 // --- Helpers ---
