@@ -67,19 +67,20 @@ body {
 }
 
 .kg-shell__title {
-  font-size: var(--text-base);
-  font-weight: 800;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--text-lg);
+  font-weight: 900;
   color: var(--hud-text);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 150px;
+  pointer-events: auto;
 }
 
 .kg-shell__home {
   text-decoration: none;
   border-radius: var(--radius-md);
-  padding: 2px 4px;
+  padding: 2px 8px;
   transition: background var(--transition-fast);
 }
 

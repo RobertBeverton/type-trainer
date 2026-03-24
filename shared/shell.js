@@ -187,12 +187,6 @@
     const dobInput = document.getElementById('kg-dob-input');
     if (dobInput) dobInput.max = new Date().toISOString().slice(0, 10);
 
-    // Set page title from data attribute
-    const pageTitle = document.body.dataset.pageTitle;
-    if (pageTitle) {
-      document.getElementById('kg-page-title').textContent = pageTitle;
-    }
-
     // Hide games dropdown button on the hub (hub IS the games list)
     if (document.body.dataset.page === 'hub') {
       document.getElementById('kg-games-btn').hidden = true;
