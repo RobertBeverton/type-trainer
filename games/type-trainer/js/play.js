@@ -1673,3 +1673,12 @@ export function isGameActive() {
 export function isPaused() {
   return gameState.paused;
 }
+
+/**
+ * Update the speed preference of the currently running game.
+ * No-op if no game is active.
+ * @param {number} value
+ */
+export function setSpeedPreference(value) {
+  gameState.speedPreference = value;
+}

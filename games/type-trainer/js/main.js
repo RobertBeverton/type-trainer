@@ -1,63 +1,14 @@
 // main.js — Entry point, game state machine
 // Refactored: shell handles player selection, theme, navigation
 
-import { loadGameData, createPlayer, getPlayerList, getPlayer, deletePlayer, savePlayer, saveGameData, updatePlayerStats, updatePlayerBracket, exportData, importData } from './storage.js';
-import { initAudio, setupMuteButton, applyPlayerAudioSettings } from './audio.js';
-import { initKeyboard, highlightKey, clearHighlights, flashCorrect, flashWrong, toggleVisibilityMode } from './keyboard.js';
+import { initAudio, setupMuteButton } from './audio.js';
+import { initKeyboard, toggleVisibilityMode } from './keyboard.js';
 import { getStagesForBracket } from './stages.js';
-import { startGame as startPlayGame, cleanupPlay } from './play.js';
+import { startGame as startPlayGame, cleanupPlay, setSpeedPreference } from './play.js';
 // Note: In concatenated build, startPlayGame alias is lost.
 // play.js exports 'startGame', so the build will use that name directly.
 // main.js's local function is 'enterPlayMode' to avoid collision.
 import './adaptive.js';
-import { trapFocus, releaseFocus } from './utils.js';
-
-// ---------------------------------------------------------------------------
-// State
-// ---------------------------------------------------------------------------
-
-// ---------------------------------------------------------------------------
-// DOM references (resolved once on DOMContentLoaded)
-// ---------------------------------------------------------------------------
-
-let overlay = null;
-
-// ---------------------------------------------------------------------------
-// Utility: focus management (Fix C2)
-// ---------------------------------------------------------------------------
-
-/**
- * Focus an element, adding tabindex="-1" if needed so non-interactive
- * elements (headings, divs) can receive programmatic focus.
- * @param {HTMLElement|null} el
- */
-function focusElement(el) {
-  if (!el) return;
-  // Only set tabindex on non-natively-focusable elements (headings, divs)
-  // Setting tabindex="-1" on buttons/inputs removes them from tab order
-  const nativelyFocusable = ['A', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(el.tagName);
-  if (!nativelyFocusable && !el.getAttribute('tabindex')) {
-    el.setAttribute('tabindex', '-1');
-  }
-  el.focus();
-}
-
-// ---------------------------------------------------------------------------
-// Utility: DOM helpers
-// ---------------------------------------------------------------------------
-
-/** Create an element with optional class(es) and textContent. */
-function el(tag, classNames, text) {
-  const node = document.createElement(tag);
-  if (classNames) {
-    const classes = Array.isArray(classNames) ? classNames : classNames.split(' ');
-    classes.forEach(c => { if (c) node.classList.add(c); });
-  }
-  if (text !== undefined && text !== null) {
-    node.textContent = text;
-  }
-  return node;
-}
 
 // ---------------------------------------------------------------------------
 // Play mode
@@ -126,8 +77,15 @@ function enterPlayMode(bracket, speed) {
   });
 }
 
+const SPEEDS = [
+  { label: 'Easy', value: 1.0 },
+  { label: 'Normal', value: 1.8 },
+  { label: 'Hard', value: 2.3 },
+  { label: 'Extra Hard', value: 3.0 },
+];
+
 function getDefaultSpeed(bracket) {
-  const defaults = { '4-5': 1.0, '6-8': 1.8, '9-12': 2.3, '13+': 3.0 };
+  const defaults = { '4-5': 1.0, '6-8': 1.8, '9-12': 2.3, 'Adult': 3.0 };
   return defaults[bracket] || 1.8;
 }
 
@@ -135,24 +93,19 @@ function startFromShell() {
   const ctx = window.KidsGames ? window.KidsGames.player : null;
   if (!ctx) return; // shell hasn't initialised yet
 
-  const bracket = ctx.ageBracket;
+  // stages.js uses 'Adult' for the oldest bracket; map from hub's '13+' label
+  const bracket = ctx.ageBracket === '13+' ? 'Adult' : ctx.ageBracket;
   const gameData = window.KidsGames ? window.KidsGames.loadGameData('typetrainer') : {};
   const speedPref = gameData.speedPreference || getDefaultSpeed(bracket);
 
+  // Sync the HUD speed label with the loaded preference
+  const speedLabel = document.getElementById('speed-label');
+  if (speedLabel) {
+    const match = SPEEDS.find(s => s.value === speedPref);
+    speedLabel.textContent = match ? match.label : 'Normal';
+  }
+
   enterPlayMode(bracket, speedPref);
-}
-
-// ---------------------------------------------------------------------------
-// Mode cleanup (Fix W4 from review 2)
-// ---------------------------------------------------------------------------
-
-/**
- * Clean up all active game modes. Called at the start of every screen
- * transition to ensure no orphaned listeners or animation frames.
- */
-function cleanupAll() {
-  // Clean up Play mode
-  try { cleanupPlay(); } catch (_) { /* play.js may not be initialised */ }
 }
 
 // ---------------------------------------------------------------------------
@@ -183,8 +136,6 @@ window._main = {
 // ---------------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-  overlay = document.getElementById('overlay');
-
   // Show soft keyboard warning on touch-only devices
   checkKeyboard();
 
@@ -219,19 +170,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Speed picker button
   const speedBtn = document.getElementById('speed-btn');
   const speedLabel = document.getElementById('speed-label');
-  const SPEEDS = [
-    { label: 'Easy', value: 1.0 },
-    { label: 'Normal', value: 1.8 },
-    { label: 'Hard', value: 2.3 },
-    { label: 'Extra Hard', value: 3.0 },
-  ];
   if (speedBtn && speedLabel) {
     speedBtn.addEventListener('click', () => {
-      // Get current speed from play.js callbacks — toggle to next
-      const gameData = window.KidsGames ? window.KidsGames.loadGameData('typetrainer') : {};
-      const currentSpeed = gameData.speedPreference || 1.8;
-      const currentIdx = SPEEDS.findIndex(s => s.value === currentSpeed);
+      const currentText = speedLabel.textContent;
+      const currentIdx = SPEEDS.findIndex(s => s.label === currentText);
       const next = SPEEDS[(currentIdx + 1) % SPEEDS.length];
+      // Update the live game immediately
+      setSpeedPreference(next.value);
+      // Persist for next session
       if (window.KidsGames) {
         const existing = window.KidsGames.loadGameData('typetrainer');
         window.KidsGames.saveGameData('typetrainer', { ...existing, speedPreference: next.value });

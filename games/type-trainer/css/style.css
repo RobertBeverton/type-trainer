@@ -136,6 +136,16 @@ body {
   padding-top: 56px;
 }
 
+.keyboard-warning {
+  background: var(--warning-bg);
+  color: var(--text-primary);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-sm);
+}
+
 
 /* ========================================
    GLOBAL FOCUS STYLES (Fix W8)

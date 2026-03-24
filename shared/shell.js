@@ -37,7 +37,7 @@
   // --- Migration helpers ---
 
   function bracketToAge(bracket) {
-    const map = { '4-5': 5, '6-8': 7, '9-12': 10, 'Adult': 18 };
+    const map = { '4-5': 5, '6-8': 7, '9-12': 10, 'Adult': 18, '13+': 18 };
     return map[bracket] || 7;
   }
 
