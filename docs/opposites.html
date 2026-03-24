@@ -276,6 +276,446 @@
   --hud-text: #E8E8F0;   /* near-white text — --hud-accent (#7AF) is for icons/highlights only */
   --hud-accent: #7AF;
 }
+/* shared/shell.css — Shell bar styles
+   Uses kg- prefix on all class names to avoid conflicts with game CSS.
+   All colours reference shared design tokens (var(--*)). */
+
+/* === Shell Bar === */
+.kg-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: var(--hud-bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0 var(--space-sm);
+  z-index: 1000;
+  font-family: var(--font-family);
+}
+
+/* Body offset — games/hub must add this so content isn't hidden under bar */
+body {
+  padding-top: 56px;
+}
+
+.kg-shell__btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  min-height: 44px;
+  min-width: 44px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--hud-text);
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.kg-shell__btn:hover {
+  background: var(--border);
+}
+
+.kg-shell__btn:focus-visible {
+  outline: 2px solid var(--hud-accent);
+  outline-offset: 2px;
+}
+
+.kg-shell__icon {
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+.kg-shell__label {
+  font-size: var(--text-sm);
+  color: var(--hud-text);
+}
+
+.kg-shell__title {
+  font-size: var(--text-base);
+  font-weight: 800;
+  color: var(--hud-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.kg-shell__spacer {
+  flex: 1;
+}
+
+.kg-shell__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--hud-accent);
+  color: var(--hud-bg);
+  font-weight: 900;
+  font-size: var(--text-sm);
+}
+
+/* === Games Dropdown === */
+.kg-shell__games-wrap {
+  position: relative;
+}
+
+.kg-games-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 180px;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.kg-game-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 700;
+  transition: background var(--transition-fast);
+  min-height: 44px;
+}
+
+.kg-game-link:hover {
+  background: var(--border);
+}
+
+.kg-game-link__icon {
+  font-size: var(--text-xl);
+}
+
+/* === Theme Dropdown === */
+.kg-theme-dropdown {
+  position: fixed;
+  top: 52px;
+  right: var(--space-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 180px;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.kg-theme-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 700;
+  text-align: left;
+  transition: background var(--transition-fast);
+  min-height: 44px;
+}
+
+.kg-theme-option:hover,
+.kg-theme-option.active {
+  background: var(--border);
+}
+
+.kg-theme-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.kg-theme-swatch--colourful-light { background: #FFF8E7; border-color: #FF6B6B; }
+.kg-theme-swatch--colourful-dark  { background: #1A1520; border-color: #C4A8FF; }
+.kg-theme-swatch--clean-light     { background: #FAFAF8; border-color: #536E7A; }
+.kg-theme-swatch--clean-dark      { background: #0E0E1A; border-color: #77AAFF; }
+
+/* === Overlays === */
+.kg-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+.kg-overlay__content {
+  background: var(--bg-surface);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-xl) var(--space-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 480px;
+  max-height: calc(100vh - var(--space-2xl));
+  overflow-y: auto;
+}
+
+.kg-overlay__heading {
+  font-size: var(--text-xl);
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+/* === Player Grid === */
+.kg-player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--space-md);
+}
+
+.kg-player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-sm);
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  min-height: 44px;
+  font-family: var(--font-family);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.kg-player-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.kg-player-card--add {
+  border-style: dashed;
+  color: var(--text-secondary);
+}
+
+.kg-player-card__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--accent-purple);
+  color: var(--bg-surface);
+  font-size: var(--text-xl);
+  font-weight: 900;
+}
+
+.kg-player-card--add .kg-player-card__avatar {
+  background: var(--border);
+  color: var(--text-secondary);
+}
+
+.kg-player-card__name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kg-player-card__bracket {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* === Add Player Form === */
+.kg-form-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-family);
+}
+
+.kg-form-input {
+  display: block;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg);
+  margin-bottom: var(--space-md);
+  box-sizing: border-box;
+  min-height: 44px;
+  transition: border-color var(--transition-fast);
+}
+
+.kg-form-input:focus {
+  outline: none;
+  border-color: var(--hud-accent);
+}
+
+.kg-form-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 var(--space-md) 0;
+}
+
+.kg-age-toggle {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.kg-age-tab {
+  flex: 1;
+  padding: var(--space-xs) var(--space-sm);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+  min-height: 44px;
+  transition: all var(--transition-fast);
+}
+
+.kg-age-tab.active {
+  background: var(--hud-accent);
+  border-color: var(--hud-accent);
+  color: var(--bg-surface);
+}
+
+.kg-form-field {
+  margin-bottom: var(--space-sm);
+}
+
+.kg-form-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+/* === Buttons === */
+.kg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-xl);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-weight: 800;
+  cursor: pointer;
+  min-height: 48px;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+}
+
+.kg-btn--primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+  flex: 1;
+}
+
+.kg-btn--primary:hover:not(:disabled) {
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+}
+
+.kg-btn--primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.kg-btn--secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border);
+}
+
+.kg-btn--secondary:hover {
+  background: var(--btn-secondary-hover);
+}
+
+/* === Birthday nudge banner (Phase 4) === */
+.kg-nudge-banner {
+  width: 100%;
+  margin-bottom: var(--space-sm);
+  background: var(--warning-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.kg-nudge-banner__dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  margin-left: auto;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === Responsive === */
+@media (max-width: 400px) {
+  .kg-shell__title {
+    display: none;
+  }
+  .kg-shell__label {
+    display: none;
+  }
+  .kg-player-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -702,6 +1142,105 @@
 </style>
 </head>
 <body>
+<!-- Kids Games Shell Bar -->
+<div id="kg-shell" class="kg-shell" role="banner">
+  <!-- Games dropdown -->
+  <div class="kg-shell__games-wrap">
+    <button id="kg-games-btn" class="kg-shell__btn kg-shell__games-btn" aria-expanded="false" aria-controls="kg-games-dropdown">
+      <span class="kg-shell__icon" aria-hidden="true">🎮</span>
+      <span class="kg-shell__label">Games</span>
+    </button>
+    <div id="kg-games-dropdown" class="kg-games-dropdown" hidden>
+      <!-- Populated by shell.js -->
+    </div>
+  </div>
+
+  <!-- Page title -->
+  <span id="kg-page-title" class="kg-shell__title">Kids Games</span>
+
+  <!-- Spacer -->
+  <span class="kg-shell__spacer"></span>
+
+  <!-- Player -->
+  <button id="kg-player-btn" class="kg-shell__btn kg-shell__player-btn" aria-label="Switch player">
+    <span id="kg-player-avatar" class="kg-shell__avatar">?</span>
+    <span id="kg-player-name" class="kg-shell__label">Guest</span>
+  </button>
+
+  <!-- Theme picker -->
+  <button id="kg-theme-btn" class="kg-shell__btn" aria-label="Change theme" aria-expanded="false" aria-controls="kg-theme-dropdown" title="Theme">
+    <span id="kg-theme-icon" class="kg-shell__icon" aria-hidden="true">🎨</span>
+  </button>
+
+  <!-- Volume -->
+  <button id="kg-volume-btn" class="kg-shell__btn" aria-label="Toggle sound" aria-pressed="false" title="Sound">
+    <span id="kg-volume-icon" class="kg-shell__icon" aria-hidden="true">🔊</span>
+  </button>
+</div>
+
+<!-- Player select overlay -->
+<div id="kg-player-overlay" class="kg-overlay" hidden>
+  <div class="kg-overlay__content kg-player-select" role="dialog" aria-labelledby="kg-player-heading">
+    <h2 id="kg-player-heading" class="kg-overlay__heading">Who's playing?</h2>
+    <div id="kg-player-grid" class="kg-player-grid">
+      <!-- Player cards + "Add player" card populated by shell.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Add player overlay -->
+<div id="kg-addplayer-overlay" class="kg-overlay" hidden>
+  <div class="kg-overlay__content kg-addplayer-form" role="dialog" aria-labelledby="kg-addplayer-heading">
+    <h2 id="kg-addplayer-heading" class="kg-overlay__heading">New Player</h2>
+    <form id="kg-addplayer-form">
+      <label class="kg-form-label" for="kg-name-input">Name</label>
+      <input id="kg-name-input" class="kg-form-input" type="text" maxlength="20" autocomplete="off" placeholder="Your name" required>
+
+      <fieldset class="kg-form-fieldset">
+        <legend class="kg-form-label">How old are you? (optional)</legend>
+        <div class="kg-age-toggle" role="tablist">
+          <button type="button" class="kg-age-tab active" data-mode="dob" role="tab" aria-selected="true">Date of birth</button>
+          <button type="button" class="kg-age-tab" data-mode="age" role="tab" aria-selected="false">Age number</button>
+        </div>
+
+        <div id="kg-dob-field" class="kg-form-field" role="tabpanel">
+          <label class="kg-form-label" for="kg-dob-input">Date of birth</label>
+          <input id="kg-dob-input" class="kg-form-input" type="date">
+        </div>
+
+        <div id="kg-age-field" class="kg-form-field" role="tabpanel" hidden>
+          <label class="kg-form-label" for="kg-age-input">Age</label>
+          <input id="kg-age-input" class="kg-form-input" type="number" min="3" max="99">
+        </div>
+      </fieldset>
+
+      <div class="kg-form-actions">
+        <button type="submit" class="kg-btn kg-btn--primary" id="kg-addplayer-submit" disabled>Let's go!</button>
+        <button type="button" class="kg-btn kg-btn--secondary" id="kg-addplayer-cancel">Back</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Theme picker dropdown -->
+<div id="kg-theme-dropdown" class="kg-theme-dropdown" hidden>
+  <button class="kg-theme-option" data-theme="colourful-light">
+    <span class="kg-theme-swatch kg-theme-swatch--colourful-light"></span>
+    Colourful Light
+  </button>
+  <button class="kg-theme-option" data-theme="colourful-dark">
+    <span class="kg-theme-swatch kg-theme-swatch--colourful-dark"></span>
+    Colourful Dark
+  </button>
+  <button class="kg-theme-option" data-theme="clean-light">
+    <span class="kg-theme-swatch kg-theme-swatch--clean-light"></span>
+    Clean Light
+  </button>
+  <button class="kg-theme-option" data-theme="clean-dark">
+    <span class="kg-theme-swatch kg-theme-swatch--clean-dark"></span>
+    Clean Dark
+  </button>
+</div>
 
 <a href="index.html" class="back-link" aria-label="Back to all games">🏠 Games</a>
 
@@ -1075,5 +1614,432 @@ function showEndScreen() {
 // ---- START ----
 startGame();
 </script>
+  <script>
+(function() { 'use strict';
+// shared/storage.js — Player profiles and namespaced game data
+// NOTE: This file is concatenated INSIDE the shell IIFE by the build script.
+// Do NOT wrap in its own IIFE.
+
+const STORAGE_PREFIX = 'kidsgames_';
+const PLAYERS_KEY = STORAGE_PREFIX + 'players';
+const ACTIVE_KEY = STORAGE_PREFIX + 'activePlayer';
+
+function _read(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw === null ? null : JSON.parse(raw);
+  } catch (e) {
+    console.error('KidsGames: corrupt data for key', key, e);
+    return null;
+  }
+}
+
+function _write(key, val) {
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+    return true;
+  } catch (e) {
+    console.error('KidsGames: storage write failed', key, e);
+    return false;
+  }
+}
+
+// Sanitise player names: letters/numbers/spaces/hyphens/apostrophes, max 20 chars
+function sanitiseName(name) {
+  return name.replace(/[^\p{L}\p{N} '\-]/gu, '').trim().slice(0, 20);
+}
+
+// Escape HTML to prevent injection when inserting into innerHTML
+function escapeHtml(str) {
+  const el = document.createElement('span');
+  el.textContent = str;
+  return el.innerHTML;
+}
+
+function getAllPlayers() {
+  return _read(PLAYERS_KEY) || {};
+}
+
+function getPlayer(name) {
+  const players = getAllPlayers();
+  return players[name] || null;
+}
+
+function createPlayer(name, { dob, manualAge }) {
+  name = sanitiseName(name);
+  if (!name) return false;
+  const players = getAllPlayers();
+  if (players[name]) return false; // already exists
+  players[name] = {
+    name: name,
+    dob: dob || null,
+    manualAge: dob ? null : (manualAge || null),
+    theme: getDefaultTheme(dob, manualAge),
+    createdAt: new Date().toISOString().slice(0, 10)
+  };
+  _write(PLAYERS_KEY, players);
+  return true;
+}
+
+function savePlayer(name, data) {
+  const players = getAllPlayers();
+  players[name] = { ...players[name], ...data };
+  _write(PLAYERS_KEY, players);
+}
+
+function deletePlayer(name) {
+  const players = getAllPlayers();
+  delete players[name];
+  _write(PLAYERS_KEY, players);
+  // Clean up game-specific data — match exact suffix pattern
+  const suffix = '_' + name;
+  Object.keys(localStorage).forEach(k => {
+    if (k.startsWith(STORAGE_PREFIX) && k.endsWith(suffix) && k !== PLAYERS_KEY && k !== ACTIVE_KEY) {
+      localStorage.removeItem(k);
+    }
+  });
+}
+
+function getActivePlayer() {
+  const name = _read(ACTIVE_KEY);
+  return name ? getPlayer(name) : null;
+}
+
+function setActivePlayer(name) {
+  _write(ACTIVE_KEY, name);
+}
+
+function getAgeBracket(player) {
+  const age = getAge(player);
+  if (age === null) return '6-8'; // fallback
+  if (age <= 5) return '4-5';
+  if (age <= 8) return '6-8';
+  if (age <= 12) return '9-12';
+  return '13+';
+}
+
+function getAge(player) {
+  if (player.dob) {
+    const today = new Date();
+    const birth = new Date(player.dob);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  }
+  return player.manualAge || null;
+}
+
+function getDefaultTheme(dob, manualAge) {
+  const age = dob
+    ? Math.floor((Date.now() - new Date(dob).getTime()) / 31557600000)
+    : manualAge;
+  if (age !== null && age <= 8) return 'colourful-light';
+  return 'clean-light';
+}
+
+// Game-specific data
+function loadGameData(gameId) {
+  const player = getActivePlayer();
+  if (!player) return {};
+  return _read(STORAGE_PREFIX + gameId + '_' + player.name) || {};
+}
+
+function saveGameData(gameId, data) {
+  const player = getActivePlayer();
+  if (!player) return;
+  _write(STORAGE_PREFIX + gameId + '_' + player.name, data);
+}
+// shared/shell.js — Shell bar logic
+// NOTE: The build script wraps storage.js + shell.js together in a single IIFE.
+// Storage functions (getPlayer, savePlayer, etc.) are available here without import.
+
+
+
+
+  // --- Expose public API ---
+  const _playerChangeListeners = [];
+
+  window.KidsGames = {
+    get player() {
+      const p = getActivePlayer();
+      if (!p) return null;
+      return { name: p.name, ageBracket: getAgeBracket(p), theme: p.theme };
+    },
+    get muted() { return muted; },
+    loadGameData: loadGameData,
+    saveGameData: saveGameData,
+    onPlayerChange(fn) { _playerChangeListeners.push(fn); },
+  };
+
+  function _notifyPlayerChange() {
+    const ctx = window.KidsGames.player;
+    _playerChangeListeners.forEach(fn => { try { fn(ctx); } catch(e) { console.error(e); } });
+  }
+
+  // --- Games list — update when adding new games ---
+  const GAMES = [
+    { id: 'type-trainer', title: 'Type Trainer', icon: '⌨️', url: 'type-trainer.html', needsKeyboard: true },
+    { id: 'opposites', title: 'Opposites', icon: '🔄', url: 'opposites.html', needsKeyboard: false },
+  ];
+
+  // --- Volume state ---
+  let muted = false;
+
+  // --- Init ---
+  function initShell() {
+    renderGamesDropdown();
+
+    // Set page title from data attribute
+    const pageTitle = document.body.dataset.pageTitle;
+    if (pageTitle) {
+      document.getElementById('kg-page-title').textContent = pageTitle;
+    }
+
+    // Hide games dropdown button on the hub (hub IS the games list)
+    if (document.body.dataset.page === 'hub') {
+      document.getElementById('kg-games-btn').hidden = true;
+    }
+
+    const activePlayer = getActivePlayer();
+    if (!activePlayer) {
+      showPlayerSelect();
+    } else {
+      applyPlayer(activePlayer);
+    }
+    bindEvents();
+  }
+
+  // --- Player selection ---
+  function showPlayerSelect() {
+    const overlay = document.getElementById('kg-player-overlay');
+    const grid = document.getElementById('kg-player-grid');
+    const players = getAllPlayers();
+
+    let html = '';
+    Object.values(players).forEach(p => {
+      const safeName = escapeHtml(p.name);
+      const initial = escapeHtml(p.name.charAt(0).toUpperCase());
+      const bracket = getAgeBracket(p);
+      html += `
+        <button class="kg-player-card" data-player="${safeName}">
+          <span class="kg-player-card__avatar">${initial}</span>
+          <span class="kg-player-card__name">${safeName}</span>
+          <span class="kg-player-card__bracket">${bracket}</span>
+        </button>`;
+    });
+    html += `
+      <button class="kg-player-card kg-player-card--add" id="kg-add-player-btn" aria-label="Add new player">
+        <span class="kg-player-card__avatar">+</span>
+        <span class="kg-player-card__name">New Player</span>
+      </button>`;
+
+    grid.innerHTML = html;
+    overlay.hidden = false;
+  }
+
+  function applyPlayer(player) {
+    setActivePlayer(player.name);
+    document.getElementById('kg-player-avatar').textContent = player.name.charAt(0).toUpperCase();
+    document.getElementById('kg-player-name').textContent = player.name;
+    document.documentElement.setAttribute('data-theme', player.theme);
+    document.getElementById('kg-player-overlay').hidden = true;
+    _notifyPlayerChange();
+  }
+
+  // --- Theme picker ---
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const player = getActivePlayer();
+    if (player) {
+      savePlayer(player.name, { theme });
+    }
+  }
+
+  function toggleThemeDropdown() {
+    const dd = document.getElementById('kg-theme-dropdown');
+    const btn = document.getElementById('kg-theme-btn');
+    dd.hidden = !dd.hidden;
+    btn.setAttribute('aria-expanded', !dd.hidden);
+    if (!dd.hidden) {
+      // Highlight current theme
+      const current = document.documentElement.getAttribute('data-theme');
+      dd.querySelectorAll('.kg-theme-option').forEach(b => {
+        b.classList.toggle('active', b.dataset.theme === current);
+      });
+    }
+  }
+
+  // --- Games dropdown ---
+  function renderGamesDropdown() {
+    const dd = document.getElementById('kg-games-dropdown');
+    dd.innerHTML = GAMES.map(g => `
+      <a href="${g.url}" class="kg-game-link${g.needsKeyboard ? ' kg-needs-keyboard' : ''}">
+        <span class="kg-game-link__icon">${g.icon}</span>
+        <span class="kg-game-link__title">${escapeHtml(g.title)}</span>
+      </a>
+    `).join('');
+  }
+
+  // --- Volume ---
+  function toggleMute() {
+    muted = !muted;
+    document.getElementById('kg-volume-icon').textContent = muted ? '🔇' : '🔊';
+    document.getElementById('kg-volume-btn').setAttribute('aria-pressed', muted);
+  }
+
+  // --- Event binding ---
+  function bindEvents() {
+    // Games dropdown
+    document.getElementById('kg-games-btn').addEventListener('click', () => {
+      const dd = document.getElementById('kg-games-dropdown');
+      const btn = document.getElementById('kg-games-btn');
+      dd.hidden = !dd.hidden;
+      btn.setAttribute('aria-expanded', !dd.hidden);
+    });
+
+    // Player button
+    document.getElementById('kg-player-btn').addEventListener('click', showPlayerSelect);
+
+    // Player card selection (delegated)
+    document.getElementById('kg-player-grid').addEventListener('click', (e) => {
+      const card = e.target.closest('.kg-player-card');
+      if (!card) return;
+      if (card.id === 'kg-add-player-btn') {
+        document.getElementById('kg-player-overlay').hidden = true;
+        document.getElementById('kg-addplayer-overlay').hidden = false;
+        document.getElementById('kg-name-input').focus();
+        return;
+      }
+      const name = card.dataset.player;
+      const player = getPlayer(name);
+      if (player) applyPlayer(player);
+    });
+
+    // Add player form
+    document.getElementById('kg-addplayer-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('kg-name-input').value.trim();
+      const dobInput = document.getElementById('kg-dob-input');
+      const ageInput = document.getElementById('kg-age-input');
+      const dob = dobInput.value || null;
+      const manualAge = ageInput.value ? parseInt(ageInput.value) : null;
+
+      if (!name) return;
+      if (createPlayer(name, { dob, manualAge })) {
+        const player = getPlayer(name);
+        document.getElementById('kg-addplayer-overlay').hidden = true;
+        applyPlayer(player);
+      }
+    });
+
+    // Add player cancel
+    document.getElementById('kg-addplayer-cancel').addEventListener('click', () => {
+      document.getElementById('kg-addplayer-overlay').hidden = true;
+      showPlayerSelect();
+    });
+
+    // Age toggle (dob vs manual)
+    document.querySelectorAll('.kg-age-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.kg-age-tab').forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        const mode = tab.dataset.mode;
+        document.getElementById('kg-dob-field').hidden = mode !== 'dob';
+        document.getElementById('kg-age-field').hidden = mode !== 'age';
+      });
+    });
+
+    // Enable submit when name is entered
+    document.getElementById('kg-name-input').addEventListener('input', (e) => {
+      document.getElementById('kg-addplayer-submit').disabled = !e.target.value.trim();
+    });
+
+    // Theme picker
+    document.getElementById('kg-theme-btn').addEventListener('click', toggleThemeDropdown);
+    document.getElementById('kg-theme-dropdown').addEventListener('click', (e) => {
+      const option = e.target.closest('.kg-theme-option');
+      if (!option) return;
+      setTheme(option.dataset.theme);
+      document.getElementById('kg-theme-dropdown').hidden = true;
+      document.getElementById('kg-theme-btn').setAttribute('aria-expanded', 'false');
+    });
+
+    // Volume
+    document.getElementById('kg-volume-btn').addEventListener('click', toggleMute);
+
+    // Keyboard: Escape closes overlays/dropdowns, Tab traps focus in overlays
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const playerOverlay = document.getElementById('kg-player-overlay');
+        const addOverlay = document.getElementById('kg-addplayer-overlay');
+        const gamesDD = document.getElementById('kg-games-dropdown');
+        const themeDD = document.getElementById('kg-theme-dropdown');
+
+        if (!themeDD.hidden) {
+          themeDD.hidden = true;
+          document.getElementById('kg-theme-btn').setAttribute('aria-expanded', 'false');
+          return;
+        }
+        if (!gamesDD.hidden) {
+          gamesDD.hidden = true;
+          document.getElementById('kg-games-btn').setAttribute('aria-expanded', 'false');
+          return;
+        }
+        if (!addOverlay.hidden) { addOverlay.hidden = true; showPlayerSelect(); return; }
+        // Player overlay: only close if there's an active player (can't dismiss on first visit)
+        if (!playerOverlay.hidden && getActivePlayer()) { playerOverlay.hidden = true; return; }
+      }
+
+      if (e.key === 'Tab') {
+        const openOverlay = document.querySelector('.kg-overlay:not([hidden])');
+        if (!openOverlay) return;
+        const focusable = openOverlay.querySelectorAll('button:not([disabled]), input, [tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+    });
+
+    // Lock body scroll when overlay is open
+    const scrollObserver = new MutationObserver(() => {
+      const anyOpen = document.querySelector('.kg-overlay:not([hidden])');
+      document.body.style.overflow = anyOpen ? 'hidden' : '';
+    });
+    document.querySelectorAll('.kg-overlay').forEach(o => {
+      scrollObserver.observe(o, { attributes: true, attributeFilter: ['hidden'] });
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.kg-shell__games-wrap')) {
+        document.getElementById('kg-games-dropdown').hidden = true;
+        document.getElementById('kg-games-btn').setAttribute('aria-expanded', 'false');
+      }
+      if (!e.target.closest('#kg-theme-btn') && !e.target.closest('.kg-theme-dropdown')) {
+        document.getElementById('kg-theme-dropdown').hidden = true;
+        document.getElementById('kg-theme-btn').setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // --- Init on DOM ready ---
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShell);
+  } else {
+    initShell();
+  }
+
+})();
+  </script>
 </body>
 </html>
