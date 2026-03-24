@@ -1,0 +1,43 @@
+# Words to always include (one per line, case-insensitive)
+# These override the max-length and difficulty filters.
+# Current game words — simple, high-value pairs for young kids.
+big
+hot
+happy
+up
+fast
+wet
+day
+good
+tall
+hard
+clean
+full
+in
+on
+old
+dark
+open
+stop
+yes
+left
+top
+push
+loud
+sit
+cry
+win
+give
+love
+come
+boy
+black
+over
+near
+nice
+run
+awake
+brave
+front
+high
+sweet

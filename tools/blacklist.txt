@@ -1,0 +1,84 @@
+# Words to never include as question OR answer (one per line, case-insensitive)
+# Add anything inappropriate, too confusing, or too obscure.
+
+# --- Phonetic / linguistic jargon (WordNet antonym artefacts) ---
+continuant
+continuant_consonant
+obstruent
+plosive
+fricative
+sibilant
+affricate
+nasal
+lateral
+vowel
+consonant
+voiced
+voiceless
+bilabial
+velar
+dental
+alveolar
+palatal
+glottal
+retroflex
+aspirate
+unaspirate
+
+# --- Too abstract / confusing for kids ---
+agonist
+antagonist
+ascendant
+descendant
+dominant
+recessive
+additive
+subtractive
+convex
+concave
+afferent
+efferent
+anodic
+cathodic
+proximal
+distal
+
+# --- Adult / inappropriate ---
+sexy
+nude
+naked
+erotic
+vulgar
+crude
+obscene
+profane
+damn
+hell
+ass
+crap
+
+# --- Archaic / obscure ---
+hither
+thither
+yonder
+ere
+nigh
+anon
+twas
+twixt
+methinks
+
+# --- WordNet artefacts: technically valid but wrong context for this game ---
+losings       # "Win/Lose" — "losings" is valid but "lose" covers it
+starve        # "Give/Starve" — valid but confusing for kids; "take" is the answer
+lightly       # "Hard/Lightly" — adverb sense, not the adjective kids expect
+idle          # "Run/Idle" — computer science sense; kids want "walk"
+covert        # "Open/Covert" — military/spy context, not the door-open sense
+singly        # "Together/Singly" — archaic
+whiten        # "Black/Whiten" — "white" is sufficient
+linearize     # stray compound
+hasten        # duplicated by other words
+outgo         # "Income/Outgo" — archaic
+
+# --- Confusing because too similar to question ---
+# (add specific pairs here if WordNet produces weird results)

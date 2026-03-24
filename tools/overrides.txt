@@ -1,0 +1,10 @@
+# Extra antonyms to add for specific words (merged with WordNet results).
+# Format:  word: antonym1, antonym2, ...
+# Use this when WordNet misses the obvious answer a child would give.
+
+run: walk
+happy: sad
+hard: tough
+cry: laugh, smile
+win: lose
+stop: go, start, begin

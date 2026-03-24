@@ -1176,48 +1176,11552 @@ let lifetimeBestStreak = savedData.bestStreak || 0;
 let lifetimeBestScore = savedData.bestScore || 0;
 
 // ---- WORD DATA ----
+// BEGIN_WORD_PAIRS
 const wordPairs = [
-  { word: "Big", opposites: ["small", "little"], distractors: ["red", "fun", "round"] },
-  { word: "Hot", opposites: ["cold"], distractors: ["red", "wet", "big"] },
-  { word: "Happy", opposites: ["sad"], distractors: ["fun", "kind", "nice"] },
-  { word: "Up", opposites: ["down"], distractors: ["run", "red", "out"] },
-  { word: "Fast", opposites: ["slow"], distractors: ["big", "red", "fun"] },
-  { word: "Wet", opposites: ["dry"], distractors: ["hot", "big", "red"] },
-  { word: "Day", opposites: ["night"], distractors: ["sun", "hot", "dog"] },
-  { word: "Good", opposites: ["bad"], distractors: ["big", "fun", "red"] },
-  { word: "Tall", opposites: ["short"], distractors: ["red", "fat", "old"] },
-  { word: "Hard", opposites: ["soft", "easy"], distractors: ["red", "big", "old"] },
-  { word: "Clean", opposites: ["dirty"], distractors: ["wet", "big", "red"] },
-  { word: "Full", opposites: ["empty"], distractors: ["big", "round", "red"] },
-  { word: "In", opposites: ["out"], distractors: ["up", "big", "red"] },
-  { word: "On", opposites: ["off"], distractors: ["up", "big", "red"] },
-  { word: "Old", opposites: ["new", "young"], distractors: ["big", "red", "sad"] },
-  { word: "Dark", opposites: ["light"], distractors: ["big", "cold", "red"] },
-  { word: "Open", opposites: ["shut", "closed"], distractors: ["big", "red", "old"] },
-  { word: "Stop", opposites: ["go"], distractors: ["run", "big", "red"] },
-  { word: "Yes", opposites: ["no"], distractors: ["ok", "hi", "go"] },
-  { word: "Left", opposites: ["right"], distractors: ["up", "go", "big"] },
-  { word: "Top", opposites: ["bottom"], distractors: ["side", "big", "red"] },
-  { word: "Push", opposites: ["pull"], distractors: ["run", "sit", "eat"] },
-  { word: "Loud", opposites: ["quiet"], distractors: ["big", "fast", "red"] },
-  { word: "Sit", opposites: ["stand"], distractors: ["run", "eat", "hop"] },
-  { word: "Cry", opposites: ["laugh", "smile"], distractors: ["run", "eat", "sit"] },
-  { word: "Win", opposites: ["lose"], distractors: ["run", "play", "eat"] },
-  { word: "Give", opposites: ["take"], distractors: ["run", "eat", "sit"] },
-  { word: "Love", opposites: ["hate"], distractors: ["like", "run", "eat"] },
-  { word: "Come", opposites: ["go"], distractors: ["run", "sit", "eat"] },
-  { word: "Boy", opposites: ["girl"], distractors: ["dog", "cat", "man"] },
-  { word: "Black", opposites: ["white"], distractors: ["red", "blue", "pink"] },
-  { word: "Over", opposites: ["under"], distractors: ["up", "on", "out"] },
-  { word: "Near", opposites: ["far"], distractors: ["big", "old", "red"] },
-  { word: "Nice", opposites: ["mean"], distractors: ["big", "red", "fun"] },
-  { word: "Run", opposites: ["walk"], distractors: ["eat", "sit", "hop"] },
-  { word: "Awake", opposites: ["asleep"], distractors: ["happy", "run", "eat"] },
-  { word: "Brave", opposites: ["scared"], distractors: ["happy", "fast", "big"] },
-  { word: "Front", opposites: ["back"], distractors: ["side", "top", "red"] },
-  { word: "High", opposites: ["low"], distractors: ["big", "far", "red"] },
-  { word: "Sweet", opposites: ["sour"], distractors: ["red", "hot", "big"] },
+  {
+    "word": "Awake",
+    "opposites": [
+      "asleep"
+    ],
+    "distractors": [
+      "question",
+      "depressing",
+      "open",
+      "shrink",
+      "lesser"
+    ]
+  },
+  {
+    "word": "Big",
+    "opposites": [
+      "little",
+      "small"
+    ],
+    "distractors": [
+      "heavenly",
+      "free",
+      "right",
+      "change",
+      "careful"
+    ]
+  },
+  {
+    "word": "Black",
+    "opposites": [
+      "white"
+    ],
+    "distractors": [
+      "bull",
+      "weaken",
+      "directly",
+      "worse",
+      "studio"
+    ]
+  },
+  {
+    "word": "Boy",
+    "opposites": [
+      "daughter",
+      "girl"
+    ],
+    "distractors": [
+      "unrelated",
+      "top",
+      "sweet",
+      "light",
+      "domestic"
+    ]
+  },
+  {
+    "word": "Brave",
+    "opposites": [
+      "cowardly",
+      "timid"
+    ],
+    "distractors": [
+      "national",
+      "uptown",
+      "justice",
+      "run",
+      "privately"
+    ]
+  },
+  {
+    "word": "Clean",
+    "opposites": [
+      "dirty",
+      "unclean",
+      "unfairly"
+    ],
+    "distractors": [
+      "slow",
+      "guilt",
+      "pleasure",
+      "credit",
+      "directly"
+    ]
+  },
+  {
+    "word": "Come",
+    "opposites": [
+      "go",
+      "leave"
+    ],
+    "distractors": [
+      "regular",
+      "informal",
+      "sighted",
+      "location",
+      "illegal"
+    ]
+  },
+  {
+    "word": "Cry",
+    "opposites": [
+      "laugh",
+      "smile"
+    ],
+    "distractors": [
+      "move",
+      "come",
+      "mind",
+      "interest",
+      "difficult"
+    ]
+  },
+  {
+    "word": "Dark",
+    "opposites": [
+      "day",
+      "light"
+    ],
+    "distractors": [
+      "woman",
+      "irrelevant",
+      "net",
+      "unlike",
+      "destroyed"
+    ]
+  },
+  {
+    "word": "Day",
+    "opposites": [
+      "night"
+    ],
+    "distractors": [
+      "native",
+      "include",
+      "moving",
+      "careful",
+      "breathless"
+    ]
+  },
+  {
+    "word": "Fast",
+    "opposites": [
+      "slow"
+    ],
+    "distractors": [
+      "physical",
+      "unbroken",
+      "opposite",
+      "issue",
+      "north"
+    ]
+  },
+  {
+    "word": "Front",
+    "opposites": [
+      "back",
+      "rear"
+    ],
+    "distractors": [
+      "indecision",
+      "guilty",
+      "go",
+      "scarce",
+      "sunrise"
+    ]
+  },
+  {
+    "word": "Full",
+    "opposites": [
+      "empty",
+      "thin",
+      "wane"
+    ],
+    "distractors": [
+      "rough",
+      "badly",
+      "unusual",
+      "impersonal",
+      "following"
+    ]
+  },
+  {
+    "word": "Give",
+    "opposites": [
+      "take"
+    ],
+    "distractors": [
+      "above",
+      "found",
+      "sell",
+      "analysis",
+      "badness"
+    ]
+  },
+  {
+    "word": "Good",
+    "opposites": [
+      "bad",
+      "badness",
+      "evil",
+      "evilness",
+      "ill"
+    ],
+    "distractors": [
+      "unorthodox",
+      "unloading",
+      "inward",
+      "deficit",
+      "attached"
+    ]
+  },
+  {
+    "word": "Happy",
+    "opposites": [
+      "sad",
+      "unhappy"
+    ],
+    "distractors": [
+      "inaccurate",
+      "aged",
+      "hostile",
+      "curse",
+      "tight"
+    ]
+  },
+  {
+    "word": "Hard",
+    "opposites": [
+      "easy",
+      "soft",
+      "tough"
+    ],
+    "distractors": [
+      "backward",
+      "equal",
+      "national",
+      "incapable",
+      "mental"
+    ]
+  },
+  {
+    "word": "High",
+    "opposites": [
+      "low"
+    ],
+    "distractors": [
+      "like",
+      "multiple",
+      "ground",
+      "deposit",
+      "inside"
+    ]
+  },
+  {
+    "word": "Hot",
+    "opposites": [
+      "cold"
+    ],
+    "distractors": [
+      "indirect",
+      "impartial",
+      "young",
+      "last",
+      "juvenile"
+    ]
+  },
+  {
+    "word": "Left",
+    "opposites": [
+      "arrive",
+      "center",
+      "disinherit",
+      "enter",
+      "right"
+    ],
+    "distractors": [
+      "glad",
+      "cash",
+      "husband",
+      "defeat",
+      "automatic"
+    ]
+  },
+  {
+    "word": "Loud",
+    "opposites": [
+      "piano",
+      "soft",
+      "softly"
+    ],
+    "distractors": [
+      "silence",
+      "comedy",
+      "west",
+      "unworthy",
+      "sunrise"
+    ]
+  },
+  {
+    "word": "Love",
+    "opposites": [
+      "hate"
+    ],
+    "distractors": [
+      "heavenly",
+      "inverse",
+      "solid",
+      "personal",
+      "known"
+    ]
+  },
+  {
+    "word": "Near",
+    "opposites": [
+      "far"
+    ],
+    "distractors": [
+      "answer",
+      "man",
+      "indoors",
+      "informal",
+      "king"
+    ]
+  },
+  {
+    "word": "Nice",
+    "opposites": [
+      "nasty"
+    ],
+    "distractors": [
+      "moral",
+      "establish",
+      "agree",
+      "make",
+      "inadequate"
+    ]
+  },
+  {
+    "word": "Old",
+    "opposites": [
+      "new",
+      "young"
+    ],
+    "distractors": [
+      "empty",
+      "enjoy",
+      "top",
+      "interest",
+      "green"
+    ]
+  },
+  {
+    "word": "On",
+    "opposites": [
+      "off"
+    ],
+    "distractors": [
+      "unprepared",
+      "glad",
+      "anterior",
+      "curly",
+      "broadly"
+    ]
+  },
+  {
+    "word": "Open",
+    "opposites": [
+      "close",
+      "closed",
+      "fold",
+      "shut"
+    ],
+    "distractors": [
+      "union",
+      "green",
+      "fore",
+      "sadness",
+      "upstairs"
+    ]
+  },
+  {
+    "word": "Push",
+    "opposites": [
+      "pull"
+    ],
+    "distractors": [
+      "neutral",
+      "failure",
+      "coarse",
+      "linear",
+      "guilty"
+    ]
+  },
+  {
+    "word": "Run",
+    "opposites": [
+      "walk"
+    ],
+    "distractors": [
+      "right",
+      "heavy",
+      "stretch",
+      "publicly",
+      "badly"
+    ]
+  },
+  {
+    "word": "Sit",
+    "opposites": [
+      "arise",
+      "lie",
+      "stand"
+    ],
+    "distractors": [
+      "outgoing",
+      "widen",
+      "cathode",
+      "center",
+      "anode"
+    ]
+  },
+  {
+    "word": "Stop",
+    "opposites": [
+      "begin",
+      "continue",
+      "go",
+      "start"
+    ],
+    "distractors": [
+      "possible",
+      "inorganic",
+      "formal",
+      "correct",
+      "useless"
+    ]
+  },
+  {
+    "word": "Sweet",
+    "opposites": [
+      "dry",
+      "salty",
+      "sour"
+    ],
+    "distractors": [
+      "false",
+      "breathing",
+      "know",
+      "inactive",
+      "changed"
+    ]
+  },
+  {
+    "word": "Tall",
+    "opposites": [
+      "short"
+    ],
+    "distractors": [
+      "shallow",
+      "analysis",
+      "difficult",
+      "spread",
+      "employee"
+    ]
+  },
+  {
+    "word": "Top",
+    "opposites": [
+      "bottom",
+      "side"
+    ],
+    "distractors": [
+      "unrelated",
+      "difficulty",
+      "preceding",
+      "plain",
+      "physical"
+    ]
+  },
+  {
+    "word": "Up",
+    "opposites": [
+      "down",
+      "downward",
+      "downwardly",
+      "downwards"
+    ],
+    "distractors": [
+      "difficulty",
+      "sparkling",
+      "willing",
+      "away",
+      "upward"
+    ]
+  },
+  {
+    "word": "Wet",
+    "opposites": [
+      "dry"
+    ],
+    "distractors": [
+      "front",
+      "employee",
+      "prominence",
+      "clear",
+      "father"
+    ]
+  },
+  {
+    "word": "Win",
+    "opposites": [
+      "fail",
+      "lose"
+    ],
+    "distractors": [
+      "partly",
+      "boil",
+      "segregated",
+      "agree",
+      "answer"
+    ]
+  },
+  {
+    "word": "Yes",
+    "opposites": [
+      "no"
+    ],
+    "distractors": [
+      "artificial",
+      "cheerful",
+      "found",
+      "safe",
+      "destroyed"
+    ]
+  },
+  {
+    "word": "Able",
+    "opposites": [
+      "unable"
+    ],
+    "distractors": [
+      "multiple",
+      "boy",
+      "comfort",
+      "separation",
+      "innocent"
+    ]
+  },
+  {
+    "word": "Unable",
+    "opposites": [
+      "able"
+    ],
+    "distractors": [
+      "down",
+      "divide",
+      "uneven",
+      "useful",
+      "uncertain"
+    ]
+  },
+  {
+    "word": "Absolute",
+    "opposites": [
+      "relative"
+    ],
+    "distractors": [
+      "waking",
+      "liked",
+      "hire",
+      "question",
+      "useful"
+    ]
+  },
+  {
+    "word": "Relative",
+    "opposites": [
+      "absolute"
+    ],
+    "distractors": [
+      "distrust",
+      "slow",
+      "definite",
+      "future",
+      "divide"
+    ]
+  },
+  {
+    "word": "Abstract",
+    "opposites": [
+      "concrete"
+    ],
+    "distractors": [
+      "indirect",
+      "never",
+      "whisper",
+      "wise",
+      "awake"
+    ]
+  },
+  {
+    "word": "Concrete",
+    "opposites": [
+      "abstract"
+    ],
+    "distractors": [
+      "complexity",
+      "moral",
+      "touched",
+      "left",
+      "depressing"
+    ]
+  },
+  {
+    "word": "Abundant",
+    "opposites": [
+      "scarce"
+    ],
+    "distractors": [
+      "unorthodox",
+      "allow",
+      "bore",
+      "female",
+      "sudden"
+    ]
+  },
+  {
+    "word": "Scarce",
+    "opposites": [
+      "abundant"
+    ],
+    "distractors": [
+      "live",
+      "steep",
+      "broadly",
+      "backward",
+      "better"
+    ]
+  },
+  {
+    "word": "Accurate",
+    "opposites": [
+      "inaccurate"
+    ],
+    "distractors": [
+      "sunset",
+      "rested",
+      "leave",
+      "attached",
+      "exclude"
+    ]
+  },
+  {
+    "word": "Inaccurate",
+    "opposites": [
+      "accurate"
+    ],
+    "distractors": [
+      "worn",
+      "refuse",
+      "compact",
+      "half",
+      "hope"
+    ]
+  },
+  {
+    "word": "Active",
+    "opposites": [
+      "inactive"
+    ],
+    "distractors": [
+      "superior",
+      "ahead",
+      "early",
+      "integrated",
+      "narrow"
+    ]
+  },
+  {
+    "word": "Inactive",
+    "opposites": [
+      "active"
+    ],
+    "distractors": [
+      "folly",
+      "irrelevant",
+      "straight",
+      "never",
+      "know"
+    ]
+  },
+  {
+    "word": "Passive",
+    "opposites": [
+      "active"
+    ],
+    "distractors": [
+      "night",
+      "nephew",
+      "thin",
+      "disorder",
+      "mature"
+    ]
+  },
+  {
+    "word": "Dormant",
+    "opposites": [
+      "active"
+    ],
+    "distractors": [
+      "impossible",
+      "defendant",
+      "pleasure",
+      "future",
+      "different"
+    ]
+  },
+  {
+    "word": "Quiet",
+    "opposites": [
+      "active"
+    ],
+    "distractors": [
+      "wanted",
+      "complex",
+      "common",
+      "raised",
+      "friendly"
+    ]
+  },
+  {
+    "word": "Actual",
+    "opposites": [
+      "potential"
+    ],
+    "distractors": [
+      "succeeding",
+      "unnatural",
+      "love",
+      "location",
+      "upward"
+    ]
+  },
+  {
+    "word": "Potential",
+    "opposites": [
+      "actual"
+    ],
+    "distractors": [
+      "organic",
+      "location",
+      "former",
+      "cry",
+      "automatic"
+    ]
+  },
+  {
+    "word": "Acute",
+    "opposites": [
+      "chronic"
+    ],
+    "distractors": [
+      "deficit",
+      "end",
+      "ample",
+      "functional",
+      "undue"
+    ]
+  },
+  {
+    "word": "Chronic",
+    "opposites": [
+      "acute"
+    ],
+    "distractors": [
+      "tall",
+      "refrain",
+      "most",
+      "automatic",
+      "wicked"
+    ]
+  },
+  {
+    "word": "Adequate",
+    "opposites": [
+      "inadequate"
+    ],
+    "distractors": [
+      "awkward",
+      "unlike",
+      "adult",
+      "rested",
+      "native"
+    ]
+  },
+  {
+    "word": "Inadequate",
+    "opposites": [
+      "adequate"
+    ],
+    "distractors": [
+      "never",
+      "expanded",
+      "discomfort",
+      "wholesale",
+      "decrease"
+    ]
+  },
+  {
+    "word": "Alive",
+    "opposites": [
+      "dead"
+    ],
+    "distractors": [
+      "strong",
+      "soft",
+      "lose",
+      "bore",
+      "private"
+    ]
+  },
+  {
+    "word": "Dead",
+    "opposites": [
+      "alive"
+    ],
+    "distractors": [
+      "outward",
+      "dull",
+      "calm",
+      "sorrow",
+      "angular"
+    ]
+  },
+  {
+    "word": "Live",
+    "opposites": [
+      "dead"
+    ],
+    "distractors": [
+      "new",
+      "irrelevant",
+      "noisy",
+      "sparkling",
+      "insecurity"
+    ]
+  },
+  {
+    "word": "Ample",
+    "opposites": [
+      "meager"
+    ],
+    "distractors": [
+      "acute",
+      "aunt",
+      "pride",
+      "death",
+      "stormy"
+    ]
+  },
+  {
+    "word": "Meager",
+    "opposites": [
+      "ample"
+    ],
+    "distractors": [
+      "analytic",
+      "primary",
+      "danger",
+      "artificial",
+      "raise"
+    ]
+  },
+  {
+    "word": "Analytic",
+    "opposites": [
+      "synthetic"
+    ],
+    "distractors": [
+      "changed",
+      "lowered",
+      "exterior",
+      "outward",
+      "wholly"
+    ]
+  },
+  {
+    "word": "Synthetic",
+    "opposites": [
+      "analytic"
+    ],
+    "distractors": [
+      "blind",
+      "wrong",
+      "relevant",
+      "cheap",
+      "unlike"
+    ]
+  },
+  {
+    "word": "Preceding",
+    "opposites": [
+      "succeeding"
+    ],
+    "distractors": [
+      "liquid",
+      "home",
+      "back",
+      "junior",
+      "go"
+    ]
+  },
+  {
+    "word": "Succeeding",
+    "opposites": [
+      "preceding"
+    ],
+    "distractors": [
+      "have",
+      "below",
+      "stormy",
+      "dormant",
+      "liking"
+    ]
+  },
+  {
+    "word": "Anterior",
+    "opposites": [
+      "posterior"
+    ],
+    "distractors": [
+      "often",
+      "borrow",
+      "happy",
+      "bright",
+      "rush"
+    ]
+  },
+  {
+    "word": "Posterior",
+    "opposites": [
+      "anterior"
+    ],
+    "distractors": [
+      "manage",
+      "graceful",
+      "middle",
+      "private",
+      "rested"
+    ]
+  },
+  {
+    "word": "Due",
+    "opposites": [
+      "undue"
+    ],
+    "distractors": [
+      "intangible",
+      "aft",
+      "unprepared",
+      "dead",
+      "lively"
+    ]
+  },
+  {
+    "word": "Undue",
+    "opposites": [
+      "due"
+    ],
+    "distractors": [
+      "impersonal",
+      "black",
+      "displeased",
+      "integrated",
+      "discharge"
+    ]
+  },
+  {
+    "word": "Attached",
+    "opposites": [
+      "detached"
+    ],
+    "distractors": [
+      "lose",
+      "double",
+      "recorded",
+      "irrelevant",
+      "uncle"
+    ]
+  },
+  {
+    "word": "Detached",
+    "opposites": [
+      "attached"
+    ],
+    "distractors": [
+      "sunrise",
+      "discharge",
+      "there",
+      "hate",
+      "inaction"
+    ]
+  },
+  {
+    "word": "Automatic",
+    "opposites": [
+      "manual"
+    ],
+    "distractors": [
+      "bottom",
+      "delicate",
+      "outward",
+      "forte",
+      "domestic"
+    ]
+  },
+  {
+    "word": "Manual",
+    "opposites": [
+      "automatic"
+    ],
+    "distractors": [
+      "alive",
+      "unloading",
+      "laugh",
+      "happily",
+      "ample"
+    ]
+  },
+  {
+    "word": "Asleep",
+    "opposites": [
+      "awake"
+    ],
+    "distractors": [
+      "heat",
+      "ripe",
+      "alive",
+      "quiet",
+      "export"
+    ]
+  },
+  {
+    "word": "Aware",
+    "opposites": [
+      "unaware"
+    ],
+    "distractors": [
+      "dry",
+      "downstairs",
+      "enforce",
+      "wise",
+      "preserved"
+    ]
+  },
+  {
+    "word": "Unaware",
+    "opposites": [
+      "aware"
+    ],
+    "distractors": [
+      "inadequate",
+      "useless",
+      "reverse",
+      "pass",
+      "external"
+    ]
+  },
+  {
+    "word": "Back",
+    "opposites": [
+      "front"
+    ],
+    "distractors": [
+      "undue",
+      "ugliness",
+      "due",
+      "brother",
+      "bad"
+    ]
+  },
+  {
+    "word": "Leading",
+    "opposites": [
+      "following"
+    ],
+    "distractors": [
+      "secondary",
+      "close",
+      "retail",
+      "low",
+      "loading"
+    ]
+  },
+  {
+    "word": "Following",
+    "opposites": [
+      "leading"
+    ],
+    "distractors": [
+      "beauty",
+      "absolute",
+      "liability",
+      "beautiful",
+      "irregular"
+    ]
+  },
+  {
+    "word": "Backward",
+    "opposites": [
+      "forward"
+    ],
+    "distractors": [
+      "sadness",
+      "cathode",
+      "hopelessly",
+      "welcome",
+      "maximum"
+    ]
+  },
+  {
+    "word": "Forward",
+    "opposites": [
+      "backward"
+    ],
+    "distractors": [
+      "incoming",
+      "infinite",
+      "adult",
+      "guilt",
+      "ripe"
+    ]
+  },
+  {
+    "word": "Reverse",
+    "opposites": [
+      "forward"
+    ],
+    "distractors": [
+      "gradual",
+      "integrated",
+      "plus",
+      "contracted",
+      "defendant"
+    ]
+  },
+  {
+    "word": "Beautiful",
+    "opposites": [
+      "ugly"
+    ],
+    "distractors": [
+      "rise",
+      "lyric",
+      "coarse",
+      "maximum",
+      "disappear"
+    ]
+  },
+  {
+    "word": "Ugly",
+    "opposites": [
+      "beautiful"
+    ],
+    "distractors": [
+      "automatic",
+      "day",
+      "fine",
+      "ability",
+      "formally"
+    ]
+  },
+  {
+    "word": "Best",
+    "opposites": [
+      "worst"
+    ],
+    "distractors": [
+      "incapable",
+      "manual",
+      "badly",
+      "aft",
+      "downtown"
+    ]
+  },
+  {
+    "word": "Worst",
+    "opposites": [
+      "best"
+    ],
+    "distractors": [
+      "integrated",
+      "expanded",
+      "subjective",
+      "due",
+      "earthly"
+    ]
+  },
+  {
+    "word": "Better",
+    "opposites": [
+      "worse"
+    ],
+    "distractors": [
+      "partial",
+      "figurative",
+      "preserved",
+      "different",
+      "find"
+    ]
+  },
+  {
+    "word": "Worse",
+    "opposites": [
+      "better"
+    ],
+    "distractors": [
+      "sadly",
+      "demand",
+      "magnetic",
+      "strength",
+      "bore"
+    ]
+  },
+  {
+    "word": "White",
+    "opposites": [
+      "black"
+    ],
+    "distractors": [
+      "pride",
+      "willing",
+      "day",
+      "socialism",
+      "exit"
+    ]
+  },
+  {
+    "word": "Bold",
+    "opposites": [
+      "timid"
+    ],
+    "distractors": [
+      "upward",
+      "disliked",
+      "living",
+      "peripheral",
+      "sporadic"
+    ]
+  },
+  {
+    "word": "Timid",
+    "opposites": [
+      "bold"
+    ],
+    "distractors": [
+      "guilty",
+      "smart",
+      "adjusted",
+      "contract",
+      "downward"
+    ]
+  },
+  {
+    "word": "Breathing",
+    "opposites": [
+      "breathless"
+    ],
+    "distractors": [
+      "rugged",
+      "small",
+      "limited",
+      "indecision",
+      "curly"
+    ]
+  },
+  {
+    "word": "Breathless",
+    "opposites": [
+      "breathing"
+    ],
+    "distractors": [
+      "action",
+      "nasty",
+      "finite",
+      "lord",
+      "figure"
+    ]
+  },
+  {
+    "word": "Light",
+    "opposites": [
+      "dark"
+    ],
+    "distractors": [
+      "enforce",
+      "guilty",
+      "uptown",
+      "touched",
+      "hopeful"
+    ]
+  },
+  {
+    "word": "Bright",
+    "opposites": [
+      "dull"
+    ],
+    "distractors": [
+      "unite",
+      "quiet",
+      "breathing",
+      "figure",
+      "irrelevant"
+    ]
+  },
+  {
+    "word": "Dull",
+    "opposites": [
+      "bright"
+    ],
+    "distractors": [
+      "sell",
+      "illegal",
+      "scarce",
+      "boy",
+      "mortal"
+    ]
+  },
+  {
+    "word": "Broken",
+    "opposites": [
+      "unbroken"
+    ],
+    "distractors": [
+      "deny",
+      "incomplete",
+      "comedy",
+      "outgoing",
+      "indirect"
+    ]
+  },
+  {
+    "word": "Unbroken",
+    "opposites": [
+      "broken"
+    ],
+    "distractors": [
+      "shrink",
+      "senior",
+      "above",
+      "source",
+      "center"
+    ]
+  },
+  {
+    "word": "Calm",
+    "opposites": [
+      "stormy"
+    ],
+    "distractors": [
+      "privately",
+      "day",
+      "depressing",
+      "aware",
+      "niece"
+    ]
+  },
+  {
+    "word": "Stormy",
+    "opposites": [
+      "calm"
+    ],
+    "distractors": [
+      "decent",
+      "directly",
+      "win",
+      "deposit",
+      "partial"
+    ]
+  },
+  {
+    "word": "Capable",
+    "opposites": [
+      "incapable"
+    ],
+    "distractors": [
+      "anode",
+      "quickly",
+      "hearing",
+      "rounded",
+      "whole"
+    ]
+  },
+  {
+    "word": "Incapable",
+    "opposites": [
+      "capable"
+    ],
+    "distractors": [
+      "abstract",
+      "married",
+      "inside",
+      "attract",
+      "absolute"
+    ]
+  },
+  {
+    "word": "Careful",
+    "opposites": [
+      "careless"
+    ],
+    "distractors": [
+      "closed",
+      "curly",
+      "father",
+      "home",
+      "capitalism"
+    ]
+  },
+  {
+    "word": "Careless",
+    "opposites": [
+      "careful"
+    ],
+    "distractors": [
+      "central",
+      "new",
+      "expand",
+      "publicly",
+      "private"
+    ]
+  },
+  {
+    "word": "Central",
+    "opposites": [
+      "peripheral"
+    ],
+    "distractors": [
+      "penalty",
+      "boil",
+      "delicate",
+      "graceful",
+      "inverse"
+    ]
+  },
+  {
+    "word": "Peripheral",
+    "opposites": [
+      "central"
+    ],
+    "distractors": [
+      "raise",
+      "ride",
+      "even",
+      "irrational",
+      "on"
+    ]
+  },
+  {
+    "word": "Certain",
+    "opposites": [
+      "uncertain"
+    ],
+    "distractors": [
+      "odd",
+      "reduce",
+      "fewer",
+      "enlist",
+      "rational"
+    ]
+  },
+  {
+    "word": "Uncertain",
+    "opposites": [
+      "certain"
+    ],
+    "distractors": [
+      "content",
+      "adult",
+      "relax",
+      "ride",
+      "lowered"
+    ]
+  },
+  {
+    "word": "Adjusted",
+    "opposites": [
+      "unadjusted"
+    ],
+    "distractors": [
+      "glad",
+      "easy",
+      "attack",
+      "credit",
+      "uncertain"
+    ]
+  },
+  {
+    "word": "Unadjusted",
+    "opposites": [
+      "adjusted"
+    ],
+    "distractors": [
+      "secular",
+      "unable",
+      "yield",
+      "stable",
+      "free"
+    ]
+  },
+  {
+    "word": "Changed",
+    "opposites": [
+      "unchanged"
+    ],
+    "distractors": [
+      "fat",
+      "exit",
+      "rough",
+      "offensive",
+      "minor"
+    ]
+  },
+  {
+    "word": "Unchanged",
+    "opposites": [
+      "changed"
+    ],
+    "distractors": [
+      "linger",
+      "charge",
+      "empty",
+      "bound",
+      "old"
+    ]
+  },
+  {
+    "word": "Cheerful",
+    "opposites": [
+      "depressing"
+    ],
+    "distractors": [
+      "hope",
+      "interior",
+      "impossible",
+      "more",
+      "unlike"
+    ]
+  },
+  {
+    "word": "Depressing",
+    "opposites": [
+      "cheerful"
+    ],
+    "distractors": [
+      "undue",
+      "cheer",
+      "unlike",
+      "defensive",
+      "ending"
+    ]
+  },
+  {
+    "word": "Dirty",
+    "opposites": [
+      "clean"
+    ],
+    "distractors": [
+      "utopian",
+      "prepared",
+      "girl",
+      "establish",
+      "wholly"
+    ]
+  },
+  {
+    "word": "Clear",
+    "opposites": [
+      "opaque"
+    ],
+    "distractors": [
+      "least",
+      "run",
+      "smart",
+      "incoming",
+      "uneven"
+    ]
+  },
+  {
+    "word": "Opaque",
+    "opposites": [
+      "clear"
+    ],
+    "distractors": [
+      "presence",
+      "integrated",
+      "unable",
+      "adjusted",
+      "ease"
+    ]
+  },
+  {
+    "word": "Smart",
+    "opposites": [
+      "stupid"
+    ],
+    "distractors": [
+      "safe",
+      "south",
+      "insecurity",
+      "resist",
+      "ripe"
+    ]
+  },
+  {
+    "word": "Stupid",
+    "opposites": [
+      "smart"
+    ],
+    "distractors": [
+      "out",
+      "wisdom",
+      "valid",
+      "clear",
+      "patterned"
+    ]
+  },
+  {
+    "word": "Far",
+    "opposites": [
+      "near"
+    ],
+    "distractors": [
+      "decrease",
+      "outward",
+      "vertical",
+      "accurate",
+      "lead"
+    ]
+  },
+  {
+    "word": "Distant",
+    "opposites": [
+      "close"
+    ],
+    "distractors": [
+      "out",
+      "big",
+      "cool",
+      "interest",
+      "ever"
+    ]
+  },
+  {
+    "word": "Close",
+    "opposites": [
+      "distant"
+    ],
+    "distractors": [
+      "lord",
+      "separation",
+      "shrink",
+      "reduce",
+      "juvenile"
+    ]
+  },
+  {
+    "word": "Common",
+    "opposites": [
+      "uncommon"
+    ],
+    "distractors": [
+      "unfamiliar",
+      "outside",
+      "angular",
+      "undue",
+      "offense"
+    ]
+  },
+  {
+    "word": "Uncommon",
+    "opposites": [
+      "common"
+    ],
+    "distractors": [
+      "most",
+      "optimism",
+      "ripe",
+      "living",
+      "recall"
+    ]
+  },
+  {
+    "word": "Usual",
+    "opposites": [
+      "unusual"
+    ],
+    "distractors": [
+      "individual",
+      "union",
+      "lyric",
+      "useful",
+      "unmarried"
+    ]
+  },
+  {
+    "word": "Unusual",
+    "opposites": [
+      "usual"
+    ],
+    "distractors": [
+      "capitalism",
+      "proud",
+      "few",
+      "primary",
+      "uncle"
+    ]
+  },
+  {
+    "word": "Individual",
+    "opposites": [
+      "common"
+    ],
+    "distractors": [
+      "piano",
+      "upward",
+      "whole",
+      "exterior",
+      "related"
+    ]
+  },
+  {
+    "word": "Compact",
+    "opposites": [
+      "loose"
+    ],
+    "distractors": [
+      "offense",
+      "impersonal",
+      "child",
+      "freeze",
+      "unemployed"
+    ]
+  },
+  {
+    "word": "Loose",
+    "opposites": [
+      "compact"
+    ],
+    "distractors": [
+      "goodness",
+      "con",
+      "dramatic",
+      "incidental",
+      "softly"
+    ]
+  },
+  {
+    "word": "Whole",
+    "opposites": [
+      "half"
+    ],
+    "distractors": [
+      "find",
+      "awake",
+      "major",
+      "loaded",
+      "curly"
+    ]
+  },
+  {
+    "word": "Half",
+    "opposites": [
+      "whole"
+    ],
+    "distractors": [
+      "rounded",
+      "surrender",
+      "unloading",
+      "folly",
+      "humility"
+    ]
+  },
+  {
+    "word": "Complete",
+    "opposites": [
+      "incomplete"
+    ],
+    "distractors": [
+      "military",
+      "no",
+      "senior",
+      "brother",
+      "aft"
+    ]
+  },
+  {
+    "word": "Incomplete",
+    "opposites": [
+      "complete"
+    ],
+    "distractors": [
+      "valid",
+      "strong",
+      "gather",
+      "attract",
+      "laugh"
+    ]
+  },
+  {
+    "word": "Contracted",
+    "opposites": [
+      "expanded"
+    ],
+    "distractors": [
+      "east",
+      "sorrow",
+      "ugly",
+      "literal",
+      "visible"
+    ]
+  },
+  {
+    "word": "Expanded",
+    "opposites": [
+      "contracted"
+    ],
+    "distractors": [
+      "living",
+      "yin",
+      "liability",
+      "moving",
+      "breathless"
+    ]
+  },
+  {
+    "word": "Continual",
+    "opposites": [
+      "sporadic"
+    ],
+    "distractors": [
+      "straighten",
+      "disappear",
+      "bad",
+      "friend",
+      "masculine"
+    ]
+  },
+  {
+    "word": "Sporadic",
+    "opposites": [
+      "continual"
+    ],
+    "distractors": [
+      "friendly",
+      "interest",
+      "slow",
+      "deaf",
+      "on"
+    ]
+  },
+  {
+    "word": "Cooked",
+    "opposites": [
+      "raw"
+    ],
+    "distractors": [
+      "inaccurate",
+      "earthly",
+      "superior",
+      "silence",
+      "fail"
+    ]
+  },
+  {
+    "word": "Raw",
+    "opposites": [
+      "cooked"
+    ],
+    "distractors": [
+      "agree",
+      "automatic",
+      "verbal",
+      "cerebral",
+      "particular"
+    ]
+  },
+  {
+    "word": "Correct",
+    "opposites": [
+      "incorrect"
+    ],
+    "distractors": [
+      "advance",
+      "unfair",
+      "inaction",
+      "uncle",
+      "plain"
+    ]
+  },
+  {
+    "word": "Right",
+    "opposites": [
+      "wrong"
+    ],
+    "distractors": [
+      "surface",
+      "prepared",
+      "heavenly",
+      "hearing",
+      "happiness"
+    ]
+  },
+  {
+    "word": "Incorrect",
+    "opposites": [
+      "correct"
+    ],
+    "distractors": [
+      "man",
+      "clean",
+      "appear",
+      "confront",
+      "certain"
+    ]
+  },
+  {
+    "word": "Wrong",
+    "opposites": [
+      "right"
+    ],
+    "distractors": [
+      "whisper",
+      "poor",
+      "informal",
+      "decreased",
+      "encourage"
+    ]
+  },
+  {
+    "word": "Cubic",
+    "opposites": [
+      "linear"
+    ],
+    "distractors": [
+      "son",
+      "unwanted",
+      "some",
+      "dormant",
+      "indoors"
+    ]
+  },
+  {
+    "word": "Linear",
+    "opposites": [
+      "cubic"
+    ],
+    "distractors": [
+      "home",
+      "recall",
+      "close",
+      "numerical",
+      "contracted"
+    ]
+  },
+  {
+    "word": "Cursed",
+    "opposites": [
+      "blessed"
+    ],
+    "distractors": [
+      "level",
+      "some",
+      "socialism",
+      "wise",
+      "slowly"
+    ]
+  },
+  {
+    "word": "Blessed",
+    "opposites": [
+      "cursed"
+    ],
+    "distractors": [
+      "ugliness",
+      "minimum",
+      "know",
+      "junior",
+      "weakness"
+    ]
+  },
+  {
+    "word": "Annual",
+    "opposites": [
+      "perennial"
+    ],
+    "distractors": [
+      "depart",
+      "separation",
+      "downstream",
+      "lean",
+      "bounce"
+    ]
+  },
+  {
+    "word": "Perennial",
+    "opposites": [
+      "annual"
+    ],
+    "distractors": [
+      "softly",
+      "serious",
+      "difficult",
+      "stretch",
+      "superior"
+    ]
+  },
+  {
+    "word": "Deaf",
+    "opposites": [
+      "hearing"
+    ],
+    "distractors": [
+      "simple",
+      "passing",
+      "disappear",
+      "raised",
+      "fire"
+    ]
+  },
+  {
+    "word": "Hearing",
+    "opposites": [
+      "deaf"
+    ],
+    "distractors": [
+      "comedy",
+      "illegal",
+      "refuse",
+      "shout",
+      "increasing"
+    ]
+  },
+  {
+    "word": "Decent",
+    "opposites": [
+      "indecent"
+    ],
+    "distractors": [
+      "tired",
+      "sleeping",
+      "gradual",
+      "lesser",
+      "sane"
+    ]
+  },
+  {
+    "word": "Indecent",
+    "opposites": [
+      "decent"
+    ],
+    "distractors": [
+      "back",
+      "disorder",
+      "recorded",
+      "bad",
+      "small"
+    ]
+  },
+  {
+    "word": "Deep",
+    "opposites": [
+      "shallow"
+    ],
+    "distractors": [
+      "moving",
+      "intensive",
+      "often",
+      "backward",
+      "raw"
+    ]
+  },
+  {
+    "word": "Shallow",
+    "opposites": [
+      "deep"
+    ],
+    "distractors": [
+      "decent",
+      "general",
+      "religious",
+      "queen",
+      "definite"
+    ]
+  },
+  {
+    "word": "Definite",
+    "opposites": [
+      "indefinite"
+    ],
+    "distractors": [
+      "supply",
+      "native",
+      "synthetic",
+      "cerebral",
+      "public"
+    ]
+  },
+  {
+    "word": "Indefinite",
+    "opposites": [
+      "definite"
+    ],
+    "distractors": [
+      "most",
+      "happily",
+      "all",
+      "real",
+      "meager"
+    ]
+  },
+  {
+    "word": "Delicate",
+    "opposites": [
+      "rugged"
+    ],
+    "distractors": [
+      "closing",
+      "profit",
+      "related",
+      "pleased",
+      "confront"
+    ]
+  },
+  {
+    "word": "Rugged",
+    "opposites": [
+      "delicate"
+    ],
+    "distractors": [
+      "export",
+      "son",
+      "loud",
+      "equal",
+      "accept"
+    ]
+  },
+  {
+    "word": "Destroyed",
+    "opposites": [
+      "preserved"
+    ],
+    "distractors": [
+      "advance",
+      "physical",
+      "dry",
+      "come",
+      "official"
+    ]
+  },
+  {
+    "word": "Preserved",
+    "opposites": [
+      "destroyed"
+    ],
+    "distractors": [
+      "liked",
+      "rush",
+      "displeased",
+      "enforce",
+      "withdraw"
+    ]
+  },
+  {
+    "word": "Difficult",
+    "opposites": [
+      "easy"
+    ],
+    "distractors": [
+      "irregular",
+      "ever",
+      "heat",
+      "relax",
+      "indirectly"
+    ]
+  },
+  {
+    "word": "Easy",
+    "opposites": [
+      "difficult"
+    ],
+    "distractors": [
+      "raise",
+      "injustice",
+      "former",
+      "side",
+      "informal"
+    ]
+  },
+  {
+    "word": "Direct",
+    "opposites": [
+      "indirect"
+    ],
+    "distractors": [
+      "little",
+      "out",
+      "rested",
+      "sit",
+      "pleased"
+    ]
+  },
+  {
+    "word": "Indirect",
+    "opposites": [
+      "direct"
+    ],
+    "distractors": [
+      "still",
+      "foot",
+      "girl",
+      "stand",
+      "basic"
+    ]
+  },
+  {
+    "word": "Inverse",
+    "opposites": [
+      "direct"
+    ],
+    "distractors": [
+      "wealth",
+      "early",
+      "fire",
+      "sparkling",
+      "compact"
+    ]
+  },
+  {
+    "word": "Sharp",
+    "opposites": [
+      "dull"
+    ],
+    "distractors": [
+      "inability",
+      "worthy",
+      "push",
+      "negative",
+      "patience"
+    ]
+  },
+  {
+    "word": "Lively",
+    "opposites": [
+      "dull"
+    ],
+    "distractors": [
+      "hopefully",
+      "aged",
+      "push",
+      "beautiful",
+      "success"
+    ]
+  },
+  {
+    "word": "Early",
+    "opposites": [
+      "late",
+      "middle"
+    ],
+    "distractors": [
+      "square",
+      "continual",
+      "liquid",
+      "cheap",
+      "dormant"
+    ]
+  },
+  {
+    "word": "Middle",
+    "opposites": [
+      "early",
+      "late"
+    ],
+    "distractors": [
+      "incoming",
+      "physical",
+      "more",
+      "fore",
+      "verbal"
+    ]
+  },
+  {
+    "word": "Late",
+    "opposites": [
+      "early",
+      "middle"
+    ],
+    "distractors": [
+      "much",
+      "unnatural",
+      "divide",
+      "physical",
+      "unlike"
+    ]
+  },
+  {
+    "word": "Uneasy",
+    "opposites": [
+      "easy"
+    ],
+    "distractors": [
+      "fill",
+      "allow",
+      "unrelated",
+      "hopeless",
+      "deposit"
+    ]
+  },
+  {
+    "word": "East",
+    "opposites": [
+      "west"
+    ],
+    "distractors": [
+      "forward",
+      "stable",
+      "left",
+      "boil",
+      "never"
+    ]
+  },
+  {
+    "word": "West",
+    "opposites": [
+      "east"
+    ],
+    "distractors": [
+      "actual",
+      "offensive",
+      "fresh",
+      "pleasure",
+      "due"
+    ]
+  },
+  {
+    "word": "Western",
+    "opposites": [
+      "eastern"
+    ],
+    "distractors": [
+      "specify",
+      "liking",
+      "relative",
+      "delay",
+      "sweet"
+    ]
+  },
+  {
+    "word": "Eastern",
+    "opposites": [
+      "western"
+    ],
+    "distractors": [
+      "raised",
+      "fat",
+      "act",
+      "loud",
+      "ability"
+    ]
+  },
+  {
+    "word": "Employed",
+    "opposites": [
+      "unemployed"
+    ],
+    "distractors": [
+      "deep",
+      "gradual",
+      "individual",
+      "strong",
+      "adult"
+    ]
+  },
+  {
+    "word": "Unemployed",
+    "opposites": [
+      "employed"
+    ],
+    "distractors": [
+      "dirty",
+      "hopefully",
+      "formal",
+      "no",
+      "gain"
+    ]
+  },
+  {
+    "word": "Increased",
+    "opposites": [
+      "decreased"
+    ],
+    "distractors": [
+      "standing",
+      "disagree",
+      "unpaid",
+      "early",
+      "wisdom"
+    ]
+  },
+  {
+    "word": "Decreased",
+    "opposites": [
+      "increased"
+    ],
+    "distractors": [
+      "folly",
+      "heat",
+      "inaction",
+      "dirty",
+      "shout"
+    ]
+  },
+  {
+    "word": "Even",
+    "opposites": [
+      "uneven"
+    ],
+    "distractors": [
+      "straighten",
+      "indirect",
+      "feminine",
+      "uncertain",
+      "loading"
+    ]
+  },
+  {
+    "word": "Uneven",
+    "opposites": [
+      "even"
+    ],
+    "distractors": [
+      "open",
+      "mature",
+      "advance",
+      "child",
+      "impatient"
+    ]
+  },
+  {
+    "word": "Odd",
+    "opposites": [
+      "even"
+    ],
+    "distractors": [
+      "minus",
+      "innocence",
+      "slow",
+      "aware",
+      "patience"
+    ]
+  },
+  {
+    "word": "Expected",
+    "opposites": [
+      "unexpected"
+    ],
+    "distractors": [
+      "niece",
+      "bounce",
+      "analysis",
+      "soft",
+      "incapable"
+    ]
+  },
+  {
+    "word": "Unexpected",
+    "opposites": [
+      "expected"
+    ],
+    "distractors": [
+      "uncle",
+      "cheer",
+      "dramatic",
+      "fail",
+      "husband"
+    ]
+  },
+  {
+    "word": "Expensive",
+    "opposites": [
+      "cheap"
+    ],
+    "distractors": [
+      "clarity",
+      "discourage",
+      "distant",
+      "attract",
+      "narrowly"
+    ]
+  },
+  {
+    "word": "Cheap",
+    "opposites": [
+      "expensive"
+    ],
+    "distractors": [
+      "enlist",
+      "abstract",
+      "southern",
+      "worn",
+      "round"
+    ]
+  },
+  {
+    "word": "Explicit",
+    "opposites": [
+      "implicit"
+    ],
+    "distractors": [
+      "hate",
+      "impartial",
+      "due",
+      "downtown",
+      "victory"
+    ]
+  },
+  {
+    "word": "Implicit",
+    "opposites": [
+      "explicit"
+    ],
+    "distractors": [
+      "net",
+      "full",
+      "manage",
+      "related",
+      "enjoy"
+    ]
+  },
+  {
+    "word": "External",
+    "opposites": [
+      "internal"
+    ],
+    "distractors": [
+      "untouched",
+      "peripheral",
+      "urban",
+      "orthodox",
+      "ground"
+    ]
+  },
+  {
+    "word": "Internal",
+    "opposites": [
+      "external"
+    ],
+    "distractors": [
+      "buy",
+      "smooth",
+      "deficit",
+      "deep",
+      "dangerous"
+    ]
+  },
+  {
+    "word": "Outer",
+    "opposites": [
+      "inner"
+    ],
+    "distractors": [
+      "unemployed",
+      "wake",
+      "decreasing",
+      "pain",
+      "unknown"
+    ]
+  },
+  {
+    "word": "Inner",
+    "opposites": [
+      "outer"
+    ],
+    "distractors": [
+      "goodness",
+      "go",
+      "ever",
+      "bless",
+      "thick"
+    ]
+  },
+  {
+    "word": "Outward",
+    "opposites": [
+      "inward"
+    ],
+    "distractors": [
+      "no",
+      "out",
+      "hide",
+      "sunrise",
+      "patience"
+    ]
+  },
+  {
+    "word": "Inward",
+    "opposites": [
+      "outward"
+    ],
+    "distractors": [
+      "sad",
+      "civilian",
+      "succeed",
+      "heavy",
+      "bounce"
+    ]
+  },
+  {
+    "word": "Exterior",
+    "opposites": [
+      "interior"
+    ],
+    "distractors": [
+      "worst",
+      "unlike",
+      "compound",
+      "heavenly",
+      "appear"
+    ]
+  },
+  {
+    "word": "Interior",
+    "opposites": [
+      "exterior"
+    ],
+    "distractors": [
+      "some",
+      "retail",
+      "sound",
+      "foot",
+      "impersonal"
+    ]
+  },
+  {
+    "word": "Fair",
+    "opposites": [
+      "unfair"
+    ],
+    "distractors": [
+      "still",
+      "sit",
+      "surface",
+      "pass",
+      "immoral"
+    ]
+  },
+  {
+    "word": "Unfair",
+    "opposites": [
+      "fair"
+    ],
+    "distractors": [
+      "expected",
+      "side",
+      "fore",
+      "young",
+      "repel"
+    ]
+  },
+  {
+    "word": "Familiar",
+    "opposites": [
+      "unfamiliar"
+    ],
+    "distractors": [
+      "running",
+      "flat",
+      "likely",
+      "ease",
+      "credit"
+    ]
+  },
+  {
+    "word": "Unfamiliar",
+    "opposites": [
+      "familiar"
+    ],
+    "distractors": [
+      "legal",
+      "there",
+      "fast",
+      "wanted",
+      "inner"
+    ]
+  },
+  {
+    "word": "Strange",
+    "opposites": [
+      "familiar"
+    ],
+    "distractors": [
+      "best",
+      "unhappy",
+      "union",
+      "private",
+      "touched"
+    ]
+  },
+  {
+    "word": "Slow",
+    "opposites": [
+      "fast"
+    ],
+    "distractors": [
+      "here",
+      "forget",
+      "steep",
+      "niece",
+      "inferior"
+    ]
+  },
+  {
+    "word": "Fat",
+    "opposites": [
+      "thin"
+    ],
+    "distractors": [
+      "death",
+      "order",
+      "tough",
+      "sighted",
+      "spread"
+    ]
+  },
+  {
+    "word": "Thin",
+    "opposites": [
+      "fat"
+    ],
+    "distractors": [
+      "high",
+      "breathless",
+      "won",
+      "latter",
+      "basic"
+    ]
+  },
+  {
+    "word": "Fertile",
+    "opposites": [
+      "sterile"
+    ],
+    "distractors": [
+      "parent",
+      "heavenly",
+      "male",
+      "living",
+      "absence"
+    ]
+  },
+  {
+    "word": "Sterile",
+    "opposites": [
+      "fertile"
+    ],
+    "distractors": [
+      "unpaid",
+      "strong",
+      "downward",
+      "wise",
+      "north"
+    ]
+  },
+  {
+    "word": "Finite",
+    "opposites": [
+      "infinite"
+    ],
+    "distractors": [
+      "poor",
+      "widen",
+      "below",
+      "most",
+      "official"
+    ]
+  },
+  {
+    "word": "Infinite",
+    "opposites": [
+      "finite"
+    ],
+    "distractors": [
+      "cash",
+      "multiple",
+      "large",
+      "male",
+      "hopeful"
+    ]
+  },
+  {
+    "word": "Opening",
+    "opposites": [
+      "closing"
+    ],
+    "distractors": [
+      "general",
+      "distant",
+      "prominence",
+      "inward",
+      "maximum"
+    ]
+  },
+  {
+    "word": "Closing",
+    "opposites": [
+      "opening"
+    ],
+    "distractors": [
+      "far",
+      "contract",
+      "partly",
+      "divide",
+      "nephew"
+    ]
+  },
+  {
+    "word": "First",
+    "opposites": [
+      "last"
+    ],
+    "distractors": [
+      "cheap",
+      "outward",
+      "foreign",
+      "stay",
+      "thick"
+    ]
+  },
+  {
+    "word": "Last",
+    "opposites": [
+      "first"
+    ],
+    "distractors": [
+      "illegal",
+      "wealth",
+      "rear",
+      "exclude",
+      "well"
+    ]
+  },
+  {
+    "word": "Second",
+    "opposites": [
+      "first"
+    ],
+    "distractors": [
+      "difficulty",
+      "unlimited",
+      "stormy",
+      "profit",
+      "exterior"
+    ]
+  },
+  {
+    "word": "Curly",
+    "opposites": [
+      "straight"
+    ],
+    "distractors": [
+      "forte",
+      "hostile",
+      "inorganic",
+      "even",
+      "magnetic"
+    ]
+  },
+  {
+    "word": "Straight",
+    "opposites": [
+      "curly"
+    ],
+    "distractors": [
+      "good",
+      "lead",
+      "worthy",
+      "individual",
+      "greater"
+    ]
+  },
+  {
+    "word": "Fore",
+    "opposites": [
+      "aft"
+    ],
+    "distractors": [
+      "accurate",
+      "acute",
+      "downward",
+      "found",
+      "wife"
+    ]
+  },
+  {
+    "word": "Aft",
+    "opposites": [
+      "fore"
+    ],
+    "distractors": [
+      "individual",
+      "tragedy",
+      "fill",
+      "tough",
+      "careful"
+    ]
+  },
+  {
+    "word": "Native",
+    "opposites": [
+      "adopted"
+    ],
+    "distractors": [
+      "full",
+      "finish",
+      "figurative",
+      "written",
+      "wild"
+    ]
+  },
+  {
+    "word": "Adopted",
+    "opposites": [
+      "native"
+    ],
+    "distractors": [
+      "insane",
+      "flat",
+      "expensive",
+      "quiet",
+      "hopeless"
+    ]
+  },
+  {
+    "word": "Foreign",
+    "opposites": [
+      "native"
+    ],
+    "distractors": [
+      "tame",
+      "depressing",
+      "suffer",
+      "preceding",
+      "unprepared"
+    ]
+  },
+  {
+    "word": "Domestic",
+    "opposites": [
+      "foreign"
+    ],
+    "distractors": [
+      "tender",
+      "manual",
+      "decrease",
+      "particular",
+      "lady"
+    ]
+  },
+  {
+    "word": "Formal",
+    "opposites": [
+      "informal"
+    ],
+    "distractors": [
+      "potential",
+      "indecent",
+      "deaf",
+      "ride",
+      "formally"
+    ]
+  },
+  {
+    "word": "Informal",
+    "opposites": [
+      "formal"
+    ],
+    "distractors": [
+      "major",
+      "best",
+      "lowered",
+      "stupid",
+      "outdoors"
+    ]
+  },
+  {
+    "word": "Former",
+    "opposites": [
+      "latter"
+    ],
+    "distractors": [
+      "reject",
+      "unreal",
+      "wisdom",
+      "ease",
+      "miss"
+    ]
+  },
+  {
+    "word": "Latter",
+    "opposites": [
+      "former"
+    ],
+    "distractors": [
+      "asset",
+      "unfriendly",
+      "make",
+      "welcome",
+      "physical"
+    ]
+  },
+  {
+    "word": "Free",
+    "opposites": [
+      "bound"
+    ],
+    "distractors": [
+      "compound",
+      "junior",
+      "hardened",
+      "refrain",
+      "location"
+    ]
+  },
+  {
+    "word": "Bound",
+    "opposites": [
+      "free"
+    ],
+    "distractors": [
+      "square",
+      "minor",
+      "con",
+      "penalty",
+      "live"
+    ]
+  },
+  {
+    "word": "Fresh",
+    "opposites": [
+      "preserved"
+    ],
+    "distractors": [
+      "sound",
+      "strengthen",
+      "calm",
+      "include",
+      "closing"
+    ]
+  },
+  {
+    "word": "Friendly",
+    "opposites": [
+      "unfriendly"
+    ],
+    "distractors": [
+      "waking",
+      "second",
+      "guilty",
+      "despair",
+      "forward"
+    ]
+  },
+  {
+    "word": "Unfriendly",
+    "opposites": [
+      "friendly"
+    ],
+    "distractors": [
+      "delicate",
+      "sudden",
+      "western",
+      "quickly",
+      "asleep"
+    ]
+  },
+  {
+    "word": "Hostile",
+    "opposites": [
+      "friendly"
+    ],
+    "distractors": [
+      "delicate",
+      "black",
+      "proud",
+      "compound",
+      "mother"
+    ]
+  },
+  {
+    "word": "Empty",
+    "opposites": [
+      "full"
+    ],
+    "distractors": [
+      "beauty",
+      "stable",
+      "lost",
+      "up",
+      "specific"
+    ]
+  },
+  {
+    "word": "Functional",
+    "opposites": [
+      "organic"
+    ],
+    "distractors": [
+      "long",
+      "supply",
+      "unlimited",
+      "cash",
+      "refrain"
+    ]
+  },
+  {
+    "word": "Organic",
+    "opposites": [
+      "functional"
+    ],
+    "distractors": [
+      "multiple",
+      "attached",
+      "lord",
+      "local",
+      "guilty"
+    ]
+  },
+  {
+    "word": "General",
+    "opposites": [
+      "specific"
+    ],
+    "distractors": [
+      "attack",
+      "break",
+      "waking",
+      "rear",
+      "hate"
+    ]
+  },
+  {
+    "word": "Specific",
+    "opposites": [
+      "general"
+    ],
+    "distractors": [
+      "encourage",
+      "familiar",
+      "poor",
+      "dirty",
+      "unhappily"
+    ]
+  },
+  {
+    "word": "National",
+    "opposites": [
+      "local"
+    ],
+    "distractors": [
+      "bound",
+      "victory",
+      "deaf",
+      "segregated",
+      "keep"
+    ]
+  },
+  {
+    "word": "Local",
+    "opposites": [
+      "national"
+    ],
+    "distractors": [
+      "wrong",
+      "detached",
+      "live",
+      "sharp",
+      "spread"
+    ]
+  },
+  {
+    "word": "Bad",
+    "opposites": [
+      "good"
+    ],
+    "distractors": [
+      "female",
+      "ugliness",
+      "freeze",
+      "show",
+      "con"
+    ]
+  },
+  {
+    "word": "Evil",
+    "opposites": [
+      "good"
+    ],
+    "distractors": [
+      "long",
+      "other",
+      "unusual",
+      "spoken",
+      "mother"
+    ]
+  },
+  {
+    "word": "Graceful",
+    "opposites": [
+      "awkward"
+    ],
+    "distractors": [
+      "major",
+      "gain",
+      "primary",
+      "small",
+      "down"
+    ]
+  },
+  {
+    "word": "Awkward",
+    "opposites": [
+      "graceful"
+    ],
+    "distractors": [
+      "never",
+      "false",
+      "different",
+      "backward",
+      "simplicity"
+    ]
+  },
+  {
+    "word": "Gradual",
+    "opposites": [
+      "sudden"
+    ],
+    "distractors": [
+      "absolute",
+      "rural",
+      "relax",
+      "civilian",
+      "decision"
+    ]
+  },
+  {
+    "word": "Sudden",
+    "opposites": [
+      "gradual"
+    ],
+    "distractors": [
+      "away",
+      "open",
+      "timid",
+      "hostile",
+      "bear"
+    ]
+  },
+  {
+    "word": "Steep",
+    "opposites": [
+      "gradual"
+    ],
+    "distractors": [
+      "borrow",
+      "advance",
+      "import",
+      "love",
+      "accept"
+    ]
+  },
+  {
+    "word": "Unhappy",
+    "opposites": [
+      "happy"
+    ],
+    "distractors": [
+      "friend",
+      "suffer",
+      "known",
+      "decrease",
+      "abstract"
+    ]
+  },
+  {
+    "word": "Soft",
+    "opposites": [
+      "hard"
+    ],
+    "distractors": [
+      "include",
+      "ignore",
+      "unemployed",
+      "stable",
+      "warm"
+    ]
+  },
+  {
+    "word": "Heavenly",
+    "opposites": [
+      "earthly"
+    ],
+    "distractors": [
+      "liking",
+      "senior",
+      "like",
+      "odd",
+      "express"
+    ]
+  },
+  {
+    "word": "Earthly",
+    "opposites": [
+      "heavenly"
+    ],
+    "distractors": [
+      "out",
+      "ground",
+      "arrive",
+      "tender",
+      "timid"
+    ]
+  },
+  {
+    "word": "Heavy",
+    "opposites": [
+      "light"
+    ],
+    "distractors": [
+      "stable",
+      "objective",
+      "proud",
+      "mortal",
+      "extensive"
+    ]
+  },
+  {
+    "word": "Low",
+    "opposites": [
+      "high"
+    ],
+    "distractors": [
+      "juvenile",
+      "peripheral",
+      "differ",
+      "easy",
+      "less"
+    ]
+  },
+  {
+    "word": "Raised",
+    "opposites": [
+      "lowered"
+    ],
+    "distractors": [
+      "rational",
+      "queen",
+      "overhead",
+      "long",
+      "aged"
+    ]
+  },
+  {
+    "word": "Lowered",
+    "opposites": [
+      "raised"
+    ],
+    "distractors": [
+      "unprepared",
+      "arrive",
+      "exclude",
+      "below",
+      "yes"
+    ]
+  },
+  {
+    "word": "Home",
+    "opposites": [
+      "away"
+    ],
+    "distractors": [
+      "double",
+      "worse",
+      "green",
+      "hopeless",
+      "moral"
+    ]
+  },
+  {
+    "word": "Away",
+    "opposites": [
+      "home"
+    ],
+    "distractors": [
+      "clear",
+      "cheer",
+      "secondary",
+      "wicked",
+      "show"
+    ]
+  },
+  {
+    "word": "Hopeful",
+    "opposites": [
+      "hopeless"
+    ],
+    "distractors": [
+      "big",
+      "sadness",
+      "happily",
+      "liquid",
+      "emotional"
+    ]
+  },
+  {
+    "word": "Hopeless",
+    "opposites": [
+      "hopeful"
+    ],
+    "distractors": [
+      "acute",
+      "external",
+      "unwanted",
+      "orthodox",
+      "inability"
+    ]
+  },
+  {
+    "word": "Horizontal",
+    "opposites": [
+      "inclined",
+      "vertical"
+    ],
+    "distractors": [
+      "remember",
+      "falling",
+      "sleeping",
+      "junior",
+      "multiply"
+    ]
+  },
+  {
+    "word": "Vertical",
+    "opposites": [
+      "horizontal",
+      "inclined"
+    ],
+    "distractors": [
+      "quiet",
+      "fertile",
+      "sad",
+      "below",
+      "complete"
+    ]
+  },
+  {
+    "word": "Inclined",
+    "opposites": [
+      "horizontal",
+      "vertical"
+    ],
+    "distractors": [
+      "long",
+      "other",
+      "gain",
+      "rested",
+      "close"
+    ]
+  },
+  {
+    "word": "Standing",
+    "opposites": [
+      "seated"
+    ],
+    "distractors": [
+      "sit",
+      "beginning",
+      "distrust",
+      "lie",
+      "awkward"
+    ]
+  },
+  {
+    "word": "Seated",
+    "opposites": [
+      "standing"
+    ],
+    "distractors": [
+      "acceptance",
+      "destroyed",
+      "feminine",
+      "above",
+      "good"
+    ]
+  },
+  {
+    "word": "Running",
+    "opposites": [
+      "standing"
+    ],
+    "distractors": [
+      "quickly",
+      "public",
+      "breathless",
+      "bound",
+      "hire"
+    ]
+  },
+  {
+    "word": "Passing",
+    "opposites": [
+      "running"
+    ],
+    "distractors": [
+      "depressing",
+      "solid",
+      "smart",
+      "victory",
+      "profit"
+    ]
+  },
+  {
+    "word": "Cold",
+    "opposites": [
+      "hot"
+    ],
+    "distractors": [
+      "definite",
+      "rising",
+      "guilt",
+      "lost",
+      "utopian"
+    ]
+  },
+  {
+    "word": "Incoming",
+    "opposites": [
+      "outgoing"
+    ],
+    "distractors": [
+      "source",
+      "little",
+      "real",
+      "deposit",
+      "relaxed"
+    ]
+  },
+  {
+    "word": "Outgoing",
+    "opposites": [
+      "incoming"
+    ],
+    "distractors": [
+      "curved",
+      "unhappy",
+      "numerical",
+      "above",
+      "cursed"
+    ]
+  },
+  {
+    "word": "Innocent",
+    "opposites": [
+      "guilty"
+    ],
+    "distractors": [
+      "religious",
+      "inner",
+      "complexity",
+      "useless",
+      "begin"
+    ]
+  },
+  {
+    "word": "Guilty",
+    "opposites": [
+      "innocent"
+    ],
+    "distractors": [
+      "sporadic",
+      "undue",
+      "legal",
+      "cheer",
+      "hit"
+    ]
+  },
+  {
+    "word": "Integrated",
+    "opposites": [
+      "segregated"
+    ],
+    "distractors": [
+      "exempt",
+      "cerebral",
+      "flat",
+      "attack",
+      "useful"
+    ]
+  },
+  {
+    "word": "Segregated",
+    "opposites": [
+      "integrated"
+    ],
+    "distractors": [
+      "glad",
+      "linger",
+      "black",
+      "unlimited",
+      "safety"
+    ]
+  },
+  {
+    "word": "Glad",
+    "opposites": [
+      "sad"
+    ],
+    "distractors": [
+      "liked",
+      "lend",
+      "import",
+      "unloading",
+      "hope"
+    ]
+  },
+  {
+    "word": "Sad",
+    "opposites": [
+      "glad"
+    ],
+    "distractors": [
+      "untouched",
+      "deaf",
+      "frivolous",
+      "ever",
+      "thick"
+    ]
+  },
+  {
+    "word": "Known",
+    "opposites": [
+      "unknown"
+    ],
+    "distractors": [
+      "south",
+      "fewer",
+      "quickly",
+      "include",
+      "sadly"
+    ]
+  },
+  {
+    "word": "Unknown",
+    "opposites": [
+      "known"
+    ],
+    "distractors": [
+      "preventive",
+      "verbal",
+      "military",
+      "internal",
+      "wife"
+    ]
+  },
+  {
+    "word": "Large",
+    "opposites": [
+      "small"
+    ],
+    "distractors": [
+      "graceful",
+      "retreat",
+      "religious",
+      "specific",
+      "have"
+    ]
+  },
+  {
+    "word": "Small",
+    "opposites": [
+      "large"
+    ],
+    "distractors": [
+      "make",
+      "noisy",
+      "abundant",
+      "mild",
+      "repair"
+    ]
+  },
+  {
+    "word": "Little",
+    "opposites": [
+      "big"
+    ],
+    "distractors": [
+      "strong",
+      "source",
+      "ride",
+      "mental",
+      "fancy"
+    ]
+  },
+  {
+    "word": "Greater",
+    "opposites": [
+      "lesser"
+    ],
+    "distractors": [
+      "living",
+      "spread",
+      "linger",
+      "liking",
+      "indecent"
+    ]
+  },
+  {
+    "word": "Lesser",
+    "opposites": [
+      "greater"
+    ],
+    "distractors": [
+      "overhead",
+      "yes",
+      "individual",
+      "downstairs",
+      "studio"
+    ]
+  },
+  {
+    "word": "Legal",
+    "opposites": [
+      "illegal"
+    ],
+    "distractors": [
+      "least",
+      "stormy",
+      "prevent",
+      "sane",
+      "ill"
+    ]
+  },
+  {
+    "word": "Illegal",
+    "opposites": [
+      "legal"
+    ],
+    "distractors": [
+      "numerical",
+      "happy",
+      "comfort",
+      "linear",
+      "humble"
+    ]
+  },
+  {
+    "word": "Like",
+    "opposites": [
+      "unlike"
+    ],
+    "distractors": [
+      "humility",
+      "definite",
+      "asleep",
+      "written",
+      "generalize"
+    ]
+  },
+  {
+    "word": "Unlike",
+    "opposites": [
+      "like"
+    ],
+    "distractors": [
+      "innocent",
+      "unnatural",
+      "optimism",
+      "plaintiff",
+      "possible"
+    ]
+  },
+  {
+    "word": "Likely",
+    "opposites": [
+      "unlikely"
+    ],
+    "distractors": [
+      "pleasure",
+      "backward",
+      "succeed",
+      "more",
+      "bear"
+    ]
+  },
+  {
+    "word": "Unlikely",
+    "opposites": [
+      "likely"
+    ],
+    "distractors": [
+      "yield",
+      "worthy",
+      "physical",
+      "minimum",
+      "sleeping"
+    ]
+  },
+  {
+    "word": "Limited",
+    "opposites": [
+      "unlimited"
+    ],
+    "distractors": [
+      "inaction",
+      "mind",
+      "side",
+      "rarely",
+      "win"
+    ]
+  },
+  {
+    "word": "Unlimited",
+    "opposites": [
+      "limited"
+    ],
+    "distractors": [
+      "badness",
+      "due",
+      "national",
+      "end",
+      "husband"
+    ]
+  },
+  {
+    "word": "Literal",
+    "opposites": [
+      "figurative"
+    ],
+    "distractors": [
+      "unloaded",
+      "friendly",
+      "begin",
+      "bold",
+      "safe"
+    ]
+  },
+  {
+    "word": "Figurative",
+    "opposites": [
+      "literal"
+    ],
+    "distractors": [
+      "unbroken",
+      "exclude",
+      "yin",
+      "demand",
+      "stormy"
+    ]
+  },
+  {
+    "word": "Recorded",
+    "opposites": [
+      "live"
+    ],
+    "distractors": [
+      "separate",
+      "early",
+      "queen",
+      "disliked",
+      "sit"
+    ]
+  },
+  {
+    "word": "Loaded",
+    "opposites": [
+      "unloaded"
+    ],
+    "distractors": [
+      "inaccurate",
+      "immoral",
+      "attract",
+      "adequate",
+      "saved"
+    ]
+  },
+  {
+    "word": "Unloaded",
+    "opposites": [
+      "loaded"
+    ],
+    "distractors": [
+      "opposite",
+      "patient",
+      "angular",
+      "blessed",
+      "soft"
+    ]
+  },
+  {
+    "word": "Long",
+    "opposites": [
+      "short"
+    ],
+    "distractors": [
+      "wise",
+      "rational",
+      "narrowly",
+      "father",
+      "spread"
+    ]
+  },
+  {
+    "word": "Short",
+    "opposites": [
+      "long"
+    ],
+    "distractors": [
+      "uneven",
+      "uneasy",
+      "employed",
+      "leading",
+      "sound"
+    ]
+  },
+  {
+    "word": "Tight",
+    "opposites": [
+      "loose"
+    ],
+    "distractors": [
+      "secular",
+      "liability",
+      "foe",
+      "sudden",
+      "divided"
+    ]
+  },
+  {
+    "word": "Lost",
+    "opposites": [
+      "found"
+    ],
+    "distractors": [
+      "cathode",
+      "cubic",
+      "organic",
+      "solid",
+      "tragedy"
+    ]
+  },
+  {
+    "word": "Found",
+    "opposites": [
+      "lost"
+    ],
+    "distractors": [
+      "hopeless",
+      "smooth",
+      "horizontal",
+      "capitalism",
+      "day"
+    ]
+  },
+  {
+    "word": "Saved",
+    "opposites": [
+      "lost"
+    ],
+    "distractors": [
+      "encourage",
+      "no",
+      "recorded",
+      "child",
+      "indirectly"
+    ]
+  },
+  {
+    "word": "Won",
+    "opposites": [
+      "lost"
+    ],
+    "distractors": [
+      "rugged",
+      "manual",
+      "senior",
+      "south",
+      "import"
+    ]
+  },
+  {
+    "word": "Piano",
+    "opposites": [
+      "forte"
+    ],
+    "distractors": [
+      "disliked",
+      "question",
+      "rich",
+      "nephew",
+      "lowered"
+    ]
+  },
+  {
+    "word": "Forte",
+    "opposites": [
+      "piano"
+    ],
+    "distractors": [
+      "numerical",
+      "prevent",
+      "magnetic",
+      "unfamiliar",
+      "plain"
+    ]
+  },
+  {
+    "word": "Hardened",
+    "opposites": [
+      "soft"
+    ],
+    "distractors": [
+      "enforce",
+      "relaxed",
+      "certain",
+      "bad",
+      "mental"
+    ]
+  },
+  {
+    "word": "Liked",
+    "opposites": [
+      "disliked"
+    ],
+    "distractors": [
+      "retreat",
+      "opposite",
+      "start",
+      "saved",
+      "gain"
+    ]
+  },
+  {
+    "word": "Disliked",
+    "opposites": [
+      "liked"
+    ],
+    "distractors": [
+      "saved",
+      "near",
+      "sell",
+      "sorrow",
+      "plus"
+    ]
+  },
+  {
+    "word": "Lyric",
+    "opposites": [
+      "dramatic"
+    ],
+    "distractors": [
+      "little",
+      "dark",
+      "narrowly",
+      "lady",
+      "shout"
+    ]
+  },
+  {
+    "word": "Dramatic",
+    "opposites": [
+      "lyric"
+    ],
+    "distractors": [
+      "repair",
+      "passive",
+      "wisdom",
+      "widen",
+      "united"
+    ]
+  },
+  {
+    "word": "Magnetic",
+    "opposites": [
+      "geographic"
+    ],
+    "distractors": [
+      "profit",
+      "figurative",
+      "make",
+      "lie",
+      "empty"
+    ]
+  },
+  {
+    "word": "Geographic",
+    "opposites": [
+      "magnetic"
+    ],
+    "distractors": [
+      "folly",
+      "content",
+      "official",
+      "domestic",
+      "universal"
+    ]
+  },
+  {
+    "word": "Major",
+    "opposites": [
+      "minor"
+    ],
+    "distractors": [
+      "outer",
+      "penalty",
+      "lowered",
+      "daughter",
+      "know"
+    ]
+  },
+  {
+    "word": "Minor",
+    "opposites": [
+      "major"
+    ],
+    "distractors": [
+      "prominence",
+      "disagree",
+      "hope",
+      "employer",
+      "kern"
+    ]
+  },
+  {
+    "word": "Male",
+    "opposites": [
+      "female"
+    ],
+    "distractors": [
+      "cooked",
+      "synthesis",
+      "broken",
+      "analysis",
+      "death"
+    ]
+  },
+  {
+    "word": "Female",
+    "opposites": [
+      "male"
+    ],
+    "distractors": [
+      "absolute",
+      "unmarried",
+      "defend",
+      "insane",
+      "up"
+    ]
+  },
+  {
+    "word": "Married",
+    "opposites": [
+      "unmarried"
+    ],
+    "distractors": [
+      "unloading",
+      "inside",
+      "sunset",
+      "complete",
+      "bold"
+    ]
+  },
+  {
+    "word": "Unmarried",
+    "opposites": [
+      "married"
+    ],
+    "distractors": [
+      "saved",
+      "few",
+      "heat",
+      "real",
+      "employed"
+    ]
+  },
+  {
+    "word": "Masculine",
+    "opposites": [
+      "feminine"
+    ],
+    "distractors": [
+      "slow",
+      "incomplete",
+      "resist",
+      "never",
+      "covered"
+    ]
+  },
+  {
+    "word": "Feminine",
+    "opposites": [
+      "masculine"
+    ],
+    "distractors": [
+      "wise",
+      "upstairs",
+      "large",
+      "bounce",
+      "inverse"
+    ]
+  },
+  {
+    "word": "Mature",
+    "opposites": [
+      "immature"
+    ],
+    "distractors": [
+      "inclined",
+      "show",
+      "tense",
+      "interest",
+      "saved"
+    ]
+  },
+  {
+    "word": "Immature",
+    "opposites": [
+      "mature"
+    ],
+    "distractors": [
+      "begin",
+      "unnatural",
+      "encourage",
+      "dirty",
+      "spoken"
+    ]
+  },
+  {
+    "word": "Ripe",
+    "opposites": [
+      "green"
+    ],
+    "distractors": [
+      "aware",
+      "incorrect",
+      "delay",
+      "fresh",
+      "refrain"
+    ]
+  },
+  {
+    "word": "Green",
+    "opposites": [
+      "ripe"
+    ],
+    "distractors": [
+      "bull",
+      "wealth",
+      "bear",
+      "minus",
+      "unite"
+    ]
+  },
+  {
+    "word": "Maximum",
+    "opposites": [
+      "minimum"
+    ],
+    "distractors": [
+      "encourage",
+      "indoors",
+      "covered",
+      "bold",
+      "miss"
+    ]
+  },
+  {
+    "word": "Minimum",
+    "opposites": [
+      "maximum"
+    ],
+    "distractors": [
+      "neutral",
+      "good",
+      "outgoing",
+      "wholly",
+      "uncommon"
+    ]
+  },
+  {
+    "word": "Mild",
+    "opposites": [
+      "intense"
+    ],
+    "distractors": [
+      "double",
+      "unpaid",
+      "friend",
+      "freeze",
+      "cold"
+    ]
+  },
+  {
+    "word": "Intense",
+    "opposites": [
+      "mild"
+    ],
+    "distractors": [
+      "export",
+      "mental",
+      "enjoy",
+      "tragedy",
+      "past"
+    ]
+  },
+  {
+    "word": "Intensive",
+    "opposites": [
+      "extensive"
+    ],
+    "distractors": [
+      "uncertain",
+      "brother",
+      "specific",
+      "unstable",
+      "on"
+    ]
+  },
+  {
+    "word": "Extensive",
+    "opposites": [
+      "intensive"
+    ],
+    "distractors": [
+      "liability",
+      "privately",
+      "much",
+      "sound",
+      "informal"
+    ]
+  },
+  {
+    "word": "Military",
+    "opposites": [
+      "civilian"
+    ],
+    "distractors": [
+      "victory",
+      "analytic",
+      "ground",
+      "notice",
+      "some"
+    ]
+  },
+  {
+    "word": "Civilian",
+    "opposites": [
+      "military"
+    ],
+    "distractors": [
+      "loss",
+      "lyric",
+      "defeat",
+      "proud",
+      "opaque"
+    ]
+  },
+  {
+    "word": "Moral",
+    "opposites": [
+      "immoral"
+    ],
+    "distractors": [
+      "right",
+      "accurate",
+      "able",
+      "magnetic",
+      "true"
+    ]
+  },
+  {
+    "word": "Immoral",
+    "opposites": [
+      "moral"
+    ],
+    "distractors": [
+      "clear",
+      "broken",
+      "national",
+      "badly",
+      "continual"
+    ]
+  },
+  {
+    "word": "Many",
+    "opposites": [
+      "few"
+    ],
+    "distractors": [
+      "unpleasant",
+      "multiple",
+      "impartial",
+      "juvenile",
+      "contract"
+    ]
+  },
+  {
+    "word": "Few",
+    "opposites": [
+      "many"
+    ],
+    "distractors": [
+      "uncle",
+      "often",
+      "irregular",
+      "import",
+      "contract"
+    ]
+  },
+  {
+    "word": "Much",
+    "opposites": [
+      "little"
+    ],
+    "distractors": [
+      "security",
+      "definite",
+      "cerebral",
+      "humility",
+      "calm"
+    ]
+  },
+  {
+    "word": "More",
+    "opposites": [
+      "less"
+    ],
+    "distractors": [
+      "find",
+      "untouched",
+      "goodness",
+      "public",
+      "like"
+    ]
+  },
+  {
+    "word": "Less",
+    "opposites": [
+      "more"
+    ],
+    "distractors": [
+      "top",
+      "nephew",
+      "impartial",
+      "adopted",
+      "separate"
+    ]
+  },
+  {
+    "word": "Most",
+    "opposites": [
+      "least"
+    ],
+    "distractors": [
+      "joint",
+      "local",
+      "attend",
+      "unorthodox",
+      "calm"
+    ]
+  },
+  {
+    "word": "Least",
+    "opposites": [
+      "most"
+    ],
+    "distractors": [
+      "lady",
+      "paid",
+      "unhappily",
+      "rise",
+      "opposite"
+    ]
+  },
+  {
+    "word": "Fewer",
+    "opposites": [
+      "more"
+    ],
+    "distractors": [
+      "ample",
+      "possible",
+      "greater",
+      "outer",
+      "common"
+    ]
+  },
+  {
+    "word": "Mortal",
+    "opposites": [
+      "immortal"
+    ],
+    "distractors": [
+      "recall",
+      "notice",
+      "double",
+      "timid",
+      "aged"
+    ]
+  },
+  {
+    "word": "Immortal",
+    "opposites": [
+      "mortal"
+    ],
+    "distractors": [
+      "curly",
+      "failure",
+      "question",
+      "difficulty",
+      "love"
+    ]
+  },
+  {
+    "word": "Moving",
+    "opposites": [
+      "still"
+    ],
+    "distractors": [
+      "dormant",
+      "resist",
+      "least",
+      "unhappy",
+      "unusual"
+    ]
+  },
+  {
+    "word": "Still",
+    "opposites": [
+      "moving"
+    ],
+    "distractors": [
+      "resist",
+      "hopelessly",
+      "finite",
+      "due",
+      "sell"
+    ]
+  },
+  {
+    "word": "Natural",
+    "opposites": [
+      "unnatural"
+    ],
+    "distractors": [
+      "accept",
+      "upward",
+      "opening",
+      "head",
+      "native"
+    ]
+  },
+  {
+    "word": "Unnatural",
+    "opposites": [
+      "natural"
+    ],
+    "distractors": [
+      "lower",
+      "general",
+      "few",
+      "curse",
+      "perennial"
+    ]
+  },
+  {
+    "word": "Artificial",
+    "opposites": [
+      "natural"
+    ],
+    "distractors": [
+      "defend",
+      "ease",
+      "black",
+      "lesser",
+      "yield"
+    ]
+  },
+  {
+    "word": "Flat",
+    "opposites": [
+      "natural",
+      "sharp"
+    ],
+    "distractors": [
+      "cursed",
+      "half",
+      "rarely",
+      "home",
+      "lie"
+    ]
+  },
+  {
+    "word": "Net",
+    "opposites": [
+      "gross"
+    ],
+    "distractors": [
+      "eastern",
+      "unadjusted",
+      "despair",
+      "open",
+      "complete"
+    ]
+  },
+  {
+    "word": "Gross",
+    "opposites": [
+      "net"
+    ],
+    "distractors": [
+      "happy",
+      "closed",
+      "hit",
+      "defend",
+      "evil"
+    ]
+  },
+  {
+    "word": "Nasty",
+    "opposites": [
+      "nice"
+    ],
+    "distractors": [
+      "location",
+      "civilian",
+      "hard",
+      "employed",
+      "guilty"
+    ]
+  },
+  {
+    "word": "North",
+    "opposites": [
+      "south"
+    ],
+    "distractors": [
+      "actual",
+      "individual",
+      "shrink",
+      "unrelated",
+      "ill"
+    ]
+  },
+  {
+    "word": "South",
+    "opposites": [
+      "north"
+    ],
+    "distractors": [
+      "depressing",
+      "widen",
+      "synthetic",
+      "inferior",
+      "blind"
+    ]
+  },
+  {
+    "word": "Northern",
+    "opposites": [
+      "southern"
+    ],
+    "distractors": [
+      "shout",
+      "orthodox",
+      "virtuous",
+      "impatience",
+      "adjusted"
+    ]
+  },
+  {
+    "word": "Southern",
+    "opposites": [
+      "northern"
+    ],
+    "distractors": [
+      "complex",
+      "upstream",
+      "informal",
+      "minority",
+      "abundant"
+    ]
+  },
+  {
+    "word": "Objective",
+    "opposites": [
+      "subjective"
+    ],
+    "distractors": [
+      "security",
+      "discharge",
+      "sorrow",
+      "increasing",
+      "disliked"
+    ]
+  },
+  {
+    "word": "Subjective",
+    "opposites": [
+      "objective"
+    ],
+    "distractors": [
+      "fine",
+      "success",
+      "sweet",
+      "ample",
+      "wild"
+    ]
+  },
+  {
+    "word": "Offensive",
+    "opposites": [
+      "defensive"
+    ],
+    "distractors": [
+      "issue",
+      "absent",
+      "lean",
+      "lady",
+      "uncertain"
+    ]
+  },
+  {
+    "word": "Defensive",
+    "opposites": [
+      "offensive"
+    ],
+    "distractors": [
+      "tough",
+      "peace",
+      "separate",
+      "manual",
+      "backward"
+    ]
+  },
+  {
+    "word": "Official",
+    "opposites": [
+      "unofficial"
+    ],
+    "distractors": [
+      "intensive",
+      "trust",
+      "perennial",
+      "succeeding",
+      "individual"
+    ]
+  },
+  {
+    "word": "Unofficial",
+    "opposites": [
+      "official"
+    ],
+    "distractors": [
+      "little",
+      "pessimism",
+      "yin",
+      "express",
+      "softly"
+    ]
+  },
+  {
+    "word": "New",
+    "opposites": [
+      "old"
+    ],
+    "distractors": [
+      "peace",
+      "moral",
+      "mental",
+      "difficulty",
+      "wise"
+    ]
+  },
+  {
+    "word": "Young",
+    "opposites": [
+      "old"
+    ],
+    "distractors": [
+      "saved",
+      "multiple",
+      "uptown",
+      "indecision",
+      "rounded"
+    ]
+  },
+  {
+    "word": "Off",
+    "opposites": [
+      "on"
+    ],
+    "distractors": [
+      "stormy",
+      "gather",
+      "credit",
+      "clear",
+      "enforce"
+    ]
+  },
+  {
+    "word": "Shut",
+    "opposites": [
+      "open"
+    ],
+    "distractors": [
+      "humility",
+      "pain",
+      "avoid",
+      "above",
+      "prominence"
+    ]
+  },
+  {
+    "word": "Closed",
+    "opposites": [
+      "open"
+    ],
+    "distractors": [
+      "native",
+      "rounded",
+      "complex",
+      "hostile",
+      "emotional"
+    ]
+  },
+  {
+    "word": "Opposite",
+    "opposites": [
+      "alternate"
+    ],
+    "distractors": [
+      "natural",
+      "take",
+      "multiple",
+      "impossible",
+      "real"
+    ]
+  },
+  {
+    "word": "Alternate",
+    "opposites": [
+      "opposite"
+    ],
+    "distractors": [
+      "night",
+      "bright",
+      "feminine",
+      "center",
+      "defense"
+    ]
+  },
+  {
+    "word": "Inorganic",
+    "opposites": [
+      "organic"
+    ],
+    "distractors": [
+      "vertical",
+      "patient",
+      "deep",
+      "lord",
+      "weak"
+    ]
+  },
+  {
+    "word": "Orthodox",
+    "opposites": [
+      "unorthodox"
+    ],
+    "distractors": [
+      "anterior",
+      "timid",
+      "allow",
+      "best",
+      "breathless"
+    ]
+  },
+  {
+    "word": "Unorthodox",
+    "opposites": [
+      "orthodox"
+    ],
+    "distractors": [
+      "rural",
+      "dull",
+      "repair",
+      "stay",
+      "present"
+    ]
+  },
+  {
+    "word": "Outside",
+    "opposites": [
+      "inside"
+    ],
+    "distractors": [
+      "set",
+      "half",
+      "there",
+      "live",
+      "head"
+    ]
+  },
+  {
+    "word": "Inside",
+    "opposites": [
+      "outside"
+    ],
+    "distractors": [
+      "informally",
+      "much",
+      "juvenile",
+      "common",
+      "noisy"
+    ]
+  },
+  {
+    "word": "Covered",
+    "opposites": [
+      "bare"
+    ],
+    "distractors": [
+      "official",
+      "defense",
+      "appear",
+      "irrelevant",
+      "prominence"
+    ]
+  },
+  {
+    "word": "Bare",
+    "opposites": [
+      "covered"
+    ],
+    "distractors": [
+      "quiet",
+      "recorded",
+      "clarity",
+      "masculine",
+      "offensive"
+    ]
+  },
+  {
+    "word": "Paid",
+    "opposites": [
+      "unpaid"
+    ],
+    "distractors": [
+      "careless",
+      "increase",
+      "useful",
+      "curly",
+      "definite"
+    ]
+  },
+  {
+    "word": "Unpaid",
+    "opposites": [
+      "paid"
+    ],
+    "distractors": [
+      "joy",
+      "tense",
+      "free",
+      "issue",
+      "uncertain"
+    ]
+  },
+  {
+    "word": "Partial",
+    "opposites": [
+      "impartial"
+    ],
+    "distractors": [
+      "objective",
+      "prevent",
+      "there",
+      "covered",
+      "dirty"
+    ]
+  },
+  {
+    "word": "Impartial",
+    "opposites": [
+      "partial"
+    ],
+    "distractors": [
+      "divide",
+      "illegal",
+      "finish",
+      "fresh",
+      "bore"
+    ]
+  },
+  {
+    "word": "Past",
+    "opposites": [
+      "future",
+      "present"
+    ],
+    "distractors": [
+      "rounded",
+      "unite",
+      "informally",
+      "agree",
+      "bend"
+    ]
+  },
+  {
+    "word": "Present",
+    "opposites": [
+      "future",
+      "past"
+    ],
+    "distractors": [
+      "inability",
+      "minority",
+      "bull",
+      "birth",
+      "outdoors"
+    ]
+  },
+  {
+    "word": "Future",
+    "opposites": [
+      "past",
+      "present"
+    ],
+    "distractors": [
+      "open",
+      "sound",
+      "sorrow",
+      "bounce",
+      "sister"
+    ]
+  },
+  {
+    "word": "Patient",
+    "opposites": [
+      "impatient"
+    ],
+    "distractors": [
+      "integrated",
+      "sit",
+      "uneven",
+      "large",
+      "cash"
+    ]
+  },
+  {
+    "word": "Impatient",
+    "opposites": [
+      "patient"
+    ],
+    "distractors": [
+      "divide",
+      "female",
+      "natural",
+      "subjective",
+      "come"
+    ]
+  },
+  {
+    "word": "Permissive",
+    "opposites": [
+      "preventive"
+    ],
+    "distractors": [
+      "odd",
+      "cubic",
+      "narrowly",
+      "sadness",
+      "unprepared"
+    ]
+  },
+  {
+    "word": "Preventive",
+    "opposites": [
+      "permissive"
+    ],
+    "distractors": [
+      "undue",
+      "wrong",
+      "weaken",
+      "yin",
+      "sweet"
+    ]
+  },
+  {
+    "word": "Personal",
+    "opposites": [
+      "impersonal"
+    ],
+    "distractors": [
+      "timid",
+      "begin",
+      "wise",
+      "aft",
+      "patient"
+    ]
+  },
+  {
+    "word": "Impersonal",
+    "opposites": [
+      "personal"
+    ],
+    "distractors": [
+      "irregular",
+      "multiple",
+      "artificial",
+      "rugged",
+      "paid"
+    ]
+  },
+  {
+    "word": "Physical",
+    "opposites": [
+      "mental"
+    ],
+    "distractors": [
+      "masculine",
+      "prominence",
+      "civilian",
+      "complain",
+      "pro"
+    ]
+  },
+  {
+    "word": "Mental",
+    "opposites": [
+      "physical"
+    ],
+    "distractors": [
+      "ease",
+      "ugly",
+      "actual",
+      "indefinite",
+      "rugged"
+    ]
+  },
+  {
+    "word": "Secular",
+    "opposites": [
+      "religious"
+    ],
+    "distractors": [
+      "delay",
+      "badness",
+      "passive",
+      "bear",
+      "forward"
+    ]
+  },
+  {
+    "word": "Religious",
+    "opposites": [
+      "secular"
+    ],
+    "distractors": [
+      "unknown",
+      "junior",
+      "hate",
+      "rich",
+      "rested"
+    ]
+  },
+  {
+    "word": "Plain",
+    "opposites": [
+      "patterned"
+    ],
+    "distractors": [
+      "folly",
+      "senior",
+      "cerebral",
+      "large",
+      "aft"
+    ]
+  },
+  {
+    "word": "Patterned",
+    "opposites": [
+      "plain"
+    ],
+    "distractors": [
+      "know",
+      "invalid",
+      "depressing",
+      "nasty",
+      "rounded"
+    ]
+  },
+  {
+    "word": "Fancy",
+    "opposites": [
+      "plain"
+    ],
+    "distractors": [
+      "changed",
+      "limited",
+      "daughter",
+      "impatience",
+      "bottom"
+    ]
+  },
+  {
+    "word": "Pleasant",
+    "opposites": [
+      "unpleasant"
+    ],
+    "distractors": [
+      "wide",
+      "socialism",
+      "male",
+      "accurate",
+      "formal"
+    ]
+  },
+  {
+    "word": "Unpleasant",
+    "opposites": [
+      "pleasant"
+    ],
+    "distractors": [
+      "neutral",
+      "complexity",
+      "chronic",
+      "cry",
+      "sterile"
+    ]
+  },
+  {
+    "word": "Pleased",
+    "opposites": [
+      "displeased"
+    ],
+    "distractors": [
+      "disliked",
+      "second",
+      "disagree",
+      "cooked",
+      "reject"
+    ]
+  },
+  {
+    "word": "Displeased",
+    "opposites": [
+      "pleased"
+    ],
+    "distractors": [
+      "horizontal",
+      "unloaded",
+      "many",
+      "far",
+      "cry"
+    ]
+  },
+  {
+    "word": "Popular",
+    "opposites": [
+      "unpopular"
+    ],
+    "distractors": [
+      "divided",
+      "begin",
+      "rounded",
+      "employed",
+      "whole"
+    ]
+  },
+  {
+    "word": "Unpopular",
+    "opposites": [
+      "popular"
+    ],
+    "distractors": [
+      "personal",
+      "worn",
+      "demand",
+      "empty",
+      "down"
+    ]
+  },
+  {
+    "word": "Positive",
+    "opposites": [
+      "negative",
+      "neutral"
+    ],
+    "distractors": [
+      "publicly",
+      "deposit",
+      "adult",
+      "bore",
+      "official"
+    ]
+  },
+  {
+    "word": "Negative",
+    "opposites": [
+      "neutral",
+      "positive"
+    ],
+    "distractors": [
+      "detached",
+      "possible",
+      "contract",
+      "concrete",
+      "same"
+    ]
+  },
+  {
+    "word": "Neutral",
+    "opposites": [
+      "negative",
+      "positive"
+    ],
+    "distractors": [
+      "left",
+      "rough",
+      "back",
+      "feminine",
+      "decrease"
+    ]
+  },
+  {
+    "word": "Plus",
+    "opposites": [
+      "minus"
+    ],
+    "distractors": [
+      "square",
+      "finish",
+      "basic",
+      "acceptance",
+      "answer"
+    ]
+  },
+  {
+    "word": "Minus",
+    "opposites": [
+      "plus"
+    ],
+    "distractors": [
+      "nominal",
+      "unloaded",
+      "dirty",
+      "basic",
+      "love"
+    ]
+  },
+  {
+    "word": "Possible",
+    "opposites": [
+      "impossible"
+    ],
+    "distractors": [
+      "civilian",
+      "east",
+      "level",
+      "badness",
+      "rough"
+    ]
+  },
+  {
+    "word": "Impossible",
+    "opposites": [
+      "possible"
+    ],
+    "distractors": [
+      "allow",
+      "nephew",
+      "alternate",
+      "worse",
+      "same"
+    ]
+  },
+  {
+    "word": "Prepared",
+    "opposites": [
+      "unprepared"
+    ],
+    "distractors": [
+      "abolish",
+      "peripheral",
+      "unhappy",
+      "out",
+      "rear"
+    ]
+  },
+  {
+    "word": "Unprepared",
+    "opposites": [
+      "prepared"
+    ],
+    "distractors": [
+      "impossible",
+      "unwelcome",
+      "leading",
+      "negative",
+      "married"
+    ]
+  },
+  {
+    "word": "Absent",
+    "opposites": [
+      "present"
+    ],
+    "distractors": [
+      "widen",
+      "natural",
+      "informal",
+      "least",
+      "whisper"
+    ]
+  },
+  {
+    "word": "Primary",
+    "opposites": [
+      "secondary"
+    ],
+    "distractors": [
+      "middle",
+      "unaware",
+      "dystopian",
+      "yin",
+      "depressing"
+    ]
+  },
+  {
+    "word": "Secondary",
+    "opposites": [
+      "primary"
+    ],
+    "distractors": [
+      "wise",
+      "dystopian",
+      "exterior",
+      "make",
+      "southern"
+    ]
+  },
+  {
+    "word": "Basic",
+    "opposites": [
+      "incidental"
+    ],
+    "distractors": [
+      "subjective",
+      "security",
+      "straighten",
+      "rise",
+      "depart"
+    ]
+  },
+  {
+    "word": "Incidental",
+    "opposites": [
+      "basic"
+    ],
+    "distractors": [
+      "perennial",
+      "local",
+      "careful",
+      "blessed",
+      "vertical"
+    ]
+  },
+  {
+    "word": "Private",
+    "opposites": [
+      "public"
+    ],
+    "distractors": [
+      "familiar",
+      "western",
+      "justice",
+      "deep",
+      "exclude"
+    ]
+  },
+  {
+    "word": "Public",
+    "opposites": [
+      "private"
+    ],
+    "distractors": [
+      "mind",
+      "happiness",
+      "aware",
+      "increased",
+      "cheer"
+    ]
+  },
+  {
+    "word": "Proud",
+    "opposites": [
+      "humble"
+    ],
+    "distractors": [
+      "synthesis",
+      "false",
+      "some",
+      "delay",
+      "hopefully"
+    ]
+  },
+  {
+    "word": "Humble",
+    "opposites": [
+      "proud"
+    ],
+    "distractors": [
+      "exclude",
+      "unloading",
+      "blind",
+      "employer",
+      "hopelessly"
+    ]
+  },
+  {
+    "word": "Noisy",
+    "opposites": [
+      "quiet"
+    ],
+    "distractors": [
+      "success",
+      "ground",
+      "pessimism",
+      "military",
+      "analysis"
+    ]
+  },
+  {
+    "word": "Rational",
+    "opposites": [
+      "irrational"
+    ],
+    "distractors": [
+      "ripe",
+      "decent",
+      "sane",
+      "posterior",
+      "written"
+    ]
+  },
+  {
+    "word": "Irrational",
+    "opposites": [
+      "rational"
+    ],
+    "distractors": [
+      "senior",
+      "end",
+      "dramatic",
+      "attract",
+      "little"
+    ]
+  },
+  {
+    "word": "Emotional",
+    "opposites": [
+      "cerebral"
+    ],
+    "distractors": [
+      "tail",
+      "adequate",
+      "offensive",
+      "useful",
+      "manual"
+    ]
+  },
+  {
+    "word": "Cerebral",
+    "opposites": [
+      "emotional"
+    ],
+    "distractors": [
+      "married",
+      "solid",
+      "complex",
+      "able",
+      "inadequate"
+    ]
+  },
+  {
+    "word": "Real",
+    "opposites": [
+      "unreal"
+    ],
+    "distractors": [
+      "bare",
+      "allow",
+      "figurative",
+      "unaware",
+      "rise"
+    ]
+  },
+  {
+    "word": "Unreal",
+    "opposites": [
+      "real"
+    ],
+    "distractors": [
+      "attend",
+      "bold",
+      "minority",
+      "beauty",
+      "useful"
+    ]
+  },
+  {
+    "word": "Nominal",
+    "opposites": [
+      "real"
+    ],
+    "distractors": [
+      "secular",
+      "liquid",
+      "presence",
+      "upward",
+      "break"
+    ]
+  },
+  {
+    "word": "Regular",
+    "opposites": [
+      "irregular"
+    ],
+    "distractors": [
+      "stay",
+      "abstract",
+      "simple",
+      "walk",
+      "retreat"
+    ]
+  },
+  {
+    "word": "Irregular",
+    "opposites": [
+      "regular"
+    ],
+    "distractors": [
+      "liking",
+      "external",
+      "intensive",
+      "indecision",
+      "inferior"
+    ]
+  },
+  {
+    "word": "Related",
+    "opposites": [
+      "unrelated"
+    ],
+    "distractors": [
+      "upstairs",
+      "decent",
+      "meager",
+      "compound",
+      "careful"
+    ]
+  },
+  {
+    "word": "Unrelated",
+    "opposites": [
+      "related"
+    ],
+    "distractors": [
+      "ride",
+      "lend",
+      "net",
+      "war",
+      "ugly"
+    ]
+  },
+  {
+    "word": "Relevant",
+    "opposites": [
+      "irrelevant"
+    ],
+    "distractors": [
+      "downstream",
+      "death",
+      "west",
+      "absolute",
+      "heavy"
+    ]
+  },
+  {
+    "word": "Irrelevant",
+    "opposites": [
+      "relevant"
+    ],
+    "distractors": [
+      "deficit",
+      "different",
+      "other",
+      "unwelcome",
+      "welcome"
+    ]
+  },
+  {
+    "word": "Rich",
+    "opposites": [
+      "poor"
+    ],
+    "distractors": [
+      "sound",
+      "destroyed",
+      "orthodox",
+      "impartial",
+      "unlikely"
+    ]
+  },
+  {
+    "word": "Poor",
+    "opposites": [
+      "rich"
+    ],
+    "distractors": [
+      "patterned",
+      "private",
+      "bless",
+      "still",
+      "girl"
+    ]
+  },
+  {
+    "word": "Lean",
+    "opposites": [
+      "rich"
+    ],
+    "distractors": [
+      "simplicity",
+      "actual",
+      "hit",
+      "end",
+      "fall"
+    ]
+  },
+  {
+    "word": "Center",
+    "opposites": [
+      "left",
+      "right"
+    ],
+    "distractors": [
+      "immortal",
+      "anterior",
+      "less",
+      "bright",
+      "slowly"
+    ]
+  },
+  {
+    "word": "Round",
+    "opposites": [
+      "square"
+    ],
+    "distractors": [
+      "daughter",
+      "plain",
+      "limited",
+      "away",
+      "wealth"
+    ]
+  },
+  {
+    "word": "Square",
+    "opposites": [
+      "round"
+    ],
+    "distractors": [
+      "succeed",
+      "joy",
+      "injustice",
+      "hearing",
+      "least"
+    ]
+  },
+  {
+    "word": "Rounded",
+    "opposites": [
+      "angular"
+    ],
+    "distractors": [
+      "forward",
+      "anode",
+      "living",
+      "incorrect",
+      "objective"
+    ]
+  },
+  {
+    "word": "Angular",
+    "opposites": [
+      "rounded"
+    ],
+    "distractors": [
+      "married",
+      "happiness",
+      "woman",
+      "aged",
+      "displeased"
+    ]
+  },
+  {
+    "word": "Rural",
+    "opposites": [
+      "urban"
+    ],
+    "distractors": [
+      "whole",
+      "ugliness",
+      "lead",
+      "ugly",
+      "married"
+    ]
+  },
+  {
+    "word": "Urban",
+    "opposites": [
+      "rural"
+    ],
+    "distractors": [
+      "slowly",
+      "patient",
+      "success",
+      "break",
+      "few"
+    ]
+  },
+  {
+    "word": "Safe",
+    "opposites": [
+      "dangerous"
+    ],
+    "distractors": [
+      "lower",
+      "compact",
+      "juvenile",
+      "cash",
+      "buy"
+    ]
+  },
+  {
+    "word": "Dangerous",
+    "opposites": [
+      "safe"
+    ],
+    "distractors": [
+      "stay",
+      "king",
+      "wide",
+      "breathless",
+      "death"
+    ]
+  },
+  {
+    "word": "Out",
+    "opposites": [
+      "safe"
+    ],
+    "distractors": [
+      "juvenile",
+      "unrelated",
+      "useless",
+      "alternate",
+      "hot"
+    ]
+  },
+  {
+    "word": "Same",
+    "opposites": [
+      "different"
+    ],
+    "distractors": [
+      "inorganic",
+      "female",
+      "uneven",
+      "fore",
+      "artificial"
+    ]
+  },
+  {
+    "word": "Different",
+    "opposites": [
+      "same"
+    ],
+    "distractors": [
+      "refuse",
+      "rested",
+      "outward",
+      "fresh",
+      "cooked"
+    ]
+  },
+  {
+    "word": "Other",
+    "opposites": [
+      "same"
+    ],
+    "distractors": [
+      "definite",
+      "back",
+      "saved",
+      "abolish",
+      "defend"
+    ]
+  },
+  {
+    "word": "Sane",
+    "opposites": [
+      "insane"
+    ],
+    "distractors": [
+      "capable",
+      "useful",
+      "deny",
+      "never",
+      "withdraw"
+    ]
+  },
+  {
+    "word": "Insane",
+    "opposites": [
+      "sane"
+    ],
+    "distractors": [
+      "stay",
+      "wide",
+      "able",
+      "hate",
+      "immortal"
+    ]
+  },
+  {
+    "word": "Senior",
+    "opposites": [
+      "junior"
+    ],
+    "distractors": [
+      "refuse",
+      "badness",
+      "complete",
+      "difficulty",
+      "patient"
+    ]
+  },
+  {
+    "word": "Junior",
+    "opposites": [
+      "senior"
+    ],
+    "distractors": [
+      "shallow",
+      "direct",
+      "odd",
+      "allow",
+      "plaintiff"
+    ]
+  },
+  {
+    "word": "Separate",
+    "opposites": [
+      "joint"
+    ],
+    "distractors": [
+      "deny",
+      "pessimism",
+      "move",
+      "sharp",
+      "prominence"
+    ]
+  },
+  {
+    "word": "Joint",
+    "opposites": [
+      "separate"
+    ],
+    "distractors": [
+      "out",
+      "abundant",
+      "proud",
+      "unorthodox",
+      "bull"
+    ]
+  },
+  {
+    "word": "Serious",
+    "opposites": [
+      "frivolous"
+    ],
+    "distractors": [
+      "separation",
+      "evil",
+      "senior",
+      "silence",
+      "unlimited"
+    ]
+  },
+  {
+    "word": "Frivolous",
+    "opposites": [
+      "serious"
+    ],
+    "distractors": [
+      "fill",
+      "freeze",
+      "discharge",
+      "blind",
+      "specific"
+    ]
+  },
+  {
+    "word": "Sighted",
+    "opposites": [
+      "blind"
+    ],
+    "distractors": [
+      "worthy",
+      "graceful",
+      "female",
+      "move",
+      "lose"
+    ]
+  },
+  {
+    "word": "Blind",
+    "opposites": [
+      "sighted"
+    ],
+    "distractors": [
+      "written",
+      "withdraw",
+      "exterior",
+      "covered",
+      "daughter"
+    ]
+  },
+  {
+    "word": "Simple",
+    "opposites": [
+      "compound"
+    ],
+    "distractors": [
+      "wholesale",
+      "other",
+      "solid",
+      "avoid",
+      "likely"
+    ]
+  },
+  {
+    "word": "Compound",
+    "opposites": [
+      "simple"
+    ],
+    "distractors": [
+      "shout",
+      "physical",
+      "downstairs",
+      "narrow",
+      "unreal"
+    ]
+  },
+  {
+    "word": "Complex",
+    "opposites": [
+      "simple"
+    ],
+    "distractors": [
+      "easy",
+      "exit",
+      "strange",
+      "level",
+      "indecision"
+    ]
+  },
+  {
+    "word": "Single",
+    "opposites": [
+      "multiple"
+    ],
+    "distractors": [
+      "raw",
+      "lowered",
+      "actual",
+      "ending",
+      "intangible"
+    ]
+  },
+  {
+    "word": "Multiple",
+    "opposites": [
+      "single"
+    ],
+    "distractors": [
+      "partial",
+      "upward",
+      "careful",
+      "order",
+      "unite"
+    ]
+  },
+  {
+    "word": "Double",
+    "opposites": [
+      "single"
+    ],
+    "distractors": [
+      "invisible",
+      "pass",
+      "usual",
+      "unlimited",
+      "beautiful"
+    ]
+  },
+  {
+    "word": "Verbal",
+    "opposites": [
+      "numerical"
+    ],
+    "distractors": [
+      "include",
+      "difficult",
+      "large",
+      "sighted",
+      "virtuous"
+    ]
+  },
+  {
+    "word": "Numerical",
+    "opposites": [
+      "verbal"
+    ],
+    "distractors": [
+      "annual",
+      "bounce",
+      "dangerous",
+      "timid",
+      "former"
+    ]
+  },
+  {
+    "word": "Coarse",
+    "opposites": [
+      "fine"
+    ],
+    "distractors": [
+      "exit",
+      "blind",
+      "southern",
+      "push",
+      "irrational"
+    ]
+  },
+  {
+    "word": "Fine",
+    "opposites": [
+      "coarse"
+    ],
+    "distractors": [
+      "potential",
+      "negative",
+      "downstairs",
+      "past",
+      "local"
+    ]
+  },
+  {
+    "word": "Smooth",
+    "opposites": [
+      "rough"
+    ],
+    "distractors": [
+      "plain",
+      "forward",
+      "present",
+      "free",
+      "run"
+    ]
+  },
+  {
+    "word": "Rough",
+    "opposites": [
+      "smooth"
+    ],
+    "distractors": [
+      "minimum",
+      "calm",
+      "act",
+      "war",
+      "pleasure"
+    ]
+  },
+  {
+    "word": "Solid",
+    "opposites": [
+      "liquid"
+    ],
+    "distractors": [
+      "mortal",
+      "break",
+      "blessed",
+      "cooked",
+      "unable"
+    ]
+  },
+  {
+    "word": "Liquid",
+    "opposites": [
+      "solid"
+    ],
+    "distractors": [
+      "figurative",
+      "sell",
+      "curved",
+      "son",
+      "allow"
+    ]
+  },
+  {
+    "word": "Hollow",
+    "opposites": [
+      "solid"
+    ],
+    "distractors": [
+      "correct",
+      "mind",
+      "source",
+      "written",
+      "frivolous"
+    ]
+  },
+  {
+    "word": "Some",
+    "opposites": [
+      "all",
+      "no"
+    ],
+    "distractors": [
+      "reward",
+      "clean",
+      "following",
+      "left",
+      "vertical"
+    ]
+  },
+  {
+    "word": "No",
+    "opposites": [
+      "all",
+      "some"
+    ],
+    "distractors": [
+      "aft",
+      "borrow",
+      "hearing",
+      "ahead",
+      "danger"
+    ]
+  },
+  {
+    "word": "All",
+    "opposites": [
+      "no",
+      "some"
+    ],
+    "distractors": [
+      "sound",
+      "willing",
+      "unrelated",
+      "changed",
+      "complain"
+    ]
+  },
+  {
+    "word": "Sparkling",
+    "opposites": [
+      "still"
+    ],
+    "distractors": [
+      "loaded",
+      "evil",
+      "disliked",
+      "close",
+      "active"
+    ]
+  },
+  {
+    "word": "Spoken",
+    "opposites": [
+      "written"
+    ],
+    "distractors": [
+      "graceful",
+      "nominal",
+      "question",
+      "gather",
+      "inability"
+    ]
+  },
+  {
+    "word": "Written",
+    "opposites": [
+      "spoken"
+    ],
+    "distractors": [
+      "verbal",
+      "analytic",
+      "changed",
+      "borrow",
+      "falling"
+    ]
+  },
+  {
+    "word": "Stable",
+    "opposites": [
+      "unstable"
+    ],
+    "distractors": [
+      "difficulty",
+      "partly",
+      "hard",
+      "yang",
+      "visible"
+    ]
+  },
+  {
+    "word": "Unstable",
+    "opposites": [
+      "stable"
+    ],
+    "distractors": [
+      "start",
+      "sudden",
+      "inaction",
+      "linear",
+      "short"
+    ]
+  },
+  {
+    "word": "Curved",
+    "opposites": [
+      "straight"
+    ],
+    "distractors": [
+      "round",
+      "big",
+      "minority",
+      "official",
+      "sudden"
+    ]
+  },
+  {
+    "word": "Strong",
+    "opposites": [
+      "weak"
+    ],
+    "distractors": [
+      "wholesale",
+      "cerebral",
+      "implicit",
+      "offense",
+      "foot"
+    ]
+  },
+  {
+    "word": "Weak",
+    "opposites": [
+      "strong"
+    ],
+    "distractors": [
+      "best",
+      "unwelcome",
+      "opposite",
+      "posterior",
+      "ill"
+    ]
+  },
+  {
+    "word": "Superior",
+    "opposites": [
+      "inferior"
+    ],
+    "distractors": [
+      "unhappily",
+      "useful",
+      "resist",
+      "upward",
+      "loud"
+    ]
+  },
+  {
+    "word": "Inferior",
+    "opposites": [
+      "superior"
+    ],
+    "distractors": [
+      "unpleasant",
+      "spoken",
+      "abundant",
+      "ground",
+      "patterned"
+    ]
+  },
+  {
+    "word": "Dry",
+    "opposites": [
+      "sweet"
+    ],
+    "distractors": [
+      "present",
+      "hopeless",
+      "heat",
+      "hard",
+      "off"
+    ]
+  },
+  {
+    "word": "Tame",
+    "opposites": [
+      "wild"
+    ],
+    "distractors": [
+      "defend",
+      "posterior",
+      "nasty",
+      "gradual",
+      "sleep"
+    ]
+  },
+  {
+    "word": "Wild",
+    "opposites": [
+      "tame"
+    ],
+    "distractors": [
+      "joy",
+      "synthesis",
+      "careless",
+      "admit",
+      "absence"
+    ]
+  },
+  {
+    "word": "Tangible",
+    "opposites": [
+      "intangible"
+    ],
+    "distractors": [
+      "relax",
+      "ignore",
+      "most",
+      "contracted",
+      "scarce"
+    ]
+  },
+  {
+    "word": "Intangible",
+    "opposites": [
+      "tangible"
+    ],
+    "distractors": [
+      "offensive",
+      "indirectly",
+      "still",
+      "arrive",
+      "success"
+    ]
+  },
+  {
+    "word": "Tense",
+    "opposites": [
+      "relaxed"
+    ],
+    "distractors": [
+      "employed",
+      "bounce",
+      "whisper",
+      "king",
+      "liquid"
+    ]
+  },
+  {
+    "word": "Relaxed",
+    "opposites": [
+      "tense"
+    ],
+    "distractors": [
+      "son",
+      "dry",
+      "end",
+      "expected",
+      "ride"
+    ]
+  },
+  {
+    "word": "Thick",
+    "opposites": [
+      "thin"
+    ],
+    "distractors": [
+      "continual",
+      "analytic",
+      "guilt",
+      "make",
+      "numerical"
+    ]
+  },
+  {
+    "word": "Tired",
+    "opposites": [
+      "rested"
+    ],
+    "distractors": [
+      "yes",
+      "lost",
+      "fat",
+      "abundant",
+      "break"
+    ]
+  },
+  {
+    "word": "Rested",
+    "opposites": [
+      "tired"
+    ],
+    "distractors": [
+      "strange",
+      "abstract",
+      "ripe",
+      "married",
+      "visible"
+    ]
+  },
+  {
+    "word": "Bottom",
+    "opposites": [
+      "side",
+      "top"
+    ],
+    "distractors": [
+      "minus",
+      "leave",
+      "unhappily",
+      "curved",
+      "hopeless"
+    ]
+  },
+  {
+    "word": "Side",
+    "opposites": [
+      "bottom",
+      "top"
+    ],
+    "distractors": [
+      "able",
+      "delay",
+      "victory",
+      "outward",
+      "figurative"
+    ]
+  },
+  {
+    "word": "Touched",
+    "opposites": [
+      "untouched"
+    ],
+    "distractors": [
+      "young",
+      "specify",
+      "active",
+      "happiness",
+      "less"
+    ]
+  },
+  {
+    "word": "Untouched",
+    "opposites": [
+      "touched"
+    ],
+    "distractors": [
+      "large",
+      "usual",
+      "lie",
+      "covered",
+      "dangerous"
+    ]
+  },
+  {
+    "word": "Tough",
+    "opposites": [
+      "tender"
+    ],
+    "distractors": [
+      "possible",
+      "stretch",
+      "different",
+      "plain",
+      "natural"
+    ]
+  },
+  {
+    "word": "Tender",
+    "opposites": [
+      "tough"
+    ],
+    "distractors": [
+      "implicit",
+      "united",
+      "parent",
+      "divided",
+      "covered"
+    ]
+  },
+  {
+    "word": "True",
+    "opposites": [
+      "false"
+    ],
+    "distractors": [
+      "repel",
+      "warm",
+      "integrated",
+      "level",
+      "reverse"
+    ]
+  },
+  {
+    "word": "False",
+    "opposites": [
+      "true"
+    ],
+    "distractors": [
+      "security",
+      "relevant",
+      "leading",
+      "round",
+      "justice"
+    ]
+  },
+  {
+    "word": "Surface",
+    "opposites": [
+      "overhead"
+    ],
+    "distractors": [
+      "enjoy",
+      "uneven",
+      "directly",
+      "lost",
+      "intense"
+    ]
+  },
+  {
+    "word": "Overhead",
+    "opposites": [
+      "surface"
+    ],
+    "distractors": [
+      "careful",
+      "following",
+      "many",
+      "despair",
+      "saved"
+    ]
+  },
+  {
+    "word": "United",
+    "opposites": [
+      "divided"
+    ],
+    "distractors": [
+      "major",
+      "separate",
+      "injustice",
+      "action",
+      "rich"
+    ]
+  },
+  {
+    "word": "Divided",
+    "opposites": [
+      "united"
+    ],
+    "distractors": [
+      "lively",
+      "nephew",
+      "senior",
+      "subjective",
+      "joint"
+    ]
+  },
+  {
+    "word": "Rising",
+    "opposites": [
+      "falling"
+    ],
+    "distractors": [
+      "concrete",
+      "security",
+      "defensive",
+      "minority",
+      "urban"
+    ]
+  },
+  {
+    "word": "Falling",
+    "opposites": [
+      "rising"
+    ],
+    "distractors": [
+      "little",
+      "question",
+      "break",
+      "inadequate",
+      "asleep"
+    ]
+  },
+  {
+    "word": "Down",
+    "opposites": [
+      "up"
+    ],
+    "distractors": [
+      "defendant",
+      "comedy",
+      "basic",
+      "unorthodox",
+      "virtuous"
+    ]
+  },
+  {
+    "word": "Upstairs",
+    "opposites": [
+      "downstairs"
+    ],
+    "distractors": [
+      "level",
+      "boil",
+      "girl",
+      "preserved",
+      "sweet"
+    ]
+  },
+  {
+    "word": "Downstairs",
+    "opposites": [
+      "upstairs"
+    ],
+    "distractors": [
+      "cubic",
+      "manage",
+      "trust",
+      "daughter",
+      "generalize"
+    ]
+  },
+  {
+    "word": "Upstream",
+    "opposites": [
+      "downstream"
+    ],
+    "distractors": [
+      "out",
+      "wet",
+      "individual",
+      "anterior",
+      "local"
+    ]
+  },
+  {
+    "word": "Downstream",
+    "opposites": [
+      "upstream"
+    ],
+    "distractors": [
+      "whisper",
+      "rise",
+      "inside",
+      "alternate",
+      "mental"
+    ]
+  },
+  {
+    "word": "Uptown",
+    "opposites": [
+      "downtown"
+    ],
+    "distractors": [
+      "broadly",
+      "top",
+      "indecision",
+      "shallow",
+      "girl"
+    ]
+  },
+  {
+    "word": "Downtown",
+    "opposites": [
+      "uptown"
+    ],
+    "distractors": [
+      "sighted",
+      "unpaid",
+      "partial",
+      "senior",
+      "include"
+    ]
+  },
+  {
+    "word": "Useful",
+    "opposites": [
+      "useless"
+    ],
+    "distractors": [
+      "unaware",
+      "finish",
+      "cooked",
+      "unwilling",
+      "inside"
+    ]
+  },
+  {
+    "word": "Useless",
+    "opposites": [
+      "useful"
+    ],
+    "distractors": [
+      "plus",
+      "mature",
+      "pleasure",
+      "illegal",
+      "raised"
+    ]
+  },
+  {
+    "word": "Utopian",
+    "opposites": [
+      "dystopian"
+    ],
+    "distractors": [
+      "depressing",
+      "open",
+      "laugh",
+      "explicit",
+      "divided"
+    ]
+  },
+  {
+    "word": "Dystopian",
+    "opposites": [
+      "utopian"
+    ],
+    "distractors": [
+      "unwanted",
+      "patterned",
+      "informally",
+      "smart",
+      "cold"
+    ]
+  },
+  {
+    "word": "Valid",
+    "opposites": [
+      "invalid"
+    ],
+    "distractors": [
+      "bless",
+      "running",
+      "demand",
+      "separate",
+      "fore"
+    ]
+  },
+  {
+    "word": "Invalid",
+    "opposites": [
+      "valid"
+    ],
+    "distractors": [
+      "strength",
+      "literal",
+      "queen",
+      "touched",
+      "strange"
+    ]
+  },
+  {
+    "word": "Virtuous",
+    "opposites": [
+      "wicked"
+    ],
+    "distractors": [
+      "common",
+      "continual",
+      "enforce",
+      "manual",
+      "simple"
+    ]
+  },
+  {
+    "word": "Wicked",
+    "opposites": [
+      "virtuous"
+    ],
+    "distractors": [
+      "west",
+      "disorder",
+      "junior",
+      "better",
+      "walk"
+    ]
+  },
+  {
+    "word": "Visible",
+    "opposites": [
+      "invisible"
+    ],
+    "distractors": [
+      "father",
+      "prevent",
+      "mild",
+      "socialism",
+      "south"
+    ]
+  },
+  {
+    "word": "Invisible",
+    "opposites": [
+      "visible"
+    ],
+    "distractors": [
+      "acceptance",
+      "preceding",
+      "below",
+      "happily",
+      "long"
+    ]
+  },
+  {
+    "word": "Wanted",
+    "opposites": [
+      "unwanted"
+    ],
+    "distractors": [
+      "liked",
+      "pass",
+      "rugged",
+      "order",
+      "acceptance"
+    ]
+  },
+  {
+    "word": "Unwanted",
+    "opposites": [
+      "wanted"
+    ],
+    "distractors": [
+      "loss",
+      "tragedy",
+      "eastern",
+      "gather",
+      "alternate"
+    ]
+  },
+  {
+    "word": "Warm",
+    "opposites": [
+      "cool"
+    ],
+    "distractors": [
+      "downtown",
+      "free",
+      "close",
+      "slow",
+      "spread"
+    ]
+  },
+  {
+    "word": "Cool",
+    "opposites": [
+      "warm"
+    ],
+    "distractors": [
+      "correct",
+      "bad",
+      "miss",
+      "tender",
+      "open"
+    ]
+  },
+  {
+    "word": "Increasing",
+    "opposites": [
+      "decreasing"
+    ],
+    "distractors": [
+      "opposite",
+      "upward",
+      "failing",
+      "bare",
+      "no"
+    ]
+  },
+  {
+    "word": "Decreasing",
+    "opposites": [
+      "increasing"
+    ],
+    "distractors": [
+      "discontent",
+      "above",
+      "whole",
+      "strength",
+      "worst"
+    ]
+  },
+  {
+    "word": "Welcome",
+    "opposites": [
+      "unwelcome"
+    ],
+    "distractors": [
+      "succeeding",
+      "female",
+      "plus",
+      "action",
+      "separation"
+    ]
+  },
+  {
+    "word": "Unwelcome",
+    "opposites": [
+      "welcome"
+    ],
+    "distractors": [
+      "dry",
+      "ill",
+      "proud",
+      "avoid",
+      "public"
+    ]
+  },
+  {
+    "word": "Well",
+    "opposites": [
+      "ill"
+    ],
+    "distractors": [
+      "notice",
+      "start",
+      "manual",
+      "unusual",
+      "green"
+    ]
+  },
+  {
+    "word": "Ill",
+    "opposites": [
+      "well"
+    ],
+    "distractors": [
+      "failure",
+      "manual",
+      "sighted",
+      "some",
+      "employee"
+    ]
+  },
+  {
+    "word": "Wide",
+    "opposites": [
+      "narrow"
+    ],
+    "distractors": [
+      "visible",
+      "gross",
+      "loose",
+      "buy",
+      "expand"
+    ]
+  },
+  {
+    "word": "Narrow",
+    "opposites": [
+      "wide"
+    ],
+    "distractors": [
+      "above",
+      "answer",
+      "import",
+      "expected",
+      "agree"
+    ]
+  },
+  {
+    "word": "Willing",
+    "opposites": [
+      "unwilling"
+    ],
+    "distractors": [
+      "whole",
+      "angular",
+      "down",
+      "chronic",
+      "allow"
+    ]
+  },
+  {
+    "word": "Unwilling",
+    "opposites": [
+      "willing"
+    ],
+    "distractors": [
+      "usual",
+      "invisible",
+      "deep",
+      "magnetic",
+      "inverse"
+    ]
+  },
+  {
+    "word": "Wise",
+    "opposites": [
+      "foolish"
+    ],
+    "distractors": [
+      "easy",
+      "extensive",
+      "acceptance",
+      "bound",
+      "north"
+    ]
+  },
+  {
+    "word": "Foolish",
+    "opposites": [
+      "wise"
+    ],
+    "distractors": [
+      "wanted",
+      "limited",
+      "unite",
+      "leading",
+      "lowered"
+    ]
+  },
+  {
+    "word": "Worn",
+    "opposites": [
+      "new"
+    ],
+    "distractors": [
+      "unfair",
+      "ground",
+      "above",
+      "little",
+      "unusual"
+    ]
+  },
+  {
+    "word": "Worthy",
+    "opposites": [
+      "unworthy"
+    ],
+    "distractors": [
+      "waking",
+      "dramatic",
+      "minority",
+      "foolish",
+      "breathless"
+    ]
+  },
+  {
+    "word": "Unworthy",
+    "opposites": [
+      "worthy"
+    ],
+    "distractors": [
+      "down",
+      "ending",
+      "middle",
+      "patience",
+      "presence"
+    ]
+  },
+  {
+    "word": "Partly",
+    "opposites": [
+      "wholly"
+    ],
+    "distractors": [
+      "shallow",
+      "east",
+      "sorrow",
+      "pessimism",
+      "union"
+    ]
+  },
+  {
+    "word": "Wholly",
+    "opposites": [
+      "partly"
+    ],
+    "distractors": [
+      "indecision",
+      "moving",
+      "let",
+      "hopefully",
+      "abstract"
+    ]
+  },
+  {
+    "word": "Badly",
+    "opposites": [
+      "well"
+    ],
+    "distractors": [
+      "hide",
+      "sit",
+      "forward",
+      "accurate",
+      "ending"
+    ]
+  },
+  {
+    "word": "Ever",
+    "opposites": [
+      "never"
+    ],
+    "distractors": [
+      "deny",
+      "decrease",
+      "innocent",
+      "pain",
+      "last"
+    ]
+  },
+  {
+    "word": "Never",
+    "opposites": [
+      "ever"
+    ],
+    "distractors": [
+      "disagree",
+      "retreat",
+      "cerebral",
+      "badness",
+      "question"
+    ]
+  },
+  {
+    "word": "Often",
+    "opposites": [
+      "rarely"
+    ],
+    "distractors": [
+      "sweet",
+      "overhead",
+      "analysis",
+      "directly",
+      "unloaded"
+    ]
+  },
+  {
+    "word": "Rarely",
+    "opposites": [
+      "often"
+    ],
+    "distractors": [
+      "failure",
+      "lyric",
+      "intangible",
+      "soft",
+      "discourage"
+    ]
+  },
+  {
+    "word": "Happily",
+    "opposites": [
+      "sadly"
+    ],
+    "distractors": [
+      "bore",
+      "king",
+      "secondary",
+      "piano",
+      "complex"
+    ]
+  },
+  {
+    "word": "Sadly",
+    "opposites": [
+      "happily"
+    ],
+    "distractors": [
+      "automatic",
+      "mother",
+      "live",
+      "rugged",
+      "different"
+    ]
+  },
+  {
+    "word": "Unhappily",
+    "opposites": [
+      "happily"
+    ],
+    "distractors": [
+      "emotional",
+      "tense",
+      "liquid",
+      "fertile",
+      "unnatural"
+    ]
+  },
+  {
+    "word": "Directly",
+    "opposites": [
+      "indirectly"
+    ],
+    "distractors": [
+      "folly",
+      "linear",
+      "feminine",
+      "inaction",
+      "minimum"
+    ]
+  },
+  {
+    "word": "Indirectly",
+    "opposites": [
+      "directly"
+    ],
+    "distractors": [
+      "wake",
+      "nasty",
+      "minus",
+      "half",
+      "exclude"
+    ]
+  },
+  {
+    "word": "Loudly",
+    "opposites": [
+      "softly"
+    ],
+    "distractors": [
+      "unpaid",
+      "virtuous",
+      "informally",
+      "peripheral",
+      "minimum"
+    ]
+  },
+  {
+    "word": "Softly",
+    "opposites": [
+      "loudly"
+    ],
+    "distractors": [
+      "sudden",
+      "some",
+      "common",
+      "integrated",
+      "sighted"
+    ]
+  },
+  {
+    "word": "Ahead",
+    "opposites": [
+      "back"
+    ],
+    "distractors": [
+      "low",
+      "wrong",
+      "unbroken",
+      "dormant",
+      "short"
+    ]
+  },
+  {
+    "word": "Below",
+    "opposites": [
+      "above"
+    ],
+    "distractors": [
+      "secular",
+      "goodness",
+      "unreal",
+      "low",
+      "preserved"
+    ]
+  },
+  {
+    "word": "Above",
+    "opposites": [
+      "below"
+    ],
+    "distractors": [
+      "arrive",
+      "many",
+      "increase",
+      "prominence",
+      "feminine"
+    ]
+  },
+  {
+    "word": "Quickly",
+    "opposites": [
+      "slowly"
+    ],
+    "distractors": [
+      "outer",
+      "include",
+      "preserved",
+      "united",
+      "virtuous"
+    ]
+  },
+  {
+    "word": "Downward",
+    "opposites": [
+      "upward"
+    ],
+    "distractors": [
+      "no",
+      "united",
+      "male",
+      "overhead",
+      "nice"
+    ]
+  },
+  {
+    "word": "Upward",
+    "opposites": [
+      "downward"
+    ],
+    "distractors": [
+      "bold",
+      "popular",
+      "upstream",
+      "verbal",
+      "gradual"
+    ]
+  },
+  {
+    "word": "Here",
+    "opposites": [
+      "there"
+    ],
+    "distractors": [
+      "aft",
+      "cathode",
+      "defensive",
+      "inactive",
+      "dormant"
+    ]
+  },
+  {
+    "word": "There",
+    "opposites": [
+      "here"
+    ],
+    "distractors": [
+      "likely",
+      "true",
+      "difficulty",
+      "establish",
+      "pride"
+    ]
+  },
+  {
+    "word": "Indoors",
+    "opposites": [
+      "outdoors"
+    ],
+    "distractors": [
+      "friend",
+      "spoken",
+      "literal",
+      "unworthy",
+      "dark"
+    ]
+  },
+  {
+    "word": "Outdoors",
+    "opposites": [
+      "indoors"
+    ],
+    "distractors": [
+      "issue",
+      "uncertain",
+      "square",
+      "expanded",
+      "outgoing"
+    ]
+  },
+  {
+    "word": "Slowly",
+    "opposites": [
+      "quickly"
+    ],
+    "distractors": [
+      "security",
+      "outside",
+      "reject",
+      "unprepared",
+      "accurate"
+    ]
+  },
+  {
+    "word": "Publicly",
+    "opposites": [
+      "privately"
+    ],
+    "distractors": [
+      "impossible",
+      "quiet",
+      "retail",
+      "informally",
+      "interior"
+    ]
+  },
+  {
+    "word": "Privately",
+    "opposites": [
+      "publicly"
+    ],
+    "distractors": [
+      "inorganic",
+      "above",
+      "loaded",
+      "manual",
+      "plain"
+    ]
+  },
+  {
+    "word": "Informally",
+    "opposites": [
+      "formally"
+    ],
+    "distractors": [
+      "downstairs",
+      "blind",
+      "reject",
+      "softly",
+      "like"
+    ]
+  },
+  {
+    "word": "Formally",
+    "opposites": [
+      "informally"
+    ],
+    "distractors": [
+      "hide",
+      "optimism",
+      "employee",
+      "silence",
+      "stupid"
+    ]
+  },
+  {
+    "word": "Hopefully",
+    "opposites": [
+      "hopelessly"
+    ],
+    "distractors": [
+      "loose",
+      "broken",
+      "unpopular",
+      "past",
+      "pull"
+    ]
+  },
+  {
+    "word": "Hopelessly",
+    "opposites": [
+      "hopefully"
+    ],
+    "distractors": [
+      "natural",
+      "there",
+      "outside",
+      "know",
+      "linear"
+    ]
+  },
+  {
+    "word": "Narrowly",
+    "opposites": [
+      "broadly"
+    ],
+    "distractors": [
+      "unfamiliar",
+      "justice",
+      "useful",
+      "prepared",
+      "rising"
+    ]
+  },
+  {
+    "word": "Broadly",
+    "opposites": [
+      "narrowly"
+    ],
+    "distractors": [
+      "relative",
+      "accurate",
+      "unable",
+      "cooked",
+      "disorder"
+    ]
+  },
+  {
+    "word": "Pro",
+    "opposites": [
+      "con"
+    ],
+    "distractors": [
+      "least",
+      "encourage",
+      "curved",
+      "wanted",
+      "double"
+    ]
+  },
+  {
+    "word": "Con",
+    "opposites": [
+      "pro"
+    ],
+    "distractors": [
+      "deaf",
+      "wisdom",
+      "virtuous",
+      "right",
+      "many"
+    ]
+  },
+  {
+    "word": "Retail",
+    "opposites": [
+      "wholesale"
+    ],
+    "distractors": [
+      "weakness",
+      "minimum",
+      "direct",
+      "popular",
+      "reward"
+    ]
+  },
+  {
+    "word": "Wholesale",
+    "opposites": [
+      "retail"
+    ],
+    "distractors": [
+      "strengthen",
+      "let",
+      "hardened",
+      "impatience",
+      "immortal"
+    ]
+  },
+  {
+    "word": "Retreat",
+    "opposites": [
+      "advance"
+    ],
+    "distractors": [
+      "uptown",
+      "buy",
+      "useful",
+      "wise",
+      "side"
+    ]
+  },
+  {
+    "word": "Failing",
+    "opposites": [
+      "passing"
+    ],
+    "distractors": [
+      "lead",
+      "informally",
+      "liked",
+      "weak",
+      "leave"
+    ]
+  },
+  {
+    "word": "Finish",
+    "opposites": [
+      "start"
+    ],
+    "distractors": [
+      "high",
+      "bare",
+      "less",
+      "aunt",
+      "unadjusted"
+    ]
+  },
+  {
+    "word": "Start",
+    "opposites": [
+      "finish"
+    ],
+    "distractors": [
+      "cerebral",
+      "cathode",
+      "male",
+      "attract",
+      "poverty"
+    ]
+  },
+  {
+    "word": "Advance",
+    "opposites": [
+      "retreat"
+    ],
+    "distractors": [
+      "man",
+      "particular",
+      "push",
+      "difficulty",
+      "curved"
+    ]
+  },
+  {
+    "word": "Decrease",
+    "opposites": [
+      "increase"
+    ],
+    "distractors": [
+      "innocent",
+      "happiness",
+      "enlist",
+      "make",
+      "loading"
+    ]
+  },
+  {
+    "word": "Increase",
+    "opposites": [
+      "decrease"
+    ],
+    "distractors": [
+      "advance",
+      "unfriendly",
+      "prominence",
+      "quiet",
+      "cathode"
+    ]
+  },
+  {
+    "word": "Loading",
+    "opposites": [
+      "unloading"
+    ],
+    "distractors": [
+      "tame",
+      "uneasy",
+      "decreasing",
+      "particular",
+      "prominence"
+    ]
+  },
+  {
+    "word": "Unloading",
+    "opposites": [
+      "loading"
+    ],
+    "distractors": [
+      "liability",
+      "bless",
+      "hire",
+      "personal",
+      "perennial"
+    ]
+  },
+  {
+    "word": "Presence",
+    "opposites": [
+      "absence"
+    ],
+    "distractors": [
+      "suffer",
+      "employer",
+      "steep",
+      "tall",
+      "wholesale"
+    ]
+  },
+  {
+    "word": "Absence",
+    "opposites": [
+      "presence"
+    ],
+    "distractors": [
+      "loss",
+      "unadjusted",
+      "inner",
+      "left",
+      "other"
+    ]
+  },
+  {
+    "word": "Anode",
+    "opposites": [
+      "cathode"
+    ],
+    "distractors": [
+      "mature",
+      "unreal",
+      "indecent",
+      "noisy",
+      "niece"
+    ]
+  },
+  {
+    "word": "Cathode",
+    "opposites": [
+      "anode"
+    ],
+    "distractors": [
+      "fertile",
+      "proud",
+      "falling",
+      "bless",
+      "strength"
+    ]
+  },
+  {
+    "word": "Export",
+    "opposites": [
+      "import"
+    ],
+    "distractors": [
+      "written",
+      "recall",
+      "laugh",
+      "security",
+      "meager"
+    ]
+  },
+  {
+    "word": "Express",
+    "opposites": [
+      "local"
+    ],
+    "distractors": [
+      "source",
+      "raw",
+      "unwanted",
+      "opening",
+      "publicly"
+    ]
+  },
+  {
+    "word": "Head",
+    "opposites": [
+      "tail"
+    ],
+    "distractors": [
+      "civilian",
+      "aged",
+      "inferior",
+      "unwelcome",
+      "patient"
+    ]
+  },
+  {
+    "word": "Import",
+    "opposites": [
+      "export"
+    ],
+    "distractors": [
+      "mature",
+      "western",
+      "coarse",
+      "wise",
+      "flat"
+    ]
+  },
+  {
+    "word": "Location",
+    "opposites": [
+      "studio"
+    ],
+    "distractors": [
+      "unhappily",
+      "official",
+      "bull",
+      "admit",
+      "prominence"
+    ]
+  },
+  {
+    "word": "Rear",
+    "opposites": [
+      "front"
+    ],
+    "distractors": [
+      "employer",
+      "success",
+      "discontent",
+      "plaintiff",
+      "innocent"
+    ]
+  },
+  {
+    "word": "Studio",
+    "opposites": [
+      "location"
+    ],
+    "distractors": [
+      "sound",
+      "tense",
+      "outward",
+      "earthly",
+      "illegal"
+    ]
+  },
+  {
+    "word": "Tail",
+    "opposites": [
+      "head"
+    ],
+    "distractors": [
+      "there",
+      "forte",
+      "bound",
+      "piano",
+      "deny"
+    ]
+  },
+  {
+    "word": "Patience",
+    "opposites": [
+      "impatience"
+    ],
+    "distractors": [
+      "loaded",
+      "sink",
+      "opening",
+      "nephew",
+      "bottom"
+    ]
+  },
+  {
+    "word": "Impatience",
+    "opposites": [
+      "patience"
+    ],
+    "distractors": [
+      "green",
+      "tame",
+      "southern",
+      "outdoors",
+      "charge"
+    ]
+  },
+  {
+    "word": "Beauty",
+    "opposites": [
+      "ugliness"
+    ],
+    "distractors": [
+      "prominence",
+      "small",
+      "recorded",
+      "close",
+      "retreat"
+    ]
+  },
+  {
+    "word": "Ugliness",
+    "opposites": [
+      "beauty"
+    ],
+    "distractors": [
+      "bull",
+      "rarely",
+      "preventive",
+      "positive",
+      "straighten"
+    ]
+  },
+  {
+    "word": "Ease",
+    "opposites": [
+      "difficulty"
+    ],
+    "distractors": [
+      "nasty",
+      "cheer",
+      "encourage",
+      "blessed",
+      "long"
+    ]
+  },
+  {
+    "word": "Difficulty",
+    "opposites": [
+      "ease"
+    ],
+    "distractors": [
+      "concrete",
+      "recorded",
+      "war",
+      "leading",
+      "north"
+    ]
+  },
+  {
+    "word": "Simplicity",
+    "opposites": [
+      "complexity"
+    ],
+    "distractors": [
+      "sane",
+      "happiness",
+      "vertical",
+      "heat",
+      "dry"
+    ]
+  },
+  {
+    "word": "Complexity",
+    "opposites": [
+      "simplicity"
+    ],
+    "distractors": [
+      "fore",
+      "fat",
+      "take",
+      "wholly",
+      "known"
+    ]
+  },
+  {
+    "word": "Clarity",
+    "opposites": [
+      "obscurity"
+    ],
+    "distractors": [
+      "publicly",
+      "son",
+      "unknown",
+      "cooked",
+      "adjusted"
+    ]
+  },
+  {
+    "word": "Obscurity",
+    "opposites": [
+      "clarity"
+    ],
+    "distractors": [
+      "goodness",
+      "weaken",
+      "export",
+      "awkward",
+      "steep"
+    ]
+  },
+  {
+    "word": "Justice",
+    "opposites": [
+      "injustice"
+    ],
+    "distractors": [
+      "dormant",
+      "adult",
+      "willing",
+      "fresh",
+      "tragedy"
+    ]
+  },
+  {
+    "word": "Injustice",
+    "opposites": [
+      "justice"
+    ],
+    "distractors": [
+      "general",
+      "actual",
+      "stormy",
+      "rational",
+      "more"
+    ]
+  },
+  {
+    "word": "Decision",
+    "opposites": [
+      "indecision"
+    ],
+    "distractors": [
+      "action",
+      "stable",
+      "stormy",
+      "employer",
+      "deny"
+    ]
+  },
+  {
+    "word": "Indecision",
+    "opposites": [
+      "decision"
+    ],
+    "distractors": [
+      "cooked",
+      "clean",
+      "softly",
+      "rugged",
+      "basic"
+    ]
+  },
+  {
+    "word": "Wisdom",
+    "opposites": [
+      "folly"
+    ],
+    "distractors": [
+      "dislike",
+      "weak",
+      "superior",
+      "pain",
+      "strange"
+    ]
+  },
+  {
+    "word": "Folly",
+    "opposites": [
+      "wisdom"
+    ],
+    "distractors": [
+      "ignore",
+      "recorded",
+      "intense",
+      "literal",
+      "death"
+    ]
+  },
+  {
+    "word": "Trust",
+    "opposites": [
+      "distrust"
+    ],
+    "distractors": [
+      "dead",
+      "avoid",
+      "white",
+      "liking",
+      "retreat"
+    ]
+  },
+  {
+    "word": "Distrust",
+    "opposites": [
+      "trust"
+    ],
+    "distractors": [
+      "organic",
+      "worn",
+      "stay",
+      "discomfort",
+      "fail"
+    ]
+  },
+  {
+    "word": "Sound",
+    "opposites": [
+      "silence"
+    ],
+    "distractors": [
+      "able",
+      "employed",
+      "real",
+      "lend",
+      "unemployed"
+    ]
+  },
+  {
+    "word": "Silence",
+    "opposites": [
+      "sound"
+    ],
+    "distractors": [
+      "yes",
+      "borrow",
+      "neutral",
+      "attack",
+      "false"
+    ]
+  },
+  {
+    "word": "Strength",
+    "opposites": [
+      "weakness"
+    ],
+    "distractors": [
+      "explicit",
+      "freeze",
+      "unloaded",
+      "able",
+      "day"
+    ]
+  },
+  {
+    "word": "Weakness",
+    "opposites": [
+      "strength"
+    ],
+    "distractors": [
+      "forte",
+      "narrowly",
+      "obscurity",
+      "certain",
+      "mortal"
+    ]
+  },
+  {
+    "word": "Majority",
+    "opposites": [
+      "minority"
+    ],
+    "distractors": [
+      "unlimited",
+      "single",
+      "ending",
+      "rarely",
+      "decreasing"
+    ]
+  },
+  {
+    "word": "Minority",
+    "opposites": [
+      "majority"
+    ],
+    "distractors": [
+      "tender",
+      "expanded",
+      "pass",
+      "downstairs",
+      "all"
+    ]
+  },
+  {
+    "word": "Goodness",
+    "opposites": [
+      "badness"
+    ],
+    "distractors": [
+      "large",
+      "inward",
+      "move",
+      "cheerful",
+      "more"
+    ]
+  },
+  {
+    "word": "Reward",
+    "opposites": [
+      "penalty"
+    ],
+    "distractors": [
+      "direct",
+      "sunrise",
+      "numerical",
+      "victory",
+      "inclined"
+    ]
+  },
+  {
+    "word": "Badness",
+    "opposites": [
+      "goodness"
+    ],
+    "distractors": [
+      "inaction",
+      "explicit",
+      "good",
+      "reduce",
+      "moving"
+    ]
+  },
+  {
+    "word": "Asset",
+    "opposites": [
+      "liability"
+    ],
+    "distractors": [
+      "miss",
+      "saved",
+      "narrowly",
+      "bear",
+      "remember"
+    ]
+  },
+  {
+    "word": "Liability",
+    "opposites": [
+      "asset"
+    ],
+    "distractors": [
+      "inward",
+      "employed",
+      "distrust",
+      "have",
+      "question"
+    ]
+  },
+  {
+    "word": "Penalty",
+    "opposites": [
+      "reward"
+    ],
+    "distractors": [
+      "secondary",
+      "keep",
+      "poor",
+      "virtuous",
+      "many"
+    ]
+  },
+  {
+    "word": "Ability",
+    "opposites": [
+      "inability"
+    ],
+    "distractors": [
+      "worst",
+      "impossible",
+      "adult",
+      "bright",
+      "cheap"
+    ]
+  },
+  {
+    "word": "Inability",
+    "opposites": [
+      "ability"
+    ],
+    "distractors": [
+      "right",
+      "superior",
+      "military",
+      "low",
+      "come"
+    ]
+  },
+  {
+    "word": "Optimism",
+    "opposites": [
+      "pessimism"
+    ],
+    "distractors": [
+      "passing",
+      "mental",
+      "local",
+      "joint",
+      "rush"
+    ]
+  },
+  {
+    "word": "Pessimism",
+    "opposites": [
+      "optimism"
+    ],
+    "distractors": [
+      "integrated",
+      "much",
+      "lyric",
+      "presence",
+      "discomfort"
+    ]
+  },
+  {
+    "word": "Waking",
+    "opposites": [
+      "sleeping"
+    ],
+    "distractors": [
+      "wholesale",
+      "front",
+      "passing",
+      "pride",
+      "closed"
+    ]
+  },
+  {
+    "word": "Sleeping",
+    "opposites": [
+      "waking"
+    ],
+    "distractors": [
+      "plaintiff",
+      "local",
+      "meager",
+      "socialism",
+      "stupid"
+    ]
+  },
+  {
+    "word": "Analysis",
+    "opposites": [
+      "synthesis"
+    ],
+    "distractors": [
+      "hollow",
+      "minor",
+      "preserved",
+      "secondary",
+      "lady"
+    ]
+  },
+  {
+    "word": "Synthesis",
+    "opposites": [
+      "analysis"
+    ],
+    "distractors": [
+      "down",
+      "demand",
+      "confront",
+      "unmarried",
+      "nephew"
+    ]
+  },
+  {
+    "word": "Particular",
+    "opposites": [
+      "general"
+    ],
+    "distractors": [
+      "smart",
+      "question",
+      "won",
+      "bare",
+      "majority"
+    ]
+  },
+  {
+    "word": "Beginning",
+    "opposites": [
+      "end",
+      "middle"
+    ],
+    "distractors": [
+      "former",
+      "formal",
+      "contracted",
+      "dry",
+      "deep"
+    ]
+  },
+  {
+    "word": "End",
+    "opposites": [
+      "beginning",
+      "middle"
+    ],
+    "distractors": [
+      "multiple",
+      "freeze",
+      "indecision",
+      "present",
+      "cerebral"
+    ]
+  },
+  {
+    "word": "Yang",
+    "opposites": [
+      "yin"
+    ],
+    "distractors": [
+      "credit",
+      "loudly",
+      "written",
+      "remember",
+      "partly"
+    ]
+  },
+  {
+    "word": "Yin",
+    "opposites": [
+      "yang"
+    ],
+    "distractors": [
+      "content",
+      "offense",
+      "hide",
+      "foreign",
+      "divide"
+    ]
+  },
+  {
+    "word": "Figure",
+    "opposites": [
+      "ground"
+    ],
+    "distractors": [
+      "heavy",
+      "employee",
+      "delay",
+      "beauty",
+      "attack"
+    ]
+  },
+  {
+    "word": "Ground",
+    "opposites": [
+      "figure"
+    ],
+    "distractors": [
+      "forward",
+      "unwelcome",
+      "joint",
+      "ill",
+      "demand"
+    ]
+  },
+  {
+    "word": "Universal",
+    "opposites": [
+      "particular"
+    ],
+    "distractors": [
+      "alternate",
+      "back",
+      "informally",
+      "unchanged",
+      "meager"
+    ]
+  },
+  {
+    "word": "Comedy",
+    "opposites": [
+      "tragedy"
+    ],
+    "distractors": [
+      "buy",
+      "directly",
+      "upstream",
+      "thin",
+      "wholesale"
+    ]
+  },
+  {
+    "word": "Tragedy",
+    "opposites": [
+      "comedy"
+    ],
+    "distractors": [
+      "unworthy",
+      "hearing",
+      "inverse",
+      "many",
+      "exempt"
+    ]
+  },
+  {
+    "word": "Question",
+    "opposites": [
+      "answer"
+    ],
+    "distractors": [
+      "unwanted",
+      "sane",
+      "opaque",
+      "employee",
+      "finite"
+    ]
+  },
+  {
+    "word": "Answer",
+    "opposites": [
+      "question"
+    ],
+    "distractors": [
+      "action",
+      "absence",
+      "bottom",
+      "timid",
+      "useless"
+    ]
+  },
+  {
+    "word": "Ending",
+    "opposites": [
+      "beginning"
+    ],
+    "distractors": [
+      "separate",
+      "move",
+      "chronic",
+      "complex",
+      "incomplete"
+    ]
+  },
+  {
+    "word": "Failure",
+    "opposites": [
+      "success"
+    ],
+    "distractors": [
+      "valid",
+      "emotional",
+      "double",
+      "informally",
+      "alive"
+    ]
+  },
+  {
+    "word": "Success",
+    "opposites": [
+      "failure"
+    ],
+    "distractors": [
+      "indoors",
+      "rough",
+      "friend",
+      "bore",
+      "male"
+    ]
+  },
+  {
+    "word": "Birth",
+    "opposites": [
+      "death"
+    ],
+    "distractors": [
+      "discomfort",
+      "near",
+      "negative",
+      "hopeless",
+      "exit"
+    ]
+  },
+  {
+    "word": "Rise",
+    "opposites": [
+      "fall"
+    ],
+    "distractors": [
+      "boy",
+      "widen",
+      "foreign",
+      "decrease",
+      "automatic"
+    ]
+  },
+  {
+    "word": "Death",
+    "opposites": [
+      "birth"
+    ],
+    "distractors": [
+      "accurate",
+      "unrelated",
+      "gross",
+      "loss",
+      "synthetic"
+    ]
+  },
+  {
+    "word": "Fall",
+    "opposites": [
+      "rise"
+    ],
+    "distractors": [
+      "never",
+      "live",
+      "due",
+      "stable",
+      "tall"
+    ]
+  },
+  {
+    "word": "Victory",
+    "opposites": [
+      "defeat"
+    ],
+    "distractors": [
+      "figurative",
+      "private",
+      "uneven",
+      "avoid",
+      "continual"
+    ]
+  },
+  {
+    "word": "Defeat",
+    "opposites": [
+      "victory"
+    ],
+    "distractors": [
+      "refuse",
+      "question",
+      "insecurity",
+      "birth",
+      "regular"
+    ]
+  },
+  {
+    "word": "Pleasure",
+    "opposites": [
+      "pain"
+    ],
+    "distractors": [
+      "present",
+      "physical",
+      "frivolous",
+      "impatient",
+      "future"
+    ]
+  },
+  {
+    "word": "Pain",
+    "opposites": [
+      "pleasure"
+    ],
+    "distractors": [
+      "backward",
+      "foe",
+      "hate",
+      "badly",
+      "contracted"
+    ]
+  },
+  {
+    "word": "Liking",
+    "opposites": [
+      "dislike"
+    ],
+    "distractors": [
+      "pride",
+      "refrain",
+      "northern",
+      "stupid",
+      "decreased"
+    ]
+  },
+  {
+    "word": "Dislike",
+    "opposites": [
+      "liking"
+    ],
+    "distractors": [
+      "partly",
+      "popular",
+      "wide",
+      "compact",
+      "danger"
+    ]
+  },
+  {
+    "word": "Pride",
+    "opposites": [
+      "humility"
+    ],
+    "distractors": [
+      "latter",
+      "deposit",
+      "boy",
+      "ignore",
+      "nice"
+    ]
+  },
+  {
+    "word": "Humility",
+    "opposites": [
+      "pride"
+    ],
+    "distractors": [
+      "forte",
+      "solid",
+      "aunt",
+      "separation",
+      "happily"
+    ]
+  },
+  {
+    "word": "Happiness",
+    "opposites": [
+      "sadness"
+    ],
+    "distractors": [
+      "relevant",
+      "unwilling",
+      "preventive",
+      "notice",
+      "empty"
+    ]
+  },
+  {
+    "word": "Joy",
+    "opposites": [
+      "sorrow"
+    ],
+    "distractors": [
+      "heavy",
+      "fine",
+      "north",
+      "definite",
+      "greater"
+    ]
+  },
+  {
+    "word": "Sadness",
+    "opposites": [
+      "happiness"
+    ],
+    "distractors": [
+      "internal",
+      "poverty",
+      "accept",
+      "cheerful",
+      "tall"
+    ]
+  },
+  {
+    "word": "Sorrow",
+    "opposites": [
+      "joy"
+    ],
+    "distractors": [
+      "move",
+      "despair",
+      "nominal",
+      "weakness",
+      "refuse"
+    ]
+  },
+  {
+    "word": "Hope",
+    "opposites": [
+      "despair"
+    ],
+    "distractors": [
+      "hard",
+      "gradual",
+      "infinite",
+      "anterior",
+      "capable"
+    ]
+  },
+  {
+    "word": "Despair",
+    "opposites": [
+      "hope"
+    ],
+    "distractors": [
+      "patience",
+      "up",
+      "joint",
+      "ease",
+      "friend"
+    ]
+  },
+  {
+    "word": "Hate",
+    "opposites": [
+      "love"
+    ],
+    "distractors": [
+      "demand",
+      "passive",
+      "heavenly",
+      "weaken",
+      "accurate"
+    ]
+  },
+  {
+    "word": "Aged",
+    "opposites": [
+      "young"
+    ],
+    "distractors": [
+      "unprepared",
+      "different",
+      "specific",
+      "ever",
+      "adopted"
+    ]
+  },
+  {
+    "word": "Living",
+    "opposites": [
+      "dead"
+    ],
+    "distractors": [
+      "delay",
+      "make",
+      "adequate",
+      "incorrect",
+      "downstairs"
+    ]
+  },
+  {
+    "word": "Offense",
+    "opposites": [
+      "defense"
+    ],
+    "distractors": [
+      "unloaded",
+      "specific",
+      "leave",
+      "sunset",
+      "finish"
+    ]
+  },
+  {
+    "word": "Defense",
+    "opposites": [
+      "offense"
+    ],
+    "distractors": [
+      "minimum",
+      "advance",
+      "ease",
+      "cheer",
+      "friend"
+    ]
+  },
+  {
+    "word": "Capitalism",
+    "opposites": [
+      "socialism"
+    ],
+    "distractors": [
+      "straighten",
+      "intense",
+      "bad",
+      "lyric",
+      "cubic"
+    ]
+  },
+  {
+    "word": "Socialism",
+    "opposites": [
+      "capitalism"
+    ],
+    "distractors": [
+      "sorrow",
+      "warm",
+      "informal",
+      "rational",
+      "liked"
+    ]
+  },
+  {
+    "word": "Foot",
+    "opposites": [
+      "head"
+    ],
+    "distractors": [
+      "little",
+      "ample",
+      "here",
+      "studio",
+      "relax"
+    ]
+  },
+  {
+    "word": "Adult",
+    "opposites": [
+      "juvenile"
+    ],
+    "distractors": [
+      "employed",
+      "pessimism",
+      "girl",
+      "poor",
+      "upward"
+    ]
+  },
+  {
+    "word": "Juvenile",
+    "opposites": [
+      "adult"
+    ],
+    "distractors": [
+      "false",
+      "active",
+      "gross",
+      "ending",
+      "defendant"
+    ]
+  },
+  {
+    "word": "Defendant",
+    "opposites": [
+      "plaintiff"
+    ],
+    "distractors": [
+      "impersonal",
+      "surrender",
+      "welcome",
+      "minimum",
+      "uncle"
+    ]
+  },
+  {
+    "word": "Friend",
+    "opposites": [
+      "foe"
+    ],
+    "distractors": [
+      "cerebral",
+      "private",
+      "deaf",
+      "liked",
+      "patient"
+    ]
+  },
+  {
+    "word": "Aunt",
+    "opposites": [
+      "uncle"
+    ],
+    "distractors": [
+      "expensive",
+      "delay",
+      "partly",
+      "unstable",
+      "gradual"
+    ]
+  },
+  {
+    "word": "Bear",
+    "opposites": [
+      "bull"
+    ],
+    "distractors": [
+      "manage",
+      "bound",
+      "liked",
+      "differ",
+      "deficit"
+    ]
+  },
+  {
+    "word": "Brother",
+    "opposites": [
+      "sister"
+    ],
+    "distractors": [
+      "linear",
+      "interest",
+      "solid",
+      "alive",
+      "publicly"
+    ]
+  },
+  {
+    "word": "Bull",
+    "opposites": [
+      "bear"
+    ],
+    "distractors": [
+      "noisy",
+      "cerebral",
+      "here",
+      "narrow",
+      "expanded"
+    ]
+  },
+  {
+    "word": "Child",
+    "opposites": [
+      "parent"
+    ],
+    "distractors": [
+      "fancy",
+      "steep",
+      "horizontal",
+      "fertile",
+      "more"
+    ]
+  },
+  {
+    "word": "Daughter",
+    "opposites": [
+      "son"
+    ],
+    "distractors": [
+      "rise",
+      "leading",
+      "sighted",
+      "issue",
+      "unpaid"
+    ]
+  },
+  {
+    "word": "Girl",
+    "opposites": [
+      "boy"
+    ],
+    "distractors": [
+      "breathless",
+      "unworthy",
+      "wealth",
+      "sell",
+      "outward"
+    ]
+  },
+  {
+    "word": "Employee",
+    "opposites": [
+      "employer"
+    ],
+    "distractors": [
+      "quiet",
+      "segregated",
+      "impatient",
+      "defendant",
+      "injustice"
+    ]
+  },
+  {
+    "word": "Employer",
+    "opposites": [
+      "employee"
+    ],
+    "distractors": [
+      "obscurity",
+      "absolute",
+      "automatic",
+      "external",
+      "encourage"
+    ]
+  },
+  {
+    "word": "Father",
+    "opposites": [
+      "mother"
+    ],
+    "distractors": [
+      "multiply",
+      "express",
+      "wealth",
+      "adult",
+      "indoors"
+    ]
+  },
+  {
+    "word": "Foe",
+    "opposites": [
+      "friend"
+    ],
+    "distractors": [
+      "adopted",
+      "dry",
+      "closing",
+      "most",
+      "dramatic"
+    ]
+  },
+  {
+    "word": "Husband",
+    "opposites": [
+      "wife"
+    ],
+    "distractors": [
+      "happy",
+      "second",
+      "outer",
+      "shrink",
+      "smart"
+    ]
+  },
+  {
+    "word": "King",
+    "opposites": [
+      "queen"
+    ],
+    "distractors": [
+      "begin",
+      "delay",
+      "dry",
+      "steep",
+      "son"
+    ]
+  },
+  {
+    "word": "Lady",
+    "opposites": [
+      "lord"
+    ],
+    "distractors": [
+      "justice",
+      "demand",
+      "sterile",
+      "neutral",
+      "awkward"
+    ]
+  },
+  {
+    "word": "Lord",
+    "opposites": [
+      "lady"
+    ],
+    "distractors": [
+      "below",
+      "intensive",
+      "make",
+      "unlikely",
+      "personal"
+    ]
+  },
+  {
+    "word": "Man",
+    "opposites": [
+      "woman"
+    ],
+    "distractors": [
+      "some",
+      "foolish",
+      "fall",
+      "shut",
+      "male"
+    ]
+  },
+  {
+    "word": "Mother",
+    "opposites": [
+      "father"
+    ],
+    "distractors": [
+      "passing",
+      "closed",
+      "valid",
+      "overhead",
+      "some"
+    ]
+  },
+  {
+    "word": "Nephew",
+    "opposites": [
+      "niece"
+    ],
+    "distractors": [
+      "unbroken",
+      "discontent",
+      "comfort",
+      "sparkling",
+      "multiply"
+    ]
+  },
+  {
+    "word": "Niece",
+    "opposites": [
+      "nephew"
+    ],
+    "distractors": [
+      "act",
+      "mild",
+      "fertile",
+      "unpaid",
+      "feminine"
+    ]
+  },
+  {
+    "word": "Parent",
+    "opposites": [
+      "child"
+    ],
+    "distractors": [
+      "rational",
+      "accurate",
+      "privately",
+      "informal",
+      "shrink"
+    ]
+  },
+  {
+    "word": "Plaintiff",
+    "opposites": [
+      "defendant"
+    ],
+    "distractors": [
+      "blessed",
+      "hard",
+      "passing",
+      "above",
+      "anode"
+    ]
+  },
+  {
+    "word": "Queen",
+    "opposites": [
+      "king"
+    ],
+    "distractors": [
+      "increase",
+      "union",
+      "real",
+      "saved",
+      "deep"
+    ]
+  },
+  {
+    "word": "Sister",
+    "opposites": [
+      "brother"
+    ],
+    "distractors": [
+      "fair",
+      "much",
+      "empty",
+      "preventive",
+      "pro"
+    ]
+  },
+  {
+    "word": "Son",
+    "opposites": [
+      "daughter"
+    ],
+    "distractors": [
+      "find",
+      "heavenly",
+      "divided",
+      "softly",
+      "dislike"
+    ]
+  },
+  {
+    "word": "Uncle",
+    "opposites": [
+      "aunt"
+    ],
+    "distractors": [
+      "husband",
+      "moving",
+      "inclined",
+      "include",
+      "suffer"
+    ]
+  },
+  {
+    "word": "Wife",
+    "opposites": [
+      "husband"
+    ],
+    "distractors": [
+      "bottom",
+      "discomfort",
+      "answer",
+      "strengthen",
+      "touched"
+    ]
+  },
+  {
+    "word": "Woman",
+    "opposites": [
+      "man"
+    ],
+    "distractors": [
+      "fine",
+      "middle",
+      "sleep",
+      "charge",
+      "offensive"
+    ]
+  },
+  {
+    "word": "Gain",
+    "opposites": [
+      "loss"
+    ],
+    "distractors": [
+      "late",
+      "right",
+      "union",
+      "unhappily",
+      "bottom"
+    ]
+  },
+  {
+    "word": "Loss",
+    "opposites": [
+      "gain"
+    ],
+    "distractors": [
+      "expensive",
+      "often",
+      "answer",
+      "dead",
+      "decreasing"
+    ]
+  },
+  {
+    "word": "Credit",
+    "opposites": [
+      "cash"
+    ],
+    "distractors": [
+      "up",
+      "act",
+      "issue",
+      "asleep",
+      "enter"
+    ]
+  },
+  {
+    "word": "Cash",
+    "opposites": [
+      "credit"
+    ],
+    "distractors": [
+      "capitalism",
+      "inactive",
+      "reject",
+      "come",
+      "noisy"
+    ]
+  },
+  {
+    "word": "Demand",
+    "opposites": [
+      "supply"
+    ],
+    "distractors": [
+      "cooked",
+      "let",
+      "synthesis",
+      "functional",
+      "posterior"
+    ]
+  },
+  {
+    "word": "Sink",
+    "opposites": [
+      "source"
+    ],
+    "distractors": [
+      "deficit",
+      "decent",
+      "day",
+      "foreign",
+      "upstream"
+    ]
+  },
+  {
+    "word": "Source",
+    "opposites": [
+      "sink"
+    ],
+    "distractors": [
+      "multiple",
+      "past",
+      "live",
+      "goodness",
+      "universal"
+    ]
+  },
+  {
+    "word": "Supply",
+    "opposites": [
+      "demand"
+    ],
+    "distractors": [
+      "offense",
+      "minority",
+      "intangible",
+      "sadness",
+      "rested"
+    ]
+  },
+  {
+    "word": "Deficit",
+    "opposites": [
+      "lead"
+    ],
+    "distractors": [
+      "hard",
+      "come",
+      "unwilling",
+      "ahead",
+      "humble"
+    ]
+  },
+  {
+    "word": "Lead",
+    "opposites": [
+      "deficit"
+    ],
+    "distractors": [
+      "full",
+      "high",
+      "narrow",
+      "comfort",
+      "little"
+    ]
+  },
+  {
+    "word": "Acceptance",
+    "opposites": [
+      "rejection"
+    ],
+    "distractors": [
+      "worthy",
+      "figurative",
+      "high",
+      "down",
+      "lower"
+    ]
+  },
+  {
+    "word": "Rejection",
+    "opposites": [
+      "acceptance"
+    ],
+    "distractors": [
+      "son",
+      "friend",
+      "round",
+      "interest",
+      "even"
+    ]
+  },
+  {
+    "word": "Order",
+    "opposites": [
+      "disorder"
+    ],
+    "distractors": [
+      "certain",
+      "dull",
+      "decreasing",
+      "deaf",
+      "gradual"
+    ]
+  },
+  {
+    "word": "Peace",
+    "opposites": [
+      "war"
+    ],
+    "distractors": [
+      "outward",
+      "badness",
+      "well",
+      "away",
+      "depart"
+    ]
+  },
+  {
+    "word": "Disorder",
+    "opposites": [
+      "order"
+    ],
+    "distractors": [
+      "official",
+      "integrated",
+      "charge",
+      "neutral",
+      "leading"
+    ]
+  },
+  {
+    "word": "War",
+    "opposites": [
+      "peace"
+    ],
+    "distractors": [
+      "past",
+      "secondary",
+      "coarse",
+      "formally",
+      "unhappy"
+    ]
+  },
+  {
+    "word": "Innocence",
+    "opposites": [
+      "guilt"
+    ],
+    "distractors": [
+      "sister",
+      "fresh",
+      "liked",
+      "father",
+      "take"
+    ]
+  },
+  {
+    "word": "Guilt",
+    "opposites": [
+      "innocence"
+    ],
+    "distractors": [
+      "recall",
+      "backward",
+      "liking",
+      "differ",
+      "victory"
+    ]
+  },
+  {
+    "word": "Action",
+    "opposites": [
+      "inaction"
+    ],
+    "distractors": [
+      "mind",
+      "tall",
+      "breathless",
+      "secondary",
+      "preventive"
+    ]
+  },
+  {
+    "word": "Inaction",
+    "opposites": [
+      "action"
+    ],
+    "distractors": [
+      "impatient",
+      "below",
+      "weak",
+      "adequate",
+      "ground"
+    ]
+  },
+  {
+    "word": "Separation",
+    "opposites": [
+      "union"
+    ],
+    "distractors": [
+      "day",
+      "loss",
+      "east",
+      "reverse",
+      "divided"
+    ]
+  },
+  {
+    "word": "Union",
+    "opposites": [
+      "separation"
+    ],
+    "distractors": [
+      "prevent",
+      "rural",
+      "success",
+      "lose",
+      "less"
+    ]
+  },
+  {
+    "word": "Prominence",
+    "opposites": [
+      "obscurity"
+    ],
+    "distractors": [
+      "hopefully",
+      "differ",
+      "bright",
+      "ill",
+      "concrete"
+    ]
+  },
+  {
+    "word": "Comfort",
+    "opposites": [
+      "discomfort"
+    ],
+    "distractors": [
+      "empty",
+      "second",
+      "nephew",
+      "hopelessly",
+      "strong"
+    ]
+  },
+  {
+    "word": "Discomfort",
+    "opposites": [
+      "comfort"
+    ],
+    "distractors": [
+      "known",
+      "inaccurate",
+      "asleep",
+      "father",
+      "unlike"
+    ]
+  },
+  {
+    "word": "Wealth",
+    "opposites": [
+      "poverty"
+    ],
+    "distractors": [
+      "rarely",
+      "informally",
+      "happiness",
+      "top",
+      "even"
+    ]
+  },
+  {
+    "word": "Poverty",
+    "opposites": [
+      "wealth"
+    ],
+    "distractors": [
+      "fail",
+      "immature",
+      "hard",
+      "opening",
+      "express"
+    ]
+  },
+  {
+    "word": "Safety",
+    "opposites": [
+      "danger"
+    ],
+    "distractors": [
+      "linear",
+      "fill",
+      "linger",
+      "rejection",
+      "plus"
+    ]
+  },
+  {
+    "word": "Security",
+    "opposites": [
+      "insecurity"
+    ],
+    "distractors": [
+      "unaware",
+      "hardened",
+      "direct",
+      "informally",
+      "gradual"
+    ]
+  },
+  {
+    "word": "Danger",
+    "opposites": [
+      "safety"
+    ],
+    "distractors": [
+      "hopelessly",
+      "deposit",
+      "manage",
+      "pleasant",
+      "brother"
+    ]
+  },
+  {
+    "word": "Insecurity",
+    "opposites": [
+      "security"
+    ],
+    "distractors": [
+      "ever",
+      "less",
+      "secular",
+      "know",
+      "strengthen"
+    ]
+  },
+  {
+    "word": "Night",
+    "opposites": [
+      "day"
+    ],
+    "distractors": [
+      "incorrect",
+      "miss",
+      "man",
+      "discomfort",
+      "following"
+    ]
+  },
+  {
+    "word": "Sunrise",
+    "opposites": [
+      "sunset"
+    ],
+    "distractors": [
+      "rising",
+      "widen",
+      "north",
+      "potential",
+      "unbroken"
+    ]
+  },
+  {
+    "word": "Sunset",
+    "opposites": [
+      "sunrise"
+    ],
+    "distractors": [
+      "dangerous",
+      "organic",
+      "kern",
+      "aware",
+      "unnatural"
+    ]
+  },
+  {
+    "word": "Sleep",
+    "opposites": [
+      "wake"
+    ],
+    "distractors": [
+      "injustice",
+      "avoid",
+      "strength",
+      "impatience",
+      "neutral"
+    ]
+  },
+  {
+    "word": "Wake",
+    "opposites": [
+      "sleep"
+    ],
+    "distractors": [
+      "curse",
+      "immoral",
+      "stop",
+      "yang",
+      "large"
+    ]
+  },
+  {
+    "word": "Relax",
+    "opposites": [
+      "tense"
+    ],
+    "distractors": [
+      "discharge",
+      "blind",
+      "untouched",
+      "unfriendly",
+      "new"
+    ]
+  },
+  {
+    "word": "Laugh",
+    "opposites": [
+      "cry"
+    ],
+    "distractors": [
+      "quickly",
+      "patient",
+      "angular",
+      "implicit",
+      "girl"
+    ]
+  },
+  {
+    "word": "Reduce",
+    "opposites": [
+      "gain"
+    ],
+    "distractors": [
+      "cathode",
+      "sorrow",
+      "personal",
+      "best",
+      "admit"
+    ]
+  },
+  {
+    "word": "Change",
+    "opposites": [
+      "stay"
+    ],
+    "distractors": [
+      "reward",
+      "saved",
+      "stand",
+      "earthly",
+      "order"
+    ]
+  },
+  {
+    "word": "Stay",
+    "opposites": [
+      "change"
+    ],
+    "distractors": [
+      "manual",
+      "reverse",
+      "segregated",
+      "shallow",
+      "personal"
+    ]
+  },
+  {
+    "word": "Strengthen",
+    "opposites": [
+      "weaken"
+    ],
+    "distractors": [
+      "acceptance",
+      "discharge",
+      "yang",
+      "shallow",
+      "change"
+    ]
+  },
+  {
+    "word": "Weaken",
+    "opposites": [
+      "strengthen"
+    ],
+    "distractors": [
+      "pleasant",
+      "green",
+      "opposite",
+      "certain",
+      "timid"
+    ]
+  },
+  {
+    "word": "Shrink",
+    "opposites": [
+      "stretch"
+    ],
+    "distractors": [
+      "clean",
+      "male",
+      "junior",
+      "closed",
+      "multiply"
+    ]
+  },
+  {
+    "word": "Contract",
+    "opposites": [
+      "expand"
+    ],
+    "distractors": [
+      "sad",
+      "incapable",
+      "incomplete",
+      "better",
+      "implicit"
+    ]
+  },
+  {
+    "word": "Stretch",
+    "opposites": [
+      "shrink"
+    ],
+    "distractors": [
+      "square",
+      "frivolous",
+      "here",
+      "downward",
+      "dystopian"
+    ]
+  },
+  {
+    "word": "Repair",
+    "opposites": [
+      "break"
+    ],
+    "distractors": [
+      "incidental",
+      "careful",
+      "open",
+      "white",
+      "official"
+    ]
+  },
+  {
+    "word": "Widen",
+    "opposites": [
+      "narrow"
+    ],
+    "distractors": [
+      "downward",
+      "breathless",
+      "ease",
+      "difficulty",
+      "lose"
+    ]
+  },
+  {
+    "word": "Begin",
+    "opposites": [
+      "end"
+    ],
+    "distractors": [
+      "civilian",
+      "religious",
+      "full",
+      "short",
+      "rational"
+    ]
+  },
+  {
+    "word": "Heat",
+    "opposites": [
+      "cool"
+    ],
+    "distractors": [
+      "fancy",
+      "whisper",
+      "ugly",
+      "wealth",
+      "outdoors"
+    ]
+  },
+  {
+    "word": "Freeze",
+    "opposites": [
+      "boil"
+    ],
+    "distractors": [
+      "steep",
+      "retail",
+      "warm",
+      "late",
+      "foe"
+    ]
+  },
+  {
+    "word": "Boil",
+    "opposites": [
+      "freeze"
+    ],
+    "distractors": [
+      "personal",
+      "late",
+      "correct",
+      "glad",
+      "disliked"
+    ]
+  },
+  {
+    "word": "Appear",
+    "opposites": [
+      "disappear"
+    ],
+    "distractors": [
+      "segregated",
+      "tough",
+      "blessed",
+      "analytic",
+      "early"
+    ]
+  },
+  {
+    "word": "Disappear",
+    "opposites": [
+      "appear"
+    ],
+    "distractors": [
+      "urban",
+      "greater",
+      "irregular",
+      "hardened",
+      "tense"
+    ]
+  },
+  {
+    "word": "Fill",
+    "opposites": [
+      "empty"
+    ],
+    "distractors": [
+      "enlist",
+      "unaware",
+      "alternate",
+      "away",
+      "heavy"
+    ]
+  },
+  {
+    "word": "Rush",
+    "opposites": [
+      "delay"
+    ],
+    "distractors": [
+      "separation",
+      "optimism",
+      "false",
+      "patience",
+      "minority"
+    ]
+  },
+  {
+    "word": "Delay",
+    "opposites": [
+      "rush"
+    ],
+    "distractors": [
+      "fair",
+      "verbal",
+      "certain",
+      "continual",
+      "magnetic"
+    ]
+  },
+  {
+    "word": "Know",
+    "opposites": [
+      "ignore"
+    ],
+    "distractors": [
+      "come",
+      "negative",
+      "most",
+      "hire",
+      "asset"
+    ]
+  },
+  {
+    "word": "Ignore",
+    "opposites": [
+      "know"
+    ],
+    "distractors": [
+      "personal",
+      "encourage",
+      "much",
+      "different",
+      "fewer"
+    ]
+  },
+  {
+    "word": "Remember",
+    "opposites": [
+      "forget"
+    ],
+    "distractors": [
+      "round",
+      "leave",
+      "notice",
+      "refrain",
+      "defeat"
+    ]
+  },
+  {
+    "word": "Forget",
+    "opposites": [
+      "remember"
+    ],
+    "distractors": [
+      "patience",
+      "sporadic",
+      "liked",
+      "intense",
+      "obscurity"
+    ]
+  },
+  {
+    "word": "Mind",
+    "opposites": [
+      "forget"
+    ],
+    "distractors": [
+      "plaintiff",
+      "slow",
+      "dry",
+      "mature",
+      "increased"
+    ]
+  },
+  {
+    "word": "Exclude",
+    "opposites": [
+      "include"
+    ],
+    "distractors": [
+      "plus",
+      "minimum",
+      "short",
+      "sleep",
+      "plaintiff"
+    ]
+  },
+  {
+    "word": "Multiply",
+    "opposites": [
+      "divide"
+    ],
+    "distractors": [
+      "end",
+      "touched",
+      "finish",
+      "generalize",
+      "steep"
+    ]
+  },
+  {
+    "word": "Divide",
+    "opposites": [
+      "multiply"
+    ],
+    "distractors": [
+      "moral",
+      "patient",
+      "unlike",
+      "exit",
+      "surrender"
+    ]
+  },
+  {
+    "word": "Include",
+    "opposites": [
+      "exclude"
+    ],
+    "distractors": [
+      "popular",
+      "unorthodox",
+      "depressing",
+      "informally",
+      "strange"
+    ]
+  },
+  {
+    "word": "Reject",
+    "opposites": [
+      "accept"
+    ],
+    "distractors": [
+      "studio",
+      "sadly",
+      "uneven",
+      "employee",
+      "agree"
+    ]
+  },
+  {
+    "word": "Accept",
+    "opposites": [
+      "reject"
+    ],
+    "distractors": [
+      "softly",
+      "push",
+      "poverty",
+      "smooth",
+      "supply"
+    ]
+  },
+  {
+    "word": "Refuse",
+    "opposites": [
+      "accept"
+    ],
+    "distractors": [
+      "first",
+      "out",
+      "repel",
+      "short",
+      "allow"
+    ]
+  },
+  {
+    "word": "Disagree",
+    "opposites": [
+      "agree"
+    ],
+    "distractors": [
+      "niece",
+      "due",
+      "straighten",
+      "recall",
+      "charge"
+    ]
+  },
+  {
+    "word": "Agree",
+    "opposites": [
+      "disagree"
+    ],
+    "distractors": [
+      "charge",
+      "private",
+      "defendant",
+      "divided",
+      "correct"
+    ]
+  },
+  {
+    "word": "Avoid",
+    "opposites": [
+      "confront"
+    ],
+    "distractors": [
+      "end",
+      "dramatic",
+      "sudden",
+      "away",
+      "joy"
+    ]
+  },
+  {
+    "word": "Confront",
+    "opposites": [
+      "avoid"
+    ],
+    "distractors": [
+      "shallow",
+      "disorder",
+      "unrelated",
+      "hit",
+      "impatient"
+    ]
+  },
+  {
+    "word": "Deny",
+    "opposites": [
+      "admit"
+    ],
+    "distractors": [
+      "manual",
+      "frivolous",
+      "ease",
+      "dry",
+      "presence"
+    ]
+  },
+  {
+    "word": "Admit",
+    "opposites": [
+      "deny"
+    ],
+    "distractors": [
+      "impossible",
+      "worn",
+      "downstream",
+      "nephew",
+      "unreal"
+    ]
+  },
+  {
+    "word": "Cheer",
+    "opposites": [
+      "complain"
+    ],
+    "distractors": [
+      "rarely",
+      "yes",
+      "miss",
+      "closed",
+      "gain"
+    ]
+  },
+  {
+    "word": "Curse",
+    "opposites": [
+      "bless"
+    ],
+    "distractors": [
+      "set",
+      "unworthy",
+      "patience",
+      "universal",
+      "best"
+    ]
+  },
+  {
+    "word": "Bless",
+    "opposites": [
+      "curse"
+    ],
+    "distractors": [
+      "adjusted",
+      "disagree",
+      "low",
+      "happiness",
+      "aged"
+    ]
+  },
+  {
+    "word": "Make",
+    "opposites": [
+      "break"
+    ],
+    "distractors": [
+      "unofficial",
+      "lively",
+      "rise",
+      "silence",
+      "scarce"
+    ]
+  },
+  {
+    "word": "Complain",
+    "opposites": [
+      "cheer"
+    ],
+    "distractors": [
+      "privately",
+      "success",
+      "brother",
+      "rise",
+      "possible"
+    ]
+  },
+  {
+    "word": "Shout",
+    "opposites": [
+      "whisper"
+    ],
+    "distractors": [
+      "appear",
+      "less",
+      "attract",
+      "round",
+      "peripheral"
+    ]
+  },
+  {
+    "word": "Whisper",
+    "opposites": [
+      "shout"
+    ],
+    "distractors": [
+      "fast",
+      "unbroken",
+      "standing",
+      "former",
+      "useless"
+    ]
+  },
+  {
+    "word": "Expand",
+    "opposites": [
+      "contract"
+    ],
+    "distractors": [
+      "widen",
+      "wanted",
+      "there",
+      "loading",
+      "lady"
+    ]
+  },
+  {
+    "word": "Specify",
+    "opposites": [
+      "generalize"
+    ],
+    "distractors": [
+      "finish",
+      "informal",
+      "separate",
+      "present",
+      "pleased"
+    ]
+  },
+  {
+    "word": "Generalize",
+    "opposites": [
+      "specify"
+    ],
+    "distractors": [
+      "solid",
+      "confront",
+      "child",
+      "head",
+      "mother"
+    ]
+  },
+  {
+    "word": "Enlist",
+    "opposites": [
+      "discharge"
+    ],
+    "distractors": [
+      "rising",
+      "decent",
+      "nasty",
+      "on",
+      "intangible"
+    ]
+  },
+  {
+    "word": "Discharge",
+    "opposites": [
+      "enlist"
+    ],
+    "distractors": [
+      "central",
+      "saved",
+      "emotional",
+      "best",
+      "clear"
+    ]
+  },
+  {
+    "word": "Lose",
+    "opposites": [
+      "win"
+    ],
+    "distractors": [
+      "allow",
+      "insecurity",
+      "cubic",
+      "southern",
+      "feminine"
+    ]
+  },
+  {
+    "word": "Surrender",
+    "opposites": [
+      "resist"
+    ],
+    "distractors": [
+      "net",
+      "multiple",
+      "enlist",
+      "infinite",
+      "warm"
+    ]
+  },
+  {
+    "word": "Resist",
+    "opposites": [
+      "surrender"
+    ],
+    "distractors": [
+      "intangible",
+      "northern",
+      "weak",
+      "broken",
+      "out"
+    ]
+  },
+  {
+    "word": "Attack",
+    "opposites": [
+      "defend"
+    ],
+    "distractors": [
+      "union",
+      "sister",
+      "compound",
+      "minimum",
+      "anterior"
+    ]
+  },
+  {
+    "word": "Defend",
+    "opposites": [
+      "attack"
+    ],
+    "distractors": [
+      "liked",
+      "scarce",
+      "walk",
+      "lead",
+      "dirty"
+    ]
+  },
+  {
+    "word": "Hit",
+    "opposites": [
+      "miss"
+    ],
+    "distractors": [
+      "nice",
+      "manage",
+      "net",
+      "death",
+      "adjusted"
+    ]
+  },
+  {
+    "word": "Miss",
+    "opposites": [
+      "hit"
+    ],
+    "distractors": [
+      "brother",
+      "raise",
+      "inverse",
+      "stay",
+      "unhappy"
+    ]
+  },
+  {
+    "word": "Break",
+    "opposites": [
+      "repair"
+    ],
+    "distractors": [
+      "wicked",
+      "eastern",
+      "below",
+      "preserved",
+      "more"
+    ]
+  },
+  {
+    "word": "Spread",
+    "opposites": [
+      "gather"
+    ],
+    "distractors": [
+      "outdoors",
+      "rich",
+      "rough",
+      "organic",
+      "repel"
+    ]
+  },
+  {
+    "word": "Gather",
+    "opposites": [
+      "spread"
+    ],
+    "distractors": [
+      "primary",
+      "analysis",
+      "expensive",
+      "explicit",
+      "tragedy"
+    ]
+  },
+  {
+    "word": "Pull",
+    "opposites": [
+      "push"
+    ],
+    "distractors": [
+      "joy",
+      "angular",
+      "neutral",
+      "stop",
+      "reduce"
+    ]
+  },
+  {
+    "word": "Charge",
+    "opposites": [
+      "discharge"
+    ],
+    "distractors": [
+      "strength",
+      "familiar",
+      "sighted",
+      "studio",
+      "center"
+    ]
+  },
+  {
+    "word": "Attract",
+    "opposites": [
+      "repel"
+    ],
+    "distractors": [
+      "pleasant",
+      "brave",
+      "cash",
+      "fore",
+      "finite"
+    ]
+  },
+  {
+    "word": "Repel",
+    "opposites": [
+      "attract"
+    ],
+    "distractors": [
+      "illegal",
+      "appear",
+      "credit",
+      "move",
+      "pull"
+    ]
+  },
+  {
+    "word": "Stand",
+    "opposites": [
+      "lie",
+      "sit"
+    ],
+    "distractors": [
+      "synthetic",
+      "decrease",
+      "careful",
+      "raise",
+      "partly"
+    ]
+  },
+  {
+    "word": "Lie",
+    "opposites": [
+      "sit",
+      "stand"
+    ],
+    "distractors": [
+      "external",
+      "inside",
+      "immoral",
+      "familiar",
+      "numerical"
+    ]
+  },
+  {
+    "word": "Raise",
+    "opposites": [
+      "level"
+    ],
+    "distractors": [
+      "depressing",
+      "cold",
+      "foot",
+      "side",
+      "ill"
+    ]
+  },
+  {
+    "word": "Level",
+    "opposites": [
+      "raise"
+    ],
+    "distractors": [
+      "comedy",
+      "feminine",
+      "ugliness",
+      "fancy",
+      "distrust"
+    ]
+  },
+  {
+    "word": "Content",
+    "opposites": [
+      "discontent"
+    ],
+    "distractors": [
+      "displeased",
+      "express",
+      "depressing",
+      "northern",
+      "offensive"
+    ]
+  },
+  {
+    "word": "Discontent",
+    "opposites": [
+      "content"
+    ],
+    "distractors": [
+      "prevent",
+      "verbal",
+      "goodness",
+      "west",
+      "arrive"
+    ]
+  },
+  {
+    "word": "Encourage",
+    "opposites": [
+      "discourage"
+    ],
+    "distractors": [
+      "defendant",
+      "demand",
+      "stand",
+      "piano",
+      "weakness"
+    ]
+  },
+  {
+    "word": "Discourage",
+    "opposites": [
+      "encourage"
+    ],
+    "distractors": [
+      "location",
+      "ugly",
+      "juvenile",
+      "expanded",
+      "feminine"
+    ]
+  },
+  {
+    "word": "Interest",
+    "opposites": [
+      "bore"
+    ],
+    "distractors": [
+      "smart",
+      "graceful",
+      "geographic",
+      "opaque",
+      "unexpected"
+    ]
+  },
+  {
+    "word": "Bore",
+    "opposites": [
+      "interest"
+    ],
+    "distractors": [
+      "past",
+      "parent",
+      "incorrect",
+      "utopian",
+      "fancy"
+    ]
+  },
+  {
+    "word": "Go",
+    "opposites": [
+      "come"
+    ],
+    "distractors": [
+      "nominal",
+      "ugliness",
+      "correct",
+      "finish",
+      "secular"
+    ]
+  },
+  {
+    "word": "Move",
+    "opposites": [
+      "stay"
+    ],
+    "distractors": [
+      "unrelated",
+      "explicit",
+      "tired",
+      "yin",
+      "partly"
+    ]
+  },
+  {
+    "word": "Walk",
+    "opposites": [
+      "ride"
+    ],
+    "distractors": [
+      "parent",
+      "success",
+      "western",
+      "downward",
+      "lively"
+    ]
+  },
+  {
+    "word": "Ride",
+    "opposites": [
+      "walk"
+    ],
+    "distractors": [
+      "side",
+      "loaded",
+      "right",
+      "implicit",
+      "immature"
+    ]
+  },
+  {
+    "word": "Set",
+    "opposites": [
+      "rise"
+    ],
+    "distractors": [
+      "let",
+      "blind",
+      "badness",
+      "potential",
+      "shut"
+    ]
+  },
+  {
+    "word": "Lower",
+    "opposites": [
+      "raise"
+    ],
+    "distractors": [
+      "day",
+      "relaxed",
+      "sporadic",
+      "interior",
+      "depart"
+    ]
+  },
+  {
+    "word": "Arrive",
+    "opposites": [
+      "leave"
+    ],
+    "distractors": [
+      "secular",
+      "publicly",
+      "upstream",
+      "pain",
+      "true"
+    ]
+  },
+  {
+    "word": "Depart",
+    "opposites": [
+      "stay"
+    ],
+    "distractors": [
+      "private",
+      "foe",
+      "untouched",
+      "emotional",
+      "lead"
+    ]
+  },
+  {
+    "word": "Leave",
+    "opposites": [
+      "arrive"
+    ],
+    "distractors": [
+      "fire",
+      "senior",
+      "bottom",
+      "early",
+      "reverse"
+    ]
+  },
+  {
+    "word": "Exit",
+    "opposites": [
+      "enter"
+    ],
+    "distractors": [
+      "formally",
+      "sweet",
+      "gather",
+      "mind",
+      "formal"
+    ]
+  },
+  {
+    "word": "Enter",
+    "opposites": [
+      "exit"
+    ],
+    "distractors": [
+      "tight",
+      "top",
+      "little",
+      "bound",
+      "partly"
+    ]
+  },
+  {
+    "word": "Straighten",
+    "opposites": [
+      "bend"
+    ],
+    "distractors": [
+      "loaded",
+      "middle",
+      "whisper",
+      "verbal",
+      "hopefully"
+    ]
+  },
+  {
+    "word": "Bend",
+    "opposites": [
+      "straighten"
+    ],
+    "distractors": [
+      "weaken",
+      "deny",
+      "reject",
+      "false",
+      "loudly"
+    ]
+  },
+  {
+    "word": "Linger",
+    "opposites": [
+      "rush"
+    ],
+    "distractors": [
+      "utopian",
+      "cheerful",
+      "wholesale",
+      "depressing",
+      "segregated"
+    ]
+  },
+  {
+    "word": "Suffer",
+    "opposites": [
+      "enjoy"
+    ],
+    "distractors": [
+      "cheer",
+      "rarely",
+      "notice",
+      "inside",
+      "often"
+    ]
+  },
+  {
+    "word": "Enjoy",
+    "opposites": [
+      "suffer"
+    ],
+    "distractors": [
+      "linger",
+      "delay",
+      "abstract",
+      "forget",
+      "action"
+    ]
+  },
+  {
+    "word": "Notice",
+    "opposites": [
+      "ignore"
+    ],
+    "distractors": [
+      "other",
+      "unhappily",
+      "foreign",
+      "irrelevant",
+      "incapable"
+    ]
+  },
+  {
+    "word": "Show",
+    "opposites": [
+      "hide"
+    ],
+    "distractors": [
+      "wake",
+      "sell",
+      "liking",
+      "boil",
+      "heavy"
+    ]
+  },
+  {
+    "word": "Hide",
+    "opposites": [
+      "show"
+    ],
+    "distractors": [
+      "piano",
+      "top",
+      "sighted",
+      "incoming",
+      "northern"
+    ]
+  },
+  {
+    "word": "Keep",
+    "opposites": [
+      "lose"
+    ],
+    "distractors": [
+      "leave",
+      "better",
+      "same",
+      "smart",
+      "curse"
+    ]
+  },
+  {
+    "word": "Take",
+    "opposites": [
+      "give"
+    ],
+    "distractors": [
+      "ride",
+      "evil",
+      "last",
+      "walk",
+      "reduce"
+    ]
+  },
+  {
+    "word": "Buy",
+    "opposites": [
+      "sell"
+    ],
+    "distractors": [
+      "head",
+      "lord",
+      "subjective",
+      "lead",
+      "trust"
+    ]
+  },
+  {
+    "word": "Sell",
+    "opposites": [
+      "buy"
+    ],
+    "distractors": [
+      "beginning",
+      "lean",
+      "sharp",
+      "majority",
+      "correct"
+    ]
+  },
+  {
+    "word": "Bounce",
+    "opposites": [
+      "clear"
+    ],
+    "distractors": [
+      "discharge",
+      "opening",
+      "lower",
+      "encourage",
+      "dead"
+    ]
+  },
+  {
+    "word": "Allow",
+    "opposites": [
+      "deny"
+    ],
+    "distractors": [
+      "pro",
+      "subjective",
+      "wise",
+      "unlike",
+      "ugliness"
+    ]
+  },
+  {
+    "word": "Profit",
+    "opposites": [
+      "lose"
+    ],
+    "distractors": [
+      "wholly",
+      "middle",
+      "military",
+      "credit",
+      "tight"
+    ]
+  },
+  {
+    "word": "Find",
+    "opposites": [
+      "lose"
+    ],
+    "distractors": [
+      "unloaded",
+      "wholesale",
+      "integrated",
+      "differ",
+      "invalid"
+    ]
+  },
+  {
+    "word": "Deposit",
+    "opposites": [
+      "withdraw"
+    ],
+    "distractors": [
+      "child",
+      "lower",
+      "bright",
+      "continual",
+      "freeze"
+    ]
+  },
+  {
+    "word": "Withdraw",
+    "opposites": [
+      "deposit"
+    ],
+    "distractors": [
+      "discharge",
+      "humble",
+      "dead",
+      "lesser",
+      "pride"
+    ]
+  },
+  {
+    "word": "Borrow",
+    "opposites": [
+      "lend"
+    ],
+    "distractors": [
+      "individual",
+      "gain",
+      "incomplete",
+      "raised",
+      "blessed"
+    ]
+  },
+  {
+    "word": "Lend",
+    "opposites": [
+      "borrow"
+    ],
+    "distractors": [
+      "acceptance",
+      "intensive",
+      "keep",
+      "heavy",
+      "mind"
+    ]
+  },
+  {
+    "word": "Kern",
+    "opposites": [
+      "kern"
+    ],
+    "distractors": [
+      "let",
+      "bear",
+      "popular",
+      "side",
+      "wrong"
+    ]
+  },
+  {
+    "word": "Act",
+    "opposites": [
+      "refrain"
+    ],
+    "distractors": [
+      "advance",
+      "beginning",
+      "glad",
+      "waking",
+      "irrational"
+    ]
+  },
+  {
+    "word": "Fire",
+    "opposites": [
+      "hire"
+    ],
+    "distractors": [
+      "future",
+      "simple",
+      "aware",
+      "end",
+      "spread"
+    ]
+  },
+  {
+    "word": "Hire",
+    "opposites": [
+      "fire"
+    ],
+    "distractors": [
+      "disagree",
+      "breathless",
+      "unprepared",
+      "virtuous",
+      "heat"
+    ]
+  },
+  {
+    "word": "Let",
+    "opposites": [
+      "prevent"
+    ],
+    "distractors": [
+      "legal",
+      "plaintiff",
+      "bare",
+      "single",
+      "rested"
+    ]
+  },
+  {
+    "word": "Establish",
+    "opposites": [
+      "abolish"
+    ],
+    "distractors": [
+      "many",
+      "unloading",
+      "black",
+      "admit",
+      "issue"
+    ]
+  },
+  {
+    "word": "Abolish",
+    "opposites": [
+      "establish"
+    ],
+    "distractors": [
+      "sunrise",
+      "breathless",
+      "insecurity",
+      "numerical",
+      "yin"
+    ]
+  },
+  {
+    "word": "Prevent",
+    "opposites": [
+      "let"
+    ],
+    "distractors": [
+      "aged",
+      "son",
+      "off",
+      "fail",
+      "analytic"
+    ]
+  },
+  {
+    "word": "Unite",
+    "opposites": [
+      "divide"
+    ],
+    "distractors": [
+      "pull",
+      "worn",
+      "plus",
+      "foreign",
+      "center"
+    ]
+  },
+  {
+    "word": "Issue",
+    "opposites": [
+      "recall"
+    ],
+    "distractors": [
+      "enjoy",
+      "second",
+      "true",
+      "segregated",
+      "extensive"
+    ]
+  },
+  {
+    "word": "Recall",
+    "opposites": [
+      "issue"
+    ],
+    "distractors": [
+      "keep",
+      "limited",
+      "moving",
+      "directly",
+      "advance"
+    ]
+  },
+  {
+    "word": "Manage",
+    "opposites": [
+      "fail"
+    ],
+    "distractors": [
+      "half",
+      "hopefully",
+      "succeed",
+      "relaxed",
+      "resist"
+    ]
+  },
+  {
+    "word": "Fail",
+    "opposites": [
+      "pass"
+    ],
+    "distractors": [
+      "net",
+      "employee",
+      "exclude",
+      "inactive",
+      "inaccurate"
+    ]
+  },
+  {
+    "word": "Pass",
+    "opposites": [
+      "fail"
+    ],
+    "distractors": [
+      "calm",
+      "pessimism",
+      "generalize",
+      "deposit",
+      "coarse"
+    ]
+  },
+  {
+    "word": "Succeed",
+    "opposites": [
+      "fail"
+    ],
+    "distractors": [
+      "hard",
+      "usual",
+      "differ",
+      "rugged",
+      "other"
+    ]
+  },
+  {
+    "word": "Enforce",
+    "opposites": [
+      "exempt"
+    ],
+    "distractors": [
+      "double",
+      "awake",
+      "lean",
+      "thin",
+      "lord"
+    ]
+  },
+  {
+    "word": "Exempt",
+    "opposites": [
+      "enforce"
+    ],
+    "distractors": [
+      "incomplete",
+      "victory",
+      "lyric",
+      "destroyed",
+      "small"
+    ]
+  },
+  {
+    "word": "Attend",
+    "opposites": [
+      "miss"
+    ],
+    "distractors": [
+      "breathless",
+      "dislike",
+      "opposite",
+      "lowered",
+      "reverse"
+    ]
+  },
+  {
+    "word": "Have",
+    "opposites": [
+      "lack"
+    ],
+    "distractors": [
+      "partial",
+      "aged",
+      "fall",
+      "sharp",
+      "actual"
+    ]
+  },
+  {
+    "word": "Equal",
+    "opposites": [
+      "differ"
+    ],
+    "distractors": [
+      "negative",
+      "optimism",
+      "geographic",
+      "wealth",
+      "wife"
+    ]
+  },
+  {
+    "word": "Differ",
+    "opposites": [
+      "equal"
+    ],
+    "distractors": [
+      "rush",
+      "specific",
+      "center",
+      "pride",
+      "timid"
+    ]
+  },
+  {
+    "word": "Yield",
+    "opposites": [
+      "stand"
+    ],
+    "distractors": [
+      "credit",
+      "bright",
+      "big",
+      "straight",
+      "superior"
+    ]
+  },
+  {
+    "word": "Refrain",
+    "opposites": [
+      "act"
+    ],
+    "distractors": [
+      "back",
+      "incomplete",
+      "tail",
+      "fresh",
+      "wanted"
+    ]
+  }
 ];
+// END_WORD_PAIRS
 
 // ---- AUDIO CONTEXT (sound effects) ----
 let audioCtx;
@@ -1409,6 +12913,42 @@ function checkChoice(btn, chosen) {
   }
 }
 
+// Reduce a typed word to its base form so tense/plural variants are accepted.
+// e.g. "lost" → "lose", "started" → "start", "runs" → "run"
+function normalizeTyped(w) {
+  const irregulars = {
+    lost:'lose', won:'win', went:'go', ran:'run', sat:'sit',
+    stood:'stand', came:'come', gave:'give', took:'take', fell:'fall',
+    rose:'rise', broke:'break', chose:'choose', froze:'freeze',
+    hid:'hide', woke:'wake', sang:'sing', rang:'ring', wept:'weep',
+    slept:'sleep', kept:'keep', felt:'feel', heard:'hear', held:'hold',
+    led:'lead', met:'meet', paid:'pay', said:'say', sent:'send',
+    spent:'spend', taught:'teach', told:'tell', thought:'think',
+    brought:'bring', caught:'catch', bought:'buy', fought:'fight',
+    found:'find', left:'leave', made:'make', got:'get', built:'build',
+    hated:'hate', loved:'love', cried:'cry', tried:'try',
+  };
+  if (irregulars[w]) return irregulars[w];
+  // -ed: walked→walk, stopped→stop, tried→try
+  if (w.endsWith('ied') && w.length > 4) return w.slice(0, -3) + 'y';
+  if (w.endsWith('ed') && w.length > 4) {
+    const s = w.slice(0, -2);
+    if (s.length > 2 && s.at(-1) === s.at(-2) && !'aeiou'.includes(s.at(-1)))
+      return s.slice(0, -1); // stopped→stop
+    return s; // walked→walk
+  }
+  // -ing: walking→walk, running→run
+  if (w.endsWith('ing') && w.length > 5) {
+    const s = w.slice(0, -3);
+    if (s.length > 2 && s.at(-1) === s.at(-2) && !'aeiou'.includes(s.at(-1)))
+      return s.slice(0, -1); // running→run
+    return s.length >= 2 ? s : w;
+  }
+  // -s: loses→lose, runs→run (not: class, grass)
+  if (w.endsWith('s') && !w.endsWith('ss') && w.length > 3) return w.slice(0, -1);
+  return w;
+}
+
 function checkTyped() {
   if (answered) return;
   const input = document.getElementById('typeInput');
@@ -1417,7 +12957,11 @@ function checkTyped() {
 
   answered = true;
   const pair = shuffledPairs[currentIndex];
-  const isCorrect = pair.opposites.some(o => o.toLowerCase() === value);
+  const normalized = normalizeTyped(value);
+  const isCorrect = pair.opposites.some(o => {
+    const ov = o.toLowerCase();
+    return ov === value || ov === normalized;
+  });
 
   const fb = document.getElementById('feedback');
   if (isCorrect) {
