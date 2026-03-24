@@ -52,10 +52,12 @@ if [ ! -f "games/opposites/index.html" ]; then
   exit 1
 fi
 
-if [ ! -f "shared/tokens.css" ]; then
-  echo "Error: shared/tokens.css not found." >&2
-  exit 1
-fi
+for f in "shared/tokens.css" "shared/shell.html" "shared/shell.css" "shared/shell.js" "shared/storage.js"; do
+  if [ ! -f "$f" ]; then
+    echo "Error: $f not found." >&2
+    exit 1
+  fi
+done
 
 echo "All source files found."
 echo ""
@@ -70,7 +72,11 @@ echo "--- Building Type Trainer ---"
 
 JS_TEMP=$(mktemp)
 CSS_TEMP=$(mktemp)
-trap "rm -f '$JS_TEMP' '$CSS_TEMP'" EXIT
+SHELL_JS_TEMP=$(mktemp)
+trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
+
+JS_COMBINED=$(mktemp)
+trap "rm -f '$JS_TEMP' '$CSS_TEMP' '$SHELL_JS_TEMP' '$JS_COMBINED'" EXIT
 
 for f in "${JS_FILES[@]}"; do
   echo "  Inlining $GAME_DIR/$f"
@@ -116,28 +122,41 @@ else
   echo "  [ok] startPlayGame -> startGame"
 fi
 
-# --- Concatenate shared tokens + game CSS ---
-cat shared/tokens.css "$GAME_DIR/css/style.css" > "$CSS_TEMP"
+# --- Concatenate shared tokens + shell CSS + game CSS ---
+cat shared/tokens.css shared/shell.css "$GAME_DIR/css/style.css" > "$CSS_TEMP"
+
+# --- Build combined shell JS (storage + shell wrapped in IIFE) ---
+echo "(function() { 'use strict';" > "$SHELL_JS_TEMP"
+cat shared/storage.js >> "$SHELL_JS_TEMP"
+# Strip IIFE open/close from shell.js (we wrap them together)
+sed -e 's/^(function() {$//' -e "s/^  'use strict';$//" -e 's/^})();$//' shared/shell.js >> "$SHELL_JS_TEMP"
+echo "})();" >> "$SHELL_JS_TEMP"
+
+# Prepend shell to game JS
+cat "$SHELL_JS_TEMP" "$JS_TEMP" > "$JS_COMBINED"
 
 echo ""
 echo "Assembling type-trainer HTML..."
 
-awk -v css_file="$CSS_TEMP" -v js_file="$JS_TEMP" '
+awk -v css_file="$CSS_TEMP" -v js_file="$JS_COMBINED" -v shell_file="shared/shell.html" '
   /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+  /<link[^>]*shared\/shell\.css[^>]*>/ { next }
   /<link[^>]*style\.css[^>]*>/ {
     print "  <style>"
-    while ((getline line < css_file) > 0) {
-      print line
-    }
+    while ((getline line < css_file) > 0) { print line }
     close(css_file)
     print "  </style>"
     next
   }
+  /<body/ {
+    print
+    while ((getline line < shell_file) > 0) { print line }
+    close(shell_file)
+    next
+  }
   /<script[^>]*type="module"[^>]*src=.*main\.js/ || /<script[^>]*src=.*main\.js[^>]*type="module"/ {
     print "  <script>"
-    while ((getline line < js_file) > 0) {
-      print line
-    }
+    while ((getline line < js_file) > 0) { print line }
     close(js_file)
     print "  </script>"
     next
@@ -158,7 +177,7 @@ TT_SIZE=$(wc -c < "$TT_OUTPUT" | tr -d ' ')
 echo "Type Trainer built: $TT_OUTPUT ($TT_SIZE bytes)"
 
 CHECKS_PASSED=0
-CHECKS_TOTAL=4
+CHECKS_TOTAL=5
 
 if grep -q '<style>' "$TT_OUTPUT"; then
   echo "  [ok] CSS inlined"
@@ -192,6 +211,13 @@ else
   grep -n '^export ' "$TT_OUTPUT" | head -5
 fi
 
+if grep -q 'kg-shell' "$TT_OUTPUT"; then
+  echo "  [ok] Shell bar injected"
+  CHECKS_PASSED=$((CHECKS_PASSED + 1))
+else
+  echo "  [FAIL] Shell bar not found"
+fi
+
 echo "Sanity checks: $CHECKS_PASSED/$CHECKS_TOTAL passed"
 
 if grep -q 'href="css/style.css"' "$TT_OUTPUT"; then
@@ -209,12 +235,30 @@ fi
 # ==========================================================================
 echo ""
 echo "--- Building Opposites Game ---"
-awk -v tokens_file="shared/tokens.css" '
+awk -v tokens_file="shared/tokens.css" -v shell_css="shared/shell.css" \
+    -v shell_html="shared/shell.html" -v shell_js="$SHELL_JS_TEMP" '
   /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+  /<link[^>]*shared\/shell\.css[^>]*>/ { next }
   /<style>/ {
     print
     while ((getline line < tokens_file) > 0) { print line }
     close(tokens_file)
+    while ((getline line < shell_css) > 0) { print line }
+    close(shell_css)
+    next
+  }
+  /<body/ {
+    print
+    while ((getline line < shell_html) > 0) { print line }
+    close(shell_html)
+    next
+  }
+  /<\/body>/ {
+    print "  <script>"
+    while ((getline line < shell_js) > 0) { print line }
+    close(shell_js)
+    print "  </script>"
+    print
     next
   }
   { print }
@@ -222,23 +266,53 @@ awk -v tokens_file="shared/tokens.css" '
 OPP_SIZE=$(wc -c < "$DOCS_DIR/opposites.html" | tr -d ' ')
 echo "Opposites built: $DOCS_DIR/opposites.html ($OPP_SIZE bytes)"
 
+if grep -q 'kg-shell' "$DOCS_DIR/opposites.html"; then
+  echo "  [ok] Shell bar injected in opposites"
+else
+  echo "  [WARN] Shell bar missing from opposites"
+fi
+
 # ==========================================================================
 # BUILD 3: Landing Page (inline shared tokens)
 # ==========================================================================
 echo ""
 echo "--- Building Landing Page ---"
-awk -v tokens_file="shared/tokens.css" '
+awk -v tokens_file="shared/tokens.css" -v shell_css="shared/shell.css" \
+    -v shell_html="shared/shell.html" -v shell_js="$SHELL_JS_TEMP" '
   /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+  /<link[^>]*shared\/shell\.css[^>]*>/ { next }
   /<style>/ {
     print
     while ((getline line < tokens_file) > 0) { print line }
     close(tokens_file)
+    while ((getline line < shell_css) > 0) { print line }
+    close(shell_css)
+    next
+  }
+  /<body/ {
+    print
+    while ((getline line < shell_html) > 0) { print line }
+    close(shell_html)
+    next
+  }
+  /<\/body>/ {
+    print "  <script>"
+    while ((getline line < shell_js) > 0) { print line }
+    close(shell_js)
+    print "  </script>"
+    print
     next
   }
   { print }
 ' hub.html > "$DOCS_DIR/index.html"
 HUB_SIZE=$(wc -c < "$DOCS_DIR/index.html" | tr -d ' ')
 echo "Landing page built: $DOCS_DIR/index.html ($HUB_SIZE bytes)"
+
+if grep -q 'kg-shell' "$DOCS_DIR/index.html"; then
+  echo "  [ok] Shell bar injected in hub"
+else
+  echo "  [WARN] Shell bar missing from hub"
+fi
 
 # ==========================================================================
 # Summary
