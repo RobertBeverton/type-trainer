@@ -2,6 +2,10 @@
    Uses kg- prefix on all class names to avoid conflicts with game CSS.
    All colours reference shared design tokens (var(--*)). */
 
+/* Enforce [hidden] — author display rules (e.g. display:flex) override the
+   user-agent's [hidden]{display:none}, so we must re-apply it explicitly. */
+[hidden] { display: none !important; }
+
 /* === Shell Bar === */
 .kg-shell {
   position: fixed;
