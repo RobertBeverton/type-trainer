@@ -196,6 +196,28 @@ def main():
     rng = random.Random(args.seed)
     all_q_words = list(pairs.keys())
 
+    # Build frequency lookup for difficulty tiers
+    # easy: freq >= 50  (very common — sight words, core vocabulary)
+    # medium: freq >= 10
+    # hard: freq >= 5   (all words that passed the filter)
+    freq_lookup = {}
+    if common_words is not None:
+        import nltk
+        from nltk.corpus import brown
+        from nltk.probability import FreqDist
+        fd = FreqDist(w.lower() for w in brown.words() if w.isalpha())
+        freq_lookup = dict(fd)
+
+    def difficulty_for(word):
+        if word in whitelist:
+            return 'easy'
+        freq = freq_lookup.get(word, 0)
+        if freq >= 50:
+            return 'easy'
+        if freq >= 10:
+            return 'medium'
+        return 'hard'
+
     word_pairs = []
     for word in all_q_words:
         opposites = pairs[word]
@@ -203,10 +225,16 @@ def main():
         pool = [w for w in all_q_words if w != word and w not in opposites]
         distractors = rng.sample(pool, min(5, len(pool)))
         word_pairs.append({
-            'word':       word.capitalize(),
-            'opposites':  opposites,
+            'word':        word.capitalize(),
+            'opposites':   opposites,
             'distractors': distractors,
+            'difficulty':  difficulty_for(word),
         })
+
+    # Stats
+    from collections import Counter
+    diff_counts = Counter(p['difficulty'] for p in word_pairs)
+    print(f'  Difficulty breakdown: easy={diff_counts["easy"]}, medium={diff_counts["medium"]}, hard={diff_counts["hard"]}')
 
     print(f'  {len(word_pairs)} pairs with distractors')
 

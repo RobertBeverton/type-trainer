@@ -452,10 +452,10 @@ const playerCtx = window.KidsGames ? window.KidsGames.player : null;
 const ageBracket = playerCtx ? playerCtx.ageBracket : '6-8';
 
 const BRACKET_CONFIG = {
-  '4-5': { wordCount: 15, distractorCount: 2, showHint: true },
-  '6-8': { wordCount: 20, distractorCount: 3, showHint: true },
-  '9-12': { wordCount: 30, distractorCount: 3, showHint: false },
-  '13+': { wordCount: 40, distractorCount: 3, showHint: false },
+  '4-5': { wordCount: 15, distractorCount: 2, showHint: true,  difficulties: ['easy'] },
+  '6-8': { wordCount: 20, distractorCount: 3, showHint: true,  difficulties: ['easy', 'medium'] },
+  '9-12': { wordCount: 30, distractorCount: 3, showHint: false, difficulties: ['easy', 'medium', 'hard'] },
+  '13+':  { wordCount: 40, distractorCount: 3, showHint: false, difficulties: ['easy', 'medium', 'hard'] },
 };
 const config = BRACKET_CONFIG[ageBracket] || BRACKET_CONFIG['6-8'];
 
@@ -479,7 +479,8 @@ const wordPairs = [
       "open",
       "shrink",
       "lesser"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Big",
@@ -493,7 +494,8 @@ const wordPairs = [
       "right",
       "change",
       "careful"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Black",
@@ -506,7 +508,8 @@ const wordPairs = [
       "directly",
       "worse",
       "studio"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Boy",
@@ -520,7 +523,8 @@ const wordPairs = [
       "sweet",
       "light",
       "domestic"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Brave",
@@ -534,7 +538,8 @@ const wordPairs = [
       "justice",
       "run",
       "privately"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Clean",
@@ -549,7 +554,8 @@ const wordPairs = [
       "pleasure",
       "credit",
       "directly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Come",
@@ -563,7 +569,8 @@ const wordPairs = [
       "sighted",
       "location",
       "illegal"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Cry",
@@ -577,7 +584,8 @@ const wordPairs = [
       "mind",
       "interest",
       "difficult"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Dark",
@@ -591,7 +599,8 @@ const wordPairs = [
       "net",
       "unlike",
       "destroyed"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Day",
@@ -604,7 +613,8 @@ const wordPairs = [
       "moving",
       "careful",
       "breathless"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fast",
@@ -617,7 +627,8 @@ const wordPairs = [
       "opposite",
       "issue",
       "north"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Front",
@@ -631,7 +642,8 @@ const wordPairs = [
       "go",
       "scarce",
       "sunrise"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Full",
@@ -646,7 +658,8 @@ const wordPairs = [
       "unusual",
       "impersonal",
       "following"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Give",
@@ -659,7 +672,8 @@ const wordPairs = [
       "sell",
       "analysis",
       "badness"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Good",
@@ -676,7 +690,8 @@ const wordPairs = [
       "inward",
       "deficit",
       "attached"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Happy",
@@ -690,7 +705,8 @@ const wordPairs = [
       "hostile",
       "curse",
       "tight"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Hard",
@@ -705,7 +721,8 @@ const wordPairs = [
       "national",
       "incapable",
       "mental"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "High",
@@ -718,7 +735,8 @@ const wordPairs = [
       "ground",
       "deposit",
       "inside"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Hot",
@@ -731,7 +749,8 @@ const wordPairs = [
       "young",
       "last",
       "juvenile"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Left",
@@ -748,7 +767,8 @@ const wordPairs = [
       "husband",
       "defeat",
       "automatic"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Loud",
@@ -763,7 +783,8 @@ const wordPairs = [
       "west",
       "unworthy",
       "sunrise"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Love",
@@ -776,7 +797,8 @@ const wordPairs = [
       "solid",
       "personal",
       "known"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Near",
@@ -789,7 +811,8 @@ const wordPairs = [
       "indoors",
       "informal",
       "king"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Nice",
@@ -802,7 +825,8 @@ const wordPairs = [
       "agree",
       "make",
       "inadequate"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Old",
@@ -816,7 +840,8 @@ const wordPairs = [
       "top",
       "interest",
       "green"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "On",
@@ -829,7 +854,8 @@ const wordPairs = [
       "anterior",
       "curly",
       "broadly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Open",
@@ -845,7 +871,8 @@ const wordPairs = [
       "fore",
       "sadness",
       "upstairs"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Push",
@@ -858,7 +885,8 @@ const wordPairs = [
       "coarse",
       "linear",
       "guilty"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Run",
@@ -871,7 +899,8 @@ const wordPairs = [
       "stretch",
       "publicly",
       "badly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Sit",
@@ -886,7 +915,8 @@ const wordPairs = [
       "cathode",
       "center",
       "anode"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Stop",
@@ -902,7 +932,8 @@ const wordPairs = [
       "formal",
       "correct",
       "useless"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Sweet",
@@ -917,7 +948,8 @@ const wordPairs = [
       "know",
       "inactive",
       "changed"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Tall",
@@ -930,7 +962,8 @@ const wordPairs = [
       "difficult",
       "spread",
       "employee"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Top",
@@ -944,7 +977,8 @@ const wordPairs = [
       "preceding",
       "plain",
       "physical"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Up",
@@ -960,7 +994,8 @@ const wordPairs = [
       "willing",
       "away",
       "upward"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Wet",
@@ -973,7 +1008,8 @@ const wordPairs = [
       "prominence",
       "clear",
       "father"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Win",
@@ -987,7 +1023,8 @@ const wordPairs = [
       "segregated",
       "agree",
       "answer"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Yes",
@@ -1000,7 +1037,8 @@ const wordPairs = [
       "found",
       "safe",
       "destroyed"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Able",
@@ -1013,7 +1051,8 @@ const wordPairs = [
       "comfort",
       "separation",
       "innocent"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unable",
@@ -1026,7 +1065,8 @@ const wordPairs = [
       "uneven",
       "useful",
       "uncertain"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Absolute",
@@ -1039,7 +1079,8 @@ const wordPairs = [
       "hire",
       "question",
       "useful"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Relative",
@@ -1052,7 +1093,8 @@ const wordPairs = [
       "definite",
       "future",
       "divide"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Abstract",
@@ -1065,7 +1107,8 @@ const wordPairs = [
       "whisper",
       "wise",
       "awake"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Concrete",
@@ -1078,7 +1121,8 @@ const wordPairs = [
       "touched",
       "left",
       "depressing"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Abundant",
@@ -1091,7 +1135,8 @@ const wordPairs = [
       "bore",
       "female",
       "sudden"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Scarce",
@@ -1104,7 +1149,8 @@ const wordPairs = [
       "broadly",
       "backward",
       "better"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Accurate",
@@ -1117,7 +1163,8 @@ const wordPairs = [
       "leave",
       "attached",
       "exclude"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Inaccurate",
@@ -1130,7 +1177,8 @@ const wordPairs = [
       "compact",
       "half",
       "hope"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Active",
@@ -1143,7 +1191,8 @@ const wordPairs = [
       "early",
       "integrated",
       "narrow"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Inactive",
@@ -1156,7 +1205,8 @@ const wordPairs = [
       "straight",
       "never",
       "know"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Passive",
@@ -1169,7 +1219,8 @@ const wordPairs = [
       "thin",
       "disorder",
       "mature"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Dormant",
@@ -1182,7 +1233,8 @@ const wordPairs = [
       "pleasure",
       "future",
       "different"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Quiet",
@@ -1195,7 +1247,8 @@ const wordPairs = [
       "common",
       "raised",
       "friendly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Actual",
@@ -1208,7 +1261,8 @@ const wordPairs = [
       "love",
       "location",
       "upward"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Potential",
@@ -1221,7 +1275,8 @@ const wordPairs = [
       "former",
       "cry",
       "automatic"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Acute",
@@ -1234,7 +1289,8 @@ const wordPairs = [
       "ample",
       "functional",
       "undue"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Chronic",
@@ -1247,7 +1303,8 @@ const wordPairs = [
       "most",
       "automatic",
       "wicked"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Adequate",
@@ -1260,7 +1317,8 @@ const wordPairs = [
       "adult",
       "rested",
       "native"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Inadequate",
@@ -1273,7 +1331,8 @@ const wordPairs = [
       "discomfort",
       "wholesale",
       "decrease"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Alive",
@@ -1286,7 +1345,8 @@ const wordPairs = [
       "lose",
       "bore",
       "private"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Dead",
@@ -1299,7 +1359,8 @@ const wordPairs = [
       "calm",
       "sorrow",
       "angular"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Live",
@@ -1312,7 +1373,8 @@ const wordPairs = [
       "noisy",
       "sparkling",
       "insecurity"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ample",
@@ -1325,7 +1387,8 @@ const wordPairs = [
       "pride",
       "death",
       "stormy"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Meager",
@@ -1338,7 +1401,8 @@ const wordPairs = [
       "danger",
       "artificial",
       "raise"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Analytic",
@@ -1351,7 +1415,8 @@ const wordPairs = [
       "exterior",
       "outward",
       "wholly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Synthetic",
@@ -1364,7 +1429,8 @@ const wordPairs = [
       "relevant",
       "cheap",
       "unlike"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Preceding",
@@ -1377,7 +1443,8 @@ const wordPairs = [
       "back",
       "junior",
       "go"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Succeeding",
@@ -1390,7 +1457,8 @@ const wordPairs = [
       "stormy",
       "dormant",
       "liking"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Anterior",
@@ -1403,7 +1471,8 @@ const wordPairs = [
       "happy",
       "bright",
       "rush"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Posterior",
@@ -1416,7 +1485,8 @@ const wordPairs = [
       "middle",
       "private",
       "rested"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Due",
@@ -1429,7 +1499,8 @@ const wordPairs = [
       "unprepared",
       "dead",
       "lively"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Undue",
@@ -1442,7 +1513,8 @@ const wordPairs = [
       "displeased",
       "integrated",
       "discharge"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Attached",
@@ -1455,7 +1527,8 @@ const wordPairs = [
       "recorded",
       "irrelevant",
       "uncle"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Detached",
@@ -1468,7 +1541,8 @@ const wordPairs = [
       "there",
       "hate",
       "inaction"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Automatic",
@@ -1481,7 +1555,8 @@ const wordPairs = [
       "outward",
       "forte",
       "domestic"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Manual",
@@ -1494,7 +1569,8 @@ const wordPairs = [
       "laugh",
       "happily",
       "ample"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Asleep",
@@ -1507,7 +1583,8 @@ const wordPairs = [
       "alive",
       "quiet",
       "export"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Aware",
@@ -1520,7 +1597,8 @@ const wordPairs = [
       "enforce",
       "wise",
       "preserved"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unaware",
@@ -1533,7 +1611,8 @@ const wordPairs = [
       "reverse",
       "pass",
       "external"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Back",
@@ -1546,7 +1625,8 @@ const wordPairs = [
       "due",
       "brother",
       "bad"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Leading",
@@ -1559,7 +1639,8 @@ const wordPairs = [
       "retail",
       "low",
       "loading"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Following",
@@ -1572,7 +1653,8 @@ const wordPairs = [
       "liability",
       "beautiful",
       "irregular"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Backward",
@@ -1585,7 +1667,8 @@ const wordPairs = [
       "hopelessly",
       "welcome",
       "maximum"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Forward",
@@ -1598,7 +1681,8 @@ const wordPairs = [
       "adult",
       "guilt",
       "ripe"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Reverse",
@@ -1611,7 +1695,8 @@ const wordPairs = [
       "plus",
       "contracted",
       "defendant"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Beautiful",
@@ -1624,7 +1709,8 @@ const wordPairs = [
       "coarse",
       "maximum",
       "disappear"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ugly",
@@ -1637,7 +1723,8 @@ const wordPairs = [
       "fine",
       "ability",
       "formally"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Best",
@@ -1650,7 +1737,8 @@ const wordPairs = [
       "badly",
       "aft",
       "downtown"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Worst",
@@ -1663,7 +1751,8 @@ const wordPairs = [
       "subjective",
       "due",
       "earthly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Better",
@@ -1676,7 +1765,8 @@ const wordPairs = [
       "preserved",
       "different",
       "find"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Worse",
@@ -1689,7 +1779,8 @@ const wordPairs = [
       "magnetic",
       "strength",
       "bore"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "White",
@@ -1702,7 +1793,8 @@ const wordPairs = [
       "day",
       "socialism",
       "exit"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Bold",
@@ -1715,7 +1807,8 @@ const wordPairs = [
       "living",
       "peripheral",
       "sporadic"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Timid",
@@ -1728,7 +1821,8 @@ const wordPairs = [
       "adjusted",
       "contract",
       "downward"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Breathing",
@@ -1741,7 +1835,8 @@ const wordPairs = [
       "limited",
       "indecision",
       "curly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Breathless",
@@ -1754,7 +1849,8 @@ const wordPairs = [
       "finite",
       "lord",
       "figure"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Light",
@@ -1767,7 +1863,8 @@ const wordPairs = [
       "uptown",
       "touched",
       "hopeful"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Bright",
@@ -1780,7 +1877,8 @@ const wordPairs = [
       "breathing",
       "figure",
       "irrelevant"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Dull",
@@ -1793,7 +1891,8 @@ const wordPairs = [
       "scarce",
       "boy",
       "mortal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Broken",
@@ -1806,7 +1905,8 @@ const wordPairs = [
       "comedy",
       "outgoing",
       "indirect"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unbroken",
@@ -1819,7 +1919,8 @@ const wordPairs = [
       "above",
       "source",
       "center"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Calm",
@@ -1832,7 +1933,8 @@ const wordPairs = [
       "depressing",
       "aware",
       "niece"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Stormy",
@@ -1845,7 +1947,8 @@ const wordPairs = [
       "win",
       "deposit",
       "partial"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Capable",
@@ -1858,7 +1961,8 @@ const wordPairs = [
       "hearing",
       "rounded",
       "whole"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Incapable",
@@ -1871,7 +1975,8 @@ const wordPairs = [
       "inside",
       "attract",
       "absolute"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Careful",
@@ -1884,7 +1989,8 @@ const wordPairs = [
       "father",
       "home",
       "capitalism"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Careless",
@@ -1897,7 +2003,8 @@ const wordPairs = [
       "expand",
       "publicly",
       "private"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Central",
@@ -1910,7 +2017,8 @@ const wordPairs = [
       "delicate",
       "graceful",
       "inverse"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Peripheral",
@@ -1923,7 +2031,8 @@ const wordPairs = [
       "even",
       "irrational",
       "on"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Certain",
@@ -1936,7 +2045,8 @@ const wordPairs = [
       "fewer",
       "enlist",
       "rational"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Uncertain",
@@ -1949,7 +2059,8 @@ const wordPairs = [
       "relax",
       "ride",
       "lowered"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Adjusted",
@@ -1962,7 +2073,8 @@ const wordPairs = [
       "attack",
       "credit",
       "uncertain"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unadjusted",
@@ -1975,7 +2087,8 @@ const wordPairs = [
       "yield",
       "stable",
       "free"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Changed",
@@ -1988,7 +2101,8 @@ const wordPairs = [
       "rough",
       "offensive",
       "minor"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unchanged",
@@ -2001,7 +2115,8 @@ const wordPairs = [
       "empty",
       "bound",
       "old"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Cheerful",
@@ -2014,7 +2129,8 @@ const wordPairs = [
       "impossible",
       "more",
       "unlike"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Depressing",
@@ -2027,7 +2143,8 @@ const wordPairs = [
       "unlike",
       "defensive",
       "ending"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Dirty",
@@ -2040,7 +2157,8 @@ const wordPairs = [
       "girl",
       "establish",
       "wholly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Clear",
@@ -2053,7 +2171,8 @@ const wordPairs = [
       "smart",
       "incoming",
       "uneven"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Opaque",
@@ -2066,7 +2185,8 @@ const wordPairs = [
       "unable",
       "adjusted",
       "ease"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Smart",
@@ -2079,7 +2199,8 @@ const wordPairs = [
       "insecurity",
       "resist",
       "ripe"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Stupid",
@@ -2092,7 +2213,8 @@ const wordPairs = [
       "valid",
       "clear",
       "patterned"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Far",
@@ -2105,7 +2227,8 @@ const wordPairs = [
       "vertical",
       "accurate",
       "lead"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Distant",
@@ -2118,7 +2241,8 @@ const wordPairs = [
       "cool",
       "interest",
       "ever"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Close",
@@ -2131,7 +2255,8 @@ const wordPairs = [
       "shrink",
       "reduce",
       "juvenile"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Common",
@@ -2144,7 +2269,8 @@ const wordPairs = [
       "angular",
       "undue",
       "offense"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Uncommon",
@@ -2157,7 +2283,8 @@ const wordPairs = [
       "ripe",
       "living",
       "recall"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Usual",
@@ -2170,7 +2297,8 @@ const wordPairs = [
       "lyric",
       "useful",
       "unmarried"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unusual",
@@ -2183,7 +2311,8 @@ const wordPairs = [
       "few",
       "primary",
       "uncle"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Individual",
@@ -2196,7 +2325,8 @@ const wordPairs = [
       "whole",
       "exterior",
       "related"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Compact",
@@ -2209,7 +2339,8 @@ const wordPairs = [
       "child",
       "freeze",
       "unemployed"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Loose",
@@ -2222,7 +2353,8 @@ const wordPairs = [
       "dramatic",
       "incidental",
       "softly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Whole",
@@ -2235,7 +2367,8 @@ const wordPairs = [
       "major",
       "loaded",
       "curly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Half",
@@ -2248,7 +2381,8 @@ const wordPairs = [
       "unloading",
       "folly",
       "humility"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Complete",
@@ -2261,7 +2395,8 @@ const wordPairs = [
       "senior",
       "brother",
       "aft"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Incomplete",
@@ -2274,7 +2409,8 @@ const wordPairs = [
       "gather",
       "attract",
       "laugh"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Contracted",
@@ -2287,7 +2423,8 @@ const wordPairs = [
       "ugly",
       "literal",
       "visible"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Expanded",
@@ -2300,7 +2437,8 @@ const wordPairs = [
       "liability",
       "moving",
       "breathless"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Continual",
@@ -2313,7 +2451,8 @@ const wordPairs = [
       "bad",
       "friend",
       "masculine"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Sporadic",
@@ -2326,7 +2465,8 @@ const wordPairs = [
       "slow",
       "deaf",
       "on"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Cooked",
@@ -2339,7 +2479,8 @@ const wordPairs = [
       "superior",
       "silence",
       "fail"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Raw",
@@ -2352,7 +2493,8 @@ const wordPairs = [
       "verbal",
       "cerebral",
       "particular"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Correct",
@@ -2365,7 +2507,8 @@ const wordPairs = [
       "inaction",
       "uncle",
       "plain"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Right",
@@ -2378,7 +2521,8 @@ const wordPairs = [
       "heavenly",
       "hearing",
       "happiness"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Incorrect",
@@ -2391,7 +2535,8 @@ const wordPairs = [
       "appear",
       "confront",
       "certain"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Wrong",
@@ -2404,7 +2549,8 @@ const wordPairs = [
       "informal",
       "decreased",
       "encourage"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Cubic",
@@ -2417,7 +2563,8 @@ const wordPairs = [
       "some",
       "dormant",
       "indoors"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Linear",
@@ -2430,7 +2577,8 @@ const wordPairs = [
       "close",
       "numerical",
       "contracted"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Cursed",
@@ -2443,7 +2591,8 @@ const wordPairs = [
       "socialism",
       "wise",
       "slowly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Blessed",
@@ -2456,7 +2605,8 @@ const wordPairs = [
       "know",
       "junior",
       "weakness"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Annual",
@@ -2469,7 +2619,8 @@ const wordPairs = [
       "downstream",
       "lean",
       "bounce"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Perennial",
@@ -2482,7 +2633,8 @@ const wordPairs = [
       "difficult",
       "stretch",
       "superior"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Deaf",
@@ -2495,7 +2647,8 @@ const wordPairs = [
       "disappear",
       "raised",
       "fire"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Hearing",
@@ -2508,7 +2661,8 @@ const wordPairs = [
       "refuse",
       "shout",
       "increasing"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Decent",
@@ -2521,7 +2675,8 @@ const wordPairs = [
       "gradual",
       "lesser",
       "sane"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Indecent",
@@ -2534,7 +2689,8 @@ const wordPairs = [
       "recorded",
       "bad",
       "small"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Deep",
@@ -2547,7 +2703,8 @@ const wordPairs = [
       "often",
       "backward",
       "raw"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Shallow",
@@ -2560,7 +2717,8 @@ const wordPairs = [
       "religious",
       "queen",
       "definite"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Definite",
@@ -2573,7 +2731,8 @@ const wordPairs = [
       "synthetic",
       "cerebral",
       "public"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Indefinite",
@@ -2586,7 +2745,8 @@ const wordPairs = [
       "all",
       "real",
       "meager"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Delicate",
@@ -2599,7 +2759,8 @@ const wordPairs = [
       "related",
       "pleased",
       "confront"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Rugged",
@@ -2612,7 +2773,8 @@ const wordPairs = [
       "loud",
       "equal",
       "accept"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Destroyed",
@@ -2625,7 +2787,8 @@ const wordPairs = [
       "dry",
       "come",
       "official"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Preserved",
@@ -2638,7 +2801,8 @@ const wordPairs = [
       "displeased",
       "enforce",
       "withdraw"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Difficult",
@@ -2651,7 +2815,8 @@ const wordPairs = [
       "heat",
       "relax",
       "indirectly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Easy",
@@ -2664,7 +2829,8 @@ const wordPairs = [
       "former",
       "side",
       "informal"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Direct",
@@ -2677,7 +2843,8 @@ const wordPairs = [
       "rested",
       "sit",
       "pleased"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Indirect",
@@ -2690,7 +2857,8 @@ const wordPairs = [
       "girl",
       "stand",
       "basic"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Inverse",
@@ -2703,7 +2871,8 @@ const wordPairs = [
       "fire",
       "sparkling",
       "compact"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Sharp",
@@ -2716,7 +2885,8 @@ const wordPairs = [
       "push",
       "negative",
       "patience"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lively",
@@ -2729,7 +2899,8 @@ const wordPairs = [
       "push",
       "beautiful",
       "success"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Early",
@@ -2743,7 +2914,8 @@ const wordPairs = [
       "liquid",
       "cheap",
       "dormant"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Middle",
@@ -2757,7 +2929,8 @@ const wordPairs = [
       "more",
       "fore",
       "verbal"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Late",
@@ -2771,7 +2944,8 @@ const wordPairs = [
       "divide",
       "physical",
       "unlike"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Uneasy",
@@ -2784,7 +2958,8 @@ const wordPairs = [
       "unrelated",
       "hopeless",
       "deposit"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "East",
@@ -2797,7 +2972,8 @@ const wordPairs = [
       "left",
       "boil",
       "never"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "West",
@@ -2810,7 +2986,8 @@ const wordPairs = [
       "fresh",
       "pleasure",
       "due"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Western",
@@ -2823,7 +3000,8 @@ const wordPairs = [
       "relative",
       "delay",
       "sweet"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Eastern",
@@ -2836,7 +3014,8 @@ const wordPairs = [
       "act",
       "loud",
       "ability"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Employed",
@@ -2849,7 +3028,8 @@ const wordPairs = [
       "individual",
       "strong",
       "adult"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unemployed",
@@ -2862,7 +3042,8 @@ const wordPairs = [
       "formal",
       "no",
       "gain"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Increased",
@@ -2875,7 +3056,8 @@ const wordPairs = [
       "unpaid",
       "early",
       "wisdom"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Decreased",
@@ -2888,7 +3070,8 @@ const wordPairs = [
       "inaction",
       "dirty",
       "shout"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Even",
@@ -2901,7 +3084,8 @@ const wordPairs = [
       "feminine",
       "uncertain",
       "loading"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Uneven",
@@ -2914,7 +3098,8 @@ const wordPairs = [
       "advance",
       "child",
       "impatient"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Odd",
@@ -2927,7 +3112,8 @@ const wordPairs = [
       "slow",
       "aware",
       "patience"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Expected",
@@ -2940,7 +3126,8 @@ const wordPairs = [
       "analysis",
       "soft",
       "incapable"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unexpected",
@@ -2953,7 +3140,8 @@ const wordPairs = [
       "dramatic",
       "fail",
       "husband"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Expensive",
@@ -2966,7 +3154,8 @@ const wordPairs = [
       "distant",
       "attract",
       "narrowly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Cheap",
@@ -2979,7 +3168,8 @@ const wordPairs = [
       "southern",
       "worn",
       "round"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Explicit",
@@ -2992,7 +3182,8 @@ const wordPairs = [
       "due",
       "downtown",
       "victory"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Implicit",
@@ -3005,7 +3196,8 @@ const wordPairs = [
       "manage",
       "related",
       "enjoy"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "External",
@@ -3018,7 +3210,8 @@ const wordPairs = [
       "urban",
       "orthodox",
       "ground"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Internal",
@@ -3031,7 +3224,8 @@ const wordPairs = [
       "deficit",
       "deep",
       "dangerous"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Outer",
@@ -3044,7 +3238,8 @@ const wordPairs = [
       "decreasing",
       "pain",
       "unknown"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Inner",
@@ -3057,7 +3252,8 @@ const wordPairs = [
       "ever",
       "bless",
       "thick"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Outward",
@@ -3070,7 +3266,8 @@ const wordPairs = [
       "hide",
       "sunrise",
       "patience"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Inward",
@@ -3083,7 +3280,8 @@ const wordPairs = [
       "succeed",
       "heavy",
       "bounce"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Exterior",
@@ -3096,7 +3294,8 @@ const wordPairs = [
       "compound",
       "heavenly",
       "appear"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Interior",
@@ -3109,7 +3308,8 @@ const wordPairs = [
       "sound",
       "foot",
       "impersonal"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fair",
@@ -3122,7 +3322,8 @@ const wordPairs = [
       "surface",
       "pass",
       "immoral"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unfair",
@@ -3135,7 +3336,8 @@ const wordPairs = [
       "fore",
       "young",
       "repel"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Familiar",
@@ -3148,7 +3350,8 @@ const wordPairs = [
       "likely",
       "ease",
       "credit"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unfamiliar",
@@ -3161,7 +3364,8 @@ const wordPairs = [
       "fast",
       "wanted",
       "inner"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Strange",
@@ -3174,7 +3378,8 @@ const wordPairs = [
       "union",
       "private",
       "touched"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Slow",
@@ -3187,7 +3392,8 @@ const wordPairs = [
       "steep",
       "niece",
       "inferior"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fat",
@@ -3200,7 +3406,8 @@ const wordPairs = [
       "tough",
       "sighted",
       "spread"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Thin",
@@ -3213,7 +3420,8 @@ const wordPairs = [
       "won",
       "latter",
       "basic"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fertile",
@@ -3226,7 +3434,8 @@ const wordPairs = [
       "male",
       "living",
       "absence"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Sterile",
@@ -3239,7 +3448,8 @@ const wordPairs = [
       "downward",
       "wise",
       "north"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Finite",
@@ -3252,7 +3462,8 @@ const wordPairs = [
       "below",
       "most",
       "official"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Infinite",
@@ -3265,7 +3476,8 @@ const wordPairs = [
       "large",
       "male",
       "hopeful"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Opening",
@@ -3278,7 +3490,8 @@ const wordPairs = [
       "prominence",
       "inward",
       "maximum"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Closing",
@@ -3291,7 +3504,8 @@ const wordPairs = [
       "partly",
       "divide",
       "nephew"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "First",
@@ -3304,7 +3518,8 @@ const wordPairs = [
       "foreign",
       "stay",
       "thick"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Last",
@@ -3317,7 +3532,8 @@ const wordPairs = [
       "rear",
       "exclude",
       "well"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Second",
@@ -3330,7 +3546,8 @@ const wordPairs = [
       "stormy",
       "profit",
       "exterior"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Curly",
@@ -3343,7 +3560,8 @@ const wordPairs = [
       "inorganic",
       "even",
       "magnetic"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Straight",
@@ -3356,7 +3574,8 @@ const wordPairs = [
       "worthy",
       "individual",
       "greater"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fore",
@@ -3369,7 +3588,8 @@ const wordPairs = [
       "downward",
       "found",
       "wife"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Aft",
@@ -3382,7 +3602,8 @@ const wordPairs = [
       "fill",
       "tough",
       "careful"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Native",
@@ -3395,7 +3616,8 @@ const wordPairs = [
       "figurative",
       "written",
       "wild"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Adopted",
@@ -3408,7 +3630,8 @@ const wordPairs = [
       "expensive",
       "quiet",
       "hopeless"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Foreign",
@@ -3421,7 +3644,8 @@ const wordPairs = [
       "suffer",
       "preceding",
       "unprepared"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Domestic",
@@ -3434,7 +3658,8 @@ const wordPairs = [
       "decrease",
       "particular",
       "lady"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Formal",
@@ -3447,7 +3672,8 @@ const wordPairs = [
       "deaf",
       "ride",
       "formally"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Informal",
@@ -3460,7 +3686,8 @@ const wordPairs = [
       "lowered",
       "stupid",
       "outdoors"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Former",
@@ -3473,7 +3700,8 @@ const wordPairs = [
       "wisdom",
       "ease",
       "miss"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Latter",
@@ -3486,7 +3714,8 @@ const wordPairs = [
       "make",
       "welcome",
       "physical"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Free",
@@ -3499,7 +3728,8 @@ const wordPairs = [
       "hardened",
       "refrain",
       "location"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Bound",
@@ -3512,7 +3742,8 @@ const wordPairs = [
       "con",
       "penalty",
       "live"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Fresh",
@@ -3525,7 +3756,8 @@ const wordPairs = [
       "calm",
       "include",
       "closing"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Friendly",
@@ -3538,7 +3770,8 @@ const wordPairs = [
       "guilty",
       "despair",
       "forward"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unfriendly",
@@ -3551,7 +3784,8 @@ const wordPairs = [
       "western",
       "quickly",
       "asleep"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Hostile",
@@ -3564,7 +3798,8 @@ const wordPairs = [
       "proud",
       "compound",
       "mother"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Empty",
@@ -3577,7 +3812,8 @@ const wordPairs = [
       "lost",
       "up",
       "specific"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Functional",
@@ -3590,7 +3826,8 @@ const wordPairs = [
       "unlimited",
       "cash",
       "refrain"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Organic",
@@ -3603,7 +3840,8 @@ const wordPairs = [
       "lord",
       "local",
       "guilty"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "General",
@@ -3616,7 +3854,8 @@ const wordPairs = [
       "waking",
       "rear",
       "hate"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Specific",
@@ -3629,7 +3868,8 @@ const wordPairs = [
       "poor",
       "dirty",
       "unhappily"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "National",
@@ -3642,7 +3882,8 @@ const wordPairs = [
       "deaf",
       "segregated",
       "keep"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Local",
@@ -3655,7 +3896,8 @@ const wordPairs = [
       "live",
       "sharp",
       "spread"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Bad",
@@ -3668,7 +3910,8 @@ const wordPairs = [
       "freeze",
       "show",
       "con"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Evil",
@@ -3681,7 +3924,8 @@ const wordPairs = [
       "unusual",
       "spoken",
       "mother"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Graceful",
@@ -3694,7 +3938,8 @@ const wordPairs = [
       "primary",
       "small",
       "down"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Awkward",
@@ -3707,7 +3952,8 @@ const wordPairs = [
       "different",
       "backward",
       "simplicity"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Gradual",
@@ -3720,7 +3966,8 @@ const wordPairs = [
       "relax",
       "civilian",
       "decision"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sudden",
@@ -3733,7 +3980,8 @@ const wordPairs = [
       "timid",
       "hostile",
       "bear"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Steep",
@@ -3746,7 +3994,8 @@ const wordPairs = [
       "import",
       "love",
       "accept"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unhappy",
@@ -3759,7 +4008,8 @@ const wordPairs = [
       "known",
       "decrease",
       "abstract"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Soft",
@@ -3772,7 +4022,8 @@ const wordPairs = [
       "unemployed",
       "stable",
       "warm"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Heavenly",
@@ -3785,7 +4036,8 @@ const wordPairs = [
       "like",
       "odd",
       "express"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Earthly",
@@ -3798,7 +4050,8 @@ const wordPairs = [
       "arrive",
       "tender",
       "timid"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Heavy",
@@ -3811,7 +4064,8 @@ const wordPairs = [
       "proud",
       "mortal",
       "extensive"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Low",
@@ -3824,7 +4078,8 @@ const wordPairs = [
       "differ",
       "easy",
       "less"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Raised",
@@ -3837,7 +4092,8 @@ const wordPairs = [
       "overhead",
       "long",
       "aged"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lowered",
@@ -3850,7 +4106,8 @@ const wordPairs = [
       "exclude",
       "below",
       "yes"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Home",
@@ -3863,7 +4120,8 @@ const wordPairs = [
       "green",
       "hopeless",
       "moral"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Away",
@@ -3876,7 +4134,8 @@ const wordPairs = [
       "secondary",
       "wicked",
       "show"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Hopeful",
@@ -3889,7 +4148,8 @@ const wordPairs = [
       "happily",
       "liquid",
       "emotional"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Hopeless",
@@ -3902,7 +4162,8 @@ const wordPairs = [
       "unwanted",
       "orthodox",
       "inability"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Horizontal",
@@ -3916,7 +4177,8 @@ const wordPairs = [
       "sleeping",
       "junior",
       "multiply"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Vertical",
@@ -3930,7 +4192,8 @@ const wordPairs = [
       "sad",
       "below",
       "complete"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Inclined",
@@ -3944,7 +4207,8 @@ const wordPairs = [
       "gain",
       "rested",
       "close"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Standing",
@@ -3957,7 +4221,8 @@ const wordPairs = [
       "distrust",
       "lie",
       "awkward"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Seated",
@@ -3970,7 +4235,8 @@ const wordPairs = [
       "feminine",
       "above",
       "good"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Running",
@@ -3983,7 +4249,8 @@ const wordPairs = [
       "breathless",
       "bound",
       "hire"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Passing",
@@ -3996,7 +4263,8 @@ const wordPairs = [
       "smart",
       "victory",
       "profit"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Cold",
@@ -4009,7 +4277,8 @@ const wordPairs = [
       "guilt",
       "lost",
       "utopian"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Incoming",
@@ -4022,7 +4291,8 @@ const wordPairs = [
       "real",
       "deposit",
       "relaxed"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Outgoing",
@@ -4035,7 +4305,8 @@ const wordPairs = [
       "numerical",
       "above",
       "cursed"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Innocent",
@@ -4048,7 +4319,8 @@ const wordPairs = [
       "complexity",
       "useless",
       "begin"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Guilty",
@@ -4061,7 +4333,8 @@ const wordPairs = [
       "legal",
       "cheer",
       "hit"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Integrated",
@@ -4074,7 +4347,8 @@ const wordPairs = [
       "flat",
       "attack",
       "useful"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Segregated",
@@ -4087,7 +4361,8 @@ const wordPairs = [
       "black",
       "unlimited",
       "safety"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Glad",
@@ -4100,7 +4375,8 @@ const wordPairs = [
       "import",
       "unloading",
       "hope"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sad",
@@ -4113,7 +4389,8 @@ const wordPairs = [
       "frivolous",
       "ever",
       "thick"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Known",
@@ -4126,7 +4403,8 @@ const wordPairs = [
       "quickly",
       "include",
       "sadly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unknown",
@@ -4139,7 +4417,8 @@ const wordPairs = [
       "military",
       "internal",
       "wife"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Large",
@@ -4152,7 +4431,8 @@ const wordPairs = [
       "religious",
       "specific",
       "have"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Small",
@@ -4165,7 +4445,8 @@ const wordPairs = [
       "abundant",
       "mild",
       "repair"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Little",
@@ -4178,7 +4459,8 @@ const wordPairs = [
       "ride",
       "mental",
       "fancy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Greater",
@@ -4191,7 +4473,8 @@ const wordPairs = [
       "linger",
       "liking",
       "indecent"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lesser",
@@ -4204,7 +4487,8 @@ const wordPairs = [
       "individual",
       "downstairs",
       "studio"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Legal",
@@ -4217,7 +4501,8 @@ const wordPairs = [
       "prevent",
       "sane",
       "ill"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Illegal",
@@ -4230,7 +4515,8 @@ const wordPairs = [
       "comfort",
       "linear",
       "humble"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Like",
@@ -4243,7 +4529,8 @@ const wordPairs = [
       "asleep",
       "written",
       "generalize"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unlike",
@@ -4256,7 +4543,8 @@ const wordPairs = [
       "optimism",
       "plaintiff",
       "possible"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Likely",
@@ -4269,7 +4557,8 @@ const wordPairs = [
       "succeed",
       "more",
       "bear"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unlikely",
@@ -4282,7 +4571,8 @@ const wordPairs = [
       "physical",
       "minimum",
       "sleeping"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Limited",
@@ -4295,7 +4585,8 @@ const wordPairs = [
       "side",
       "rarely",
       "win"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unlimited",
@@ -4308,7 +4599,8 @@ const wordPairs = [
       "national",
       "end",
       "husband"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Literal",
@@ -4321,7 +4613,8 @@ const wordPairs = [
       "begin",
       "bold",
       "safe"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Figurative",
@@ -4334,7 +4627,8 @@ const wordPairs = [
       "yin",
       "demand",
       "stormy"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Recorded",
@@ -4347,7 +4641,8 @@ const wordPairs = [
       "queen",
       "disliked",
       "sit"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Loaded",
@@ -4360,7 +4655,8 @@ const wordPairs = [
       "attract",
       "adequate",
       "saved"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unloaded",
@@ -4373,7 +4669,8 @@ const wordPairs = [
       "angular",
       "blessed",
       "soft"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Long",
@@ -4386,7 +4683,8 @@ const wordPairs = [
       "narrowly",
       "father",
       "spread"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Short",
@@ -4399,7 +4697,8 @@ const wordPairs = [
       "employed",
       "leading",
       "sound"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Tight",
@@ -4412,7 +4711,8 @@ const wordPairs = [
       "foe",
       "sudden",
       "divided"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Lost",
@@ -4425,7 +4725,8 @@ const wordPairs = [
       "organic",
       "solid",
       "tragedy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Found",
@@ -4438,7 +4739,8 @@ const wordPairs = [
       "horizontal",
       "capitalism",
       "day"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Saved",
@@ -4451,7 +4753,8 @@ const wordPairs = [
       "recorded",
       "child",
       "indirectly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Won",
@@ -4464,7 +4767,8 @@ const wordPairs = [
       "senior",
       "south",
       "import"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Piano",
@@ -4477,7 +4781,8 @@ const wordPairs = [
       "rich",
       "nephew",
       "lowered"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Forte",
@@ -4490,7 +4795,8 @@ const wordPairs = [
       "magnetic",
       "unfamiliar",
       "plain"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Hardened",
@@ -4503,7 +4809,8 @@ const wordPairs = [
       "certain",
       "bad",
       "mental"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Liked",
@@ -4516,7 +4823,8 @@ const wordPairs = [
       "start",
       "saved",
       "gain"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Disliked",
@@ -4529,7 +4837,8 @@ const wordPairs = [
       "sell",
       "sorrow",
       "plus"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Lyric",
@@ -4542,7 +4851,8 @@ const wordPairs = [
       "narrowly",
       "lady",
       "shout"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Dramatic",
@@ -4555,7 +4865,8 @@ const wordPairs = [
       "wisdom",
       "widen",
       "united"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Magnetic",
@@ -4568,7 +4879,8 @@ const wordPairs = [
       "make",
       "lie",
       "empty"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Geographic",
@@ -4581,7 +4893,8 @@ const wordPairs = [
       "official",
       "domestic",
       "universal"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Major",
@@ -4594,7 +4907,8 @@ const wordPairs = [
       "lowered",
       "daughter",
       "know"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Minor",
@@ -4607,7 +4921,8 @@ const wordPairs = [
       "hope",
       "employer",
       "kern"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Male",
@@ -4620,7 +4935,8 @@ const wordPairs = [
       "broken",
       "analysis",
       "death"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Female",
@@ -4633,7 +4949,8 @@ const wordPairs = [
       "defend",
       "insane",
       "up"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Married",
@@ -4646,7 +4963,8 @@ const wordPairs = [
       "sunset",
       "complete",
       "bold"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unmarried",
@@ -4659,7 +4977,8 @@ const wordPairs = [
       "heat",
       "real",
       "employed"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Masculine",
@@ -4672,7 +4991,8 @@ const wordPairs = [
       "resist",
       "never",
       "covered"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Feminine",
@@ -4685,7 +5005,8 @@ const wordPairs = [
       "large",
       "bounce",
       "inverse"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Mature",
@@ -4698,7 +5019,8 @@ const wordPairs = [
       "tense",
       "interest",
       "saved"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Immature",
@@ -4711,7 +5033,8 @@ const wordPairs = [
       "encourage",
       "dirty",
       "spoken"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Ripe",
@@ -4724,7 +5047,8 @@ const wordPairs = [
       "delay",
       "fresh",
       "refrain"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Green",
@@ -4737,7 +5061,8 @@ const wordPairs = [
       "bear",
       "minus",
       "unite"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Maximum",
@@ -4750,7 +5075,8 @@ const wordPairs = [
       "covered",
       "bold",
       "miss"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Minimum",
@@ -4763,7 +5089,8 @@ const wordPairs = [
       "outgoing",
       "wholly",
       "uncommon"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Mild",
@@ -4776,7 +5103,8 @@ const wordPairs = [
       "friend",
       "freeze",
       "cold"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Intense",
@@ -4789,7 +5117,8 @@ const wordPairs = [
       "enjoy",
       "tragedy",
       "past"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Intensive",
@@ -4802,7 +5131,8 @@ const wordPairs = [
       "specific",
       "unstable",
       "on"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Extensive",
@@ -4815,7 +5145,8 @@ const wordPairs = [
       "much",
       "sound",
       "informal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Military",
@@ -4828,7 +5159,8 @@ const wordPairs = [
       "ground",
       "notice",
       "some"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Civilian",
@@ -4841,7 +5173,8 @@ const wordPairs = [
       "defeat",
       "proud",
       "opaque"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Moral",
@@ -4854,7 +5187,8 @@ const wordPairs = [
       "able",
       "magnetic",
       "true"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Immoral",
@@ -4867,7 +5201,8 @@ const wordPairs = [
       "national",
       "badly",
       "continual"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Many",
@@ -4880,7 +5215,8 @@ const wordPairs = [
       "impartial",
       "juvenile",
       "contract"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Few",
@@ -4893,7 +5229,8 @@ const wordPairs = [
       "irregular",
       "import",
       "contract"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Much",
@@ -4906,7 +5243,8 @@ const wordPairs = [
       "cerebral",
       "humility",
       "calm"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "More",
@@ -4919,7 +5257,8 @@ const wordPairs = [
       "goodness",
       "public",
       "like"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Less",
@@ -4932,7 +5271,8 @@ const wordPairs = [
       "impartial",
       "adopted",
       "separate"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Most",
@@ -4945,7 +5285,8 @@ const wordPairs = [
       "attend",
       "unorthodox",
       "calm"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Least",
@@ -4958,7 +5299,8 @@ const wordPairs = [
       "unhappily",
       "rise",
       "opposite"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fewer",
@@ -4971,7 +5313,8 @@ const wordPairs = [
       "greater",
       "outer",
       "common"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Mortal",
@@ -4984,7 +5327,8 @@ const wordPairs = [
       "double",
       "timid",
       "aged"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Immortal",
@@ -4997,7 +5341,8 @@ const wordPairs = [
       "question",
       "difficulty",
       "love"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Moving",
@@ -5010,7 +5355,8 @@ const wordPairs = [
       "least",
       "unhappy",
       "unusual"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Still",
@@ -5023,7 +5369,8 @@ const wordPairs = [
       "finite",
       "due",
       "sell"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Natural",
@@ -5036,7 +5383,8 @@ const wordPairs = [
       "opening",
       "head",
       "native"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unnatural",
@@ -5049,7 +5397,8 @@ const wordPairs = [
       "few",
       "curse",
       "perennial"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Artificial",
@@ -5062,7 +5411,8 @@ const wordPairs = [
       "black",
       "lesser",
       "yield"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Flat",
@@ -5076,7 +5426,8 @@ const wordPairs = [
       "rarely",
       "home",
       "lie"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Net",
@@ -5089,7 +5440,8 @@ const wordPairs = [
       "despair",
       "open",
       "complete"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Gross",
@@ -5102,7 +5454,8 @@ const wordPairs = [
       "hit",
       "defend",
       "evil"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Nasty",
@@ -5115,7 +5468,8 @@ const wordPairs = [
       "hard",
       "employed",
       "guilty"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "North",
@@ -5128,7 +5482,8 @@ const wordPairs = [
       "shrink",
       "unrelated",
       "ill"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "South",
@@ -5141,7 +5496,8 @@ const wordPairs = [
       "synthetic",
       "inferior",
       "blind"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Northern",
@@ -5154,7 +5510,8 @@ const wordPairs = [
       "virtuous",
       "impatience",
       "adjusted"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Southern",
@@ -5167,7 +5524,8 @@ const wordPairs = [
       "informal",
       "minority",
       "abundant"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Objective",
@@ -5180,7 +5538,8 @@ const wordPairs = [
       "sorrow",
       "increasing",
       "disliked"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Subjective",
@@ -5193,7 +5552,8 @@ const wordPairs = [
       "sweet",
       "ample",
       "wild"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Offensive",
@@ -5206,7 +5566,8 @@ const wordPairs = [
       "lean",
       "lady",
       "uncertain"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Defensive",
@@ -5219,7 +5580,8 @@ const wordPairs = [
       "separate",
       "manual",
       "backward"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Official",
@@ -5232,7 +5594,8 @@ const wordPairs = [
       "perennial",
       "succeeding",
       "individual"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unofficial",
@@ -5245,7 +5608,8 @@ const wordPairs = [
       "yin",
       "express",
       "softly"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "New",
@@ -5258,7 +5622,8 @@ const wordPairs = [
       "mental",
       "difficulty",
       "wise"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Young",
@@ -5271,7 +5636,8 @@ const wordPairs = [
       "uptown",
       "indecision",
       "rounded"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Off",
@@ -5284,7 +5650,8 @@ const wordPairs = [
       "credit",
       "clear",
       "enforce"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Shut",
@@ -5297,7 +5664,8 @@ const wordPairs = [
       "avoid",
       "above",
       "prominence"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Closed",
@@ -5310,7 +5678,8 @@ const wordPairs = [
       "complex",
       "hostile",
       "emotional"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Opposite",
@@ -5323,7 +5692,8 @@ const wordPairs = [
       "multiple",
       "impossible",
       "real"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Alternate",
@@ -5336,7 +5706,8 @@ const wordPairs = [
       "feminine",
       "center",
       "defense"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Inorganic",
@@ -5349,7 +5720,8 @@ const wordPairs = [
       "deep",
       "lord",
       "weak"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Orthodox",
@@ -5362,7 +5734,8 @@ const wordPairs = [
       "allow",
       "best",
       "breathless"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unorthodox",
@@ -5375,7 +5748,8 @@ const wordPairs = [
       "repair",
       "stay",
       "present"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Outside",
@@ -5388,7 +5762,8 @@ const wordPairs = [
       "there",
       "live",
       "head"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Inside",
@@ -5401,7 +5776,8 @@ const wordPairs = [
       "juvenile",
       "common",
       "noisy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Covered",
@@ -5414,7 +5790,8 @@ const wordPairs = [
       "appear",
       "irrelevant",
       "prominence"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Bare",
@@ -5427,7 +5804,8 @@ const wordPairs = [
       "clarity",
       "masculine",
       "offensive"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Paid",
@@ -5440,7 +5818,8 @@ const wordPairs = [
       "useful",
       "curly",
       "definite"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unpaid",
@@ -5453,7 +5832,8 @@ const wordPairs = [
       "free",
       "issue",
       "uncertain"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Partial",
@@ -5466,7 +5846,8 @@ const wordPairs = [
       "there",
       "covered",
       "dirty"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Impartial",
@@ -5479,7 +5860,8 @@ const wordPairs = [
       "finish",
       "fresh",
       "bore"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Past",
@@ -5493,7 +5875,8 @@ const wordPairs = [
       "informally",
       "agree",
       "bend"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Present",
@@ -5507,7 +5890,8 @@ const wordPairs = [
       "bull",
       "birth",
       "outdoors"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Future",
@@ -5521,7 +5905,8 @@ const wordPairs = [
       "sorrow",
       "bounce",
       "sister"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Patient",
@@ -5534,7 +5919,8 @@ const wordPairs = [
       "uneven",
       "large",
       "cash"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Impatient",
@@ -5547,7 +5933,8 @@ const wordPairs = [
       "natural",
       "subjective",
       "come"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Permissive",
@@ -5560,7 +5947,8 @@ const wordPairs = [
       "narrowly",
       "sadness",
       "unprepared"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Preventive",
@@ -5573,7 +5961,8 @@ const wordPairs = [
       "weaken",
       "yin",
       "sweet"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Personal",
@@ -5586,7 +5975,8 @@ const wordPairs = [
       "wise",
       "aft",
       "patient"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Impersonal",
@@ -5599,7 +5989,8 @@ const wordPairs = [
       "artificial",
       "rugged",
       "paid"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Physical",
@@ -5612,7 +6003,8 @@ const wordPairs = [
       "civilian",
       "complain",
       "pro"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Mental",
@@ -5625,7 +6017,8 @@ const wordPairs = [
       "actual",
       "indefinite",
       "rugged"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Secular",
@@ -5638,7 +6031,8 @@ const wordPairs = [
       "passive",
       "bear",
       "forward"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Religious",
@@ -5651,7 +6045,8 @@ const wordPairs = [
       "hate",
       "rich",
       "rested"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Plain",
@@ -5664,7 +6059,8 @@ const wordPairs = [
       "cerebral",
       "large",
       "aft"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Patterned",
@@ -5677,7 +6073,8 @@ const wordPairs = [
       "depressing",
       "nasty",
       "rounded"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Fancy",
@@ -5690,7 +6087,8 @@ const wordPairs = [
       "daughter",
       "impatience",
       "bottom"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Pleasant",
@@ -5703,7 +6101,8 @@ const wordPairs = [
       "male",
       "accurate",
       "formal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unpleasant",
@@ -5716,7 +6115,8 @@ const wordPairs = [
       "chronic",
       "cry",
       "sterile"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Pleased",
@@ -5729,7 +6129,8 @@ const wordPairs = [
       "disagree",
       "cooked",
       "reject"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Displeased",
@@ -5742,7 +6143,8 @@ const wordPairs = [
       "many",
       "far",
       "cry"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Popular",
@@ -5755,7 +6157,8 @@ const wordPairs = [
       "rounded",
       "employed",
       "whole"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unpopular",
@@ -5768,7 +6171,8 @@ const wordPairs = [
       "demand",
       "empty",
       "down"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Positive",
@@ -5782,7 +6186,8 @@ const wordPairs = [
       "adult",
       "bore",
       "official"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Negative",
@@ -5796,7 +6201,8 @@ const wordPairs = [
       "contract",
       "concrete",
       "same"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Neutral",
@@ -5810,7 +6216,8 @@ const wordPairs = [
       "back",
       "feminine",
       "decrease"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Plus",
@@ -5823,7 +6230,8 @@ const wordPairs = [
       "basic",
       "acceptance",
       "answer"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Minus",
@@ -5836,7 +6244,8 @@ const wordPairs = [
       "dirty",
       "basic",
       "love"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Possible",
@@ -5849,7 +6258,8 @@ const wordPairs = [
       "level",
       "badness",
       "rough"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Impossible",
@@ -5862,7 +6272,8 @@ const wordPairs = [
       "alternate",
       "worse",
       "same"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Prepared",
@@ -5875,7 +6286,8 @@ const wordPairs = [
       "unhappy",
       "out",
       "rear"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unprepared",
@@ -5888,7 +6300,8 @@ const wordPairs = [
       "leading",
       "negative",
       "married"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Absent",
@@ -5901,7 +6314,8 @@ const wordPairs = [
       "informal",
       "least",
       "whisper"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Primary",
@@ -5914,7 +6328,8 @@ const wordPairs = [
       "dystopian",
       "yin",
       "depressing"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Secondary",
@@ -5927,7 +6342,8 @@ const wordPairs = [
       "exterior",
       "make",
       "southern"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Basic",
@@ -5940,7 +6356,8 @@ const wordPairs = [
       "straighten",
       "rise",
       "depart"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Incidental",
@@ -5953,7 +6370,8 @@ const wordPairs = [
       "careful",
       "blessed",
       "vertical"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Private",
@@ -5966,7 +6384,8 @@ const wordPairs = [
       "justice",
       "deep",
       "exclude"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Public",
@@ -5979,7 +6398,8 @@ const wordPairs = [
       "aware",
       "increased",
       "cheer"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Proud",
@@ -5992,7 +6412,8 @@ const wordPairs = [
       "some",
       "delay",
       "hopefully"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Humble",
@@ -6005,7 +6426,8 @@ const wordPairs = [
       "blind",
       "employer",
       "hopelessly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Noisy",
@@ -6018,7 +6440,8 @@ const wordPairs = [
       "pessimism",
       "military",
       "analysis"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Rational",
@@ -6031,7 +6454,8 @@ const wordPairs = [
       "sane",
       "posterior",
       "written"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Irrational",
@@ -6044,7 +6468,8 @@ const wordPairs = [
       "dramatic",
       "attract",
       "little"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Emotional",
@@ -6057,7 +6482,8 @@ const wordPairs = [
       "offensive",
       "useful",
       "manual"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Cerebral",
@@ -6070,7 +6496,8 @@ const wordPairs = [
       "complex",
       "able",
       "inadequate"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Real",
@@ -6083,7 +6510,8 @@ const wordPairs = [
       "figurative",
       "unaware",
       "rise"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unreal",
@@ -6096,7 +6524,8 @@ const wordPairs = [
       "minority",
       "beauty",
       "useful"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Nominal",
@@ -6109,7 +6538,8 @@ const wordPairs = [
       "presence",
       "upward",
       "break"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Regular",
@@ -6122,7 +6552,8 @@ const wordPairs = [
       "simple",
       "walk",
       "retreat"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Irregular",
@@ -6135,7 +6566,8 @@ const wordPairs = [
       "intensive",
       "indecision",
       "inferior"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Related",
@@ -6148,7 +6580,8 @@ const wordPairs = [
       "meager",
       "compound",
       "careful"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unrelated",
@@ -6161,7 +6594,8 @@ const wordPairs = [
       "net",
       "war",
       "ugly"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Relevant",
@@ -6174,7 +6608,8 @@ const wordPairs = [
       "west",
       "absolute",
       "heavy"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Irrelevant",
@@ -6187,7 +6622,8 @@ const wordPairs = [
       "other",
       "unwelcome",
       "welcome"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Rich",
@@ -6200,7 +6636,8 @@ const wordPairs = [
       "orthodox",
       "impartial",
       "unlikely"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Poor",
@@ -6213,7 +6650,8 @@ const wordPairs = [
       "bless",
       "still",
       "girl"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lean",
@@ -6226,7 +6664,8 @@ const wordPairs = [
       "hit",
       "end",
       "fall"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Center",
@@ -6240,7 +6679,8 @@ const wordPairs = [
       "less",
       "bright",
       "slowly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Round",
@@ -6253,7 +6693,8 @@ const wordPairs = [
       "limited",
       "away",
       "wealth"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Square",
@@ -6266,7 +6707,8 @@ const wordPairs = [
       "injustice",
       "hearing",
       "least"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Rounded",
@@ -6279,7 +6721,8 @@ const wordPairs = [
       "living",
       "incorrect",
       "objective"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Angular",
@@ -6292,7 +6735,8 @@ const wordPairs = [
       "woman",
       "aged",
       "displeased"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Rural",
@@ -6305,7 +6749,8 @@ const wordPairs = [
       "lead",
       "ugly",
       "married"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Urban",
@@ -6318,7 +6763,8 @@ const wordPairs = [
       "success",
       "break",
       "few"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Safe",
@@ -6331,7 +6777,8 @@ const wordPairs = [
       "juvenile",
       "cash",
       "buy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Dangerous",
@@ -6344,7 +6791,8 @@ const wordPairs = [
       "wide",
       "breathless",
       "death"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Out",
@@ -6357,7 +6805,8 @@ const wordPairs = [
       "useless",
       "alternate",
       "hot"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Same",
@@ -6370,7 +6819,8 @@ const wordPairs = [
       "uneven",
       "fore",
       "artificial"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Different",
@@ -6383,7 +6833,8 @@ const wordPairs = [
       "outward",
       "fresh",
       "cooked"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Other",
@@ -6396,7 +6847,8 @@ const wordPairs = [
       "saved",
       "abolish",
       "defend"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Sane",
@@ -6409,7 +6861,8 @@ const wordPairs = [
       "deny",
       "never",
       "withdraw"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Insane",
@@ -6422,7 +6875,8 @@ const wordPairs = [
       "able",
       "hate",
       "immortal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Senior",
@@ -6435,7 +6889,8 @@ const wordPairs = [
       "complete",
       "difficulty",
       "patient"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Junior",
@@ -6448,7 +6903,8 @@ const wordPairs = [
       "odd",
       "allow",
       "plaintiff"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Separate",
@@ -6461,7 +6917,8 @@ const wordPairs = [
       "move",
       "sharp",
       "prominence"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Joint",
@@ -6474,7 +6931,8 @@ const wordPairs = [
       "proud",
       "unorthodox",
       "bull"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Serious",
@@ -6487,7 +6945,8 @@ const wordPairs = [
       "senior",
       "silence",
       "unlimited"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Frivolous",
@@ -6500,7 +6959,8 @@ const wordPairs = [
       "discharge",
       "blind",
       "specific"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Sighted",
@@ -6513,7 +6973,8 @@ const wordPairs = [
       "female",
       "move",
       "lose"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Blind",
@@ -6526,7 +6987,8 @@ const wordPairs = [
       "exterior",
       "covered",
       "daughter"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Simple",
@@ -6539,7 +7001,8 @@ const wordPairs = [
       "solid",
       "avoid",
       "likely"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Compound",
@@ -6552,7 +7015,8 @@ const wordPairs = [
       "downstairs",
       "narrow",
       "unreal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Complex",
@@ -6565,7 +7029,8 @@ const wordPairs = [
       "strange",
       "level",
       "indecision"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Single",
@@ -6578,7 +7043,8 @@ const wordPairs = [
       "actual",
       "ending",
       "intangible"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Multiple",
@@ -6591,7 +7057,8 @@ const wordPairs = [
       "careful",
       "order",
       "unite"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Double",
@@ -6604,7 +7071,8 @@ const wordPairs = [
       "usual",
       "unlimited",
       "beautiful"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Verbal",
@@ -6617,7 +7085,8 @@ const wordPairs = [
       "large",
       "sighted",
       "virtuous"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Numerical",
@@ -6630,7 +7099,8 @@ const wordPairs = [
       "dangerous",
       "timid",
       "former"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Coarse",
@@ -6643,7 +7113,8 @@ const wordPairs = [
       "southern",
       "push",
       "irrational"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Fine",
@@ -6656,7 +7127,8 @@ const wordPairs = [
       "downstairs",
       "past",
       "local"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Smooth",
@@ -6669,7 +7141,8 @@ const wordPairs = [
       "present",
       "free",
       "run"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Rough",
@@ -6682,7 +7155,8 @@ const wordPairs = [
       "act",
       "war",
       "pleasure"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Solid",
@@ -6695,7 +7169,8 @@ const wordPairs = [
       "blessed",
       "cooked",
       "unable"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Liquid",
@@ -6708,7 +7183,8 @@ const wordPairs = [
       "curved",
       "son",
       "allow"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Hollow",
@@ -6721,7 +7197,8 @@ const wordPairs = [
       "source",
       "written",
       "frivolous"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Some",
@@ -6735,7 +7212,8 @@ const wordPairs = [
       "following",
       "left",
       "vertical"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "No",
@@ -6749,7 +7227,8 @@ const wordPairs = [
       "hearing",
       "ahead",
       "danger"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "All",
@@ -6763,7 +7242,8 @@ const wordPairs = [
       "unrelated",
       "changed",
       "complain"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Sparkling",
@@ -6776,7 +7256,8 @@ const wordPairs = [
       "disliked",
       "close",
       "active"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Spoken",
@@ -6789,7 +7270,8 @@ const wordPairs = [
       "question",
       "gather",
       "inability"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Written",
@@ -6802,7 +7284,8 @@ const wordPairs = [
       "changed",
       "borrow",
       "falling"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Stable",
@@ -6815,7 +7298,8 @@ const wordPairs = [
       "hard",
       "yang",
       "visible"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unstable",
@@ -6828,7 +7312,8 @@ const wordPairs = [
       "inaction",
       "linear",
       "short"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Curved",
@@ -6841,7 +7326,8 @@ const wordPairs = [
       "minority",
       "official",
       "sudden"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Strong",
@@ -6854,7 +7340,8 @@ const wordPairs = [
       "implicit",
       "offense",
       "foot"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Weak",
@@ -6867,7 +7354,8 @@ const wordPairs = [
       "opposite",
       "posterior",
       "ill"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Superior",
@@ -6880,7 +7368,8 @@ const wordPairs = [
       "resist",
       "upward",
       "loud"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Inferior",
@@ -6893,7 +7382,8 @@ const wordPairs = [
       "abundant",
       "ground",
       "patterned"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Dry",
@@ -6906,7 +7396,8 @@ const wordPairs = [
       "heat",
       "hard",
       "off"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Tame",
@@ -6919,7 +7410,8 @@ const wordPairs = [
       "nasty",
       "gradual",
       "sleep"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Wild",
@@ -6932,7 +7424,8 @@ const wordPairs = [
       "careless",
       "admit",
       "absence"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Tangible",
@@ -6945,7 +7438,8 @@ const wordPairs = [
       "most",
       "contracted",
       "scarce"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Intangible",
@@ -6958,7 +7452,8 @@ const wordPairs = [
       "still",
       "arrive",
       "success"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Tense",
@@ -6971,7 +7466,8 @@ const wordPairs = [
       "whisper",
       "king",
       "liquid"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Relaxed",
@@ -6984,7 +7480,8 @@ const wordPairs = [
       "end",
       "expected",
       "ride"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Thick",
@@ -6997,7 +7494,8 @@ const wordPairs = [
       "guilt",
       "make",
       "numerical"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Tired",
@@ -7010,7 +7508,8 @@ const wordPairs = [
       "fat",
       "abundant",
       "break"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Rested",
@@ -7023,7 +7522,8 @@ const wordPairs = [
       "ripe",
       "married",
       "visible"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Bottom",
@@ -7037,7 +7537,8 @@ const wordPairs = [
       "unhappily",
       "curved",
       "hopeless"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Side",
@@ -7051,7 +7552,8 @@ const wordPairs = [
       "victory",
       "outward",
       "figurative"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Touched",
@@ -7064,7 +7566,8 @@ const wordPairs = [
       "active",
       "happiness",
       "less"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Untouched",
@@ -7077,7 +7580,8 @@ const wordPairs = [
       "lie",
       "covered",
       "dangerous"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Tough",
@@ -7090,7 +7594,8 @@ const wordPairs = [
       "different",
       "plain",
       "natural"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Tender",
@@ -7103,7 +7608,8 @@ const wordPairs = [
       "parent",
       "divided",
       "covered"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "True",
@@ -7116,7 +7622,8 @@ const wordPairs = [
       "integrated",
       "level",
       "reverse"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "False",
@@ -7129,7 +7636,8 @@ const wordPairs = [
       "leading",
       "round",
       "justice"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Surface",
@@ -7142,7 +7650,8 @@ const wordPairs = [
       "directly",
       "lost",
       "intense"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Overhead",
@@ -7155,7 +7664,8 @@ const wordPairs = [
       "many",
       "despair",
       "saved"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "United",
@@ -7168,7 +7678,8 @@ const wordPairs = [
       "injustice",
       "action",
       "rich"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Divided",
@@ -7181,7 +7692,8 @@ const wordPairs = [
       "senior",
       "subjective",
       "joint"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Rising",
@@ -7194,7 +7706,8 @@ const wordPairs = [
       "defensive",
       "minority",
       "urban"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Falling",
@@ -7207,7 +7720,8 @@ const wordPairs = [
       "break",
       "inadequate",
       "asleep"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Down",
@@ -7220,7 +7734,8 @@ const wordPairs = [
       "basic",
       "unorthodox",
       "virtuous"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Upstairs",
@@ -7233,7 +7748,8 @@ const wordPairs = [
       "girl",
       "preserved",
       "sweet"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Downstairs",
@@ -7246,7 +7762,8 @@ const wordPairs = [
       "trust",
       "daughter",
       "generalize"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Upstream",
@@ -7259,7 +7776,8 @@ const wordPairs = [
       "individual",
       "anterior",
       "local"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Downstream",
@@ -7272,7 +7790,8 @@ const wordPairs = [
       "inside",
       "alternate",
       "mental"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Uptown",
@@ -7285,7 +7804,8 @@ const wordPairs = [
       "indecision",
       "shallow",
       "girl"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Downtown",
@@ -7298,7 +7818,8 @@ const wordPairs = [
       "partial",
       "senior",
       "include"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Useful",
@@ -7311,7 +7832,8 @@ const wordPairs = [
       "cooked",
       "unwilling",
       "inside"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Useless",
@@ -7324,7 +7846,8 @@ const wordPairs = [
       "pleasure",
       "illegal",
       "raised"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Utopian",
@@ -7337,7 +7860,8 @@ const wordPairs = [
       "laugh",
       "explicit",
       "divided"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Dystopian",
@@ -7350,7 +7874,8 @@ const wordPairs = [
       "informally",
       "smart",
       "cold"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Valid",
@@ -7363,7 +7888,8 @@ const wordPairs = [
       "demand",
       "separate",
       "fore"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Invalid",
@@ -7376,7 +7902,8 @@ const wordPairs = [
       "queen",
       "touched",
       "strange"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Virtuous",
@@ -7389,7 +7916,8 @@ const wordPairs = [
       "enforce",
       "manual",
       "simple"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Wicked",
@@ -7402,7 +7930,8 @@ const wordPairs = [
       "junior",
       "better",
       "walk"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Visible",
@@ -7415,7 +7944,8 @@ const wordPairs = [
       "mild",
       "socialism",
       "south"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Invisible",
@@ -7428,7 +7958,8 @@ const wordPairs = [
       "below",
       "happily",
       "long"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Wanted",
@@ -7441,7 +7972,8 @@ const wordPairs = [
       "rugged",
       "order",
       "acceptance"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unwanted",
@@ -7454,7 +7986,8 @@ const wordPairs = [
       "eastern",
       "gather",
       "alternate"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Warm",
@@ -7467,7 +8000,8 @@ const wordPairs = [
       "close",
       "slow",
       "spread"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Cool",
@@ -7480,7 +8014,8 @@ const wordPairs = [
       "miss",
       "tender",
       "open"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Increasing",
@@ -7493,7 +8028,8 @@ const wordPairs = [
       "failing",
       "bare",
       "no"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Decreasing",
@@ -7506,7 +8042,8 @@ const wordPairs = [
       "whole",
       "strength",
       "worst"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Welcome",
@@ -7519,7 +8056,8 @@ const wordPairs = [
       "plus",
       "action",
       "separation"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unwelcome",
@@ -7532,7 +8070,8 @@ const wordPairs = [
       "proud",
       "avoid",
       "public"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Well",
@@ -7545,7 +8084,8 @@ const wordPairs = [
       "manual",
       "unusual",
       "green"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ill",
@@ -7558,7 +8098,8 @@ const wordPairs = [
       "sighted",
       "some",
       "employee"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Wide",
@@ -7571,7 +8112,8 @@ const wordPairs = [
       "loose",
       "buy",
       "expand"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Narrow",
@@ -7584,7 +8126,8 @@ const wordPairs = [
       "import",
       "expected",
       "agree"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Willing",
@@ -7597,7 +8140,8 @@ const wordPairs = [
       "down",
       "chronic",
       "allow"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unwilling",
@@ -7610,7 +8154,8 @@ const wordPairs = [
       "deep",
       "magnetic",
       "inverse"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Wise",
@@ -7623,7 +8168,8 @@ const wordPairs = [
       "acceptance",
       "bound",
       "north"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Foolish",
@@ -7636,7 +8182,8 @@ const wordPairs = [
       "unite",
       "leading",
       "lowered"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Worn",
@@ -7649,7 +8196,8 @@ const wordPairs = [
       "above",
       "little",
       "unusual"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Worthy",
@@ -7662,7 +8210,8 @@ const wordPairs = [
       "minority",
       "foolish",
       "breathless"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unworthy",
@@ -7675,7 +8224,8 @@ const wordPairs = [
       "middle",
       "patience",
       "presence"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Partly",
@@ -7688,7 +8238,8 @@ const wordPairs = [
       "sorrow",
       "pessimism",
       "union"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Wholly",
@@ -7701,7 +8252,8 @@ const wordPairs = [
       "let",
       "hopefully",
       "abstract"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Badly",
@@ -7714,7 +8266,8 @@ const wordPairs = [
       "forward",
       "accurate",
       "ending"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Ever",
@@ -7727,7 +8280,8 @@ const wordPairs = [
       "innocent",
       "pain",
       "last"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Never",
@@ -7740,7 +8294,8 @@ const wordPairs = [
       "cerebral",
       "badness",
       "question"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Often",
@@ -7753,7 +8308,8 @@ const wordPairs = [
       "analysis",
       "directly",
       "unloaded"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Rarely",
@@ -7766,7 +8322,8 @@ const wordPairs = [
       "intangible",
       "soft",
       "discourage"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Happily",
@@ -7779,7 +8336,8 @@ const wordPairs = [
       "secondary",
       "piano",
       "complex"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sadly",
@@ -7792,7 +8350,8 @@ const wordPairs = [
       "live",
       "rugged",
       "different"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unhappily",
@@ -7805,7 +8364,8 @@ const wordPairs = [
       "liquid",
       "fertile",
       "unnatural"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Directly",
@@ -7818,7 +8378,8 @@ const wordPairs = [
       "feminine",
       "inaction",
       "minimum"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Indirectly",
@@ -7831,7 +8392,8 @@ const wordPairs = [
       "minus",
       "half",
       "exclude"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Loudly",
@@ -7844,7 +8406,8 @@ const wordPairs = [
       "informally",
       "peripheral",
       "minimum"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Softly",
@@ -7857,7 +8420,8 @@ const wordPairs = [
       "common",
       "integrated",
       "sighted"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Ahead",
@@ -7870,7 +8434,8 @@ const wordPairs = [
       "unbroken",
       "dormant",
       "short"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Below",
@@ -7883,7 +8448,8 @@ const wordPairs = [
       "unreal",
       "low",
       "preserved"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Above",
@@ -7896,7 +8462,8 @@ const wordPairs = [
       "increase",
       "prominence",
       "feminine"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Quickly",
@@ -7909,7 +8476,8 @@ const wordPairs = [
       "preserved",
       "united",
       "virtuous"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Downward",
@@ -7922,7 +8490,8 @@ const wordPairs = [
       "male",
       "overhead",
       "nice"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Upward",
@@ -7935,7 +8504,8 @@ const wordPairs = [
       "upstream",
       "verbal",
       "gradual"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Here",
@@ -7948,7 +8518,8 @@ const wordPairs = [
       "defensive",
       "inactive",
       "dormant"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "There",
@@ -7961,7 +8532,8 @@ const wordPairs = [
       "difficulty",
       "establish",
       "pride"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Indoors",
@@ -7974,7 +8546,8 @@ const wordPairs = [
       "literal",
       "unworthy",
       "dark"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Outdoors",
@@ -7987,7 +8560,8 @@ const wordPairs = [
       "square",
       "expanded",
       "outgoing"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Slowly",
@@ -8000,7 +8574,8 @@ const wordPairs = [
       "reject",
       "unprepared",
       "accurate"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Publicly",
@@ -8013,7 +8588,8 @@ const wordPairs = [
       "retail",
       "informally",
       "interior"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Privately",
@@ -8026,7 +8602,8 @@ const wordPairs = [
       "loaded",
       "manual",
       "plain"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Informally",
@@ -8039,7 +8616,8 @@ const wordPairs = [
       "reject",
       "softly",
       "like"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Formally",
@@ -8052,7 +8630,8 @@ const wordPairs = [
       "employee",
       "silence",
       "stupid"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Hopefully",
@@ -8065,7 +8644,8 @@ const wordPairs = [
       "unpopular",
       "past",
       "pull"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Hopelessly",
@@ -8078,7 +8658,8 @@ const wordPairs = [
       "outside",
       "know",
       "linear"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Narrowly",
@@ -8091,7 +8672,8 @@ const wordPairs = [
       "useful",
       "prepared",
       "rising"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Broadly",
@@ -8104,7 +8686,8 @@ const wordPairs = [
       "unable",
       "cooked",
       "disorder"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Pro",
@@ -8117,7 +8700,8 @@ const wordPairs = [
       "curved",
       "wanted",
       "double"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Con",
@@ -8130,7 +8714,8 @@ const wordPairs = [
       "virtuous",
       "right",
       "many"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Retail",
@@ -8143,7 +8728,8 @@ const wordPairs = [
       "direct",
       "popular",
       "reward"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Wholesale",
@@ -8156,7 +8742,8 @@ const wordPairs = [
       "hardened",
       "impatience",
       "immortal"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Retreat",
@@ -8169,7 +8756,8 @@ const wordPairs = [
       "useful",
       "wise",
       "side"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Failing",
@@ -8182,7 +8770,8 @@ const wordPairs = [
       "liked",
       "weak",
       "leave"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Finish",
@@ -8195,7 +8784,8 @@ const wordPairs = [
       "less",
       "aunt",
       "unadjusted"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Start",
@@ -8208,7 +8798,8 @@ const wordPairs = [
       "male",
       "attract",
       "poverty"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Advance",
@@ -8221,7 +8812,8 @@ const wordPairs = [
       "push",
       "difficulty",
       "curved"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Decrease",
@@ -8234,7 +8826,8 @@ const wordPairs = [
       "enlist",
       "make",
       "loading"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Increase",
@@ -8247,7 +8840,8 @@ const wordPairs = [
       "prominence",
       "quiet",
       "cathode"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Loading",
@@ -8260,7 +8854,8 @@ const wordPairs = [
       "decreasing",
       "particular",
       "prominence"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Unloading",
@@ -8273,7 +8868,8 @@ const wordPairs = [
       "hire",
       "personal",
       "perennial"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Presence",
@@ -8286,7 +8882,8 @@ const wordPairs = [
       "steep",
       "tall",
       "wholesale"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Absence",
@@ -8299,7 +8896,8 @@ const wordPairs = [
       "inner",
       "left",
       "other"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Anode",
@@ -8312,7 +8910,8 @@ const wordPairs = [
       "indecent",
       "noisy",
       "niece"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Cathode",
@@ -8325,7 +8924,8 @@ const wordPairs = [
       "falling",
       "bless",
       "strength"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Export",
@@ -8338,7 +8938,8 @@ const wordPairs = [
       "laugh",
       "security",
       "meager"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Express",
@@ -8351,7 +8952,8 @@ const wordPairs = [
       "unwanted",
       "opening",
       "publicly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Head",
@@ -8364,7 +8966,8 @@ const wordPairs = [
       "inferior",
       "unwelcome",
       "patient"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Import",
@@ -8377,7 +8980,8 @@ const wordPairs = [
       "coarse",
       "wise",
       "flat"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Location",
@@ -8390,7 +8994,8 @@ const wordPairs = [
       "bull",
       "admit",
       "prominence"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Rear",
@@ -8403,7 +9008,8 @@ const wordPairs = [
       "discontent",
       "plaintiff",
       "innocent"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Studio",
@@ -8416,7 +9022,8 @@ const wordPairs = [
       "outward",
       "earthly",
       "illegal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Tail",
@@ -8429,7 +9036,8 @@ const wordPairs = [
       "bound",
       "piano",
       "deny"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Patience",
@@ -8442,7 +9050,8 @@ const wordPairs = [
       "opening",
       "nephew",
       "bottom"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Impatience",
@@ -8455,7 +9064,8 @@ const wordPairs = [
       "southern",
       "outdoors",
       "charge"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Beauty",
@@ -8468,7 +9078,8 @@ const wordPairs = [
       "recorded",
       "close",
       "retreat"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ugliness",
@@ -8481,7 +9092,8 @@ const wordPairs = [
       "preventive",
       "positive",
       "straighten"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Ease",
@@ -8494,7 +9106,8 @@ const wordPairs = [
       "encourage",
       "blessed",
       "long"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Difficulty",
@@ -8507,7 +9120,8 @@ const wordPairs = [
       "war",
       "leading",
       "north"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Simplicity",
@@ -8520,7 +9134,8 @@ const wordPairs = [
       "vertical",
       "heat",
       "dry"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Complexity",
@@ -8533,7 +9148,8 @@ const wordPairs = [
       "take",
       "wholly",
       "known"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Clarity",
@@ -8546,7 +9162,8 @@ const wordPairs = [
       "unknown",
       "cooked",
       "adjusted"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Obscurity",
@@ -8559,7 +9176,8 @@ const wordPairs = [
       "export",
       "awkward",
       "steep"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Justice",
@@ -8572,7 +9190,8 @@ const wordPairs = [
       "willing",
       "fresh",
       "tragedy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Injustice",
@@ -8585,7 +9204,8 @@ const wordPairs = [
       "stormy",
       "rational",
       "more"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Decision",
@@ -8598,7 +9218,8 @@ const wordPairs = [
       "stormy",
       "employer",
       "deny"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Indecision",
@@ -8611,7 +9232,8 @@ const wordPairs = [
       "softly",
       "rugged",
       "basic"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Wisdom",
@@ -8624,7 +9246,8 @@ const wordPairs = [
       "superior",
       "pain",
       "strange"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Folly",
@@ -8637,7 +9260,8 @@ const wordPairs = [
       "intense",
       "literal",
       "death"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Trust",
@@ -8650,7 +9274,8 @@ const wordPairs = [
       "white",
       "liking",
       "retreat"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Distrust",
@@ -8663,7 +9288,8 @@ const wordPairs = [
       "stay",
       "discomfort",
       "fail"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Sound",
@@ -8676,7 +9302,8 @@ const wordPairs = [
       "real",
       "lend",
       "unemployed"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Silence",
@@ -8689,7 +9316,8 @@ const wordPairs = [
       "neutral",
       "attack",
       "false"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Strength",
@@ -8702,7 +9330,8 @@ const wordPairs = [
       "unloaded",
       "able",
       "day"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Weakness",
@@ -8715,7 +9344,8 @@ const wordPairs = [
       "obscurity",
       "certain",
       "mortal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Majority",
@@ -8728,7 +9358,8 @@ const wordPairs = [
       "ending",
       "rarely",
       "decreasing"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Minority",
@@ -8741,7 +9372,8 @@ const wordPairs = [
       "pass",
       "downstairs",
       "all"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Goodness",
@@ -8754,7 +9386,8 @@ const wordPairs = [
       "move",
       "cheerful",
       "more"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Reward",
@@ -8767,7 +9400,8 @@ const wordPairs = [
       "numerical",
       "victory",
       "inclined"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Badness",
@@ -8780,7 +9414,8 @@ const wordPairs = [
       "good",
       "reduce",
       "moving"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Asset",
@@ -8793,7 +9428,8 @@ const wordPairs = [
       "narrowly",
       "bear",
       "remember"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Liability",
@@ -8806,7 +9442,8 @@ const wordPairs = [
       "distrust",
       "have",
       "question"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Penalty",
@@ -8819,7 +9456,8 @@ const wordPairs = [
       "poor",
       "virtuous",
       "many"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Ability",
@@ -8832,7 +9470,8 @@ const wordPairs = [
       "adult",
       "bright",
       "cheap"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Inability",
@@ -8845,7 +9484,8 @@ const wordPairs = [
       "military",
       "low",
       "come"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Optimism",
@@ -8858,7 +9498,8 @@ const wordPairs = [
       "local",
       "joint",
       "rush"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Pessimism",
@@ -8871,7 +9512,8 @@ const wordPairs = [
       "lyric",
       "presence",
       "discomfort"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Waking",
@@ -8884,7 +9526,8 @@ const wordPairs = [
       "passing",
       "pride",
       "closed"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sleeping",
@@ -8897,7 +9540,8 @@ const wordPairs = [
       "meager",
       "socialism",
       "stupid"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Analysis",
@@ -8910,7 +9554,8 @@ const wordPairs = [
       "preserved",
       "secondary",
       "lady"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Synthesis",
@@ -8923,7 +9568,8 @@ const wordPairs = [
       "confront",
       "unmarried",
       "nephew"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Particular",
@@ -8936,7 +9582,8 @@ const wordPairs = [
       "won",
       "bare",
       "majority"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Beginning",
@@ -8950,7 +9597,8 @@ const wordPairs = [
       "contracted",
       "dry",
       "deep"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "End",
@@ -8964,7 +9612,8 @@ const wordPairs = [
       "indecision",
       "present",
       "cerebral"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Yang",
@@ -8977,7 +9626,8 @@ const wordPairs = [
       "written",
       "remember",
       "partly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Yin",
@@ -8990,7 +9640,8 @@ const wordPairs = [
       "hide",
       "foreign",
       "divide"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Figure",
@@ -9003,7 +9654,8 @@ const wordPairs = [
       "delay",
       "beauty",
       "attack"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ground",
@@ -9016,7 +9668,8 @@ const wordPairs = [
       "joint",
       "ill",
       "demand"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Universal",
@@ -9029,7 +9682,8 @@ const wordPairs = [
       "informally",
       "unchanged",
       "meager"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Comedy",
@@ -9042,7 +9696,8 @@ const wordPairs = [
       "upstream",
       "thin",
       "wholesale"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Tragedy",
@@ -9055,7 +9710,8 @@ const wordPairs = [
       "inverse",
       "many",
       "exempt"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Question",
@@ -9068,7 +9724,8 @@ const wordPairs = [
       "opaque",
       "employee",
       "finite"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Answer",
@@ -9081,7 +9738,8 @@ const wordPairs = [
       "bottom",
       "timid",
       "useless"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ending",
@@ -9094,7 +9752,8 @@ const wordPairs = [
       "chronic",
       "complex",
       "incomplete"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Failure",
@@ -9107,7 +9766,8 @@ const wordPairs = [
       "double",
       "informally",
       "alive"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Success",
@@ -9120,7 +9780,8 @@ const wordPairs = [
       "friend",
       "bore",
       "male"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Birth",
@@ -9133,7 +9794,8 @@ const wordPairs = [
       "negative",
       "hopeless",
       "exit"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Rise",
@@ -9146,7 +9808,8 @@ const wordPairs = [
       "foreign",
       "decrease",
       "automatic"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Death",
@@ -9159,7 +9822,8 @@ const wordPairs = [
       "gross",
       "loss",
       "synthetic"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fall",
@@ -9172,7 +9836,8 @@ const wordPairs = [
       "due",
       "stable",
       "tall"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Victory",
@@ -9185,7 +9850,8 @@ const wordPairs = [
       "uneven",
       "avoid",
       "continual"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Defeat",
@@ -9198,7 +9864,8 @@ const wordPairs = [
       "insecurity",
       "birth",
       "regular"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Pleasure",
@@ -9211,7 +9878,8 @@ const wordPairs = [
       "frivolous",
       "impatient",
       "future"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Pain",
@@ -9224,7 +9892,8 @@ const wordPairs = [
       "hate",
       "badly",
       "contracted"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Liking",
@@ -9237,7 +9906,8 @@ const wordPairs = [
       "northern",
       "stupid",
       "decreased"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Dislike",
@@ -9250,7 +9920,8 @@ const wordPairs = [
       "wide",
       "compact",
       "danger"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Pride",
@@ -9263,7 +9934,8 @@ const wordPairs = [
       "boy",
       "ignore",
       "nice"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Humility",
@@ -9276,7 +9948,8 @@ const wordPairs = [
       "aunt",
       "separation",
       "happily"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Happiness",
@@ -9289,7 +9962,8 @@ const wordPairs = [
       "preventive",
       "notice",
       "empty"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Joy",
@@ -9302,7 +9976,8 @@ const wordPairs = [
       "north",
       "definite",
       "greater"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sadness",
@@ -9315,7 +9990,8 @@ const wordPairs = [
       "accept",
       "cheerful",
       "tall"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Sorrow",
@@ -9328,7 +10004,8 @@ const wordPairs = [
       "nominal",
       "weakness",
       "refuse"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Hope",
@@ -9341,7 +10018,8 @@ const wordPairs = [
       "infinite",
       "anterior",
       "capable"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Despair",
@@ -9354,7 +10032,8 @@ const wordPairs = [
       "joint",
       "ease",
       "friend"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Hate",
@@ -9367,7 +10046,8 @@ const wordPairs = [
       "heavenly",
       "weaken",
       "accurate"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Aged",
@@ -9380,7 +10060,8 @@ const wordPairs = [
       "specific",
       "ever",
       "adopted"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Living",
@@ -9393,7 +10074,8 @@ const wordPairs = [
       "adequate",
       "incorrect",
       "downstairs"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Offense",
@@ -9406,7 +10088,8 @@ const wordPairs = [
       "leave",
       "sunset",
       "finish"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Defense",
@@ -9419,7 +10102,8 @@ const wordPairs = [
       "ease",
       "cheer",
       "friend"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Capitalism",
@@ -9432,7 +10116,8 @@ const wordPairs = [
       "bad",
       "lyric",
       "cubic"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Socialism",
@@ -9445,7 +10130,8 @@ const wordPairs = [
       "informal",
       "rational",
       "liked"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Foot",
@@ -9458,7 +10144,8 @@ const wordPairs = [
       "here",
       "studio",
       "relax"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Adult",
@@ -9471,7 +10158,8 @@ const wordPairs = [
       "girl",
       "poor",
       "upward"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Juvenile",
@@ -9484,7 +10172,8 @@ const wordPairs = [
       "gross",
       "ending",
       "defendant"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Defendant",
@@ -9497,7 +10186,8 @@ const wordPairs = [
       "welcome",
       "minimum",
       "uncle"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Friend",
@@ -9510,7 +10200,8 @@ const wordPairs = [
       "deaf",
       "liked",
       "patient"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Aunt",
@@ -9523,7 +10214,8 @@ const wordPairs = [
       "partly",
       "unstable",
       "gradual"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Bear",
@@ -9536,7 +10228,8 @@ const wordPairs = [
       "liked",
       "differ",
       "deficit"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Brother",
@@ -9549,7 +10242,8 @@ const wordPairs = [
       "solid",
       "alive",
       "publicly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Bull",
@@ -9562,7 +10256,8 @@ const wordPairs = [
       "here",
       "narrow",
       "expanded"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Child",
@@ -9575,7 +10270,8 @@ const wordPairs = [
       "horizontal",
       "fertile",
       "more"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Daughter",
@@ -9588,7 +10284,8 @@ const wordPairs = [
       "sighted",
       "issue",
       "unpaid"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Girl",
@@ -9601,7 +10298,8 @@ const wordPairs = [
       "wealth",
       "sell",
       "outward"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Employee",
@@ -9614,7 +10312,8 @@ const wordPairs = [
       "impatient",
       "defendant",
       "injustice"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Employer",
@@ -9627,7 +10326,8 @@ const wordPairs = [
       "automatic",
       "external",
       "encourage"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Father",
@@ -9640,7 +10340,8 @@ const wordPairs = [
       "wealth",
       "adult",
       "indoors"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Foe",
@@ -9653,7 +10354,8 @@ const wordPairs = [
       "closing",
       "most",
       "dramatic"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Husband",
@@ -9666,7 +10368,8 @@ const wordPairs = [
       "outer",
       "shrink",
       "smart"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "King",
@@ -9679,7 +10382,8 @@ const wordPairs = [
       "dry",
       "steep",
       "son"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lady",
@@ -9692,7 +10396,8 @@ const wordPairs = [
       "sterile",
       "neutral",
       "awkward"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lord",
@@ -9705,7 +10410,8 @@ const wordPairs = [
       "make",
       "unlikely",
       "personal"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Man",
@@ -9718,7 +10424,8 @@ const wordPairs = [
       "fall",
       "shut",
       "male"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Mother",
@@ -9731,7 +10438,8 @@ const wordPairs = [
       "valid",
       "overhead",
       "some"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Nephew",
@@ -9744,7 +10452,8 @@ const wordPairs = [
       "comfort",
       "sparkling",
       "multiply"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Niece",
@@ -9757,7 +10466,8 @@ const wordPairs = [
       "fertile",
       "unpaid",
       "feminine"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Parent",
@@ -9770,7 +10480,8 @@ const wordPairs = [
       "privately",
       "informal",
       "shrink"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Plaintiff",
@@ -9783,7 +10494,8 @@ const wordPairs = [
       "passing",
       "above",
       "anode"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Queen",
@@ -9796,7 +10508,8 @@ const wordPairs = [
       "real",
       "saved",
       "deep"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sister",
@@ -9809,7 +10522,8 @@ const wordPairs = [
       "empty",
       "preventive",
       "pro"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Son",
@@ -9822,7 +10536,8 @@ const wordPairs = [
       "divided",
       "softly",
       "dislike"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Uncle",
@@ -9835,7 +10550,8 @@ const wordPairs = [
       "inclined",
       "include",
       "suffer"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Wife",
@@ -9848,7 +10564,8 @@ const wordPairs = [
       "answer",
       "strengthen",
       "touched"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Woman",
@@ -9861,7 +10578,8 @@ const wordPairs = [
       "sleep",
       "charge",
       "offensive"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Gain",
@@ -9874,7 +10592,8 @@ const wordPairs = [
       "union",
       "unhappily",
       "bottom"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Loss",
@@ -9887,7 +10606,8 @@ const wordPairs = [
       "answer",
       "dead",
       "decreasing"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Credit",
@@ -9900,7 +10620,8 @@ const wordPairs = [
       "issue",
       "asleep",
       "enter"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Cash",
@@ -9913,7 +10634,8 @@ const wordPairs = [
       "reject",
       "come",
       "noisy"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Demand",
@@ -9926,7 +10648,8 @@ const wordPairs = [
       "synthesis",
       "functional",
       "posterior"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Sink",
@@ -9939,7 +10662,8 @@ const wordPairs = [
       "day",
       "foreign",
       "upstream"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Source",
@@ -9952,7 +10676,8 @@ const wordPairs = [
       "live",
       "goodness",
       "universal"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Supply",
@@ -9965,7 +10690,8 @@ const wordPairs = [
       "intangible",
       "sadness",
       "rested"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Deficit",
@@ -9978,7 +10704,8 @@ const wordPairs = [
       "unwilling",
       "ahead",
       "humble"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Lead",
@@ -9991,7 +10718,8 @@ const wordPairs = [
       "narrow",
       "comfort",
       "little"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Acceptance",
@@ -10004,7 +10732,8 @@ const wordPairs = [
       "high",
       "down",
       "lower"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Rejection",
@@ -10017,7 +10746,8 @@ const wordPairs = [
       "round",
       "interest",
       "even"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Order",
@@ -10030,7 +10760,8 @@ const wordPairs = [
       "decreasing",
       "deaf",
       "gradual"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Peace",
@@ -10043,7 +10774,8 @@ const wordPairs = [
       "well",
       "away",
       "depart"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Disorder",
@@ -10056,7 +10788,8 @@ const wordPairs = [
       "charge",
       "neutral",
       "leading"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "War",
@@ -10069,7 +10802,8 @@ const wordPairs = [
       "coarse",
       "formally",
       "unhappy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Innocence",
@@ -10082,7 +10816,8 @@ const wordPairs = [
       "liked",
       "father",
       "take"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Guilt",
@@ -10095,7 +10830,8 @@ const wordPairs = [
       "liking",
       "differ",
       "victory"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Action",
@@ -10108,7 +10844,8 @@ const wordPairs = [
       "breathless",
       "secondary",
       "preventive"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Inaction",
@@ -10121,7 +10858,8 @@ const wordPairs = [
       "weak",
       "adequate",
       "ground"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Separation",
@@ -10134,7 +10872,8 @@ const wordPairs = [
       "east",
       "reverse",
       "divided"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Union",
@@ -10147,7 +10886,8 @@ const wordPairs = [
       "success",
       "lose",
       "less"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Prominence",
@@ -10160,7 +10900,8 @@ const wordPairs = [
       "bright",
       "ill",
       "concrete"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Comfort",
@@ -10173,7 +10914,8 @@ const wordPairs = [
       "nephew",
       "hopelessly",
       "strong"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Discomfort",
@@ -10186,7 +10928,8 @@ const wordPairs = [
       "asleep",
       "father",
       "unlike"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Wealth",
@@ -10199,7 +10942,8 @@ const wordPairs = [
       "happiness",
       "top",
       "even"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Poverty",
@@ -10212,7 +10956,8 @@ const wordPairs = [
       "hard",
       "opening",
       "express"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Safety",
@@ -10225,7 +10970,8 @@ const wordPairs = [
       "linger",
       "rejection",
       "plus"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Security",
@@ -10238,7 +10984,8 @@ const wordPairs = [
       "direct",
       "informally",
       "gradual"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Danger",
@@ -10251,7 +10998,8 @@ const wordPairs = [
       "manage",
       "pleasant",
       "brother"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Insecurity",
@@ -10264,7 +11012,8 @@ const wordPairs = [
       "secular",
       "know",
       "strengthen"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Night",
@@ -10277,7 +11026,8 @@ const wordPairs = [
       "man",
       "discomfort",
       "following"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Sunrise",
@@ -10290,7 +11040,8 @@ const wordPairs = [
       "north",
       "potential",
       "unbroken"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sunset",
@@ -10303,7 +11054,8 @@ const wordPairs = [
       "kern",
       "aware",
       "unnatural"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Sleep",
@@ -10316,7 +11068,8 @@ const wordPairs = [
       "strength",
       "impatience",
       "neutral"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Wake",
@@ -10329,7 +11082,8 @@ const wordPairs = [
       "stop",
       "yang",
       "large"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Relax",
@@ -10342,7 +11096,8 @@ const wordPairs = [
       "untouched",
       "unfriendly",
       "new"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Laugh",
@@ -10355,7 +11110,8 @@ const wordPairs = [
       "angular",
       "implicit",
       "girl"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Reduce",
@@ -10368,7 +11124,8 @@ const wordPairs = [
       "personal",
       "best",
       "admit"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Change",
@@ -10381,7 +11138,8 @@ const wordPairs = [
       "stand",
       "earthly",
       "order"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Stay",
@@ -10394,7 +11152,8 @@ const wordPairs = [
       "segregated",
       "shallow",
       "personal"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Strengthen",
@@ -10407,7 +11166,8 @@ const wordPairs = [
       "yang",
       "shallow",
       "change"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Weaken",
@@ -10420,7 +11180,8 @@ const wordPairs = [
       "opposite",
       "certain",
       "timid"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Shrink",
@@ -10433,7 +11194,8 @@ const wordPairs = [
       "junior",
       "closed",
       "multiply"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Contract",
@@ -10446,7 +11208,8 @@ const wordPairs = [
       "incomplete",
       "better",
       "implicit"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Stretch",
@@ -10459,7 +11222,8 @@ const wordPairs = [
       "here",
       "downward",
       "dystopian"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Repair",
@@ -10472,7 +11236,8 @@ const wordPairs = [
       "open",
       "white",
       "official"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Widen",
@@ -10485,7 +11250,8 @@ const wordPairs = [
       "ease",
       "difficulty",
       "lose"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Begin",
@@ -10498,7 +11264,8 @@ const wordPairs = [
       "full",
       "short",
       "rational"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Heat",
@@ -10511,7 +11278,8 @@ const wordPairs = [
       "ugly",
       "wealth",
       "outdoors"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Freeze",
@@ -10524,7 +11292,8 @@ const wordPairs = [
       "warm",
       "late",
       "foe"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Boil",
@@ -10537,7 +11306,8 @@ const wordPairs = [
       "correct",
       "glad",
       "disliked"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Appear",
@@ -10550,7 +11320,8 @@ const wordPairs = [
       "blessed",
       "analytic",
       "early"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Disappear",
@@ -10563,7 +11334,8 @@ const wordPairs = [
       "irregular",
       "hardened",
       "tense"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Fill",
@@ -10576,7 +11348,8 @@ const wordPairs = [
       "alternate",
       "away",
       "heavy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Rush",
@@ -10589,7 +11362,8 @@ const wordPairs = [
       "false",
       "patience",
       "minority"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Delay",
@@ -10602,7 +11376,8 @@ const wordPairs = [
       "certain",
       "continual",
       "magnetic"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Know",
@@ -10615,7 +11390,8 @@ const wordPairs = [
       "most",
       "hire",
       "asset"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ignore",
@@ -10628,7 +11404,8 @@ const wordPairs = [
       "much",
       "different",
       "fewer"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Remember",
@@ -10641,7 +11418,8 @@ const wordPairs = [
       "notice",
       "refrain",
       "defeat"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Forget",
@@ -10654,7 +11432,8 @@ const wordPairs = [
       "liked",
       "intense",
       "obscurity"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Mind",
@@ -10667,7 +11446,8 @@ const wordPairs = [
       "dry",
       "mature",
       "increased"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Exclude",
@@ -10680,7 +11460,8 @@ const wordPairs = [
       "short",
       "sleep",
       "plaintiff"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Multiply",
@@ -10693,7 +11474,8 @@ const wordPairs = [
       "finish",
       "generalize",
       "steep"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Divide",
@@ -10706,7 +11488,8 @@ const wordPairs = [
       "unlike",
       "exit",
       "surrender"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Include",
@@ -10719,7 +11502,8 @@ const wordPairs = [
       "depressing",
       "informally",
       "strange"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Reject",
@@ -10732,7 +11516,8 @@ const wordPairs = [
       "uneven",
       "employee",
       "agree"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Accept",
@@ -10745,7 +11530,8 @@ const wordPairs = [
       "poverty",
       "smooth",
       "supply"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Refuse",
@@ -10758,7 +11544,8 @@ const wordPairs = [
       "repel",
       "short",
       "allow"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Disagree",
@@ -10771,7 +11558,8 @@ const wordPairs = [
       "straighten",
       "recall",
       "charge"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Agree",
@@ -10784,7 +11572,8 @@ const wordPairs = [
       "defendant",
       "divided",
       "correct"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Avoid",
@@ -10797,7 +11586,8 @@ const wordPairs = [
       "sudden",
       "away",
       "joy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Confront",
@@ -10810,7 +11600,8 @@ const wordPairs = [
       "unrelated",
       "hit",
       "impatient"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Deny",
@@ -10823,7 +11614,8 @@ const wordPairs = [
       "ease",
       "dry",
       "presence"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Admit",
@@ -10836,7 +11628,8 @@ const wordPairs = [
       "downstream",
       "nephew",
       "unreal"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Cheer",
@@ -10849,7 +11642,8 @@ const wordPairs = [
       "miss",
       "closed",
       "gain"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Curse",
@@ -10862,7 +11656,8 @@ const wordPairs = [
       "patience",
       "universal",
       "best"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Bless",
@@ -10875,7 +11670,8 @@ const wordPairs = [
       "low",
       "happiness",
       "aged"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Make",
@@ -10888,7 +11684,8 @@ const wordPairs = [
       "rise",
       "silence",
       "scarce"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Complain",
@@ -10901,7 +11698,8 @@ const wordPairs = [
       "brother",
       "rise",
       "possible"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Shout",
@@ -10914,7 +11712,8 @@ const wordPairs = [
       "attract",
       "round",
       "peripheral"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Whisper",
@@ -10927,7 +11726,8 @@ const wordPairs = [
       "standing",
       "former",
       "useless"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Expand",
@@ -10940,7 +11740,8 @@ const wordPairs = [
       "there",
       "loading",
       "lady"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Specify",
@@ -10953,7 +11754,8 @@ const wordPairs = [
       "separate",
       "present",
       "pleased"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Generalize",
@@ -10966,7 +11768,8 @@ const wordPairs = [
       "child",
       "head",
       "mother"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Enlist",
@@ -10979,7 +11782,8 @@ const wordPairs = [
       "nasty",
       "on",
       "intangible"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Discharge",
@@ -10992,7 +11796,8 @@ const wordPairs = [
       "emotional",
       "best",
       "clear"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Lose",
@@ -11005,7 +11810,8 @@ const wordPairs = [
       "cubic",
       "southern",
       "feminine"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Surrender",
@@ -11018,7 +11824,8 @@ const wordPairs = [
       "enlist",
       "infinite",
       "warm"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Resist",
@@ -11031,7 +11838,8 @@ const wordPairs = [
       "weak",
       "broken",
       "out"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Attack",
@@ -11044,7 +11852,8 @@ const wordPairs = [
       "compound",
       "minimum",
       "anterior"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Defend",
@@ -11057,7 +11866,8 @@ const wordPairs = [
       "walk",
       "lead",
       "dirty"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Hit",
@@ -11070,7 +11880,8 @@ const wordPairs = [
       "net",
       "death",
       "adjusted"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Miss",
@@ -11083,7 +11894,8 @@ const wordPairs = [
       "inverse",
       "stay",
       "unhappy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Break",
@@ -11096,7 +11908,8 @@ const wordPairs = [
       "below",
       "preserved",
       "more"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Spread",
@@ -11109,7 +11922,8 @@ const wordPairs = [
       "rough",
       "organic",
       "repel"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Gather",
@@ -11122,7 +11936,8 @@ const wordPairs = [
       "expensive",
       "explicit",
       "tragedy"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Pull",
@@ -11135,7 +11950,8 @@ const wordPairs = [
       "neutral",
       "stop",
       "reduce"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Charge",
@@ -11148,7 +11964,8 @@ const wordPairs = [
       "sighted",
       "studio",
       "center"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Attract",
@@ -11161,7 +11978,8 @@ const wordPairs = [
       "cash",
       "fore",
       "finite"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Repel",
@@ -11174,7 +11992,8 @@ const wordPairs = [
       "credit",
       "move",
       "pull"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Stand",
@@ -11188,7 +12007,8 @@ const wordPairs = [
       "careful",
       "raise",
       "partly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lie",
@@ -11202,7 +12022,8 @@ const wordPairs = [
       "immoral",
       "familiar",
       "numerical"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Raise",
@@ -11215,7 +12036,8 @@ const wordPairs = [
       "foot",
       "side",
       "ill"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Level",
@@ -11228,7 +12050,8 @@ const wordPairs = [
       "ugliness",
       "fancy",
       "distrust"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Content",
@@ -11241,7 +12064,8 @@ const wordPairs = [
       "depressing",
       "northern",
       "offensive"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Discontent",
@@ -11254,7 +12078,8 @@ const wordPairs = [
       "goodness",
       "west",
       "arrive"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Encourage",
@@ -11267,7 +12092,8 @@ const wordPairs = [
       "stand",
       "piano",
       "weakness"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Discourage",
@@ -11280,7 +12106,8 @@ const wordPairs = [
       "juvenile",
       "expanded",
       "feminine"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Interest",
@@ -11293,7 +12120,8 @@ const wordPairs = [
       "geographic",
       "opaque",
       "unexpected"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Bore",
@@ -11306,7 +12134,8 @@ const wordPairs = [
       "incorrect",
       "utopian",
       "fancy"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Go",
@@ -11319,7 +12148,8 @@ const wordPairs = [
       "correct",
       "finish",
       "secular"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Move",
@@ -11332,7 +12162,8 @@ const wordPairs = [
       "tired",
       "yin",
       "partly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Walk",
@@ -11345,7 +12176,8 @@ const wordPairs = [
       "western",
       "downward",
       "lively"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Ride",
@@ -11358,7 +12190,8 @@ const wordPairs = [
       "right",
       "implicit",
       "immature"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Set",
@@ -11371,7 +12204,8 @@ const wordPairs = [
       "badness",
       "potential",
       "shut"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Lower",
@@ -11384,7 +12218,8 @@ const wordPairs = [
       "sporadic",
       "interior",
       "depart"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Arrive",
@@ -11397,7 +12232,8 @@ const wordPairs = [
       "upstream",
       "pain",
       "true"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Depart",
@@ -11410,7 +12246,8 @@ const wordPairs = [
       "untouched",
       "emotional",
       "lead"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Leave",
@@ -11423,7 +12260,8 @@ const wordPairs = [
       "bottom",
       "early",
       "reverse"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Exit",
@@ -11436,7 +12274,8 @@ const wordPairs = [
       "gather",
       "mind",
       "formal"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Enter",
@@ -11449,7 +12288,8 @@ const wordPairs = [
       "little",
       "bound",
       "partly"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Straighten",
@@ -11462,7 +12302,8 @@ const wordPairs = [
       "whisper",
       "verbal",
       "hopefully"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Bend",
@@ -11475,7 +12316,8 @@ const wordPairs = [
       "reject",
       "false",
       "loudly"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Linger",
@@ -11488,7 +12330,8 @@ const wordPairs = [
       "wholesale",
       "depressing",
       "segregated"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Suffer",
@@ -11501,7 +12344,8 @@ const wordPairs = [
       "notice",
       "inside",
       "often"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Enjoy",
@@ -11514,7 +12358,8 @@ const wordPairs = [
       "abstract",
       "forget",
       "action"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Notice",
@@ -11527,7 +12372,8 @@ const wordPairs = [
       "foreign",
       "irrelevant",
       "incapable"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Show",
@@ -11540,7 +12386,8 @@ const wordPairs = [
       "liking",
       "boil",
       "heavy"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Hide",
@@ -11553,7 +12400,8 @@ const wordPairs = [
       "sighted",
       "incoming",
       "northern"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Keep",
@@ -11566,7 +12414,8 @@ const wordPairs = [
       "same",
       "smart",
       "curse"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Take",
@@ -11579,7 +12428,8 @@ const wordPairs = [
       "last",
       "walk",
       "reduce"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Buy",
@@ -11592,7 +12442,8 @@ const wordPairs = [
       "subjective",
       "lead",
       "trust"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Sell",
@@ -11605,7 +12456,8 @@ const wordPairs = [
       "sharp",
       "majority",
       "correct"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Bounce",
@@ -11618,7 +12470,8 @@ const wordPairs = [
       "lower",
       "encourage",
       "dead"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Allow",
@@ -11631,7 +12484,8 @@ const wordPairs = [
       "wise",
       "unlike",
       "ugliness"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Profit",
@@ -11644,7 +12498,8 @@ const wordPairs = [
       "military",
       "credit",
       "tight"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Find",
@@ -11657,7 +12512,8 @@ const wordPairs = [
       "integrated",
       "differ",
       "invalid"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Deposit",
@@ -11670,7 +12526,8 @@ const wordPairs = [
       "bright",
       "continual",
       "freeze"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Withdraw",
@@ -11683,7 +12540,8 @@ const wordPairs = [
       "dead",
       "lesser",
       "pride"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Borrow",
@@ -11696,7 +12554,8 @@ const wordPairs = [
       "incomplete",
       "raised",
       "blessed"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Lend",
@@ -11709,7 +12568,8 @@ const wordPairs = [
       "keep",
       "heavy",
       "mind"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Kern",
@@ -11722,7 +12582,8 @@ const wordPairs = [
       "popular",
       "side",
       "wrong"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Act",
@@ -11735,7 +12596,8 @@ const wordPairs = [
       "glad",
       "waking",
       "irrational"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Fire",
@@ -11748,7 +12610,8 @@ const wordPairs = [
       "aware",
       "end",
       "spread"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Hire",
@@ -11761,7 +12624,8 @@ const wordPairs = [
       "unprepared",
       "virtuous",
       "heat"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Let",
@@ -11774,7 +12638,8 @@ const wordPairs = [
       "bare",
       "single",
       "rested"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Establish",
@@ -11787,7 +12652,8 @@ const wordPairs = [
       "black",
       "admit",
       "issue"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Abolish",
@@ -11800,7 +12666,8 @@ const wordPairs = [
       "insecurity",
       "numerical",
       "yin"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Prevent",
@@ -11813,7 +12680,8 @@ const wordPairs = [
       "off",
       "fail",
       "analytic"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Unite",
@@ -11826,7 +12694,8 @@ const wordPairs = [
       "plus",
       "foreign",
       "center"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Issue",
@@ -11839,7 +12708,8 @@ const wordPairs = [
       "true",
       "segregated",
       "extensive"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Recall",
@@ -11852,7 +12722,8 @@ const wordPairs = [
       "moving",
       "directly",
       "advance"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Manage",
@@ -11865,7 +12736,8 @@ const wordPairs = [
       "succeed",
       "relaxed",
       "resist"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Fail",
@@ -11878,7 +12750,8 @@ const wordPairs = [
       "exclude",
       "inactive",
       "inaccurate"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Pass",
@@ -11891,7 +12764,8 @@ const wordPairs = [
       "generalize",
       "deposit",
       "coarse"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Succeed",
@@ -11904,7 +12778,8 @@ const wordPairs = [
       "differ",
       "rugged",
       "other"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Enforce",
@@ -11917,7 +12792,8 @@ const wordPairs = [
       "lean",
       "thin",
       "lord"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Exempt",
@@ -11930,7 +12806,8 @@ const wordPairs = [
       "lyric",
       "destroyed",
       "small"
-    ]
+    ],
+    "difficulty": "hard"
   },
   {
     "word": "Attend",
@@ -11943,7 +12820,8 @@ const wordPairs = [
       "opposite",
       "lowered",
       "reverse"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Have",
@@ -11956,7 +12834,8 @@ const wordPairs = [
       "fall",
       "sharp",
       "actual"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Equal",
@@ -11969,7 +12848,8 @@ const wordPairs = [
       "geographic",
       "wealth",
       "wife"
-    ]
+    ],
+    "difficulty": "easy"
   },
   {
     "word": "Differ",
@@ -11982,7 +12862,8 @@ const wordPairs = [
       "center",
       "pride",
       "timid"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Yield",
@@ -11995,7 +12876,8 @@ const wordPairs = [
       "big",
       "straight",
       "superior"
-    ]
+    ],
+    "difficulty": "medium"
   },
   {
     "word": "Refrain",
@@ -12008,7 +12890,8 @@ const wordPairs = [
       "tail",
       "fresh",
       "wanted"
-    ]
+    ],
+    "difficulty": "medium"
   }
 ];
 // END_WORD_PAIRS
@@ -12109,7 +12992,9 @@ function setMode(m) {
 }
 
 function startGame() {
-  shuffledPairs = shuffle(wordPairs).slice(0, config.wordCount);
+  const allowedDifficulties = config.difficulties || ['easy', 'medium', 'hard'];
+  const pool = wordPairs.filter(p => allowedDifficulties.includes(p.difficulty || 'hard'));
+  shuffledPairs = shuffle(pool).slice(0, config.wordCount);
   currentIndex = 0;
   correctScore = 0;
   wrongScore = 0;
