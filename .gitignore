@@ -1,6 +1,3 @@
-# Build output
-dist/
-
 # Claude Code session data
 .claude/
 
