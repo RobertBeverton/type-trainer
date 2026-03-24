@@ -278,3 +278,11 @@
   --hud-text: #E8E8F0;   /* near-white text — --hud-accent (#7AF) is for icons/highlights only */
   --hud-accent: #7AF;
 }
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
