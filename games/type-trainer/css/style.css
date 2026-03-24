@@ -284,6 +284,13 @@ body {
   outline-offset: 2px;
 }
 
+/* Back-to-hub link in HUD */
+.hud-home-link {
+  text-decoration: none;
+  color: inherit;
+  margin-right: auto;
+}
+
 /* Simplified HUD for youngest players (4-5 bracket) */
 .hud--simplified .hud-streak,
 .hud--simplified .keyboard-toggle-btn {

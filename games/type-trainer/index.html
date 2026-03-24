@@ -34,6 +34,10 @@
   <div id="game-wrapper">
     <!-- HUD bar: score, stage, lives, streak, buttons -->
     <div id="hud" class="hud" aria-label="Game status">
+      <a href="index.html" class="hud-btn hud-home-link" aria-label="Back to all games" title="All Games">
+        <span class="hud-btn__icon">🏠</span>
+        <span class="hud-btn__label">Games</span>
+      </a>
       <div class="hud-item">Score: <span id="hud-score-value" aria-live="polite">0</span></div>
       <div class="hud-item">Stage: <span id="hud-stage-current">1</span>/<span id="hud-stage-total">10</span></div>
       <div class="hud-item" id="hud-lives">Lives: <span id="hud-lives-value" aria-live="polite">&#9829;&#9829;&#9829;</span></div>
