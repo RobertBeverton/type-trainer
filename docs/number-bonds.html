@@ -1165,7 +1165,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">090d920 24 Mar 20:13</span>
+  <span class="kg-shell__version" title="Build version">7ea5da2 24 Mar 20:20</span>
 </div>
 
 <!-- Player select overlay -->
@@ -2075,6 +2075,7 @@ function generateDistractors(answer, op, settings, count = 3) {
 
     if (candidate === answer) continue;
     if (!negatives && candidate < 0) continue;
+    if ((op === '*' || op === '/') && candidate <= 0) continue;
     if (candidates.has(candidate)) continue;
 
     candidates.add(candidate);
@@ -2421,7 +2422,9 @@ function startGame() {
 }
 
 function initGameScreen() {
-  document.getElementById('nb-quit-btn').onclick = () => {
+  const quitBtn = document.getElementById('nb-quit-btn');
+  quitBtn.hidden = settings.mode !== 'endless';
+  quitBtn.onclick = () => {
     activeSession?.end();
   };
 }

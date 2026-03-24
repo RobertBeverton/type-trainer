@@ -187,7 +187,9 @@ function startGame() {
 }
 
 function initGameScreen() {
-  document.getElementById('nb-quit-btn').onclick = () => {
+  const quitBtn = document.getElementById('nb-quit-btn');
+  quitBtn.hidden = settings.mode !== 'endless';
+  quitBtn.onclick = () => {
     activeSession?.end();
   };
 }

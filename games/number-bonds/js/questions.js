@@ -98,6 +98,7 @@ export function generateDistractors(answer, op, settings, count = 3) {
 
     if (candidate === answer) continue;
     if (!negatives && candidate < 0) continue;
+    if ((op === '*' || op === '/') && candidate <= 0) continue;
     if (candidates.has(candidate)) continue;
 
     candidates.add(candidate);
