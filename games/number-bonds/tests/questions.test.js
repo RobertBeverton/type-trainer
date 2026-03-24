@@ -63,4 +63,20 @@ describe('generateQuestion — subtraction', () => {
       assert.ok(q.left >= q.right);
     }
   });
+
+  it('answer matches blank position', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('-', baseSettings);
+      const expected = q.blank === 'left' ? q.left : q.right;
+      assert.equal(q.answer, expected);
+    }
+  });
+
+  it('operands within min/max range', () => {
+    for (let i = 0; i < 50; i++) {
+      const q = generateQuestion('-', baseSettings);
+      assert.ok(q.left >= 1 && q.left <= 10);
+      assert.ok(q.right >= 1 && q.right <= 10);
+    }
+  });
 });

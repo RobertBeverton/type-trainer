@@ -7,7 +7,7 @@
  * @returns {{ left, op, right, result, blank: 'left'|'right', answer }}
  */
 export function generateQuestion(op, settings) {
-  const { min, max, maxTable, negatives, decimals } = settings;
+  const { min, max, maxTable, negatives, decimals } = settings; // decimals: applied in Task 4
   const resolvedOp = op === 'mixed'
     ? ['+', '-', '*', '/'][Math.floor(Math.random() * 4)]
     : op;
