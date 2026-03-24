@@ -54,6 +54,16 @@
   */
 
   /* TODO Phase 4: @media (prefers-contrast: more) overrides */
+
+  /* Theme swatch colours — static, not theme-dependent (used by shell.css to preview each theme) */
+  --swatch-colourful-light-bg: #FFF8E7;
+  --swatch-colourful-light-border: #FF6B6B;
+  --swatch-colourful-dark-bg: #1A1520;
+  --swatch-colourful-dark-border: #C4A8FF;
+  --swatch-clean-light-bg: #FAFAF8;
+  --swatch-clean-light-border: #536E7A;
+  --swatch-clean-dark-bg: #0E0E1A;
+  --swatch-clean-dark-border: #77AAFF;
 }
 
 /* === Colourful Light (default for ages 4-8) === */
