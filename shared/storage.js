@@ -59,11 +59,13 @@ function createPlayer(name, { dob, manualAge }) {
     theme: getDefaultTheme(dob, manualAge),
     createdAt: new Date().toISOString().slice(0, 10)
   };
-  return _write(PLAYERS_KEY, players);
+  // Return the sanitised name on success so callers can look up the right key
+  return _write(PLAYERS_KEY, players) ? name : false;
 }
 
 function savePlayer(name, data) {
   const players = getAllPlayers();
+  if (!players[name]) return;
   players[name] = { ...players[name], ...data };
   _write(PLAYERS_KEY, players);
 }
@@ -116,9 +118,16 @@ function getAge(player) {
 }
 
 function getDefaultTheme(dob, manualAge) {
-  const age = dob
-    ? Math.floor((Date.now() - new Date(dob).getTime()) / 31557600000)
-    : manualAge;
+  let age;
+  if (dob) {
+    const today = new Date();
+    const birth = new Date(dob);
+    age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
+  } else {
+    age = manualAge != null ? manualAge : null;
+  }
   if (age !== null && age <= 8) return 'colourful-light';
   return 'clean-light';
 }

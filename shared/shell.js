@@ -97,10 +97,39 @@
     localStorage.setItem('kidsgames_migrated_typetrainer', 'true');
   }
 
+  // --- Form helpers ---
+  function _resetAddPlayerForm() {
+    const nameInput = document.getElementById('kg-name-input');
+    nameInput.value = '';
+    nameInput.disabled = false;
+    document.getElementById('kg-dob-input').value = '';
+    document.getElementById('kg-age-input').value = '';
+    document.getElementById('kg-addplayer-submit').disabled = true;
+    document.getElementById('kg-addplayer-heading').textContent = 'New Player';
+    // Reset to DoB tab
+    document.querySelectorAll('.kg-age-tab').forEach(tab => {
+      const isDob = tab.dataset.mode === 'dob';
+      tab.classList.toggle('active', isDob);
+      tab.setAttribute('aria-selected', isDob ? 'true' : 'false');
+    });
+    document.getElementById('kg-dob-field').hidden = false;
+    document.getElementById('kg-age-field').hidden = true;
+  }
+
+  function _cancelAgeUpdate() {
+    const form = document.getElementById('kg-addplayer-form');
+    if (form._ageUpdateHandler) {
+      form.removeEventListener('submit', form._ageUpdateHandler);
+      form._ageUpdateHandler = null;
+    }
+    _resetAddPlayerForm();
+  }
+
   // --- Age update (from nudge banner) ---
   function showAgeUpdate(player) {
     const addOverlay = document.getElementById('kg-addplayer-overlay');
     const playerOverlay = document.getElementById('kg-player-overlay');
+    _cancelAgeUpdate(); // clean up any stale handler and reset form state
     document.getElementById('kg-addplayer-heading').textContent = 'Update age for ' + escapeHtml(player.name);
     const nameInput = document.getElementById('kg-name-input');
     nameInput.value = player.name;
@@ -110,11 +139,6 @@
     addOverlay.hidden = false;
 
     const form = document.getElementById('kg-addplayer-form');
-    // Remove any stale handler from a previous showAgeUpdate call that was abandoned
-    if (form._ageUpdateHandler) {
-      form.removeEventListener('submit', form._ageUpdateHandler);
-      form._ageUpdateHandler = null;
-    }
     function handler(e) {
       e.preventDefault();
       const dob = document.getElementById('kg-dob-input').value || null;
@@ -126,11 +150,7 @@
         lastAgeNudge: new Date().toISOString().slice(0, 10),
       });
       addOverlay.hidden = true;
-      nameInput.disabled = false;
-      nameInput.value = '';
-      document.getElementById('kg-addplayer-heading').textContent = 'New Player';
-      form.removeEventListener('submit', handler);
-      form._ageUpdateHandler = null;
+      _cancelAgeUpdate();
       showPlayerSelect();
     }
     form._ageUpdateHandler = handler;
@@ -213,7 +233,7 @@
       const initial = escapeHtml(p.name.charAt(0).toUpperCase());
       const bracket = getAgeBracket(p);
       html += `
-        <button class="kg-player-card" data-player="${safeName}">
+        <button class="kg-player-card" data-player="${p.name}">
           <span class="kg-player-card__avatar">${initial}</span>
           <span class="kg-player-card__name">${safeName}</span>
           <span class="kg-player-card__bracket">${bracket}</span>
@@ -246,6 +266,8 @@
 
     grid.innerHTML = html;
     overlay.hidden = false;
+    const firstCard = grid.querySelector('.kg-player-card');
+    if (firstCard) firstCard.focus();
 
     if (dueForNudge.length > 0) {
       document.getElementById('kg-nudge-update')?.addEventListener('click', () => {
@@ -329,6 +351,7 @@
       if (!card) return;
       if (card.id === 'kg-add-player-btn') {
         document.getElementById('kg-player-overlay').hidden = true;
+        _resetAddPlayerForm();
         document.getElementById('kg-addplayer-overlay').hidden = false;
         document.getElementById('kg-name-input').focus();
         return;
@@ -348,9 +371,11 @@
       const manualAge = ageInput.value ? parseInt(ageInput.value) : null;
 
       if (!name) return;
-      if (createPlayer(name, { dob, manualAge })) {
-        const player = getPlayer(name);
+      const created = createPlayer(name, { dob, manualAge });
+      if (created) {
+        const player = getPlayer(created);
         document.getElementById('kg-addplayer-overlay').hidden = true;
+        _resetAddPlayerForm();
         applyPlayer(player);
       }
     });
@@ -358,6 +383,7 @@
     // Add player cancel
     document.getElementById('kg-addplayer-cancel').addEventListener('click', () => {
       document.getElementById('kg-addplayer-overlay').hidden = true;
+      _cancelAgeUpdate();
       showPlayerSelect();
     });
 
@@ -412,7 +438,7 @@
           document.getElementById('kg-games-btn').setAttribute('aria-expanded', 'false');
           return;
         }
-        if (!addOverlay.hidden) { addOverlay.hidden = true; showPlayerSelect(); return; }
+        if (!addOverlay.hidden) { addOverlay.hidden = true; _cancelAgeUpdate(); showPlayerSelect(); return; }
         // Player overlay: only close if there's an active player (can't dismiss on first visit)
         if (!playerOverlay.hidden && getActivePlayer()) { playerOverlay.hidden = true; return; }
       }
