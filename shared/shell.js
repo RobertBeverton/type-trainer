@@ -35,8 +35,17 @@
   let muted = false;
 
   // --- Init ---
+  let _initialized = false;  // guard against double-invocation
+
   function initShell() {
+    if (_initialized) return;
+    _initialized = true;
+
     renderGamesDropdown();
+
+    // Restrict DoB input to today (prevents negative ages from future dates)
+    const dobInput = document.getElementById('kg-dob-input');
+    if (dobInput) dobInput.max = new Date().toISOString().slice(0, 10);
 
     // Set page title from data attribute
     const pageTitle = document.body.dataset.pageTitle;
@@ -246,7 +255,7 @@
       if (e.key === 'Tab') {
         const openOverlay = document.querySelector('.kg-overlay:not([hidden])');
         if (!openOverlay) return;
-        const focusable = openOverlay.querySelectorAll('button:not([disabled]), input, [tabindex]:not([tabindex="-1"])');
+        const focusable = openOverlay.querySelectorAll('button:not([disabled]), input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])');
         if (!focusable.length) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];

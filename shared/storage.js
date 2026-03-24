@@ -59,8 +59,7 @@ function createPlayer(name, { dob, manualAge }) {
     theme: getDefaultTheme(dob, manualAge),
     createdAt: new Date().toISOString().slice(0, 10)
   };
-  _write(PLAYERS_KEY, players);
-  return true;
+  return _write(PLAYERS_KEY, players);
 }
 
 function savePlayer(name, data) {
@@ -75,11 +74,15 @@ function deletePlayer(name) {
   _write(PLAYERS_KEY, players);
   // Clean up game-specific data — match exact suffix pattern
   const suffix = '_' + name;
-  Object.keys(localStorage).forEach(k => {
-    if (k.startsWith(STORAGE_PREFIX) && k.endsWith(suffix) && k !== PLAYERS_KEY && k !== ACTIVE_KEY) {
-      localStorage.removeItem(k);
-    }
-  });
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith(STORAGE_PREFIX) && k.endsWith(suffix) && k !== PLAYERS_KEY && k !== ACTIVE_KEY) {
+        localStorage.removeItem(k);
+      }
+    });
+  } catch (e) {
+    console.error('KidsGames: failed to clean up game data for player', name, e);
+  }
 }
 
 function getActivePlayer() {
