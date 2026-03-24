@@ -261,6 +261,17 @@ body {
   max-width: 150px;
 }
 
+.kg-shell__home {
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  padding: 2px 4px;
+  transition: background var(--transition-fast);
+}
+
+.kg-shell__home:hover {
+  background: var(--border);
+}
+
 .kg-shell__spacer {
   flex: 1;
 }
@@ -2272,8 +2283,8 @@ body {
     </div>
   </div>
 
-  <!-- Page title -->
-  <span id="kg-page-title" class="kg-shell__title">Kids Games</span>
+  <!-- Page title — links home -->
+  <a id="kg-page-title" class="kg-shell__title kg-shell__home" href="/kids-games/">Kids Games</a>
 
   <!-- Spacer -->
   <span class="kg-shell__spacer"></span>
