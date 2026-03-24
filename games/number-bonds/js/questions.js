@@ -66,6 +66,54 @@ export function generateQuestion(op, settings) {
   return { left, op: resolvedOp, right, result, blank, answer };
 }
 
+/**
+ * Generate wrong answer choices.
+ * @param {number} answer  The correct answer
+ * @param {string} op  The operation ('+' | '-' | '*' | '/')
+ * @param {object} settings  { min, max, maxTable, negatives, decimals }
+ * @param {number} count  Number of distractors to return (default 3)
+ * @returns {number[]}
+ */
+export function generateDistractors(answer, op, settings, count = 3) {
+  const { negatives, decimals } = settings;
+  const candidates = new Set();
+  let attempts = 0;
+
+  while (candidates.size < count && attempts < 200) {
+    attempts++;
+    let candidate;
+
+    if (op === '*' || op === '/') {
+      // Use an adjacent multiple — stays in the same ballpark as the correct answer
+      const step = randInt(1, Math.max(2, Math.floor(settings.maxTable / 3)));
+      candidate = answer + step * (Math.random() < 0.5 ? 1 : -1);
+    } else {
+      // Offset by a small amount
+      const offset = randInt(1, 5) * (Math.random() < 0.5 ? 1 : -1);
+      candidate = answer + offset;
+    }
+
+    if (decimals) candidate = round1dp(candidate);
+    else candidate = Math.round(candidate);
+
+    if (candidate === answer) continue;
+    if (!negatives && candidate < 0) continue;
+    if (candidates.has(candidate)) continue;
+
+    candidates.add(candidate);
+  }
+
+  // Fallback: if we couldn't generate enough, use sequential offsets
+  let fallback = 1;
+  while (candidates.size < count) {
+    const c = answer + fallback;
+    if (c !== answer && !candidates.has(c)) candidates.add(c);
+    fallback++;
+  }
+
+  return [...candidates];
+}
+
 // --- Helpers ---
 
 function randInt(min, max) {

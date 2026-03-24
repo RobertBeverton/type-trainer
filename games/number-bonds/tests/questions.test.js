@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { generateQuestion } from '../js/questions.js';
+import { generateQuestion, generateDistractors } from '../js/questions.js';
 
 const baseSettings = { min: 1, max: 10, maxTable: 10, negatives: false, decimals: false };
 
@@ -193,4 +193,43 @@ function countDp(n) {
   const s = n.toString();
   const dot = s.indexOf('.');
   return dot === -1 ? 0 : s.length - dot - 1;
+}
+
+describe('generateDistractors', () => {
+  it('returns exactly 3 distractors by default', () => {
+    const d = generateDistractors(7, '+', baseSettings);
+    assert.equal(d.length, 3);
+  });
+
+  it('no distractor equals the correct answer', () => {
+    for (let i = 0; i < 50; i++) {
+      const answer = randIntTest(1, 20);
+      const d = generateDistractors(answer, '+', baseSettings);
+      assert.ok(!d.includes(answer), `distractor matched correct answer ${answer}`);
+    }
+  });
+
+  it('no duplicate distractors', () => {
+    for (let i = 0; i < 50; i++) {
+      const d = generateDistractors(5, '+', baseSettings);
+      assert.equal(new Set(d).size, d.length, 'duplicates found');
+    }
+  });
+
+  it('distractors are numbers', () => {
+    const d = generateDistractors(7, '*', baseSettings);
+    d.forEach(x => assert.equal(typeof x, 'number'));
+  });
+
+  it('decimal distractors have ≤1dp', () => {
+    const decSettings = { min: 1, max: 10, maxTable: 10, negatives: false, decimals: true };
+    for (let i = 0; i < 30; i++) {
+      const d = generateDistractors(3.5, '+', decSettings);
+      d.forEach(x => assert.ok(countDp(x) <= 1));
+    }
+  });
+});
+
+function randIntTest(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
