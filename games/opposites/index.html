@@ -448,16 +448,14 @@
 
 <script>
 // Read player context from shared shell
-const playerCtx = window.KidsGames ? window.KidsGames.player : null;
-const ageBracket = playerCtx ? playerCtx.ageBracket : '6-8';
-
 const BRACKET_CONFIG = {
   '4-5': { wordCount: 15, distractorCount: 2, showHint: true,  difficulties: ['easy'] },
   '6-8': { wordCount: 20, distractorCount: 3, showHint: true,  difficulties: ['easy', 'medium'] },
   '9-12': { wordCount: 30, distractorCount: 3, showHint: false, difficulties: ['easy', 'medium', 'hard'] },
   '13+':  { wordCount: 40, distractorCount: 3, showHint: false, difficulties: ['easy', 'medium', 'hard'] },
 };
-const config = BRACKET_CONFIG[ageBracket] || BRACKET_CONFIG['6-8'];
+let ageBracket = (window.KidsGames && window.KidsGames.player) ? window.KidsGames.player.ageBracket : '6-8';
+let config = BRACKET_CONFIG[ageBracket] || BRACKET_CONFIG['6-8'];
 
 // Load saved data for current player
 const savedData = window.KidsGames ? window.KidsGames.loadGameData('opposites') : {};
@@ -9301,34 +9299,6 @@ const wordPairs = [
     "difficulty": "hard"
   },
   {
-    "word": "Figure",
-    "opposites": [
-      "ground"
-    ],
-    "distractors": [
-      "action",
-      "soft",
-      "succeeding",
-      "niece",
-      "usual"
-    ],
-    "difficulty": "medium"
-  },
-  {
-    "word": "Ground",
-    "opposites": [
-      "figure"
-    ],
-    "distractors": [
-      "inferior",
-      "mild",
-      "lively",
-      "unreal",
-      "rejection"
-    ],
-    "difficulty": "medium"
-  },
-  {
     "word": "Universal",
     "opposites": [
       "particular"
@@ -12884,6 +12854,18 @@ function showEndScreen() {
 
 // ---- START ----
 startGame();
+
+// Re-apply age bracket if player is selected after page load (e.g. first visit, cache clear)
+if (window.KidsGames) {
+  window.KidsGames.onPlayerChange(function(ctx) {
+    const newBracket = ctx ? ctx.ageBracket : '6-8';
+    if (newBracket !== ageBracket) {
+      ageBracket = newBracket;
+      config = BRACKET_CONFIG[ageBracket] || BRACKET_CONFIG['6-8'];
+      startGame();
+    }
+  });
+}
 </script>
 </body>
 </html>

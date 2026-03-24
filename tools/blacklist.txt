@@ -108,5 +108,6 @@ evilness      # "Good/Evilness" — noun form, "evil" is sufficient
 ill           # "Good/Ill" — ambiguous; "bad" is the clear opposite
 softly        # "Loud/Softly" — adverb form, "soft" is sufficient
 
-# --- Confusing because too similar to question ---
-# (add specific pairs here if WordNet produces weird results)
+# --- Gestalt / psychology jargon (figure/ground perception) ---
+figure        # "Figure/Ground" — Gestalt psychology term, meaningless to kids
+ground        # paired with figure above; also drops "ground/figure" as a question
