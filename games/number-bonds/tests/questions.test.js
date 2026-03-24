@@ -177,6 +177,16 @@ describe('generateQuestion — decimals', () => {
       assert.ok(countDp(q.result) <= 1, `result ${q.result} should have ≤1dp`);
     }
   });
+
+  it('produces non-integer operands when decimals enabled', () => {
+    const values = [];
+    for (let i = 0; i < 100; i++) {
+      const q = generateQuestion('+', decSettings);
+      values.push(q.left, q.right);
+    }
+    assert.ok(values.some(v => !Number.isInteger(v)),
+      'at least one non-integer value should appear with decimals:true');
+  });
 });
 
 function countDp(n) {
