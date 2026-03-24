@@ -777,7 +777,51 @@ git commit -m "feat(maths): add main.js — settings, game, and results wiring"
 
 ---
 
-## Task 7: Smoke test and rebuild docs
+## Task 7: Update hub card
+
+**Files:**
+- Modify: `hub.html` (lines ~282–289)
+
+The Maths card currently shows "Coming Soon". Change the play button text and update the description to match the game's actual mechanic.
+
+### Step 1: Edit `hub.html`
+
+Find the Maths card block (search for `class="game-card maths"`):
+
+```html
+<!-- Before -->
+<a href="maths.html" class="game-card maths">
+  <span class="game-icon">🧮</span>
+  <div class="game-title">Maths</div>
+  <div class="game-desc">Answer + − × ÷ questions as fast as you can!</div>
+  <div class="game-badge">Ages 5–10</div>
+  <div class="device-badge any-device">📱 Works on any device</div>
+  <span class="play-btn">Coming Soon</span>
+</a>
+
+<!-- After -->
+<a href="maths.html" class="game-card maths">
+  <span class="game-icon">🧮</span>
+  <div class="game-title">Maths</div>
+  <div class="game-desc">Work out the answer — tap the right number as fast as you can!</div>
+  <div class="game-badge">Ages 5–10</div>
+  <div class="device-badge any-device">📱 Works on any device</div>
+  <span class="play-btn">Play</span>
+</a>
+```
+
+The only required change is `Coming Soon` → `Play`. The description update is recommended but optional.
+
+### Step 2: Commit
+
+```bash
+git add hub.html
+git commit -m "feat(hub): launch Maths — update card description and play button"
+```
+
+---
+
+## Task 8: Smoke test and rebuild docs
 
 ### Step 1: Open in browser
 
@@ -802,9 +846,15 @@ Open `games/maths/index.html` directly in a browser (or via local server). Check
 bash build.sh
 ```
 
-Check output — the Maths game should now appear in the built shell.
+Expected: build completes without errors. The built `maths.html` shell page should exist.
 
-### Step 3: Final commit
+### Step 3: Verify hub card in browser
+
+Open `hub.html` in a browser and confirm:
+- [ ] Maths card shows "Play" (not "Coming Soon")
+- [ ] Clicking the card navigates to the game correctly
+
+### Step 4: Final commit
 
 ```bash
 git add -A
