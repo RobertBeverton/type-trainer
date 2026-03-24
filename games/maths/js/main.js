@@ -201,12 +201,14 @@ function renderQuestion(question, choiceNums) {
   const safeLeft = Number(left);
   const safeRight = Number(right);
   const safeResult = Number(result);
+  // Render equation with blank
   const html = `${safeLeft} ${opStr} ${safeRight} = <span class="maths-blank">?</span>`;
   const hasLargeNum = [safeLeft, safeRight, safeResult].some(n => Math.abs(n) >= 100);
   const qEl = document.getElementById('maths-question');
   qEl.innerHTML = html;
   qEl.classList.toggle('maths-question--long', hasLargeNum);
 
+  // Render choice buttons
   const choicesEl = document.getElementById('maths-choices');
   choicesEl.innerHTML = '';
   choiceNums.forEach(num => {
