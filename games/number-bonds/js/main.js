@@ -239,14 +239,15 @@ function renderQuestion(question, choiceNums) {
 
 function renderAnswerFeedback({ correct, correctAnswer, chosen, requiresConfirmation }) {
   document.getElementById('nb-choices')?.querySelectorAll('.nb-choice').forEach(btn => {
+    btn.classList.remove('nb-choice--hint');
     const num = Number(btn.textContent);
     if (num === correctAnswer) {
       btn.classList.add('nb-choice--reveal');
-      if (!requiresConfirmation) btn.disabled = true; // keep enabled so player can tap to confirm
+      if (!requiresConfirmation) btn.disabled = true;
     } else {
       btn.disabled = true;
+      if (num === chosen && !correct) btn.classList.add('nb-choice--wrong');
     }
-    if (num === chosen && !correct) btn.classList.add('nb-choice--wrong');
     if (num === chosen && correct) btn.classList.add('nb-choice--correct');
   });
 }
