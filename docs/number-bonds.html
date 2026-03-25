@@ -1128,6 +1128,37 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   width: 100%;
 }
 
+/* Complexity indicator */
+.nb-complexity-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.nb-complexity-badge {
+  font-size: var(--text-xs);
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-md);
+  color: #fff;
+}
+
+.nb-complexity-ages {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.nb-complexity-example {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-left: auto;
+}
+
 /* === Responsive === */
 
 @media (max-width: 400px) {
@@ -1198,7 +1229,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">0237b15 25 Mar 13:07</span>
+  <span class="kg-shell__version" title="Build version">cce6132 25 Mar 15:25</span>
 </div>
 
 <!-- Player select overlay -->
@@ -1314,6 +1345,11 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
           <label class="nb-label">
             <input id="nb-decimals" type="checkbox"> Decimals (1dp)
           </label>
+        </div>
+        <div class="nb-complexity-row" id="nb-complexity-row">
+          <span class="nb-complexity-badge" id="nb-complexity-badge">KS2</span>
+          <span class="nb-complexity-ages" id="nb-complexity-ages">Ages 7–11</span>
+          <span class="nb-complexity-example" id="nb-complexity-example">e.g. 12 + ? = 20</span>
         </div>
       </div>
 
@@ -2231,7 +2267,7 @@ class GameSession {
     }
   }
 
-  end() {
+  end({ quit = false } = {}) {
     if (!this._active) return;
     this._active = false;
     clearInterval(this._timer);
@@ -2244,6 +2280,7 @@ class GameSession {
       accuracy: this.total > 0 ? Math.round((this.correct / this.total) * 100) : 0,
       bestStreak: this.bestStreak,
       timeTaken,
+      quit,
     });
   }
 
@@ -2360,6 +2397,7 @@ function initSettingsScreen() {
     if (!btn) return;
     settings.op = btn.dataset.op;
     updateToggles('nb-op-row', 'data-op', settings.op);
+    if (settings.difficulty === 'custom') updateComplexityPreview();
   });
 
   // Difficulty toggles
@@ -2370,6 +2408,7 @@ function initSettingsScreen() {
     updateToggles('nb-diff-row', 'data-diff', settings.difficulty);
     updateDifficultyHint();
     document.getElementById('nb-custom-opts').hidden = settings.difficulty !== 'custom';
+    if (settings.difficulty === 'custom') updateComplexityPreview();
   });
 
   // Mode buttons
@@ -2383,18 +2422,23 @@ function initSettingsScreen() {
   // Custom inputs
   document.getElementById('nb-min').addEventListener('change', e => {
     settings.custom.min = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('nb-max').addEventListener('change', e => {
     settings.custom.max = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('nb-table').addEventListener('change', e => {
     settings.custom.maxTable = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('nb-negatives').addEventListener('change', e => {
     settings.custom.negatives = e.target.checked;
+    updateComplexityPreview();
   });
   document.getElementById('nb-decimals').addEventListener('change', e => {
     settings.custom.decimals = e.target.checked;
+    updateComplexityPreview();
   });
 
   // Start button
@@ -2436,12 +2480,65 @@ function applySettingsToUI() {
   document.getElementById('nb-table').value = settings.custom.maxTable;
   document.getElementById('nb-negatives').checked = settings.custom.negatives;
   document.getElementById('nb-decimals').checked = settings.custom.decimals;
+  if (settings.difficulty === 'custom') updateComplexityPreview();
 }
 
 function getActiveRange() {
   if (settings.difficulty === 'custom') return { ...settings.custom, _difficulty: 'custom' };
   const p = DIFFICULTY_PRESETS[settings.difficulty];
   return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals, _difficulty: settings.difficulty };
+}
+
+// --- Complexity indicator (custom mode only) ---
+
+const COMPLEXITY_LEVELS = {
+  preschool: { label: 'Preschool', ages: 'Ages 3–5',   colour: '#4caf50' },
+  ks1:       { label: 'KS1',       ages: 'Ages 5–7',   colour: '#3b9acd' },
+  ks2:       { label: 'KS2',       ages: 'Ages 7–11',  colour: '#f5a623' },
+  ks3:       { label: 'KS3',       ages: 'Ages 11–14', colour: '#e07a00' },
+  challenge: { label: 'Challenge', ages: 'Advanced',   colour: '#e53935' },
+};
+
+function computeComplexity(op, custom) {
+  const { max, maxTable, negatives, decimals } = custom;
+  if (negatives || decimals) return 'challenge';
+  const addSubLevel =
+    max > 100 ? 'challenge' :
+    max > 20  ? 'ks3'       :
+    max > 10  ? 'ks2'       :
+    max > 5   ? 'ks1'       : 'preschool';
+  const mulDivLevel =
+    maxTable > 12 ? 'challenge' :
+    maxTable > 10 ? 'ks3'       :
+    maxTable > 5  ? 'ks2'       :
+    maxTable > 2  ? 'ks1'       : 'preschool';
+  if (op === '+' || op === '-') return addSubLevel;
+  if (op === '*' || op === '/') return mulDivLevel;
+  const order = ['preschool', 'ks1', 'ks2', 'ks3', 'challenge'];
+  return order[Math.max(order.indexOf(addSubLevel), order.indexOf(mulDivLevel))];
+}
+
+function buildNbExampleQuestion(op, custom) {
+  const { max, maxTable } = custom;
+  const effectiveOp = (op === '*' || op === '/') ? '*' : '+';
+  if (effectiveOp === '+') {
+    const answer = max;
+    const left = Math.round(max * 0.6);
+    return `${left} + ? = ${answer}`;
+  }
+  const a = Math.max(2, maxTable - 1);
+  return `? × ${maxTable} = ${a * maxTable}`;
+}
+
+function updateComplexityPreview() {
+  const level = computeComplexity(settings.op, settings.custom);
+  const info = COMPLEXITY_LEVELS[level];
+  const badge = document.getElementById('nb-complexity-badge');
+  badge.textContent = info.label;
+  badge.style.background = info.colour;
+  document.getElementById('nb-complexity-ages').textContent = info.ages;
+  document.getElementById('nb-complexity-example').textContent =
+    'e.g. ' + buildNbExampleQuestion(settings.op, settings.custom);
 }
 
 // --- Screen management ---
@@ -2523,7 +2620,7 @@ function initGameScreen() {
   const quitBtn = document.getElementById('nb-quit-btn');
   quitBtn.hidden = false;
   quitBtn.onclick = () => {
-    activeSession?.end();
+    activeSession?.end({ quit: true });
   };
 }
 
@@ -2619,6 +2716,10 @@ function showResults(stats) {
 
   document.getElementById('nb-play-again-btn').onclick = startGame;
   document.getElementById('nb-change-settings-btn').onclick = () => showScreen('settings');
+  document.getElementById('nb-play-again-btn').className =
+    stats.quit ? 'nb-btn nb-btn--secondary' : 'nb-btn nb-btn--primary';
+  document.getElementById('nb-change-settings-btn').className =
+    stats.quit ? 'nb-btn nb-btn--primary' : 'nb-btn nb-btn--secondary';
   showScreen('results');
 }
 
