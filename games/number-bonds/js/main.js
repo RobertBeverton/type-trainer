@@ -115,9 +115,9 @@ function applySettingsToUI() {
 }
 
 function getActiveRange() {
-  if (settings.difficulty === 'custom') return settings.custom;
+  if (settings.difficulty === 'custom') return { ...settings.custom, _difficulty: 'custom' };
   const p = DIFFICULTY_PRESETS[settings.difficulty];
-  return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals };
+  return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals, _difficulty: settings.difficulty };
 }
 
 // --- Screen management ---
@@ -180,6 +180,15 @@ function startGame() {
     onAnswer: renderAnswerFeedback,
     onScore: renderHud,
     onEnd: showResults,
+    onHint: () => {
+      document.getElementById('nb-choices')
+        ?.querySelectorAll('.nb-choice')
+        .forEach(btn => {
+          if (Number(btn.textContent) === activeSession._currentQuestion.answer) {
+            btn.classList.add('nb-choice--hint');
+          }
+        });
+    },
   });
   showScreen('game');
   initGameScreen();
@@ -188,7 +197,7 @@ function startGame() {
 
 function initGameScreen() {
   const quitBtn = document.getElementById('nb-quit-btn');
-  quitBtn.hidden = settings.mode !== 'endless';
+  quitBtn.hidden = false;
   quitBtn.onclick = () => {
     activeSession?.end();
   };
@@ -216,6 +225,7 @@ function renderQuestion(question, choiceNums) {
 
   // Render choice buttons
   const choicesEl = document.getElementById('nb-choices');
+  document.activeElement?.blur();
   choicesEl.innerHTML = '';
   choiceNums.forEach(num => {
     const btn = document.createElement('button');
@@ -227,11 +237,15 @@ function renderQuestion(question, choiceNums) {
   });
 }
 
-function renderAnswerFeedback({ correct, correctAnswer, chosen }) {
+function renderAnswerFeedback({ correct, correctAnswer, chosen, requiresConfirmation }) {
   document.getElementById('nb-choices')?.querySelectorAll('.nb-choice').forEach(btn => {
-    btn.disabled = true;
     const num = Number(btn.textContent);
-    if (num === correctAnswer) btn.classList.add('nb-choice--reveal');
+    if (num === correctAnswer) {
+      btn.classList.add('nb-choice--reveal');
+      if (!requiresConfirmation) btn.disabled = true; // keep enabled so player can tap to confirm
+    } else {
+      btn.disabled = true;
+    }
     if (num === chosen && !correct) btn.classList.add('nb-choice--wrong');
     if (num === chosen && correct) btn.classList.add('nb-choice--correct');
   });
