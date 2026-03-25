@@ -36,6 +36,7 @@ function initSettingsScreen() {
     if (!btn) return;
     settings.op = btn.dataset.op;
     updateToggles('nb-op-row', 'data-op', settings.op);
+    if (settings.difficulty === 'custom') updateComplexityPreview();
   });
 
   // Difficulty toggles
@@ -46,6 +47,7 @@ function initSettingsScreen() {
     updateToggles('nb-diff-row', 'data-diff', settings.difficulty);
     updateDifficultyHint();
     document.getElementById('nb-custom-opts').hidden = settings.difficulty !== 'custom';
+    if (settings.difficulty === 'custom') updateComplexityPreview();
   });
 
   // Mode buttons
@@ -59,18 +61,23 @@ function initSettingsScreen() {
   // Custom inputs
   document.getElementById('nb-min').addEventListener('change', e => {
     settings.custom.min = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('nb-max').addEventListener('change', e => {
     settings.custom.max = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('nb-table').addEventListener('change', e => {
     settings.custom.maxTable = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('nb-negatives').addEventListener('change', e => {
     settings.custom.negatives = e.target.checked;
+    updateComplexityPreview();
   });
   document.getElementById('nb-decimals').addEventListener('change', e => {
     settings.custom.decimals = e.target.checked;
+    updateComplexityPreview();
   });
 
   // Start button
@@ -112,12 +119,65 @@ function applySettingsToUI() {
   document.getElementById('nb-table').value = settings.custom.maxTable;
   document.getElementById('nb-negatives').checked = settings.custom.negatives;
   document.getElementById('nb-decimals').checked = settings.custom.decimals;
+  if (settings.difficulty === 'custom') updateComplexityPreview();
 }
 
 function getActiveRange() {
   if (settings.difficulty === 'custom') return { ...settings.custom, _difficulty: 'custom' };
   const p = DIFFICULTY_PRESETS[settings.difficulty];
   return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals, _difficulty: settings.difficulty };
+}
+
+// --- Complexity indicator (custom mode only) ---
+
+const COMPLEXITY_LEVELS = {
+  preschool: { label: 'Preschool', ages: 'Ages 3–5',   colour: '#4caf50' },
+  ks1:       { label: 'KS1',       ages: 'Ages 5–7',   colour: '#3b9acd' },
+  ks2:       { label: 'KS2',       ages: 'Ages 7–11',  colour: '#f5a623' },
+  ks3:       { label: 'KS3',       ages: 'Ages 11–14', colour: '#e07a00' },
+  challenge: { label: 'Challenge', ages: 'Advanced',   colour: '#e53935' },
+};
+
+function computeComplexity(op, custom) {
+  const { max, maxTable, negatives, decimals } = custom;
+  if (negatives || decimals) return 'challenge';
+  const addSubLevel =
+    max > 100 ? 'challenge' :
+    max > 20  ? 'ks3'       :
+    max > 10  ? 'ks2'       :
+    max > 5   ? 'ks1'       : 'preschool';
+  const mulDivLevel =
+    maxTable > 12 ? 'challenge' :
+    maxTable > 10 ? 'ks3'       :
+    maxTable > 5  ? 'ks2'       :
+    maxTable > 2  ? 'ks1'       : 'preschool';
+  if (op === '+' || op === '-') return addSubLevel;
+  if (op === '*' || op === '/') return mulDivLevel;
+  const order = ['preschool', 'ks1', 'ks2', 'ks3', 'challenge'];
+  return order[Math.max(order.indexOf(addSubLevel), order.indexOf(mulDivLevel))];
+}
+
+function buildNbExampleQuestion(op, custom) {
+  const { max, maxTable } = custom;
+  const effectiveOp = (op === '*' || op === '/') ? '*' : '+';
+  if (effectiveOp === '+') {
+    const answer = max;
+    const left = Math.round(max * 0.6);
+    return `${left} + ? = ${answer}`;
+  }
+  const a = Math.max(2, maxTable - 1);
+  return `? × ${maxTable} = ${a * maxTable}`;
+}
+
+function updateComplexityPreview() {
+  const level = computeComplexity(settings.op, settings.custom);
+  const info = COMPLEXITY_LEVELS[level];
+  const badge = document.getElementById('nb-complexity-badge');
+  badge.textContent = info.label;
+  badge.style.background = info.colour;
+  document.getElementById('nb-complexity-ages').textContent = info.ages;
+  document.getElementById('nb-complexity-example').textContent =
+    'e.g. ' + buildNbExampleQuestion(settings.op, settings.custom);
 }
 
 // --- Screen management ---
