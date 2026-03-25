@@ -36,6 +36,7 @@ function initSettingsScreen() {
     if (!btn) return;
     settings.op = btn.dataset.op;
     updateToggles('maths-op-row', 'data-op', settings.op);
+    if (settings.difficulty === 'custom') updateComplexityPreview();
   });
 
   // Difficulty toggles
@@ -46,6 +47,7 @@ function initSettingsScreen() {
     updateToggles('maths-diff-row', 'data-diff', settings.difficulty);
     updateDifficultyHint();
     document.getElementById('maths-custom-opts').hidden = settings.difficulty !== 'custom';
+    if (settings.difficulty === 'custom') updateComplexityPreview();
   });
 
   // Mode buttons
@@ -59,18 +61,23 @@ function initSettingsScreen() {
   // Custom inputs
   document.getElementById('maths-min').addEventListener('change', e => {
     settings.custom.min = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('maths-max').addEventListener('change', e => {
     settings.custom.max = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('maths-table').addEventListener('change', e => {
     settings.custom.maxTable = Number(e.target.value);
+    updateComplexityPreview();
   });
   document.getElementById('maths-negatives').addEventListener('change', e => {
     settings.custom.negatives = e.target.checked;
+    updateComplexityPreview();
   });
   document.getElementById('maths-decimals').addEventListener('change', e => {
     settings.custom.decimals = e.target.checked;
+    updateComplexityPreview();
   });
 
   // Start button
@@ -112,12 +119,65 @@ function applySettingsToUI() {
   document.getElementById('maths-table').value = settings.custom.maxTable;
   document.getElementById('maths-negatives').checked = settings.custom.negatives;
   document.getElementById('maths-decimals').checked = settings.custom.decimals;
+  if (settings.difficulty === 'custom') updateComplexityPreview();
 }
 
 function getActiveRange() {
   if (settings.difficulty === 'custom') return { ...settings.custom, _difficulty: 'custom' };
   const p = DIFFICULTY_PRESETS[settings.difficulty];
   return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals, _difficulty: settings.difficulty };
+}
+
+// --- Complexity indicator (custom mode only) ---
+
+const COMPLEXITY_LEVELS = {
+  preschool: { label: 'Preschool', ages: 'Ages 3–5',   colour: '#4caf50' },
+  ks1:       { label: 'KS1',       ages: 'Ages 5–7',   colour: '#3b9acd' },
+  ks2:       { label: 'KS2',       ages: 'Ages 7–11',  colour: '#f5a623' },
+  ks3:       { label: 'KS3',       ages: 'Ages 11–14', colour: '#e07a00' },
+  challenge: { label: 'Challenge', ages: 'Advanced',   colour: '#e53935' },
+};
+
+function computeComplexity(op, custom) {
+  const { max, maxTable, negatives, decimals } = custom;
+  if (negatives || decimals) return 'challenge';
+  const addSubLevel =
+    max > 100 ? 'challenge' :
+    max > 20  ? 'ks3'       :
+    max > 10  ? 'ks2'       :
+    max > 5   ? 'ks1'       : 'preschool';
+  const mulDivLevel =
+    maxTable > 12 ? 'challenge' :
+    maxTable > 10 ? 'ks3'       :
+    maxTable > 5  ? 'ks2'       :
+    maxTable > 2  ? 'ks1'       : 'preschool';
+  if (op === '+' || op === '-') return addSubLevel;
+  if (op === '*' || op === '/') return mulDivLevel;
+  const order = ['preschool', 'ks1', 'ks2', 'ks3', 'challenge'];
+  return order[Math.max(order.indexOf(addSubLevel), order.indexOf(mulDivLevel))];
+}
+
+function buildMathsExampleQuestion(op, custom) {
+  const { max, maxTable } = custom;
+  const effectiveOp = (op === '*' || op === '/') ? '*' : '+';
+  if (effectiveOp === '+') {
+    const a = Math.round(max * 0.6);
+    const b = Math.round(max * 0.35);
+    return `${a} + ${b} = ?`;
+  }
+  const a = Math.max(2, maxTable - 1);
+  return `${a} × ${maxTable} = ?`;
+}
+
+function updateComplexityPreview() {
+  const level = computeComplexity(settings.op, settings.custom);
+  const info = COMPLEXITY_LEVELS[level];
+  const badge = document.getElementById('maths-complexity-badge');
+  badge.textContent = info.label;
+  badge.style.background = info.colour;
+  document.getElementById('maths-complexity-ages').textContent = info.ages;
+  document.getElementById('maths-complexity-example').textContent =
+    'e.g. ' + buildMathsExampleQuestion(settings.op, settings.custom);
 }
 
 // --- Screen management ---
@@ -199,7 +259,7 @@ function initGameScreen() {
   const quitBtn = document.getElementById('maths-quit-btn');
   quitBtn.hidden = false;
   quitBtn.onclick = () => {
-    activeSession?.end();
+    activeSession?.end({ quit: true });
   };
 }
 
@@ -289,6 +349,10 @@ function showResults(stats) {
 
   document.getElementById('maths-play-again-btn').onclick = startGame;
   document.getElementById('maths-change-settings-btn').onclick = () => showScreen('settings');
+  document.getElementById('maths-play-again-btn').className =
+    stats.quit ? 'maths-btn maths-btn--secondary' : 'maths-btn maths-btn--primary';
+  document.getElementById('maths-change-settings-btn').className =
+    stats.quit ? 'maths-btn maths-btn--primary' : 'maths-btn maths-btn--secondary';
   showScreen('results');
 }
 
