@@ -13,3 +13,4 @@ desktop.ini
 
 # Release packages
 release/
+.worktrees/
