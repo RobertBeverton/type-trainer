@@ -126,6 +126,10 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
   color: var(--bg-surface);
 }
 
+.maths-toggle--active:hover {
+  color: var(--bg-surface);
+}
+
 .maths-diff-hint {
   font-size: var(--text-sm);
   color: var(--text-muted);
