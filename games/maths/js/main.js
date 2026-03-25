@@ -59,15 +59,15 @@ function initSettingsScreen() {
   });
 
   // Custom inputs
-  document.getElementById('maths-min').addEventListener('change', e => {
+  document.getElementById('maths-min').addEventListener('input', e => {
     settings.custom.min = Number(e.target.value);
     updateComplexityPreview();
   });
-  document.getElementById('maths-max').addEventListener('change', e => {
+  document.getElementById('maths-max').addEventListener('input', e => {
     settings.custom.max = Number(e.target.value);
     updateComplexityPreview();
   });
-  document.getElementById('maths-table').addEventListener('change', e => {
+  document.getElementById('maths-table').addEventListener('input', e => {
     settings.custom.maxTable = Number(e.target.value);
     updateComplexityPreview();
   });

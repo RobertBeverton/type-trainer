@@ -1229,7 +1229,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">cce6132 25 Mar 15:25</span>
+  <span class="kg-shell__version" title="Build version">d830c54 25 Mar 15:29</span>
 </div>
 
 <!-- Player select overlay -->
@@ -2420,15 +2420,15 @@ function initSettingsScreen() {
   });
 
   // Custom inputs
-  document.getElementById('nb-min').addEventListener('change', e => {
+  document.getElementById('nb-min').addEventListener('input', e => {
     settings.custom.min = Number(e.target.value);
     updateComplexityPreview();
   });
-  document.getElementById('nb-max').addEventListener('change', e => {
+  document.getElementById('nb-max').addEventListener('input', e => {
     settings.custom.max = Number(e.target.value);
     updateComplexityPreview();
   });
-  document.getElementById('nb-table').addEventListener('change', e => {
+  document.getElementById('nb-table').addEventListener('input', e => {
     settings.custom.maxTable = Number(e.target.value);
     updateComplexityPreview();
   });
