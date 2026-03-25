@@ -115,9 +115,9 @@ function applySettingsToUI() {
 }
 
 function getActiveRange() {
-  if (settings.difficulty === 'custom') return settings.custom;
+  if (settings.difficulty === 'custom') return { ...settings.custom, _difficulty: 'custom' };
   const p = DIFFICULTY_PRESETS[settings.difficulty];
-  return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals };
+  return { min: p.min, max: p.max, maxTable: p.maxTable, negatives: p.negatives, decimals: p.decimals, _difficulty: settings.difficulty };
 }
 
 // --- Screen management ---
@@ -180,6 +180,15 @@ function startGame() {
     onAnswer: renderAnswerFeedback,
     onScore: renderHud,
     onEnd: showResults,
+    onHint: () => {
+      document.getElementById('maths-choices')
+        ?.querySelectorAll('.maths-choice')
+        .forEach(btn => {
+          if (Number(btn.textContent) === activeSession._currentQuestion.answer) {
+            btn.classList.add('maths-choice--hint');
+          }
+        });
+    },
   });
   showScreen('game');
   initGameScreen();
@@ -188,7 +197,7 @@ function startGame() {
 
 function initGameScreen() {
   const quitBtn = document.getElementById('maths-quit-btn');
-  quitBtn.hidden = settings.mode !== 'endless';
+  quitBtn.hidden = false;
   quitBtn.onclick = () => {
     activeSession?.end();
   };
@@ -210,6 +219,7 @@ function renderQuestion(question, choiceNums) {
 
   // Render choice buttons
   const choicesEl = document.getElementById('maths-choices');
+  document.activeElement?.blur();
   choicesEl.innerHTML = '';
   choiceNums.forEach(num => {
     const btn = document.createElement('button');
@@ -221,12 +231,17 @@ function renderQuestion(question, choiceNums) {
   });
 }
 
-function renderAnswerFeedback({ correct, correctAnswer, chosen }) {
+function renderAnswerFeedback({ correct, correctAnswer, chosen, requiresConfirmation }) {
   document.getElementById('maths-choices')?.querySelectorAll('.maths-choice').forEach(btn => {
-    btn.disabled = true;
+    btn.classList.remove('maths-choice--hint');
     const num = Number(btn.textContent);
-    if (num === correctAnswer) btn.classList.add('maths-choice--reveal');
-    if (num === chosen && !correct) btn.classList.add('maths-choice--wrong');
+    if (num === correctAnswer) {
+      btn.classList.add('maths-choice--reveal');
+      if (!requiresConfirmation) btn.disabled = true;
+    } else {
+      btn.disabled = true;
+      if (num === chosen && !correct) btn.classList.add('maths-choice--wrong');
+    }
     if (num === chosen && correct) btn.classList.add('maths-choice--correct');
   });
 }
