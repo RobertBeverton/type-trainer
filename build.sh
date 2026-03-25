@@ -407,7 +407,82 @@ if grep -q 'GameSession' "$DOCS_DIR/number-bonds.html"; then
 else
   echo "  [WARN] JS not found in output"
 fi
-build_simple_game "games/maths/index.html"          "$DOCS_DIR/maths.html"          "Maths"
+MATHS_GAME_DIR="games/maths"
+MATHS_JS_FILES=(
+  "js/questions.js"
+  "js/game.js"
+  "js/main.js"
+)
+
+MATHS_JS_TEMP=$(mktemp)
+MATHS_CSS_TEMP=$(mktemp)
+MATHS_JS_COMBINED=$(mktemp)
+
+echo ""
+echo "--- Building Maths ---"
+
+for f in "${MATHS_JS_FILES[@]}"; do
+  echo "  Inlining $MATHS_GAME_DIR/$f"
+  echo "// --- $(basename "$f") ---" >> "$MATHS_JS_TEMP"
+  awk '
+    /^import / || /^import\{/ {
+      if ($0 ~ /;/) { next }
+      while ((getline line) > 0) { if (line ~ /;/) break }
+      next
+    }
+    /^export\s*\{\s*\}\s*;?\s*$/ { next }
+    /^export default / { sub(/^export default /, ""); print; next }
+    /^export / { sub(/^export /, ""); print; next }
+    { print }
+  ' "$MATHS_GAME_DIR/$f" >> "$MATHS_JS_TEMP"
+  echo "" >> "$MATHS_JS_TEMP"
+done
+
+cat shared/tokens.css shared/shell.css "$MATHS_GAME_DIR/css/style.css" > "$MATHS_CSS_TEMP"
+cat "$SHELL_JS_TEMP" "$MATHS_JS_TEMP" > "$MATHS_JS_COMBINED"
+
+echo "Assembling maths HTML..."
+
+awk -v css_file="$MATHS_CSS_TEMP" -v js_file="$MATHS_JS_COMBINED" -v shell_file="shared/shell.html" '
+  /<link[^>]*shared\/tokens\.css[^>]*>/ { next }
+  /<link[^>]*shared\/shell\.css[^>]*>/ { next }
+  /<link[^>]*css\/style\.css[^>]*>/ {
+    print "  <style>"
+    while ((getline line < css_file) > 0) { print line }
+    close(css_file)
+    print "  </style>"
+    next
+  }
+  /<body/ {
+    print
+    while ((getline line < shell_file) > 0) { print line }
+    close(shell_file)
+    next
+  }
+  /<script[^>]*type="module"[^>]*src=.*main\.js/ || /<script[^>]*src=.*main\.js[^>]*type="module"/ {
+    print "  <script>"
+    while ((getline line < js_file) > 0) { print line }
+    close(js_file)
+    print "  </script>"
+    next
+  }
+  { print }
+' "$MATHS_GAME_DIR/index.html" > "$DOCS_DIR/maths.html"
+
+MATHS_SIZE=$(wc -c < "$DOCS_DIR/maths.html" | tr -d ' ')
+echo "Maths built: $DOCS_DIR/maths.html ($MATHS_SIZE bytes)"
+
+if grep -q 'kg-shell' "$DOCS_DIR/maths.html"; then
+  echo "  [ok] Shell bar injected"
+else
+  echo "  [WARN] Shell bar missing"
+fi
+
+if grep -q 'GameSession' "$DOCS_DIR/maths.html"; then
+  echo "  [ok] JS inlined"
+else
+  echo "  [WARN] JS not found in output"
+fi
 build_simple_game "games/memory-match/index.html"   "$DOCS_DIR/memory-match.html"   "Memory Match"
 
 # ==========================================================================
