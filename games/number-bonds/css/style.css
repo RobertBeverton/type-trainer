@@ -371,12 +371,15 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   font-family: var(--font-family);
   transition: all var(--transition-fast);
   box-shadow: var(--shadow);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.nb-choice:hover:not(:disabled) {
-  border-color: var(--hud-accent);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) {
+  .nb-choice:hover:not(:disabled) {
+    border-color: var(--hud-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .nb-choice:active:not(:disabled) {
@@ -482,5 +485,22 @@ body::after  { width: 250px; height: 250px; background: var(--accent-secondary);
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Hint glow — shown on correct button after idle timer fires */
+@keyframes nbHintGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+  50%       { box-shadow: 0 0 0 12px rgba(251, 191, 36, 0.55); }
+}
+
+.nb-choice--hint {
+  animation: nbHintGlow 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nb-choice--hint {
+    animation: none;
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.7);
   }
 }

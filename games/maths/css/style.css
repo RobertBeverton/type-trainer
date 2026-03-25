@@ -372,12 +372,15 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
   font-family: var(--font-family);
   transition: all var(--transition-fast);
   box-shadow: var(--shadow);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.maths-choice:hover:not(:disabled) {
-  border-color: var(--hud-accent);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) {
+  .maths-choice:hover:not(:disabled) {
+    border-color: var(--hud-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .maths-choice:active:not(:disabled) {
@@ -483,5 +486,22 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Hint glow — shown on correct button after idle timer fires */
+@keyframes mathsHintGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+  50%       { box-shadow: 0 0 0 12px rgba(251, 191, 36, 0.55); }
+}
+
+.maths-choice--hint {
+  animation: mathsHintGlow 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maths-choice--hint {
+    animation: none;
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.7);
   }
 }
