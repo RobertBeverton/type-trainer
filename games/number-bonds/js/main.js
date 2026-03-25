@@ -199,7 +199,7 @@ function initGameScreen() {
   const quitBtn = document.getElementById('nb-quit-btn');
   quitBtn.hidden = false;
   quitBtn.onclick = () => {
-    activeSession?.end();
+    activeSession?.end({ quit: true });
   };
 }
 
@@ -295,6 +295,10 @@ function showResults(stats) {
 
   document.getElementById('nb-play-again-btn').onclick = startGame;
   document.getElementById('nb-change-settings-btn').onclick = () => showScreen('settings');
+  document.getElementById('nb-play-again-btn').className =
+    stats.quit ? 'nb-btn nb-btn--secondary' : 'nb-btn nb-btn--primary';
+  document.getElementById('nb-change-settings-btn').className =
+    stats.quit ? 'nb-btn nb-btn--primary' : 'nb-btn nb-btn--secondary';
   showScreen('results');
 }
 
