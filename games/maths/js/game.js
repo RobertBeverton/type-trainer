@@ -91,7 +91,7 @@ export class GameSession {
     }
   }
 
-  end() {
+  end({ quit = false } = {}) {
     if (!this._active) return;
     this._active = false;
     clearInterval(this._timer);
@@ -104,6 +104,7 @@ export class GameSession {
       accuracy: this.total > 0 ? Math.round((this.correct / this.total) * 100) : 0,
       bestStreak: this.bestStreak,
       timeTaken,
+      quit,
     });
   }
 

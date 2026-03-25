@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { GameSession } from '../js/game.js';
 
-function createSession({ mode = 'round', difficulty = 'easy', onAnswer = () => {} } = {}) {
+function createSession({ mode = 'round', difficulty = 'easy', onAnswer = () => {}, onEnd = () => {} } = {}) {
   const range = {
     min: 1, max: 10, maxTable: 5,
     negatives: false, decimals: false,
@@ -13,7 +13,7 @@ function createSession({ mode = 'round', difficulty = 'easy', onAnswer = () => {
     onQuestion: () => {},
     onAnswer,
     onScore: () => {},
-    onEnd: () => {},
+    onEnd,
     onHint: () => {},
   });
 }
@@ -102,5 +102,31 @@ describe('GameSession — _hintDelay', () => {
 
   it('returns null for Easy in Sprint', () => {
     assert.equal(createSession({ difficulty: 'easy', mode: 'sprint' })._hintDelay(), null);
+  });
+});
+
+describe('GameSession — end() quit param', () => {
+  it('onEnd receives quit: false by default', () => {
+    let captured = null;
+    const s = createSession({ mode: 'round', onEnd: e => { captured = e; } });
+    s.start();
+    s.end();
+    assert.equal(captured.quit, false);
+  });
+
+  it('onEnd receives quit: true when end({ quit: true }) called', () => {
+    let captured = null;
+    const s = createSession({ mode: 'round', onEnd: e => { captured = e; } });
+    s.start();
+    s.end({ quit: true });
+    assert.equal(captured.quit, true);
+  });
+
+  it('onEnd receives quit: false when end() called with no args', () => {
+    let captured = null;
+    const s = createSession({ mode: 'endless', onEnd: e => { captured = e; } });
+    s.start();
+    s.end();
+    assert.equal(captured.quit, false);
   });
 });
