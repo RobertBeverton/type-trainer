@@ -248,7 +248,7 @@ function initToggleGroup(rowId, stateKey) {
   const row = document.getElementById(rowId);
   row.addEventListener('click', e => {
     const btn = e.target.closest('[data-' + stateKey + ']');
-    if (!btn) return;
+    if (!btn || !row.contains(btn)) return;
     row.querySelectorAll('.mm-toggle').forEach(b => {
       b.classList.remove('mm-toggle--active');
       b.setAttribute('aria-pressed', 'false');
