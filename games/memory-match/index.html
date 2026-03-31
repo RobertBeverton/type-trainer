@@ -8,113 +8,239 @@
 <link rel="stylesheet" href="../../shared/tokens.css">
 <link rel="stylesheet" href="../../shared/shell.css">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ===== Reset + Body ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    font-family: var(--font-family);
-    background: var(--bg);
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    padding-top: 56px;
-  }
+body {
+  font-family: var(--font-family);
+  background: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  padding-top: 56px;
+}
 
-  body::before, body::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    z-index: 0;
-    opacity: 0.15;
-    animation: floaty 8s ease-in-out infinite;
-  }
-  body::before {
-    width: 300px; height: 300px;
-    background: var(--accent-blue);
-    top: -80px; right: -80px;
-  }
-  body::after {
-    width: 250px; height: 250px;
-    background: var(--accent-purple);
-    bottom: -60px; left: -60px;
-    animation-delay: -4s;
-  }
+body::before, body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  z-index: 0;
+  opacity: 0.15;
+  animation: mmFloat 8s ease-in-out infinite;
+  pointer-events: none;
+}
+body::before { width: 300px; height: 300px; background: var(--accent-blue); top: -80px; right: -80px; }
+body::after  { width: 250px; height: 250px; background: var(--accent-purple); bottom: -60px; left: -60px; animation-delay: -4s; }
 
-  @keyframes floaty {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(15px, 20px) scale(1.05); }
-  }
+@keyframes mmFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(15px,20px) scale(1.05); }
+}
 
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    position: relative;
-    z-index: 1;
-    text-align: center;
-  }
+/* ===== Screens ===== */
+#mm-app { position: relative; z-index: 1; }
+.mm-screen { min-height: calc(100vh - 56px); display: flex; align-items: flex-start; justify-content: center; padding: 24px 16px 48px; }
+.mm-screen[hidden] { display: none !important; }
 
-  .game-icon {
-    font-size: 5rem;
-    display: block;
-    margin-bottom: 16px;
-    animation: titleBounce 0.6s ease-out;
-  }
+/* ===== Settings ===== */
+.mm-settings-wrap {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
 
-  @keyframes titleBounce {
-    0% { transform: scale(0.5); opacity: 0; }
-    60% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
-  }
+.mm-logo { font-size: 4rem; text-align: center; animation: mmBounce 0.6s ease-out; }
 
-  h1 {
-    font-weight: 900;
-    font-size: 2.8rem;
-    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-tertiary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 1px;
-    line-height: 1.1;
-    margin-bottom: 12px;
-  }
+@keyframes mmBounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
 
-  .desc {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    margin-bottom: 32px;
-    line-height: 1.5;
-  }
+.mm-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  .coming-soon {
-    display: inline-block;
-    background: var(--bg-surface);
-    border-radius: var(--radius-2xl);
-    padding: 32px 48px;
-    box-shadow: var(--shadow);
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--text-secondary);
-  }
+.mm-fieldset { border: none; padding: 0; }
 
-  .coming-soon span {
-    display: block;
-    font-size: 2rem;
-    margin-bottom: 8px;
-  }
+.mm-legend {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+  display: block;
+}
+
+.mm-toggle-row { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+
+.mm-toggle {
+  flex: 1;
+  min-width: 64px;
+  min-height: 48px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  font-family: var(--font-family);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 4px 8px;
+  line-height: 1.2;
+}
+.mm-toggle:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+.mm-toggle--active {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+}
+.mm-toggle--active:hover { background: var(--accent-blue); color: #fff; }
+
+/* Peek toggle row */
+.mm-peek-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  padding: 14px 20px;
+  box-shadow: var(--shadow);
+}
+.mm-peek-label {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.mm-peek-sub {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 600;
+  display: block;
+}
+
+/* Toggle switch */
+.mm-switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+.mm-switch input { opacity: 0; width: 0; height: 0; }
+.mm-slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background: var(--border);
+  border-radius: 28px;
+  transition: background var(--transition-fast);
+}
+.mm-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  left: 4px; top: 4px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+}
+.mm-switch input:checked + .mm-slider { background: var(--accent-blue); }
+.mm-switch input:checked + .mm-slider::before { transform: translateX(24px); }
+
+/* Play button */
+.mm-play-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 1.4rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--shadow);
+  margin-top: var(--space-sm);
+}
+.mm-play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.mm-play-btn:active { transform: translateY(0); }
 </style>
 </head>
 <body data-page="memory-match">
 
-<div class="container">
-  <div class="game-icon">🃏</div>
-  <h1>Memory Match</h1>
-  <p class="desc">Flip cards and find the matching pairs — how good is your memory?</p>
-  <div class="coming-soon">
-    <span>🚧</span>
-    Coming soon
+<!-- Shell bar injected by build script -->
+
+<div id="mm-app">
+
+  <!-- SCREEN: Settings -->
+  <div id="mm-settings" class="mm-screen">
+    <div class="mm-settings-wrap">
+      <div class="mm-logo">🃏</div>
+      <h1 class="mm-title">Memory Match</h1>
+
+      <!-- Board Size -->
+      <fieldset class="mm-fieldset">
+        <legend class="mm-legend">Board Size</legend>
+        <div class="mm-toggle-row" id="mm-size-row">
+          <button class="mm-toggle" data-size="2x4" aria-pressed="false">Quick<br><small>2×4</small></button>
+          <button class="mm-toggle mm-toggle--active" data-size="3x4" aria-pressed="true">Medium<br><small>3×4</small></button>
+          <button class="mm-toggle" data-size="4x4" aria-pressed="false">Classic<br><small>4×4</small></button>
+          <button class="mm-toggle" data-size="4x5" aria-pressed="false">Challenge<br><small>4×5</small></button>
+        </div>
+      </fieldset>
+
+      <!-- Theme -->
+      <fieldset class="mm-fieldset">
+        <legend class="mm-legend">Theme</legend>
+        <div class="mm-toggle-row" id="mm-theme-row">
+          <button class="mm-toggle mm-toggle--active" data-theme="animals" aria-pressed="true">🐾<br><small>Animals</small></button>
+          <button class="mm-toggle" data-theme="food" aria-pressed="false">🍕<br><small>Food</small></button>
+          <button class="mm-toggle" data-theme="vehicles" aria-pressed="false">🚗<br><small>Vehicles</small></button>
+          <button class="mm-toggle" data-theme="random" aria-pressed="false">🎲<br><small>Random</small></button>
+        </div>
+      </fieldset>
+
+      <!-- Peek toggle -->
+      <fieldset class="mm-fieldset">
+        <legend class="mm-legend">Options</legend>
+        <div class="mm-peek-row">
+          <div>
+            <span class="mm-peek-label">Peek at start</span>
+            <span class="mm-peek-sub">See all cards for 1.5s before playing</span>
+          </div>
+          <label class="mm-switch" aria-label="Peek at start">
+            <input type="checkbox" id="mm-peek-toggle" checked>
+            <span class="mm-slider"></span>
+          </label>
+        </div>
+      </fieldset>
+
+      <button class="mm-play-btn" id="mm-play-btn">Play! 🃏</button>
+    </div>
   </div>
+
+  <!-- SCREEN: Board -->
+  <div id="mm-board-screen" class="mm-screen" hidden>
+    <!-- populated by JS -->
+  </div>
+
+  <!-- SCREEN: Win -->
+  <div id="mm-win-screen" class="mm-screen" hidden>
+    <!-- populated by JS -->
+  </div>
+
 </div>
+
+<script>
+// ===== placeholder — JS added in later tasks =====
+document.getElementById('mm-play-btn').addEventListener('click', () => {
+  alert('Settings work! JS coming next.');
+});
+</script>
 
 </body>
 </html>
