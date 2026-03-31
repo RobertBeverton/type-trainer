@@ -423,6 +423,7 @@ function showScreen(id) {
 }
 
 function goSettings() {
+  if (_peekTimer) { clearTimeout(_peekTimer); _peekTimer = null; locked = false; }
   window.removeEventListener('resize', handleResize);
   showScreen('mm-settings');
 }
@@ -552,12 +553,15 @@ function showWin() {
   console.log('Win! Flips:', flips);
 }
 
+let _peekTimer = null;
+
 function doPeek(grid) {
   locked = true;
   grid.querySelectorAll('.mm-card').forEach(card => {
     card.classList.add('mm-card--flipped');
   });
-  setTimeout(() => {
+  _peekTimer = setTimeout(() => {
+    _peekTimer = null;
     grid.querySelectorAll('.mm-card').forEach(card => {
       card.classList.remove('mm-card--flipped');
     });
