@@ -281,6 +281,60 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
   50% { transform: scale(1.08); box-shadow: 0 0 0 4px var(--accent-blue); border-radius: var(--radius-xl); }
 }
 .mm-card--hint { animation: mmPulse 0.6s ease 2; }
+
+/* ===== Win Screen ===== */
+.mm-win-wrap {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.mm-win-emoji {
+  font-size: 5rem;
+  animation: mmBounce 0.6s ease-out;
+}
+
+.mm-win-title {
+  font-size: 2.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.mm-win-flips {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.mm-win-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-xl);
+  font-family: var(--font-family);
+  font-size: 1.2rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+.mm-win-btn:hover { transform: translateY(-2px); }
+.mm-win-btn--primary {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+.mm-win-btn--secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+}
 </style>
 </head>
 <body data-page="memory-match" data-page-title="Memory Match">
@@ -555,8 +609,21 @@ function evaluatePair() {
 }
 
 function showWin() {
-  // placeholder — full win screen in Task 7
-  console.log('Win! Flips:', flips);
+  playSound('win');
+  window.removeEventListener('resize', handleResize);
+  const winScreen = document.getElementById('mm-win-screen');
+  winScreen.innerHTML = `
+    <div class="mm-win-wrap">
+      <div class="mm-win-emoji">🎉</div>
+      <div class="mm-win-title">You did it!</div>
+      <div class="mm-win-flips">Matched all pairs in <strong>${flips}</strong> flip${flips === 1 ? '' : 's'}!</div>
+      <button class="mm-win-btn mm-win-btn--primary" id="mm-play-again">Play Again 🃏</button>
+      <button class="mm-win-btn mm-win-btn--secondary" id="mm-change-settings">Change Settings</button>
+    </div>
+  `;
+  document.getElementById('mm-play-again').addEventListener('click', startGame);
+  document.getElementById('mm-change-settings').addEventListener('click', goSettings);
+  showScreen('mm-win-screen');
 }
 
 let _peekTimer = null;
