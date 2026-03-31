@@ -278,9 +278,14 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
 
 @keyframes mmPulse {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.08); box-shadow: 0 0 0 4px var(--accent-blue); border-radius: var(--radius-xl); }
+  50% { transform: scale(1.08); }
+}
+@keyframes mmPulseGlow {
+  0%,100% { box-shadow: var(--shadow); }
+  50% { box-shadow: 0 0 0 4px var(--accent-blue), var(--shadow); }
 }
 .mm-card--hint { animation: mmPulse 0.6s ease 2; }
+.mm-card--hint .mm-card-inner { animation: mmPulseGlow 0.6s ease 2; }
 
 /* ===== Win Screen ===== */
 .mm-win-wrap {

@@ -923,9 +923,14 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
 
 @keyframes mmPulse {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.08); box-shadow: 0 0 0 4px var(--accent-blue); border-radius: var(--radius-xl); }
+  50% { transform: scale(1.08); }
+}
+@keyframes mmPulseGlow {
+  0%,100% { box-shadow: var(--shadow); }
+  50% { box-shadow: 0 0 0 4px var(--accent-blue), var(--shadow); }
 }
 .mm-card--hint { animation: mmPulse 0.6s ease 2; }
+.mm-card--hint .mm-card-inner { animation: mmPulseGlow 0.6s ease 2; }
 
 /* ===== Win Screen ===== */
 .mm-win-wrap {
@@ -1019,7 +1024,7 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
   </button>
 
   <!-- Build version — injected by build.sh -->
-  <span class="kg-shell__version" title="Build version">29ea28c 31 Mar 23:14</span>
+  <span class="kg-shell__version" title="Build version">c3eb491 31 Mar 23:17</span>
 </div>
 
 <!-- Player select overlay -->
