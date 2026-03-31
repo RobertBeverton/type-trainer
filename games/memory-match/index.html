@@ -275,6 +275,12 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
 .mm-card--mismatch .mm-card-inner {
   animation: mmShake 0.4s ease;
 }
+
+@keyframes mmPulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.08); box-shadow: 0 0 0 4px var(--accent-blue); border-radius: var(--radius-xl); }
+}
+.mm-card--hint { animation: mmPulse 0.6s ease 2; }
 </style>
 </head>
 <body data-page="memory-match" data-page-title="Memory Match">
@@ -570,7 +576,12 @@ function doPeek(grid) {
 }
 
 function showFirstPlayHint(tappedCard) {
-  // placeholder — full hint in Task 6
+  const candidates = [...document.querySelectorAll('.mm-card')]
+    .filter(c => c !== tappedCard && !c.classList.contains('mm-card--matched'));
+  if (!candidates.length) return;
+  const hint = candidates[Math.floor(Math.random() * candidates.length)];
+  hint.classList.add('mm-card--hint');
+  hint.addEventListener('animationend', () => hint.classList.remove('mm-card--hint'), { once: true });
 }
 
 function playSound(type) {
