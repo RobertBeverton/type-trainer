@@ -651,8 +651,48 @@ function showFirstPlayHint(tappedCard) {
   hint.addEventListener('animationend', () => hint.classList.remove('mm-card--hint'), { once: true });
 }
 
+// ===== AUDIO =====
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function beep({ freq = 440, type = 'sine', gain = 0.3, duration = 0.1, delay = 0 } = {}) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+    g.gain.setValueAtTime(gain, ctx.currentTime + delay);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+    osc.start(ctx.currentTime + delay);
+    osc.stop(ctx.currentTime + delay + duration + 0.05);
+  } catch (e) { /* audio not available */ }
+}
+
 function playSound(type) {
-  // placeholder — full audio in Task 8
+  switch (type) {
+    case 'flip':
+      beep({ freq: 600, type: 'sine', gain: 0.15, duration: 0.08 });
+      break;
+    case 'match':
+      beep({ freq: 523, gain: 0.25, duration: 0.15 });
+      beep({ freq: 784, gain: 0.25, duration: 0.15, delay: 0.15 });
+      break;
+    case 'mismatch':
+      beep({ freq: 220, type: 'triangle', gain: 0.2, duration: 0.2 });
+      break;
+    case 'win':
+      [523, 659, 784, 1047].forEach((f, i) => {
+        beep({ freq: f, gain: 0.25, duration: 0.18, delay: i * 0.18 });
+      });
+      break;
+  }
 }
 </script>
 
