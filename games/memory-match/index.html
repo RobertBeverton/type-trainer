@@ -496,8 +496,66 @@ function startGame() {
 }
 
 function onCardClick(card) {
-  // placeholder — full logic in Task 4
-  console.log('Clicked', card.dataset.emoji);
+  if (locked) return;
+  if (card.classList.contains('mm-card--flipped')) return;
+  if (card.classList.contains('mm-card--matched')) return;
+  if (flipped.length === 2) return;
+
+  if (firstTap) {
+    firstTap = false;
+    showFirstPlayHint(card);
+  }
+
+  playSound('flip');
+  card.classList.add('mm-card--flipped');
+  flipped.push(card);
+  flips++;
+  const display = document.getElementById('mm-flips-display');
+  if (display) display.textContent = flips + (flips === 1 ? ' flip' : ' flips');
+
+  if (flipped.length === 2) {
+    locked = true;
+    setTimeout(evaluatePair, 350);
+  }
+}
+
+function evaluatePair() {
+  const [a, b] = flipped;
+  if (a.dataset.emoji === b.dataset.emoji) {
+    a.classList.add('mm-card--matched');
+    b.classList.add('mm-card--matched');
+    playSound('match');
+    matched++;
+    flipped = [];
+    locked = false;
+    const totalPairs = document.querySelectorAll('.mm-card').length / 2;
+    if (matched === totalPairs) {
+      setTimeout(showWin, 400);
+    }
+  } else {
+    a.classList.add('mm-card--mismatch');
+    b.classList.add('mm-card--mismatch');
+    playSound('mismatch');
+    setTimeout(() => {
+      a.classList.remove('mm-card--flipped', 'mm-card--mismatch');
+      b.classList.remove('mm-card--flipped', 'mm-card--mismatch');
+      flipped = [];
+      locked = false;
+    }, 900);
+  }
+}
+
+function showWin() {
+  // placeholder — full win screen in Task 7
+  console.log('Win! Flips:', flips);
+}
+
+function showFirstPlayHint(tappedCard) {
+  // placeholder — full hint in Task 6
+}
+
+function playSound(type) {
+  // placeholder — full audio in Task 8
 }
 </script>
 
