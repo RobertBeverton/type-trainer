@@ -494,6 +494,7 @@ function startGame() {
   document.getElementById('mm-back-btn').addEventListener('click', goSettings);
 
   showScreen('mm-board-screen');
+  if (state.peek) doPeek(grid);
 }
 
 function onCardClick(card) {
@@ -549,6 +550,19 @@ function evaluatePair() {
 function showWin() {
   // placeholder — full win screen in Task 7
   console.log('Win! Flips:', flips);
+}
+
+function doPeek(grid) {
+  locked = true;
+  grid.querySelectorAll('.mm-card').forEach(card => {
+    card.classList.add('mm-card--flipped');
+  });
+  setTimeout(() => {
+    grid.querySelectorAll('.mm-card').forEach(card => {
+      card.classList.remove('mm-card--flipped');
+    });
+    locked = false;
+  }, 1500);
 }
 
 function showFirstPlayHint(tappedCard) {
