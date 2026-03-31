@@ -236,10 +236,42 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
 </div>
 
 <script>
-// ===== placeholder — JS added in later tasks =====
-document.getElementById('mm-play-btn').addEventListener('click', () => {
-  alert('Settings work! JS coming next.');
+// ===== STATE =====
+const state = {
+  size: '3x4',
+  theme: 'animals',
+  peek: true,
+};
+
+// ===== TOGGLE GROUPS =====
+function initToggleGroup(rowId, stateKey) {
+  const row = document.getElementById(rowId);
+  row.addEventListener('click', e => {
+    const btn = e.target.closest('[data-' + stateKey + ']');
+    if (!btn) return;
+    row.querySelectorAll('.mm-toggle').forEach(b => {
+      b.classList.remove('mm-toggle--active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('mm-toggle--active');
+    btn.setAttribute('aria-pressed', 'true');
+    state[stateKey] = btn.dataset[stateKey];
+  });
+}
+
+initToggleGroup('mm-size-row', 'size');
+initToggleGroup('mm-theme-row', 'theme');
+
+document.getElementById('mm-peek-toggle').addEventListener('change', e => {
+  state.peek = e.target.checked;
 });
+
+document.getElementById('mm-play-btn').addEventListener('click', startGame);
+
+function startGame() {
+  // placeholder — wired in Task 3
+  console.log('Starting with', state);
+}
 </script>
 
 </body>
