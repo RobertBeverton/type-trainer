@@ -455,6 +455,7 @@ function startGame() {
   const pairs = cols * rows / 2;
   const deck = buildDeck(state.theme, pairs);
 
+  window.removeEventListener('resize', handleResize);
   flipped = []; matched = 0; flips = 0; locked = false; firstTap = true;
 
   const boardScreen = document.getElementById('mm-board-screen');
