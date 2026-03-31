@@ -168,6 +168,112 @@ body::after  { width: 250px; height: 250px; background: var(--accent-purple); bo
 }
 .mm-play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
 .mm-play-btn:active { transform: translateY(0); }
+
+/* ===== Board Screen ===== */
+.mm-board-inner {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mm-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.mm-hud-back {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-family: var(--font-family);
+  font-weight: 800;
+  padding: 4px 8px;
+}
+.mm-hud-back:hover { color: var(--text-primary); }
+
+.mm-hud-flips {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.mm-grid {
+  display: grid;
+  gap: 6px;
+}
+
+/* ===== Cards ===== */
+.mm-card {
+  cursor: pointer;
+  perspective: 600px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mm-card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  border-radius: var(--radius-xl);
+}
+
+.mm-card--flipped .mm-card-inner,
+.mm-card--matched .mm-card-inner {
+  transform: rotateY(180deg);
+}
+
+.mm-card-back, .mm-card-front {
+  position: absolute; inset: 0;
+  border-radius: var(--radius-xl);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mm-card-back {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  box-shadow: var(--shadow);
+  font-size: 2rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 900;
+}
+
+.mm-card-front {
+  background: var(--bg-surface);
+  box-shadow: var(--shadow);
+  transform: rotateY(180deg);
+}
+
+.mm-card-emoji {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  line-height: 1;
+  user-select: none;
+}
+
+.mm-card--matched .mm-card-front {
+  background: #d4f7e4;
+  box-shadow: 0 0 0 3px #34c76f, var(--shadow);
+}
+
+@keyframes mmShake {
+  0%,100% { transform: rotateY(180deg) translateX(0); }
+  20% { transform: rotateY(180deg) translateX(-6px); }
+  40% { transform: rotateY(180deg) translateX(6px); }
+  60% { transform: rotateY(180deg) translateX(-4px); }
+  80% { transform: rotateY(180deg) translateX(4px); }
+}
+
+.mm-card--mismatch .mm-card-inner {
+  animation: mmShake 0.4s ease;
+}
 </style>
 </head>
 <body data-page="memory-match" data-page-title="Memory Match">
@@ -268,9 +374,129 @@ document.getElementById('mm-peek-toggle').addEventListener('change', e => {
 
 document.getElementById('mm-play-btn').addEventListener('click', startGame);
 
+// ===== EMOJI POOLS =====
+const EMOJIS = {
+  animals:  ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐸','🐵','🐔','🐧','🐦','🦆','🦉','🦋','🐢'],
+  food:     ['🍎','🍊','🍋','🍇','🍓','🍒','🍕','🍔','🌮','🍦','🍩','🍪','🎂','🧁','🍫','🍬','🥐','🧇','🥞','🍿'],
+  vehicles: ['🚗','🚕','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🚐','🛻','🚚','🚛','✈️','🚀','🛸','🚁','⛵','🚂','🚤'],
+};
+
+const SIZES = {
+  '2x4': { cols: 2, rows: 4 },
+  '3x4': { cols: 3, rows: 4 },
+  '4x4': { cols: 4, rows: 4 },
+  '4x5': { cols: 4, rows: 5 },
+};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildDeck(theme, pairs) {
+  let pool;
+  if (theme === 'random') {
+    pool = shuffle([...EMOJIS.animals, ...EMOJIS.food, ...EMOJIS.vehicles]);
+  } else {
+    pool = shuffle([...EMOJIS[theme]]);
+  }
+  const chosen = pool.slice(0, pairs);
+  return shuffle([...chosen, ...chosen]);
+}
+
+// ===== GAME STATE =====
+let flipped = [];
+let matched = 0;
+let flips = 0;
+let locked = false;
+let firstTap = true;
+
+function showScreen(id) {
+  ['mm-settings','mm-board-screen','mm-win-screen'].forEach(s => {
+    document.getElementById(s).hidden = s !== id;
+  });
+}
+
+function goSettings() {
+  window.removeEventListener('resize', handleResize);
+  showScreen('mm-settings');
+}
+
+let _sizeArgs = null;
+function handleResize() {
+  if (!_sizeArgs) return;
+  const grid = document.getElementById('mm-grid');
+  if (grid) sizeCards(grid, _sizeArgs.cols, _sizeArgs.rows);
+}
+
+function sizeCards(grid, cols, rows) {
+  let c = cols, r = rows;
+  if (state.size === '4x5' && window.innerWidth > window.innerHeight) {
+    c = 5; r = 4;
+  }
+  grid.style.gridTemplateColumns = `repeat(${c}, 1fr)`;
+  const pad = 32, gap = 6, headerH = 56 + 56;
+  const maxW = Math.floor((window.innerWidth - pad - gap * (c - 1)) / c);
+  const maxH = Math.floor((window.innerHeight - headerH - pad - gap * (r - 1)) / r);
+  const size = Math.min(maxW, maxH, 160);
+  grid.querySelectorAll('.mm-card').forEach(card => {
+    card.style.width = size + 'px';
+    card.style.height = Math.floor(size * 4 / 3) + 'px';
+  });
+}
+
 function startGame() {
-  // placeholder — wired in Task 3
-  console.log('Starting with', state);
+  const { cols, rows } = SIZES[state.size];
+  const pairs = cols * rows / 2;
+  const deck = buildDeck(state.theme, pairs);
+
+  flipped = []; matched = 0; flips = 0; locked = false; firstTap = true;
+
+  const boardScreen = document.getElementById('mm-board-screen');
+  boardScreen.innerHTML = `
+    <div class="mm-board-inner">
+      <div class="mm-hud">
+        <button class="mm-hud-back" id="mm-back-btn">← Settings</button>
+        <div class="mm-hud-flips" id="mm-flips-display">0 flips</div>
+      </div>
+      <div class="mm-grid" id="mm-grid"
+           style="grid-template-columns: repeat(${cols}, 1fr);">
+      </div>
+    </div>
+  `;
+
+  const grid = document.getElementById('mm-grid');
+  _sizeArgs = { cols, rows };
+  sizeCards(grid, cols, rows);
+  window.addEventListener('resize', handleResize);
+
+  deck.forEach((emoji, i) => {
+    const card = document.createElement('div');
+    card.className = 'mm-card';
+    card.dataset.emoji = emoji;
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="mm-card-inner">
+        <div class="mm-card-back">?</div>
+        <div class="mm-card-front"><span class="mm-card-emoji">${emoji}</span></div>
+      </div>
+    `;
+    card.addEventListener('click', () => onCardClick(card));
+    grid.appendChild(card);
+  });
+
+  document.getElementById('mm-back-btn').addEventListener('click', goSettings);
+
+  showScreen('mm-board-screen');
+}
+
+function onCardClick(card) {
+  // placeholder — full logic in Task 4
+  console.log('Clicked', card.dataset.emoji);
 }
 </script>
 
